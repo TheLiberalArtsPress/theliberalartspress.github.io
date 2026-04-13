@@ -177,6 +177,9 @@
             const [editingKpi, setEditingKpi] = useState(null);
             const [selectedKpiIcon, setSelectedKpiIcon] = useState('TrendingUp'); 
 
+            // 🔥 確保 iframeModal 在此定義，避免發生 undefined 錯誤
+            const [iframeModal, setIframeModal] = useState({ isOpen: false, url: '', title: '' });
+
             const [expandedMenus, setExpandedMenus] = useState({
                 group_dash: true, group_marketing: false, group_books: false, group_orders: false, group_cs: false, group_external: false, group_settings: false
             });
@@ -294,8 +297,9 @@
                 }
             }, [editingKpi]);
 
+            // KPI 自動連動更新
             useEffect(() => {
-                if (kpis.length === 0 || !isAuthenticated) return;
+                if (kpis.length === 0 || loadStatus.kpis || !isAuthenticated) return;
                 let hasChanges = false;
                 const updatedKpis = kpis.map(k => {
                     let titleText = String(k.title || k.id || '');
@@ -337,7 +341,7 @@
                 });
 
                 if (hasChanges) setKpis(updatedKpis);
-            }, [orders, books, kpis, isAuthenticated]);
+            }, [orders, books, kpis, loadStatus.kpis, isAuthenticated]);
 
             const handleLogin = (e) => {
                 e.preventDefault();
