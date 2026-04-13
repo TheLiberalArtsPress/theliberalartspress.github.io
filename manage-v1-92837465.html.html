@@ -1,0 +1,1217 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文史哲出版社 - 數位營運中心 (Digital CMS)</title>
+    <!-- 引入 Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    
+    <script>window.react = window.React;</script>
+    <script src="https://unpkg.com/@babel/standalone@7.22.20/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@0.284.0/dist/umd/lucide-react.js"></script>
+    
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;600;800&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        body { font-family: 'Outfit', 'Noto Sans TC', sans-serif; background-color: #F4F4F5; }
+        .animate-in { animation: slideUp 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(20px); } to { opacity: 1; transform: translateY(0); } }
+        
+        /* 🔥【更新】明顯且粗大的上下、左右滾動條 */
+        ::-webkit-scrollbar { width: 14px; height: 14px; }
+        ::-webkit-scrollbar-track { background: rgba(0, 0, 0, 0.04); border-radius: 10px; }
+        ::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 10px; border: 3px solid transparent; background-clip: padding-box; }
+        ::-webkit-scrollbar-thumb:hover { background: #94a3b8; border: 3px solid transparent; background-clip: padding-box; }
+        
+        /* 側邊欄與 Modal 隱藏滾動條 */
+        .sidebar-scroll::-webkit-scrollbar { display: none; }
+        .sidebar-scroll { -ms-overflow-style: none; scrollbar-width: none; }
+        
+        .glass-card { background: rgba(255, 255, 255, 0.85); backdrop-filter: blur(16px); border: 1px solid rgba(255, 255, 255, 0.5); }
+
+        /* 顏色選擇器美化 */
+        input[type="color"] { -webkit-appearance: none; border: none; width: 100%; height: 40px; border-radius: 8px; cursor: pointer; overflow: hidden; }
+        input[type="color"]::-webkit-color-swatch-wrapper { padding: 0; }
+        input[type="color"]::-webkit-color-swatch { border: none; border-radius: 8px; }
+    </style>
+</head>
+<body class="text-zinc-800">
+    <div id="root"></div>
+
+    <script type="text/babel">
+        const { useState, useEffect, useMemo } = React;
+
+        const lib = window.lucideReact || window.LucideReact || {};
+        const FallbackIcon = () => <span className="inline-block w-4 h-4 bg-zinc-300 rounded-full animate-pulse"></span>;
+        
+        const LayoutDashboard = lib.LayoutDashboard || FallbackIcon;
+        const BookOpen = lib.BookOpen || FallbackIcon;
+        const MessageSquare = lib.MessageSquare || FallbackIcon;
+        const Truck = lib.Truck || FallbackIcon;
+        const Database = lib.Database || FallbackIcon;
+        const Globe = lib.Globe || FallbackIcon;
+        const Menu = lib.Menu || FallbackIcon;
+        const ChevronRight = lib.ChevronRight || FallbackIcon;
+        const ChevronDown = lib.ChevronDown || FallbackIcon;
+        const ExternalLink = lib.ExternalLink || FallbackIcon;
+        const Plus = lib.Plus || FallbackIcon;
+        const Edit2 = lib.Edit2 || FallbackIcon;
+        const Trash2 = lib.Trash2 || FallbackIcon;
+        const Zap = lib.Zap || FallbackIcon;
+        const Clock = lib.Clock || FallbackIcon;
+        const Save = lib.Save || FallbackIcon;
+        const X = lib.X || FallbackIcon;
+        const Lock = lib.Lock || FallbackIcon;
+        const Bot = lib.Bot || FallbackIcon;
+        const User = lib.User || FallbackIcon;
+        const CheckCircle = lib.CheckCircle || FallbackIcon;
+        const Search = lib.Search || FallbackIcon;
+        const Sparkles = lib.Sparkles || FallbackIcon;
+        const FileEdit = lib.FileEdit || FallbackIcon;
+        const Star = lib.Star || FallbackIcon;
+        const ShieldCheck = lib.ShieldCheck || FallbackIcon;
+        const Phone = lib.Phone || FallbackIcon;
+        const Mail = lib.Mail || FallbackIcon;
+        const TrendingUp = lib.TrendingUp || FallbackIcon;
+        const ShoppingCart = lib.ShoppingCart || FallbackIcon;
+        const SettingsIcon = lib.Settings || FallbackIcon;
+        const Palette = lib.Palette || FallbackIcon;
+
+        const availableIcons = {
+            LayoutDashboard: { icon: LayoutDashboard, color: 'text-blue-500' },
+            TrendingUp: { icon: TrendingUp, color: 'text-blue-500' },
+            Database: { icon: Database, color: 'text-indigo-500' },
+            Truck: { icon: Truck, color: 'text-emerald-500' },
+            BookOpen: { icon: BookOpen, color: 'text-red-500' },
+            User: { icon: User, color: 'text-purple-500' },
+            MessageSquare: { icon: MessageSquare, color: 'text-pink-500' },
+            Bot: { icon: Bot, color: 'text-pink-600' },
+            Zap: { icon: Zap, color: 'text-orange-500' },
+            Sparkles: { icon: Sparkles, color: 'text-yellow-500' },
+            Star: { icon: Star, color: 'text-yellow-400' },
+            ShoppingCart: { icon: ShoppingCart, color: 'text-cyan-500' },
+            ExternalLink: { icon: ExternalLink, color: 'text-zinc-500' }
+        };
+
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3aVllUVVIVHdyb1FSR2U5ZlN2a1h3VDk1RVpLRFdyZndIcHRxRDRUY3E5Q1JPTjhZc2MtdENHWURkb2Q3LWJnclQvZXhlYw==";
+        const GAS_URL = atob(_0x4a21);
+
+        const formatImageUrl = (url) => {
+            if (!url) return '';
+            let strUrl = String(url).trim();
+            if (strUrl.startsWith('data:image')) return strUrl; 
+            
+            let driveId = null;
+            if (strUrl.includes('drive.google.com')) {
+                const match = strUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                if (match) driveId = match[1];
+            } else if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
+                driveId = strUrl;
+            }
+
+            if (driveId) {
+                return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
+            }
+            return strUrl;
+        };
+
+        const fallbackAccounts = [
+            { user: 'lapen', password: '1234' },
+            { user: 'admin', password: '1234' },
+            { user: 'e3479293', password: '588999' },
+            { user: 'candyni', password: '605' }
+        ];
+
+        // 🔥 【更新】加入自訂義各區塊、字體顏色的預設值
+        const defaultSettings = {
+            systemName: '文史哲出版社', systemSubName: 'Digital CMS',
+            loginBgColor: '#09090b', sidebarBgColor: '#09090b', sidebarActiveColor: '#4f46e5', sidebarTextColor: '#a1a1aa', kpiBgColor: '#ffffff',
+            mainBgColor: '#F4F4F5', mainTextColor: '#27272a', cardBgColor: '#ffffff', cardTextColor: '#3f3f46',
+            menuDashName: '營運分析中心', menuMarketingName: '行銷與推薦', menuBooksName: '總商品庫存',
+            menuOrdersName: '銷售與物流', menuCsName: '智能客戶關係', menuExtName: '外部系統鏈接',
+            menuDashIcon: 'LayoutDashboard', menuMarketingIcon: 'Sparkles', menuBooksIcon: 'Database',
+            menuOrdersIcon: 'Truck', menuCsIcon: 'Bot', menuExtIcon: 'ExternalLink'
+        };
+
+        function App() {
+            const [isAuthenticated, setIsAuthenticated] = useState(false);
+            const [accountsList, setAccountsList] = useState(fallbackAccounts);
+            const [selectedAccount, setSelectedAccount] = useState('lapen'); 
+            
+            const [books, setBooks] = useState([]);
+            const [choiceBooks, setChoiceBooks] = useState([]); 
+            const [carousels, setCarousels] = useState([]);
+            const [orders, setOrders] = useState([]); 
+            const [aiLogs, setAiLogs] = useState([]); 
+            const [kpis, setKpis] = useState([]); 
+            const [settings, setSettings] = useState(defaultSettings); 
+            
+            const [activeTab, setActiveTab] = useState('dashboard');
+            const [isSidebarOpen, setIsSidebarOpen] = useState(true);
+            const [notification, setNotification] = useState(null);
+            const [bookSearchQuery, setBookSearchQuery] = useState('');
+
+            const [loadStatus, setLoadStatus] = useState({
+                kpis: true, orders: true, cs: true, carousels: true, choices: true, books: true
+            });
+
+            const [showBookModal, setShowBookModal] = useState(false);
+            const [editingBook, setEditingBook] = useState(null);
+            const [modalType, setModalType] = useState('book');
+            
+            const [showCarouselModal, setShowCarouselModal] = useState(false);
+            const [editingCarousel, setEditingCarousel] = useState(null);
+            
+            const [showOrderModal, setShowOrderModal] = useState(false);
+            const [editingOrder, setEditingOrder] = useState(null);
+            
+            const [showCSModal, setShowCSModal] = useState(false);
+            const [editingCSLog, setEditingCSLog] = useState(null);
+            const [csResponseText, setCsResponseText] = useState('');
+            const [isAIGenerating, setIsAIGenerating] = useState(false);
+
+            const [showKpiModal, setShowKpiModal] = useState(false);
+            const [editingKpi, setEditingKpi] = useState(null);
+            const [selectedKpiIcon, setSelectedKpiIcon] = useState('TrendingUp'); 
+
+            // 🔥 確保 iframeModal 在此定義，避免發生 undefined 錯誤
+            const [iframeModal, setIframeModal] = useState({ isOpen: false, url: '', title: '' });
+
+            const [expandedMenus, setExpandedMenus] = useState({
+                group_dash: true, group_marketing: false, group_books: false, group_orders: false, group_cs: false, group_external: false, group_settings: false
+            });
+
+            const toggleMenu = (menuId) => setExpandedMenus(prev => ({ ...prev, [menuId]: !prev[menuId] }));
+
+            const adminMenuConfig = [
+                { id: 'group_dash', title: settings.menuDashName, icon: availableIcons[settings.menuDashIcon]?.icon || LayoutDashboard, items: [{ tab: 'dashboard', name: '營運儀表板' }] },
+                { id: 'group_marketing', title: settings.menuMarketingName, icon: availableIcons[settings.menuMarketingIcon]?.icon || Sparkles, items: [
+                    { tab: 'carousel', name: '首頁熱賣輪播 (Carousels)' },
+                    { tab: 'choice', name: '編輯推薦書單 (Choice)' } 
+                ]},
+                { id: 'group_books', title: settings.menuBooksName, icon: availableIcons[settings.menuBooksIcon]?.icon || Database, items: [{ tab: 'books', name: '全部書籍管理 (Book_ALL)' }] },
+                { id: 'group_orders', title: settings.menuOrdersName, icon: availableIcons[settings.menuOrdersIcon]?.icon || Truck, items: [{ tab: 'orders', name: '訂單處理中心 (Orders)' }] },
+                { id: 'group_cs', title: settings.menuCsName, icon: availableIcons[settings.menuCsIcon]?.icon || Bot, items: [{ tab: 'ai', name: 'AI 客服信箱 (CS Logs)' }] },
+                { id: 'group_external', title: settings.menuExtName, icon: availableIcons[settings.menuExtIcon]?.icon || ExternalLink, items: [
+                    { isExternal: true, url: 'https://hanlinma.github.io/candyni/vandor.html', name: '供應商系統 (Vandor)' },
+                    { isExternal: true, url: 'https://hanlinma.github.io/candyni/oder.html', name: '舊版訂單 (Oder)' }
+                ]},
+                { id: 'group_settings', title: '系統外觀設定', icon: SettingsIcon, items: [{ tab: 'settings', name: '全域設定與顏色 (Setting)' }] }
+            ];
+
+            const showMsg = (text) => {
+                setNotification(text);
+                setTimeout(() => setNotification(null), 3000);
+            };
+
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '-';
+                const d = new Date(dateStr);
+                if (isNaN(d.getTime())) return String(dateStr); 
+                const yyyy = d.getFullYear(); const mm = String(d.getMonth() + 1).padStart(2, '0'); const dd = String(d.getDate()).padStart(2, '0');
+                const hh = String(d.getHours()).padStart(2, '0'); const min = String(d.getMinutes()).padStart(2, '0');
+                if (yyyy === 1899) return `${hh}:${min}`;
+                return hh === '00' && min === '00' ? `${yyyy}/${mm}/${dd}` : `${yyyy}/${mm}/${dd} ${hh}:${min}`;
+            };
+
+            const syncWithGAS = async (action, payload = null) => {
+                try {
+                    if (action.startsWith('FETCH_')) {
+                        const url = new URL(GAS_URL);
+                        url.searchParams.append('action', action);
+                        url.searchParams.append('key', 'Y2FuZHluaWxvdmU='); 
+                        const response = await fetch(url.toString());
+                        return await response.json();
+                    } else {
+                        const response = await fetch(GAS_URL, {
+                            method: "POST",
+                            headers: { "Content-Type": "text/plain;charset=utf-8" },
+                            body: JSON.stringify({ action, payload, key: "Y2FuZHluaWxvdmU=" }) 
+                        });
+                        return await response.json();
+                    }
+                } catch (e) {
+                    console.error("GAS Sync Error:", e);
+                    return { status: 'error', msg: e.toString() };
+                }
+            };
+
+            useEffect(() => {
+                syncWithGAS('FETCH_SETTINGS').then(res => {
+                    if (res && res.data) setSettings(prev => ({...prev, ...res.data}));
+                }).catch(() => {});
+
+                if (!isAuthenticated) {
+                    syncWithGAS('FETCH_ACCOUNTS').then(res => {
+                        if (res && res.data && res.data.length > 0) setAccountsList(res.data);
+                    }).catch(() => {});
+                }
+            }, []);
+
+            useEffect(() => {
+                if (!isAuthenticated) return;
+
+                syncWithGAS('FETCH_KPIS').then(res => { 
+                    if(res?.data) setKpis(res.data); 
+                    setLoadStatus(prev => ({...prev, kpis: false})); 
+                });
+                syncWithGAS('FETCH_ORDERS').then(res => { 
+                    if(res?.data) setOrders(res.data); 
+                    setLoadStatus(prev => ({...prev, orders: false})); 
+                });
+                syncWithGAS('FETCH_CS_LOGS').then(res => { 
+                    if(res?.data) setAiLogs(res.data); 
+                    setLoadStatus(prev => ({...prev, cs: false})); 
+                });
+                syncWithGAS('FETCH_CAROUSELS').then(res => { 
+                    if(res?.data) setCarousels(res.data); 
+                    setLoadStatus(prev => ({...prev, carousels: false})); 
+                });
+                syncWithGAS('FETCH_CHOICES').then(res => { 
+                    if(res?.data) setChoiceBooks(res.data); 
+                    setLoadStatus(prev => ({...prev, choices: false})); 
+                });
+                syncWithGAS('FETCH_BOOKS').then(res => { 
+                    if(res?.data) setBooks(res.data); 
+                    setLoadStatus(prev => ({...prev, books: false})); 
+                });
+            }, [isAuthenticated]);
+
+            useEffect(() => {
+                if (editingKpi) {
+                    let rawUnit = String(editingKpi.unit || '');
+                    let iconName = rawUnit.includes('||') ? rawUnit.split('||')[1] : '';
+                    if (!iconName) {
+                        const titleText = editingKpi.title || '';
+                        if (titleText.includes('營收')) iconName = 'Database';
+                        else if (titleText.includes('待處理')) iconName = 'Truck';
+                        else if (titleText.includes('庫存警示')) iconName = 'BookOpen';
+                        else iconName = 'TrendingUp';
+                    }
+                    setSelectedKpiIcon(iconName);
+                } else {
+                    setSelectedKpiIcon('TrendingUp');
+                }
+            }, [editingKpi]);
+
+            // KPI 自動連動更新
+            useEffect(() => {
+                if (kpis.length === 0 || loadStatus.kpis || !isAuthenticated) return;
+                let hasChanges = false;
+                const updatedKpis = kpis.map(k => {
+                    let titleText = String(k.title || k.id || '');
+                    let dynamicValue = k.value;
+                    let rawUnit = String(k.unit || '');
+                    let displayUnit = rawUnit.includes('||') ? rawUnit.split('||')[0] : rawUnit;
+                    let iconName = rawUnit.includes('||') ? rawUnit.split('||')[1] : '';
+                    
+                    if (titleText.includes('營收')) {
+                        dynamicValue = 'NT$ ' + orders.reduce((s,o)=>s+Number(o.total||0),0).toLocaleString();
+                        if (!iconName) iconName = 'Database';
+                    } else if (titleText.includes('待處理')) {
+                        dynamicValue = String(orders.filter(o=>o.status==='處理中').length);
+                        displayUnit = displayUnit || '筆';
+                        if (!iconName) iconName = 'Truck';
+                    } else if (titleText.includes('庫存警示')) {
+                        const match = titleText.match(/<(\d+)/);
+                        const threshold = match ? parseInt(match[1]) : 10;
+                        dynamicValue = String(books.filter(b => {
+                            if (!b.title || b.title.trim() === '' || b.title === '未命名書籍') return false;
+                            const st = parseInt(b.stock);
+                            return (isNaN(st) ? 0 : st) < threshold;
+                        }).length);
+                        displayUnit = displayUnit || '項商品';
+                        if (!iconName) iconName = 'BookOpen';
+                    } else {
+                        if (!iconName) iconName = 'TrendingUp';
+                    }
+
+                    const combinedUnit = `${displayUnit}||${iconName}`;
+
+                    if (String(dynamicValue) !== String(k.value) || combinedUnit !== String(k.unit)) {
+                        hasChanges = true;
+                        const newKpi = { ...k, value: dynamicValue, unit: combinedUnit };
+                        syncWithGAS('UPDATE_KPI', newKpi);
+                        return newKpi;
+                    }
+                    return k;
+                });
+
+                if (hasChanges) setKpis(updatedKpis);
+            }, [orders, books, kpis, loadStatus.kpis, isAuthenticated]);
+
+            const handleLogin = (e) => {
+                e.preventDefault();
+                const pwd = e.target.password.value;
+                const accInfo = accountsList.find(a => a.user === selectedAccount);
+                if (accInfo && String(accInfo.password) === String(pwd)) {
+                    setIsAuthenticated(true);
+                    showMsg('登入成功，系統資料已於背景載入...');
+                } else { showMsg('登入失敗：密碼錯誤'); }
+            };
+
+            const filteredAdminBooks = useMemo(() => {
+                const query = bookSearchQuery.toLowerCase().trim();
+                const targetList = activeTab === 'choice' ? choiceBooks : books; 
+                if (!query) return targetList;
+                return targetList.filter(b => 
+                    (b.title && b.title.toLowerCase().includes(query)) ||
+                    (b.id && b.id.toString().toLowerCase().includes(query)) ||
+                    (b.category && b.category.toLowerCase().includes(query))
+                );
+            }, [books, choiceBooks, bookSearchQuery, activeTab]);
+
+            const handleSaveBook = async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const bookData = {
+                    title: formData.get('title'), category: formData.get('category'), price: parseInt(formData.get('price')) || 0, stock: parseInt(formData.get('stock')) || 0,
+                    cover: formData.get('cover') || '', author: formData.get('author') || '', year: formData.get('year') || ''
+                };
+                
+                const isChoice = modalType === 'choice';
+                const currentList = isChoice ? choiceBooks : books;
+                const setList = isChoice ? setChoiceBooks : setBooks;
+                const updateAction = isChoice ? 'UPDATE_CHOICE' : 'UPDATE_BOOK';
+                const addAction = isChoice ? 'ADD_CHOICE' : 'ADD_BOOK';
+
+                if (editingBook) {
+                    const updated = { ...editingBook, ...bookData };
+                    setList(currentList.map(b => b.id === updated.id ? updated : b));
+                    await syncWithGAS(updateAction, updated);
+                } else {
+                    const newBook = { ...bookData, id: Date.now() }; 
+                    setList([newBook, ...currentList]);
+                    await syncWithGAS(addAction, newBook);
+                }
+                setShowBookModal(false); setEditingBook(null);
+                showMsg(`${isChoice ? '精選推薦' : '書籍庫存'}已更新至雲端`);
+            };
+
+            const handleDeleteBook = async (id, isChoice) => {
+                if(confirm(`確定要刪除這本${isChoice ? '精選推薦' : '書籍'}嗎？`)) {
+                    if (isChoice) {
+                        setChoiceBooks(choiceBooks.filter(b => b.id !== id));
+                        await syncWithGAS('DELETE_CHOICE', { id });
+                    } else {
+                        setBooks(books.filter(b => b.id !== id));
+                        await syncWithGAS('DELETE_BOOK', { id });
+                    }
+                    showMsg('資料已刪除');
+                }
+            }
+
+            const handleSaveOrder = async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const newId = formData.get('orderId'); 
+                const updated = {
+                    ...editingOrder, newId: newId, customer: formData.get('customer'), phone: formData.get('phone'), email: formData.get('email'), address: formData.get('address'),
+                    items: formData.get('items'), total: parseInt(formData.get('total')) || 0, payment: formData.get('payment'), status: formData.get('status'),
+                    memo: formData.get('memo') || '' 
+                };
+                setOrders(orders.map(o => o.id === editingOrder.id ? { ...updated, id: newId || updated.id } : o));
+                await syncWithGAS('UPDATE_ORDER', updated); 
+                setShowOrderModal(false); setEditingOrder(null);
+                showMsg('訂單完整內容已修改');
+            };
+
+            const handleSaveCarousel = async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const slideData = { title: formData.get('title'), description: formData.get('description'), image: formData.get('image') || '', status: formData.get('status') };
+                if (editingCarousel) {
+                    const updated = { ...editingCarousel, ...slideData };
+                    setCarousels(carousels.map(c => c.id === updated.id ? updated : c));
+                    await syncWithGAS('UPDATE_CAROUSEL', updated);
+                } else {
+                    const newSlide = { ...slideData, id: Date.now() };
+                    setCarousels([newSlide, ...carousels]);
+                    await syncWithGAS('ADD_CAROUSEL', newSlide);
+                }
+                setShowCarouselModal(false); setEditingCarousel(null); showMsg('輪播設定已儲存');
+            };
+
+            const handleDeleteCarousel = async (id) => {
+                if(confirm('確定要刪除此行銷輪播項目嗎？')) {
+                    setCarousels(carousels.filter(c => c.id !== id));
+                    await syncWithGAS('DELETE_CAROUSEL', { id }); showMsg('已刪除該輪播');
+                }
+            };
+
+            const handleSaveKpi = async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const inputUnit = formData.get('unit') || '';
+                const combinedUnit = `${inputUnit}||${selectedKpiIcon}`;
+                const kpiData = { title: formData.get('title'), value: formData.get('value'), unit: combinedUnit };
+                if (editingKpi) {
+                    const updated = { ...editingKpi, ...kpiData };
+                    setKpis(kpis.map(k => k.id === updated.id ? updated : k));
+                    await syncWithGAS('UPDATE_KPI', updated);
+                } else {
+                    const newKpi = { ...kpiData, id: Date.now() };
+                    setKpis([...kpis, newKpi]);
+                    await syncWithGAS('ADD_KPI', newKpi);
+                }
+                setEditingKpi(null); setShowKpiModal(false); showMsg('KPI 指標已更新');
+            };
+
+            const handleDeleteKpi = async (id) => {
+                if(confirm('確定要刪除此 KPI 嗎？')) {
+                    setKpis(kpis.filter(k => k.id !== id));
+                    await syncWithGAS('DELETE_KPI', { id }); showMsg('KPI 已刪除');
+                }
+            };
+
+            const handleSaveSettings = async (e) => {
+                e.preventDefault();
+                const formData = new FormData(e.target);
+                const newSettings = { ...settings };
+                for (let [key, value] of formData.entries()) {
+                    newSettings[key] = value;
+                }
+                setSettings(newSettings);
+                await syncWithGAS('UPDATE_SETTINGS', newSettings);
+                showMsg('系統設定已套用並同步至雲端！');
+            };
+
+            const handleGenerateAI = () => {
+                if (!editingCSLog) return;
+                setIsAIGenerating(true);
+                setTimeout(() => {
+                    const snippet = editingCSLog.query.length > 15 ? editingCSLog.query.substring(0, 15) + '...' : editingCSLog.query;
+                    const aiText = `親愛的 ${editingCSLog.user} 您好：\n\n感謝您的來信與指教。關於您提到的「${snippet}」一事，我們已經收到，並已交由相關部門盡速處理。\n\n若有任何進一步的消息，我們將隨時與您聯繫。感謝您對文史哲出版社的支持與愛護！\n\n文史哲出版社 客服中心 敬上`;
+                    setCsResponseText(aiText); setIsAIGenerating(false);
+                }, 800); 
+            };
+
+            const handleSaveCS = async () => {
+                if (!csResponseText.trim()) return showMsg('請輸入回覆內容');
+                setAiLogs(aiLogs.map(l => l.id === editingCSLog.id ? { ...l, response: csResponseText, status: '已回覆' } : l));
+                await syncWithGAS('UPDATE_CS_LOG', { id: editingCSLog.id, response: csResponseText });
+                setShowCSModal(false); setEditingCSLog(null); setCsResponseText(''); showMsg('客服回覆已送出並同步至雲端');
+            };
+
+            if (!isAuthenticated) {
+                return (
+                    <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden transition-colors duration-500" style={{ backgroundColor: settings.loginBgColor }}>
+                        <div className="absolute top-[-10%] left-[-10%] w-[50%] h-[50%] bg-indigo-600/30 blur-[120px] rounded-full pointer-events-none"></div>
+                        <div className="absolute bottom-[-10%] right-[-10%] w-[50%] h-[50%] bg-emerald-600/20 blur-[120px] rounded-full pointer-events-none"></div>
+                        
+                        <div className="glass-card p-10 md:p-12 rounded-[2.5rem] w-full max-w-md shadow-[0_20px_60px_rgba(0,0,0,0.5)] animate-in z-10 bg-white/90">
+                            <div className="text-center mb-10">
+                                <div className="bg-gradient-to-br from-zinc-800 to-zinc-950 w-20 h-20 rounded-[1.5rem] flex items-center justify-center text-white mx-auto mb-6 shadow-2xl border border-zinc-700">
+                                    <ShieldCheck size={36} className="text-indigo-400" />
+                                </div>
+                                <h2 className="text-3xl font-black text-zinc-900 tracking-tight">{settings.systemName}</h2>
+                                <p className="text-xs text-zinc-500 mt-2 font-bold uppercase tracking-[0.3em]">{settings.systemSubName}</p>
+                            </div>
+                            
+                            <form onSubmit={handleLogin} className="space-y-6">
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">選擇管理員帳號</label>
+                                    <div className="relative">
+                                        <select 
+                                            name="account" 
+                                            value={selectedAccount} 
+                                            onChange={(e) => setSelectedAccount(e.target.value)}
+                                            className="w-full bg-white border-2 border-zinc-100 p-4 rounded-2xl outline-none font-bold text-zinc-800 appearance-none cursor-pointer focus:border-indigo-500 transition-colors shadow-sm"
+                                        >
+                                            {accountsList.map(acc => (
+                                                <option key={acc.user} value={acc.user}>👤 {acc.user}</option>
+                                            ))}
+                                        </select>
+                                        <ChevronDown className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none" size={18}/>
+                                    </div>
+                                </div>
+
+                                <div className="space-y-2">
+                                    <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">通行密碼</label>
+                                    <input name="password" type="password" placeholder="••••••••" className="w-full bg-white border-2 border-zinc-100 p-4 rounded-2xl outline-none font-bold text-zinc-800 focus:border-indigo-500 transition-colors shadow-sm tracking-widest" required />
+                                </div>
+
+                                <button className="w-full text-white py-4 rounded-2xl font-bold transition-all duration-300 shadow-xl flex justify-center items-center gap-2 text-lg mt-4 hover:scale-105" style={{ backgroundColor: settings.sidebarActiveColor }}>
+                                    登入系統 <ChevronRight size={18}/>
+                                </button>
+                                
+                                <div className="text-center pt-4">
+                                    <button type="button" onClick={() => { window.location.href = 'index.html'; }} className="text-zinc-400 hover:text-zinc-600 text-xs font-bold transition-colors">← 返回前台官網</button>
+                                </div>
+                            </form>
+                        </div>
+                        <div className="absolute bottom-6 text-zinc-500/50 text-[10px] font-bold tracking-widest uppercase">Secured by Web 3.0 Technologies</div>
+                    </div>
+                );
+            }
+
+            return (
+                <div className="flex h-screen overflow-hidden font-sans relative" style={{ backgroundColor: settings.mainBgColor, color: settings.mainTextColor }}>
+                    <aside className={`flex-shrink-0 transition-all z-30 shadow-2xl flex flex-col ${isSidebarOpen ? '' : '-translate-x-full absolute md:relative'}`} style={{ width: '260px', backgroundColor: settings.sidebarBgColor }}>
+                        <div className="p-6 flex items-center gap-3 h-20 shrink-0 border-b border-white/5">
+                            <div className="p-2 rounded-xl text-white" style={{ backgroundColor: settings.sidebarActiveColor }}><BookOpen size={20} /></div>
+                            <div>
+                                <span className="font-black tracking-widest uppercase text-sm block" style={{ color: settings.sidebarTextColor }}>{settings.systemSubName}</span>
+                                <span className="text-[9px] font-bold tracking-widest uppercase" style={{ color: settings.sidebarTextColor, opacity: 0.6 }}>Admin Panel</span>
+                            </div>
+                        </div>
+                        <nav className="p-4 space-y-2 overflow-y-auto flex-1 sidebar-scroll">
+                            {adminMenuConfig.map(menuGroup => (
+                                <div key={menuGroup.id} className="mb-2">
+                                    <button onClick={() => toggleMenu(menuGroup.id)} className="w-full flex items-center justify-between p-3 rounded-xl transition-all hover:bg-white/5" style={expandedMenus[menuGroup.id] ? { backgroundColor: 'rgba(255,255,255,0.05)', color: '#ffffff' } : { color: settings.sidebarTextColor }}>
+                                        <div className="flex items-center gap-3">
+                                            <menuGroup.icon size={18} style={{ color: expandedMenus[menuGroup.id] ? settings.sidebarActiveColor : settings.sidebarTextColor }} />
+                                            <span className="font-bold text-sm tracking-wide">{menuGroup.title}</span>
+                                        </div>
+                                        {expandedMenus[menuGroup.id] ? <ChevronDown size={14} className="opacity-50"/> : <ChevronRight size={14} className="opacity-50"/>}
+                                    </button>
+                                    {expandedMenus[menuGroup.id] && (
+                                        <div className="mt-2 pl-4 space-y-1 animate-in">
+                                            {menuGroup.items.map(item => {
+                                                const isActive = activeTab === item.tab;
+                                                return (
+                                                    <button key={item.tab || item.name} onClick={() => {
+                                                        if (item.isExternal) {
+                                                            window.open(item.url, '_blank');
+                                                        } else {
+                                                            setActiveTab(item.tab);
+                                                        }
+                                                    }} className="w-full text-left py-2.5 px-4 rounded-lg transition-all text-xs font-bold flex items-center gap-2 hover:bg-white/5" style={isActive ? { backgroundColor: settings.sidebarActiveColor, color: '#ffffff', boxShadow: `0 4px 14px 0 ${settings.sidebarActiveColor}50` } : { color: settings.sidebarTextColor }}>
+                                                        {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white"></span>}
+                                                        {item.name}
+                                                        {item.isExternal && <ExternalLink size={12} className="ml-auto opacity-50" />}
+                                                    </button>
+                                                )
+                                            })}
+                                        </div>
+                                    )}
+                                </div>
+                            ))}
+                        </nav>
+                        <div className="p-4 border-t border-white/5 shrink-0" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
+                            <div className="flex items-center gap-3 px-3 py-2 mb-3">
+                                <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs text-white border border-white/20" style={{ backgroundColor: settings.sidebarActiveColor }}> {selectedAccount.charAt(0).toUpperCase()} </div>
+                                <div><div className="text-xs font-bold leading-tight text-white">{selectedAccount}</div><div className="text-[10px] text-emerald-400 font-bold">Online</div></div>
+                            </div>
+                            <button onClick={() => { window.location.href = 'index.html'; }} className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 text-white transition text-xs font-bold"><Globe size={14} /> 前往網站前台</button>
+                        </div>
+                    </aside>
+                    
+                    <main className="flex-1 flex flex-col h-screen overflow-hidden relative">
+                        <header className="h-20 backdrop-blur-xl border-b border-zinc-200 px-6 lg:px-10 flex justify-between items-center z-40 relative shrink-0" style={{ backgroundColor: `${settings.mainBgColor}E6` }}>
+                            <div className="flex items-center gap-4">
+                                <button onClick={() => setIsSidebarOpen(!isSidebarOpen)} className="p-2.5 hover:bg-zinc-100 rounded-xl transition opacity-70 hover:opacity-100"><Menu size={20}/></button>
+                                <h2 className="text-xl font-black tracking-tight flex items-center gap-2">
+                                    {activeTab === 'dashboard' && settings.menuDashName}
+                                    {activeTab === 'carousel' && '行銷輪播管理'}
+                                    {activeTab === 'choice' && '編輯推薦書單'}
+                                    {activeTab === 'books' && settings.menuBooksName}
+                                    {activeTab === 'orders' && settings.menuOrdersName}
+                                    {activeTab === 'ai' && settings.menuCsName}
+                                    {activeTab === 'settings' && '全域設定與外觀'}
+                                </h2>
+                            </div>
+                            <div className="flex items-center gap-4 relative z-50">
+                                <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor, opacity: 0.8 }}><Clock size={12}/> 系統狀態正常</div>
+                                {activeTab === 'dashboard' && <button onClick={() => { setEditingKpi(null); setShowKpiModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-80" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增 KPI 指標</button>}
+                                {activeTab === 'books' && <button onClick={() => { setModalType('book'); setEditingBook(null); setShowBookModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 上架新書</button>}
+                                {activeTab === 'choice' && <button onClick={() => { setModalType('choice'); setEditingBook(null); setShowBookModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-80" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增推薦書籍</button>}
+                                {activeTab === 'carousel' && <button onClick={() => { setEditingCarousel(null); setShowCarouselModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增輪播項目</button>}
+                            </div>
+                        </header>
+                        
+                        <div className="p-6 lg:p-10 overflow-y-auto flex-1 z-10">
+                            {activeTab === 'dashboard' && (
+                                <div className="animate-in">
+                                    <div className="flex justify-between items-end mb-6 border-b border-zinc-200/50 pb-4">
+                                        <h3 className="text-xl font-black flex items-center gap-2"><TrendingUp style={{ color: settings.sidebarActiveColor }}/> 營運指標面板 (KPI)</h3>
+                                    </div>
+                                    
+                                    {loadStatus.kpis ? (
+                                        <div className="text-sm font-bold animate-pulse opacity-60">載入指標中...</div>
+                                    ) : kpis.length > 0 ? (
+                                        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-10">
+                                            {kpis.map(k => {
+                                                let titleText = String(k.title || k.id || '');
+                                                let rawUnit = String(k.unit || '');
+                                                let displayUnit = rawUnit.includes('||') ? rawUnit.split('||')[0] : rawUnit;
+                                                let iconName = rawUnit.includes('||') ? rawUnit.split('||')[1] : '';
+                                                
+                                                if (!iconName) {
+                                                    if (titleText.includes('營收')) iconName = 'Database';
+                                                    else if (titleText.includes('待處理')) iconName = 'Truck';
+                                                    else if (titleText.includes('庫存警示')) iconName = 'BookOpen';
+                                                    else iconName = 'TrendingUp';
+                                                }
+
+                                                let iconDef = availableIcons[iconName] || availableIcons['TrendingUp'];
+                                                let Icon = iconDef.icon;
+                                                let iconColor = iconDef.color;
+
+                                                return (
+                                                    <div key={k.id} className="p-8 rounded-[2rem] border border-zinc-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden group" style={{ backgroundColor: settings.kpiBgColor }}>
+                                                        <div className={`absolute top-0 right-0 p-6 opacity-10 group-hover:scale-110 transition-transform ${iconColor}`}>
+                                                            <Icon size={64}/>
+                                                        </div>
+                                                        <div className="flex justify-between items-start mb-3 z-10 relative">
+                                                            <p className="text-[11px] opacity-60 font-black uppercase tracking-widest">{titleText}</p>
+                                                            <div className="flex gap-2">
+                                                                <button onClick={() => { setEditingKpi(k); setShowKpiModal(true); }} className="opacity-40 hover:opacity-100 hover:text-indigo-600 transition relative z-20 cursor-pointer"><Edit2 size={12}/></button>
+                                                                <button onClick={() => handleDeleteKpi(k.id)} className="opacity-40 hover:opacity-100 hover:text-red-500 transition relative z-20 cursor-pointer"><Trash2 size={12}/></button>
+                                                            </div>
+                                                        </div>
+                                                        <p className="text-4xl font-black tracking-tighter relative z-10" style={{ color: settings.cardTextColor }}>
+                                                            {k.value} <span className="text-sm font-bold opacity-50">{displayUnit}</span>
+                                                        </p>
+                                                    </div>
+                                                );
+                                            })}
+                                        </div>
+                                    ) : (
+                                        <div className="p-12 rounded-[2rem] border border-dashed border-zinc-200 text-center font-bold text-sm opacity-60" style={{ backgroundColor: settings.cardBgColor }}>
+                                            尚未設定自訂 KPI。請點擊右上角新增指標。
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {activeTab === 'settings' && (
+                                <div className="animate-in max-w-4xl mx-auto">
+                                    <div className="flex justify-between items-end mb-6 border-b border-zinc-200/50 pb-4">
+                                        <h3 className="text-xl font-black flex items-center gap-2"><Palette style={{ color: settings.sidebarActiveColor }}/> 全域外觀與選單設定</h3>
+                                    </div>
+                                    
+                                    <form onSubmit={handleSaveSettings} className="space-y-8 p-8 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-zinc-100/50" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
+                                        <div>
+                                            <h4 className="text-sm font-black mb-5 flex items-center gap-2 border-b border-zinc-100/50 pb-2"><Palette size={16} className="opacity-50"/> 基礎視覺顏色</h4>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">登入頁背景</label>
+                                                    <input type="color" name="loginBgColor" defaultValue={settings.loginBgColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊欄背景</label>
+                                                    <input type="color" name="sidebarBgColor" defaultValue={settings.sidebarBgColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">高亮主題色 (選單)</label>
+                                                    <input type="color" name="sidebarActiveColor" defaultValue={settings.sidebarActiveColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">KPI 卡片底色</label>
+                                                    <input type="color" name="kpiBgColor" defaultValue={settings.kpiBgColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">內頁主背景顏色</label>
+                                                    <input type="color" name="mainBgColor" defaultValue={settings.mainBgColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">內頁主文字顏色</label>
+                                                    <input type="color" name="mainTextColor" defaultValue={settings.mainTextColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">卡片/區塊底色</label>
+                                                    <input type="color" name="cardBgColor" defaultValue={settings.cardBgColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">卡片/區塊文字</label>
+                                                    <input type="color" name="cardTextColor" defaultValue={settings.cardTextColor} className="shadow-sm border border-zinc-200/50" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div>
+                                            <h4 className="text-sm font-black mb-5 flex items-center gap-2 border-b border-zinc-100/50 pb-2"><FileEdit size={16} className="opacity-50"/> 系統與選單名稱</h4>
+                                            <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">系統主標題 (System Name)</label>
+                                                    <input name="systemName" defaultValue={settings.systemName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">系統副標題 (Sub Name)</label>
+                                                    <input name="systemSubName" defaultValue={settings.systemSubName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                </div>
+                                            </div>
+                                            
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 1 名稱 (儀表板)</label>
+                                                    <input name="menuDashName" defaultValue={settings.menuDashName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuDashIcon" defaultValue={settings.menuDashIcon} className="w-full bg-black/5 border border-zinc-200/50 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
+                                                        {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
+                                                    </select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 2 名稱 (行銷)</label>
+                                                    <input name="menuMarketingName" defaultValue={settings.menuMarketingName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuMarketingIcon" defaultValue={settings.menuMarketingIcon} className="w-full bg-black/5 border border-zinc-200/50 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
+                                                        {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
+                                                    </select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 3 名稱 (庫存)</label>
+                                                    <input name="menuBooksName" defaultValue={settings.menuBooksName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuBooksIcon" defaultValue={settings.menuBooksIcon} className="w-full bg-black/5 border border-zinc-200/50 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
+                                                        {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
+                                                    </select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 4 名稱 (物流)</label>
+                                                    <input name="menuOrdersName" defaultValue={settings.menuOrdersName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuOrdersIcon" defaultValue={settings.menuOrdersIcon} className="w-full bg-black/5 border border-zinc-200/50 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
+                                                        {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
+                                                    </select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 5 名稱 (客服)</label>
+                                                    <input name="menuCsName" defaultValue={settings.menuCsName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuCsIcon" defaultValue={settings.menuCsIcon} className="w-full bg-black/5 border border-zinc-200/50 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
+                                                        {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
+                                                    </select>
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 6 名稱 (外部系統)</label>
+                                                    <input name="menuExtName" defaultValue={settings.menuExtName} className="w-full bg-black/5 border border-zinc-200/50 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuExtIcon" defaultValue={settings.menuExtIcon} className="w-full bg-black/5 border border-zinc-200/50 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
+                                                        {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
+                                                    </select>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        <div className="pt-4 border-t border-zinc-100/50 flex justify-end">
+                                            <button type="submit" className="text-white px-8 py-3.5 rounded-2xl font-bold shadow-xl transition-all active:scale-95 hover:opacity-90 flex items-center gap-2" style={{ backgroundColor: settings.sidebarActiveColor }}>
+                                                <Save size={18}/> 套用並儲存全域設定
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                            )}
+
+                            {activeTab === 'carousel' && (
+                                <div className="animate-in">
+                                    {loadStatus.carousels ? (
+                                        <div className="text-sm font-bold animate-pulse opacity-60">載入輪播設定中...</div>
+                                    ) : carousels.length > 0 ? (
+                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                                            {carousels.map((c, idx) => (
+                                                <div key={c.id} className="rounded-[2rem] border border-zinc-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col group relative" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
+                                                    <div className={`absolute top-4 left-4 text-white text-[10px] px-4 py-1.5 rounded-full font-bold z-10 shadow-lg backdrop-blur-md border border-white/20 ${c.status === '已發佈' ? 'bg-emerald-500/90' : 'bg-zinc-800/90'}`}>順序 {idx + 1} | {c.status}</div>
+                                                    <img src={formatImageUrl(c.image)} className="h-56 w-full object-cover transition duration-700 group-hover:scale-105" onError={(e)=>{e.target.src='https://via.placeholder.com/600x300?text=Invalid+Image+URL'}} />
+                                                    <div className="p-6 flex-1 flex flex-col relative z-10">
+                                                        <h3 className="font-black text-xl mb-2">{c.title}</h3>
+                                                        <p className="text-sm opacity-70 line-clamp-2 mb-6 leading-relaxed">{c.description}</p>
+                                                        <div className="mt-auto flex justify-end gap-3 pt-4 border-t border-black/5">
+                                                            <button onClick={() => { setEditingCarousel(c); setShowCarouselModal(true); }} className="text-indigo-600 hover:bg-indigo-50/50 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs"><Edit2 size={14}/> 編輯</button>
+                                                            <button onClick={() => handleDeleteCarousel(c.id)} className="text-red-500 hover:bg-red-50/50 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs"><Trash2 size={14}/> 刪除</button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="p-20 text-center font-bold rounded-[2rem] border-dashed border-2 border-zinc-200/50 opacity-60" style={{ backgroundColor: settings.cardBgColor }}>目前無輪播資料，請點擊右上角新增。</div>
+                                    )}
+                                </div>
+                            )}
+
+                            {(activeTab === 'books' || activeTab === 'choice') && (
+                                <div className="animate-in flex flex-col relative h-full min-h-[500px]">
+                                    <div className="mb-6 flex justify-between items-center shrink-0">
+                                        <div className="flex items-center gap-3 p-3 rounded-2xl shadow-[0_2px_10px_rgb(0,0,0,0.02)] border border-zinc-100/50 w-full max-w-md" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
+                                            <Search size={18} className="opacity-50 ml-2 shrink-0" />
+                                            <input 
+                                                type="text" 
+                                                placeholder={`在 ${activeTab === 'choice' ? '編輯推薦' : '全部庫存'} 中搜尋書碼、書名...`} 
+                                                value={bookSearchQuery} 
+                                                onChange={e => setBookSearchQuery(e.target.value)} 
+                                                className="w-full bg-transparent outline-none text-sm font-bold placeholder-black/30 p-1"
+                                                style={{ color: 'inherit' }}
+                                            />
+                                            {bookSearchQuery && <button onClick={()=>setBookSearchQuery('')} className="opacity-50 hover:opacity-100 px-2 bg-black/5 rounded-full p-1"><X size={12}/></button>}
+                                        </div>
+                                        <div className="text-xs font-bold px-4 py-2 rounded-full border border-zinc-100/50 shadow-sm hidden md:block" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
+                                            {loadStatus.books && activeTab === 'books' ? '同步萬筆庫存中...' : `共 ${filteredAdminBooks.length} 筆資料`}
+                                        </div>
+                                    </div>
+
+                                    {loadStatus.books && activeTab === 'books' ? (
+                                        <div className="flex flex-col items-center justify-center p-20 text-indigo-400"><Database size={32} className="animate-bounce mb-4 opacity-50" /><p className="font-bold text-xs">正在從雲端載入全館書籍...</p></div>
+                                    ) : (
+                                        <div className="rounded-[2rem] border border-zinc-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
+                                            <div className="overflow-x-auto pb-4">
+                                                <table className="w-full text-left border-collapse min-w-[800px]">
+                                                    <thead className="border-b border-black/5" style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}>
+                                                        <tr className="text-[10px] font-black uppercase tracking-[0.15em] opacity-60">
+                                                            <th className="p-4 pl-6 w-[35%]">書籍詳情 (書碼)</th>
+                                                            <th className="p-4 w-[20%]">作者 / 年份</th>
+                                                            <th className="p-4 w-[10%]">類別</th>
+                                                            <th className="p-4 w-[10%]">庫存</th>
+                                                            <th className="p-4 w-[15%]">價格</th>
+                                                            <th className="p-4 w-[10%] text-right pr-6">操作</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody className="text-sm font-bold divide-y divide-black/5">
+                                                        {filteredAdminBooks.map(b => (
+                                                            <tr key={b.id} className="hover:bg-black/5 transition-colors group">
+                                                                <td className="p-4 pl-6 flex items-center gap-4">
+                                                                    <img src={formatImageUrl(b.cover)} className="w-10 h-14 object-cover rounded-lg shadow-sm border border-zinc-100/50 bg-white shrink-0 group-hover:scale-105 transition-transform" onError={(e)=>e.target.src='https://via.placeholder.com/40x50?text=?'}/>
+                                                                    <div className="flex-1 min-w-0">
+                                                                        <div className="truncate text-sm font-black">{b.title}</div>
+                                                                        <div className="text-[10px] font-mono mt-1 bg-black/5 inline-block px-2 py-0.5 rounded opacity-70">#{b.id}</div>
+                                                                    </div>
+                                                                </td>
+                                                                <td className="p-4 whitespace-nowrap">
+                                                                    <div className="text-sm">{b.author || '-'}</div>
+                                                                    <div className="text-[10px] mt-0.5 opacity-60">{b.year || '-'} 年</div>
+                                                                </td>
+                                                                <td className="p-4 font-normal whitespace-nowrap"><span className="bg-indigo-50 text-indigo-600 px-3 py-1.5 rounded-full text-[11px] font-bold border border-indigo-100 inline-block whitespace-nowrap">{b.category}</span></td>
+                                                                <td className="p-4 whitespace-nowrap"><span className={`${b.stock < 10 ? 'text-red-600 bg-red-50 border-red-100' : 'opacity-80 bg-black/5 border-black/10'} px-3 py-1.5 rounded-full text-[11px] border inline-block whitespace-nowrap`}>{b.stock} 本</span></td>
+                                                                <td className="p-4 font-mono whitespace-nowrap">NT$ {b.price}</td>
+                                                                <td className="p-4 text-right pr-6 whitespace-nowrap">
+                                                                    <div className="flex justify-end gap-2">
+                                                                        <button onClick={() => { setModalType(activeTab); setEditingBook(b); setShowBookModal(true); }} className="opacity-50 hover:opacity-100 hover:text-indigo-600 p-2 rounded-xl transition-all"><Edit2 size={16}/></button>
+                                                                        <button onClick={() => handleDeleteBook(b.id, activeTab === 'choice')} className="opacity-50 hover:opacity-100 hover:text-red-500 p-2 rounded-xl transition-all"><Trash2 size={16}/></button>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        ))}
+                                                        {filteredAdminBooks.length === 0 && <tr><td colSpan="6" className="p-20 text-center font-bold border-dashed border-2 m-4 rounded-xl opacity-50">找不到符合條件的書籍</td></tr>}
+                                                    </tbody>
+                                                </table>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {activeTab === 'orders' && (
+                                <div className="rounded-[2rem] border border-zinc-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden animate-in flex flex-col relative h-full min-h-[500px]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
+                                    {loadStatus.orders ? (
+                                        <div className="flex justify-center items-center h-48 opacity-60"><Clock size={20} className="animate-spin mr-2"/> 載入訂單中...</div>
+                                    ) : (
+                                        <div className="overflow-x-auto pb-4">
+                                            <table className="w-full text-left border-collapse min-w-[900px]">
+                                                <thead className="border-b border-black/5" style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}>
+                                                    <tr className="text-[10px] font-black uppercase tracking-[0.15em] opacity-60"><th className="p-4 pl-6">單號 / 日期</th><th className="p-4">客戶資訊</th><th className="p-4">購買摘要</th><th className="p-4">帳務明細</th><th className="p-4 text-right pr-6">狀態管理</th></tr>
+                                                </thead>
+                                                <tbody className="text-sm font-bold divide-y divide-black/5">{orders.map(o => (
+                                                    <tr key={o.id} className="hover:bg-black/5 transition-colors">
+                                                        <td className="p-4 pl-6 whitespace-nowrap">
+                                                            <button onClick={() => { setEditingOrder(o); setShowOrderModal(true); }} className="font-mono text-indigo-600 text-[13px] hover:text-indigo-800 bg-indigo-50 hover:bg-indigo-100 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 group whitespace-nowrap">#{o.id} <FileEdit size={12} className="opacity-50 group-hover:opacity-100"/></button>
+                                                            <div className="text-[10px] opacity-60 mt-2 font-sans pl-1 whitespace-nowrap">{formatDate(o.date)}</div>
+                                                        </td>
+                                                        <td className="p-4 whitespace-nowrap">
+                                                            <div className="text-base">{o.customer}</div>
+                                                            <div className="text-[11px] opacity-70 font-normal mt-1 flex items-center gap-1"><Phone size={10}/> {o.phone}</div>
+                                                            <div className="text-[11px] opacity-60 font-normal mt-0.5 flex items-center gap-1"><Mail size={10}/> {o.email || '未提供'}</div>
+                                                        </td>
+                                                        <td className="p-4 text-xs font-normal opacity-80 leading-relaxed max-w-[250px]">
+                                                            <div className="line-clamp-2" title={o.items}>{o.items}</div>
+                                                            {o.memo && <div className="text-amber-600 mt-1 truncate font-bold" title={o.memo}>備註: {o.memo}</div>}
+                                                        </td>
+                                                        <td className="p-4 whitespace-nowrap">
+                                                            <div className="text-red-500 font-mono text-base whitespace-nowrap">NT$ {o.total}</div>
+                                                            <div className="text-[10px] font-bold mt-1 bg-black/5 opacity-80 inline-block px-2 py-0.5 rounded whitespace-nowrap">{o.payment || '未指定'}</div>
+                                                        </td>
+                                                        <td className="p-4 text-right pr-6 whitespace-nowrap">
+                                                            <select value={o.status} onChange={async (e)=>{ const ns = e.target.value; setOrders(orders.map(x=>x.id===o.id?{...x, status: ns}:x)); await syncWithGAS('UPDATE_ORDER_STATUS', {id: o.id, status: ns}); showMsg(`單號 ${o.id} 已切換為 ${ns}`); }} className={`border-2 rounded-xl px-3 py-2 text-xs font-bold outline-none cursor-pointer transition-colors ${o.status==='已完成'?'bg-emerald-50 text-emerald-700 border-emerald-100 focus:border-emerald-300':o.status==='已派送'?'bg-indigo-50 text-indigo-700 border-indigo-100 focus:border-indigo-300':'bg-amber-50 text-amber-700 border-amber-100 focus:border-amber-300'}`}>
+                                                                <option>處理中</option><option>已派送</option><option>已完成</option><option>已取消</option>
+                                                            </select>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                                {orders.length === 0 && <tr><td colSpan="5" className="p-20 text-center opacity-50 border-dashed border-2 m-4 rounded-xl">尚無訂單紀錄</td></tr>}
+                                                </tbody>
+                                            </table>
+                                        </div>
+                                    )}
+                                </div>
+                            )}
+
+                            {activeTab === 'ai' && (
+                                <div className="animate-in">
+                                    {loadStatus.cs ? (
+                                        <div className="text-sm font-bold animate-pulse text-center p-10 opacity-60">同步客訴紀錄中...</div>
+                                    ) : aiLogs.length > 0 ? (
+                                        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                            {aiLogs.map(log => (
+                                                <div key={log.id} className="p-8 rounded-[2rem] border border-zinc-100/50 shadow-[0_8px_30px_rgb(0,0,0,0.04)] relative overflow-hidden flex flex-col" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
+                                                    <div className={`absolute top-0 left-0 w-1.5 h-full ${log.status === '已回覆' ? 'bg-emerald-400' : 'bg-indigo-500'}`}></div>
+                                                    <div className="flex justify-between items-start mb-6 pl-2">
+                                                        <div className="flex items-center gap-4">
+                                                            <div className="bg-black/5 w-12 h-12 rounded-2xl flex items-center justify-center opacity-60 border border-black/10"><User size={20}/></div>
+                                                            <div><p className="font-black text-lg">{log.user}</p><p className="text-[10px] font-bold opacity-50 tracking-wider uppercase mt-0.5">{formatDate(log.timestamp)} • {log.platform}</p></div>
+                                                        </div>
+                                                        <span className={`text-[10px] font-black px-4 py-1.5 rounded-full border tracking-widest ${log.status === '已回覆' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-red-50 text-red-500 border-red-200 animate-pulse shadow-sm shadow-red-500/20'}`}>{log.status}</span>
+                                                    </div>
+                                                    <div className="text-sm bg-black/5 p-5 rounded-2xl mb-6 font-bold border border-black/10 leading-relaxed opacity-80 relative ml-2 whitespace-pre-wrap">
+                                                        <div className="absolute -left-2 -top-2 bg-white text-zinc-400 rounded-full" style={{ backgroundColor: settings.cardBgColor }}><MessageSquare size={16}/></div>
+                                                        {log.query}
+                                                    </div>
+                                                    <div className="mt-auto ml-2">
+                                                        {log.response ? (
+                                                            <div className="text-xs bg-indigo-50 text-indigo-900 p-5 rounded-2xl border border-indigo-100 font-bold leading-relaxed relative group whitespace-pre-wrap">
+                                                                {log.response}
+                                                                <button onClick={() => { setEditingCSLog(log); setCsResponseText(log.response); setShowCSModal(true); }} className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm text-[10px] text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-1"><Edit2 size={10}/> 修改回覆</button>
+                                                            </div>
+                                                        ) : (
+                                                            <button onClick={()=>{ setEditingCSLog(log); setCsResponseText(''); setShowCSModal(true); }} className="w-full bg-zinc-900 text-white py-3.5 rounded-2xl text-xs font-bold shadow-lg hover:bg-indigo-600 transition-all active:scale-95 flex items-center justify-center gap-2">
+                                                                <MessageSquare size={14}/> 擬定回覆
+                                                            </button>
+                                                        )}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                        </div>
+                                    ) : (
+                                        <div className="p-20 text-center font-bold rounded-[2rem] border-dashed border-2 opacity-50" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>目前沒有任何讀者反映。</div>
+                                    )}
+                                </div>
+                            )}
+                        </div>
+                    </main>
+
+                    {/* Modals 區域 */}
+                    {showBookModal && (
+                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowBookModal(false)}>
+                            <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-zinc-100/50 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold tracking-tight bg-black/5"><div className="flex items-center gap-2"><Database size={18} className="text-blue-500"/> 書籍內容管理</div><button onClick={() => setShowBookModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
+                                <form onSubmit={handleSaveBook} className="p-6 space-y-4 overflow-y-auto">
+                                    <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">書籍標題</label><input name="title" defaultValue={editingBook?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-colors" placeholder="例如：新版論語譯註" style={{ color: 'inherit' }}/></div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">分類</label><select name="category" defaultValue={editingBook?.category || '文學'} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none appearance-none" style={{ color: 'inherit' }}><option>文學</option><option>歷史</option><option>哲學</option><option>史地</option><option>語言</option><option>藝術</option><option>社會科學</option><option>其他</option></select></div>
+                                        <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">定價</label><input name="price" type="number" defaultValue={editingBook?.price || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-mono font-bold" style={{ color: 'inherit' }}/></div>
+                                    </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">現有庫存</label><input name="stock" type="number" defaultValue={editingBook?.stock || 0} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-mono font-bold" style={{ color: 'inherit' }}/></div>
+                                    </div>
+                                    <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">封面網址 (支援 Drive ID/網址/Base64)</label><input name="cover" defaultValue={editingBook?.cover || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-colors" placeholder="1vdsadasxcqe..." style={{ color: 'inherit' }}/></div>
+                                    <button className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 hover:opacity-90 mt-4" style={{ backgroundColor: settings.sidebarActiveColor }}>確認儲存設定</button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {showCarouselModal && (
+                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowCarouselModal(false)}>
+                            <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-zinc-100/50 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold bg-orange-50/50 text-orange-800"><div className="flex items-center gap-2"><Zap size={18}/> 輪播宣傳編輯</div><button onClick={() => setShowCarouselModal(false)}>✖</button></div>
+                                <form onSubmit={handleSaveCarousel} className="p-6 space-y-4 overflow-y-auto">
+                                    <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">促銷標題</label><input name="title" defaultValue={editingCarousel?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-orange-500 transition-colors" placeholder="例如：夏季大特價" style={{ color: 'inherit' }}/></div>
+                                    <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">簡介描述</label><textarea name="description" defaultValue={editingCarousel?.description || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm h-24 resize-none font-bold outline-none focus:border-orange-500 transition-colors" placeholder="顯示在標題下方的副標題..." style={{ color: 'inherit' }}/></div>
+                                    <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">底圖 URL (支援 Drive ID/網址/Base64)</label><input name="image" defaultValue={editingCarousel?.image || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-orange-500 transition-colors" placeholder="1vdzHDxs..." style={{ color: 'inherit' }}/></div>
+                                    <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">發佈狀態</label><select name="status" defaultValue={editingCarousel?.status || '已發佈'} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-orange-500 transition-colors appearance-none" style={{ color: 'inherit' }}><option>已發佈</option><option>草稿</option><option>已下架</option></select></div>
+                                    <button className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 hover:opacity-90 mt-4" style={{ backgroundColor: settings.sidebarActiveColor }}>發佈行銷模組</button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                    {showOrderModal && editingOrder && (
+                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowOrderModal(false)}>
+                            <div className="w-full max-w-2xl rounded-[2.5rem] shadow-2xl animate-in border border-zinc-100/50 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-6 border-b border-black/5 flex justify-between items-center bg-black/5 shrink-0 rounded-t-[2.5rem]">
+                                    <div className="flex items-center gap-3 font-black text-lg">
+                                        <div className="p-2 rounded-xl text-white" style={{ backgroundColor: settings.sidebarActiveColor }}><Truck size={18}/></div>
+                                        編輯訂單細節
+                                    </div>
+                                    <button onClick={() => setShowOrderModal(false)} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
+                                </div>
+                                <div className="overflow-y-auto flex-1 p-6 lg:p-8">
+                                    <form onSubmit={handleSaveOrder} className="space-y-6 pb-8">
+                                        <div className="space-y-1.5 col-span-2">
+                                            <label className="text-[10px] font-black text-indigo-500 uppercase tracking-widest ml-1">訂單編號 (可修改)</label>
+                                            <input name="orderId" defaultValue={editingOrder.id} required className="w-full bg-indigo-50 border border-indigo-200 p-3.5 rounded-2xl text-sm font-mono font-bold outline-none focus:border-indigo-500 transition-colors text-indigo-700" />
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">收件人</label><input name="customer" defaultValue={editingOrder.customer} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-colors" style={{ color: 'inherit' }}/></div>
+                                            <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">聯絡電話</label><input name="phone" defaultValue={editingOrder.phone} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-colors" style={{ color: 'inherit' }}/></div>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">Email 電子信箱</label><input type="email" name="email" defaultValue={editingOrder.email || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-colors" style={{ color: 'inherit' }}/></div>
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">付款方式</label>
+                                                <select name="payment" defaultValue={editingOrder.payment || '店取付現金'} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-colors appearance-none" style={{ color: 'inherit' }}>
+                                                    <option>店取付現金</option><option>銀行轉帳</option><option>線上刷卡</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">寄送地址</label><input name="address" defaultValue={editingOrder.address || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 transition-colors" style={{ color: 'inherit' }}/></div>
+                                        
+                                        <div className="space-y-1.5">
+                                            <label className="text-[10px] font-black text-amber-500 uppercase tracking-widest ml-1">寄件與訂單備註</label>
+                                            <textarea name="memo" defaultValue={editingOrder.memo || ''} className="w-full bg-amber-50 border border-amber-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-amber-500 h-20 resize-none text-amber-900" placeholder="買家留下的備註將顯示於此..."/>
+                                        </div>
+
+                                        <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">購買內容 (格式: 書名 x數量, ...)</label><textarea name="items" defaultValue={editingOrder.items} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 h-24 resize-none leading-relaxed" style={{ color: 'inherit' }}/></div>
+                                        
+                                        <div className="grid grid-cols-2 gap-6">
+                                            <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">訂單總金額</label><input name="total" type="number" defaultValue={editingOrder.total} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-mono font-bold outline-none focus:border-indigo-500 text-red-600" /></div>
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">處理狀態</label>
+                                                <select name="status" defaultValue={editingOrder.status} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 appearance-none text-indigo-500">
+                                                    <option>處理中</option><option>已派送</option><option>已完成</option><option>已取消</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div className="pt-6 pb-2">
+                                            <button className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Save size={18}/> 儲存訂單變更</button>
+                                        </div>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {showKpiModal && (
+                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowKpiModal(false)}>
+                            <div className="w-full max-w-2xl rounded-[2.5rem] shadow-2xl animate-in border border-zinc-100/50 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-6 border-b border-black/5 flex justify-between items-center bg-black/5 shrink-0 rounded-t-[2.5rem]">
+                                    <div className="flex items-center gap-3 font-black text-lg">
+                                        <div className="p-2 rounded-xl text-white" style={{ backgroundColor: settings.sidebarActiveColor }}><TrendingUp size={18}/></div>
+                                        管理自訂指標 (KPI)
+                                    </div>
+                                    <button onClick={() => { setShowKpiModal(false); setEditingKpi(null); }} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
+                                </div>
+                                <div className="overflow-y-auto flex-1 p-6 lg:p-8">
+                                    <form onSubmit={handleSaveKpi} className="bg-black/5 p-6 rounded-2xl border border-black/10 mb-8">
+                                        <h4 className="text-sm font-black mb-4 opacity-80">{editingKpi ? '編輯指標' : '新增指標'}</h4>
+                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                            <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase">標題 (Title)</label><input name="title" defaultValue={editingKpi?.title || ''} required className="w-full bg-white border border-zinc-200/50 p-2.5 rounded-xl text-sm font-bold outline-none focus:border-indigo-500 text-zinc-800" placeholder="例如: 本月訪客" /></div>
+                                            <div className="space-y-1.5"><label className="text-[10px] font-black opacity-60 uppercase">數值 (Value)</label><input name="value" defaultValue={editingKpi?.value || ''} required className="w-full bg-white border border-zinc-200/50 p-2.5 rounded-xl text-sm font-bold outline-none focus:border-indigo-500 text-zinc-800" placeholder="例如: 12,345" /></div>
+                                            
+                                            <div className="space-y-1.5">
+                                                <label className="text-[10px] font-black opacity-60 uppercase">單位 (Unit)</label>
+                                                <input 
+                                                    name="unit" 
+                                                    defaultValue={editingKpi ? (String(editingKpi.unit || '').includes('||') ? String(editingKpi.unit).split('||')[0] : editingKpi.unit) : ''} 
+                                                    className="w-full bg-white border border-zinc-200/50 p-2.5 rounded-xl text-sm font-bold outline-none focus:border-indigo-500 text-zinc-800" 
+                                                    placeholder="例如: 人次" 
+                                                />
+                                            </div>
+                                        </div>
+
+                                        <div className="md:col-span-3 space-y-2 mt-4 mb-6">
+                                            <label className="text-[10px] font-black opacity-60 uppercase">選擇卡片圖示與顏色 (Icon & Theme)</label>
+                                            <div className="flex flex-wrap gap-2">
+                                                {Object.keys(availableIcons).map(iconKey => {
+                                                    const IconComp = availableIcons[iconKey].icon;
+                                                    const isSelected = selectedKpiIcon === iconKey;
+                                                    return (
+                                                        <button 
+                                                            type="button" 
+                                                            key={iconKey}
+                                                            onClick={() => setSelectedKpiIcon(iconKey)}
+                                                            className={`p-3 rounded-xl transition-all shadow-sm ${isSelected ? 'bg-indigo-100 border-2 border-indigo-500 scale-110 text-indigo-600' : 'bg-white border border-zinc-200 hover:bg-zinc-50 hover:scale-105 text-zinc-600'} ${availableIcons[iconKey].color}`}
+                                                        >
+                                                            <IconComp size={20} />
+                                                        </button>
+                                                    )
+                                                })}
+                                            </div>
+                                        </div>
+
+                                        <div className="flex justify-end gap-2">
+                                            {editingKpi && <button type="button" onClick={() => { setEditingKpi(null); setSelectedKpiIcon('TrendingUp'); }} className="px-4 py-2 rounded-xl text-xs font-bold opacity-60 hover:opacity-100 transition">取消編輯</button>}
+                                            <button className="text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-md hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Save size={14}/> 儲存指標</button>
+                                        </div>
+                                    </form>
+
+                                    <h4 className="text-sm font-black mb-3 opacity-80">現有指標列表</h4>
+                                    <div className="space-y-3 pb-8">
+                                        {kpis.map(k => {
+                                            const displayTitle = k.title || k.id || '';
+                                            const rawUnit = String(k.unit || '');
+                                            const displayUnit = rawUnit.includes('||') ? rawUnit.split('||')[0] : rawUnit;
+
+                                            return (
+                                                <div key={k.id} className="flex justify-between items-center bg-black/5 p-4 rounded-2xl border border-black/10 shadow-sm">
+                                                    <div>
+                                                        <div className="text-[10px] font-bold opacity-60 tracking-wider uppercase mb-0.5">{displayTitle}</div>
+                                                        <div className="text-lg font-black">{k.value} <span className="text-xs opacity-60">{displayUnit}</span></div>
+                                                    </div>
+                                                    <div className="flex gap-2">
+                                                        <button onClick={() => { setEditingKpi(k); }} className="opacity-50 hover:opacity-100 hover:text-indigo-500 p-2 rounded-lg transition"><Edit2 size={14}/></button>
+                                                        <button onClick={() => handleDeleteKpi(k.id)} className="opacity-50 hover:opacity-100 hover:text-red-500 p-2 rounded-lg transition"><Trash2 size={14}/></button>
+                                                    </div>
+                                                </div>
+                                            )
+                                        })}
+                                        {kpis.length === 0 && <div className="text-center opacity-50 text-sm py-8 border-2 border-dashed rounded-2xl">尚無自訂指標</div>}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {showCSModal && editingCSLog && (
+                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowCSModal(false)}>
+                            <div className="w-full max-w-xl rounded-[2.5rem] shadow-2xl animate-in border border-zinc-100/50 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-6 border-b border-indigo-100 flex justify-between items-center bg-indigo-50/50 shrink-0 rounded-t-[2.5rem]">
+                                    <div className="flex items-center gap-3 font-black text-lg text-indigo-900">
+                                        <div className="p-2 rounded-xl bg-indigo-500 text-white"><MessageSquare size={18}/></div>
+                                        智能客服回覆中心
+                                    </div>
+                                    <button onClick={() => setShowCSModal(false)} className="bg-white p-2 rounded-full border border-indigo-200 text-indigo-400 hover:text-indigo-800 transition"><X size={16}/></button>
+                                </div>
+                                <div className="p-6 lg:p-8 space-y-6 overflow-y-auto flex-1">
+                                    <div className="bg-black/5 p-5 rounded-2xl border border-black/10 relative">
+                                        <div className="absolute -top-3 left-4 px-2 text-[10px] font-black opacity-60 tracking-widest uppercase" style={{ backgroundColor: settings.cardBgColor }}>讀者 {editingCSLog.user} 的訊息</div>
+                                        <div className="text-sm font-bold leading-relaxed pt-2 whitespace-pre-wrap">「{editingCSLog.query}」</div>
+                                    </div>
+                                    
+                                    <div className="space-y-3">
+                                        <div className="flex justify-between items-end px-1">
+                                            <label className="text-[10px] font-black opacity-60 uppercase tracking-widest">您的回覆內容</label>
+                                            <button onClick={handleGenerateAI} disabled={isAIGenerating} className="text-[10px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 hover:shadow-lg hover:shadow-indigo-500/30 transition-all active:scale-95 disabled:opacity-50">
+                                                {isAIGenerating ? <Clock size={12} className="animate-spin"/> : <Sparkles size={12}/>}
+                                                {isAIGenerating ? 'AI 撰寫中...' : '✨ 啟動 AI 擬稿'}
+                                            </button>
+                                        </div>
+                                        <textarea 
+                                            value={csResponseText}
+                                            onChange={(e) => setCsResponseText(e.target.value)}
+                                            placeholder="請輸入您要回覆給讀者的訊息..." 
+                                            className="w-full bg-black/5 border-2 border-black/10 p-5 rounded-2xl text-sm h-40 resize-none font-bold focus:border-indigo-500 transition-colors outline-none leading-relaxed"
+                                            style={{ color: 'inherit' }}
+                                        />
+                                    </div>
+                                    <div className="pt-2 pb-4">
+                                        <button onClick={handleSaveCS} className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}>
+                                            <CheckCircle size={18}/> 確認送出回覆
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* 外部 iframe 彈出視窗 */}
+                    {iframeModal.isOpen && (
+                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })}>
+                            <div className="w-full max-w-5xl h-full max-h-[90vh] rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden animate-in border border-zinc-100/50" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e) => e.stopPropagation()}>
+                                <div className="p-5 border-b border-black/5 flex justify-between items-center bg-black/5 shrink-0">
+                                    <h2 className="text-xl font-black flex items-center gap-3 tracking-widest"><ExternalLink size={20} className="text-indigo-500" /> {iframeModal.title}</h2>
+                                    <button onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })} className="bg-black/5 border border-black/10 hover:bg-black/10 px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
+                                </div>
+                                <div className="flex-1 w-full relative overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch', backgroundColor: '#ffffff' }}>
+                                    <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {notification && <div className="fixed bottom-12 right-12 bg-zinc-900 text-white px-8 py-5 rounded-2xl shadow-2xl animate-in font-bold text-sm z-[200] flex items-center gap-3 border border-zinc-700"><CheckCircle size={20} className="text-emerald-400" /> {notification}</div>}
+                </div> 
+            );
+        }
+
+        const root = ReactDOM.createRoot(document.getElementById('root'));
+        root.render(<App />);
+    </script>
+</body>
+</html>
