@@ -85,23 +85,29 @@
         const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3aVllUVVIVHdyb1FSR2U5ZlN2a1h3VDk1RVpLRFdyZndIcHRxRDRUY3E5Q1JPTjhZc2MtdENHWURkb2Q3LWJnclQvZXhlYw==";
         const GAS_URL = atob(_0x4a21); 
 
-        // 🔥 前端圖片 URL 智慧轉換工具：支援直接填寫 Drive ID、Base64 或完整網址
+        // 🔥 【修復】強化版 Google Drive 圖片解析器：使用 Thumbnail API 避開跨域與封鎖
         const formatImageUrl = (url) => {
             if (!url) return '';
             let strUrl = String(url).trim();
-            // 1. 如果是 Base64 或一般圖床網址，直接保留
-            if (strUrl.startsWith('data:image') || (strUrl.startsWith('http') && !strUrl.includes('drive.google.com'))) {
-                return strUrl;
+            if (strUrl.startsWith('data:image')) return strUrl; // Base64 直接過
+            
+            let driveId = null;
+            
+            // 處理貼上完整網址的情況
+            if (strUrl.includes('drive.google.com')) {
+                const match = strUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
+                if (match) driveId = match[1];
+            } 
+            // 處理只貼上 ID 的情況 (長度通常大於 20 的亂碼)
+            else if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
+                driveId = strUrl;
             }
-            // 2. 如果貼上的是完整的 Google Drive 網址，擷取 ID 並轉換為直連加速網址
-            const driveMatch = strUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
-            if (driveMatch) {
-                return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
+
+            if (driveId) {
+                // 使用 thumbnail 參數繞過 uc?export=view 在近期 Chrome 上的限制
+                return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
             }
-            // 3. 如果「只填寫 Drive ID」(通常是大於 20 個字元的英數字串)，自動轉換為直連網址
-            if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
-                return `https://drive.google.com/uc?export=view&id=${strUrl}`;
-            }
+            
             return strUrl;
         };
 
@@ -335,9 +341,11 @@
                     console.error("流水號產生失敗", error);
                 }
 
+                // 🔥【新增】包含 memo 備註欄位
                 const newOrder = {
                     id: orderId, customer: info.name, phone: info.phone, email: info.email, address: info.address, payment: info.payment,
                     items: itemsStr, total: cartTotal, status: '處理中', date: formattedDate,
+                    memo: info.memo || '', // 將備註加入 Payload
                     '訂單編號': orderId, '客戶姓名': info.name, '電話': info.phone, '電子信箱': info.email, 'Email': info.email,
                     '地址': info.address, '付款方式': info.payment, '購買項目': itemsStr, '總金額': cartTotal, '狀態': '處理中', '日期': formattedDate
                 };
@@ -923,6 +931,11 @@
                                                     <option value="線上刷卡">線上刷卡</option>
                                                 </select>
                                             </div>
+                                            {/* 🔥 新增：寄件備註欄位 */}
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-500 mb-1">寄件備註 (選填)</label>
+                                                <textarea name="memo" placeholder="若有特殊收件需求請填寫於此..." className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl focus:border-[#8C5A2B] bg-[#F9F6F0] text-sm outline-none h-16 resize-none"></textarea>
+                                            </div>
                                             <button disabled={isCheckingOut} className={`w-full bg-[#2C241B] text-white py-4 rounded-xl font-bold mt-auto shadow-lg transition-colors flex justify-center items-center gap-2 text-lg ${isCheckingOut ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#8C5A2B] active:scale-[0.98]'}`}>
                                                 {isCheckingOut ? <Clock className="animate-spin" size={22} /> : <CheckCircle size={22} />}
                                                 {isCheckingOut ? '訂單處理中...' : '確認結帳下單'}
@@ -947,4 +960,3 @@
     </script>
 </body>
 </html>
-幫我把 購物車加入一個 寄件備註可選填
