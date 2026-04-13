@@ -82,18 +82,27 @@
         );
 
         // 🔥 更新為最新的 GAS_URL Base64 編碼
-        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3Sk1JMTJDelBjZnVvWTBCQ2o3MzFrUGxFOWtwd3RDN0FuSXRUOE8zZzFtVC1BTDhYOTU5WUZzX0FoaXRmY1RrWGhsQS9leGVj";
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3aVllUVVIVHdyb1FSR2U5ZlN2a1h3VDk1RVpLRFdyZndIcHRxRDRUY3E5Q1JPTjhZc2MtdENHWURkb2Q3LWJnclQvZXhlYw==";
         const GAS_URL = atob(_0x4a21); 
 
-        // 圖片 URL 轉換工具：自動轉換 Google Drive 分享連結為直接顯示連結，並支援 Base64
+        // 🔥 前端圖片 URL 智慧轉換工具：支援直接填寫 Drive ID、Base64 或完整網址
         const formatImageUrl = (url) => {
             if (!url) return '';
-            if (url.startsWith('data:image')) return url;
-            const driveMatch = url.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || url.match(/id=([a-zA-Z0-9_-]+)/);
-            if (url.includes('drive.google.com') && driveMatch) {
+            let strUrl = String(url).trim();
+            // 1. 如果是 Base64 或一般圖床網址，直接保留
+            if (strUrl.startsWith('data:image') || (strUrl.startsWith('http') && !strUrl.includes('drive.google.com'))) {
+                return strUrl;
+            }
+            // 2. 如果貼上的是完整的 Google Drive 網址，擷取 ID 並轉換為直連加速網址
+            const driveMatch = strUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
+            if (driveMatch) {
                 return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
             }
-            return url;
+            // 3. 如果「只填寫 Drive ID」(通常是大於 20 個字元的英數字串)，自動轉換為直連網址
+            if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
+                return `https://drive.google.com/uc?export=view&id=${strUrl}`;
+            }
+            return strUrl;
         };
 
         const fallbackCarousels = [
@@ -239,7 +248,6 @@
                 return [...new Set([...fixedCategories, ...cats])];
             }, [books]);
 
-            // 🔥 專為書籍檢索設計的分類列表，嚴格遵照 EXCEL 回傳的書籍分類
             const excelCategories = useMemo(() => {
                 const cats = books.map(b => b.category).filter(c => c && c.trim() !== "");
                 return [...new Set(cats)];
@@ -793,9 +801,10 @@
                                         <div><label className="block text-sm font-bold text-[#4A3728] mb-2">作者關鍵字</label><input type="text" value={searchForm.author} onChange={(e) => setSearchForm({...searchForm, author: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]" /></div>
                                         <div><label className="block text-sm font-bold text-[#4A3728] mb-2">出版年</label><input type="text" value={searchForm.year} onChange={(e) => setSearchForm({...searchForm, year: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]" /></div>
                                         <div className="md:col-span-2">
-                                            <label className="block text-sm font-bold text-[#4A3728] mb-2">書籍類別</label>
+                                            <label className="block text-sm font-bold text-[#4A3728] mb-2">書籍類別 (與試算表同步)</label>
                                             <select value={searchForm.category} onChange={(e) => setSearchForm({...searchForm, category: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]">
                                                 <option value="">全部</option>
+                                                {/* 🔥 確保檢索分類與 Excel 中的 Book_ALL 分類一致 */}
                                                 {excelCategories.map(cat => (<option key={cat} value={cat}>{cat}</option>))}
                                             </select>
                                         </div>
@@ -938,3 +947,4 @@
     </script>
 </body>
 </html>
+幫我把 購物車加入一個 寄件備註可選填
