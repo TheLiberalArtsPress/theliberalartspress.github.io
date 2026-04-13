@@ -4,6 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文史哲出版社 - 數位營運中心 (Digital CMS)</title>
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
     <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
@@ -97,15 +98,20 @@
         const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3aVllUVVIVHdyb1FSR2U5ZlN2a1h3VDk1RVpLRFdyZndIcHRxRDRUY3E5Q1JPTjhZc2MtdENHWURkb2Q3LWJnclQvZXhlYw==";
         const GAS_URL = atob(_0x4a21);
 
-        // 🔥【新增】前端圖片 URL 轉換工具 (確保不管後端如何，前端都能正確解析)
+        // 🔥 前端圖片 URL 智慧轉換工具：支援直接填寫 Drive ID、Base64 或完整網址
         const formatImageUrl = (url) => {
             if (!url) return '';
             let strUrl = String(url).trim();
-            if (strUrl.startsWith('data:image')) return strUrl;
+            // 1. 如果是 Base64 或一般圖床網址，直接保留
+            if (strUrl.startsWith('data:image') || (strUrl.startsWith('http') && !strUrl.includes('drive.google.com'))) {
+                return strUrl;
+            }
+            // 2. 如果貼上的是完整的 Google Drive 網址，擷取 ID 並轉換為直連加速網址
             const driveMatch = strUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
-            if (strUrl.includes('drive.google.com') && driveMatch) {
+            if (driveMatch) {
                 return `https://drive.google.com/uc?export=view&id=${driveMatch[1]}`;
             }
+            // 3. 如果「只填寫 Drive ID」(大於 20 個字元的英數字串)，自動轉換為直連網址
             if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
                 return `https://drive.google.com/uc?export=view&id=${strUrl}`;
             }
@@ -404,7 +410,8 @@
                 const newId = formData.get('orderId'); 
                 const updated = {
                     ...editingOrder, newId: newId, customer: formData.get('customer'), phone: formData.get('phone'), email: formData.get('email'), address: formData.get('address'),
-                    items: formData.get('items'), total: parseInt(formData.get('total')) || 0, payment: formData.get('payment'), status: formData.get('status')
+                    items: formData.get('items'), total: parseInt(formData.get('total')) || 0, payment: formData.get('payment'), status: formData.get('status'),
+                    memo: formData.get('memo') || '' // 🔥 加上寄件備註欄位
                 };
                 setOrders(orders.map(o => o.id === editingOrder.id ? { ...updated, id: newId || updated.id } : o));
                 await syncWithGAS('UPDATE_ORDER', updated); 
@@ -896,29 +903,19 @@
                                                     <div className="flex justify-between items-start mb-6 pl-2">
                                                         <div className="flex items-center gap-4">
                                                             <div className="bg-zinc-100 w-12 h-12 rounded-2xl flex items-center justify-center text-zinc-400 border border-zinc-200"><User size={20}/></div>
-                                                            <div><p className="font-black text-zinc-800 text-lg">{log.user}</p><p className="text-[10px] font-bold text-zinc-400 tracking-wider uppercase mt-0.5">{formatDate(log.timestamp)} • {log.platform}</p></div>
+                                                            <div><p className="font-bold text-zinc-800 text-sm">{log.user}</p><p className="text-[10px] text-zinc-400">{formatDate(log.timestamp)} • {log.platform}</p></div>
                                                         </div>
-                                                        <span className={`text-[10px] font-black px-4 py-1.5 rounded-full border tracking-widest ${log.status === '已回覆' ? 'bg-emerald-50 text-emerald-600 border-emerald-200' : 'bg-red-50 text-red-500 border-red-200 animate-pulse shadow-sm shadow-red-500/20'}`}>{log.status}</span>
+                                                        <span className={`text-[10px] font-bold px-3 py-1 rounded-full border tracking-widest ${log.status === '已回覆' ? 'bg-green-50 text-green-600 border-green-200' : 'bg-red-50 text-red-600 border-red-200 animate-pulse'}`}>{log.status}</span>
                                                     </div>
-                                                    <div className="text-sm bg-zinc-50 p-5 rounded-2xl mb-6 font-bold border border-zinc-100 leading-relaxed text-zinc-600 relative ml-2">
-                                                        <div className="absolute -left-2 -top-2 bg-white text-zinc-300"><MessageSquare size={16}/></div>
-                                                        {log.query}
-                                                    </div>
-                                                    <div className="mt-auto ml-2">
-                                                        {log.response ? (
-                                                            <div className="text-xs bg-indigo-50 text-indigo-900 p-5 rounded-2xl border border-indigo-100 font-bold leading-relaxed relative group">
-                                                                {log.response}
-                                                                <button onClick={() => { setEditingCSLog(log); setCsResponseText(log.response); setShowCSModal(true); }} className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm text-[10px] text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-1"><Edit2 size={10}/> 修改回覆</button>
-                                                            </div>
-                                                        ) : (
-                                                            <button onClick={()=>{ setEditingCSLog(log); setCsResponseText(''); setShowCSModal(true); }} className="w-full bg-zinc-900 text-white py-3.5 rounded-2xl text-xs font-bold shadow-lg hover:bg-indigo-600 transition-all active:scale-95 flex items-center justify-center gap-2">
-                                                                <MessageSquare size={14}/> 擬定回覆
-                                                            </button>
-                                                        )}
-                                                    </div>
+                                                    <div className="text-sm bg-zinc-50 p-4 rounded-2xl mb-4 font-bold border leading-relaxed text-zinc-700 italic">" {log.query} "</div>
+                                                    {log.response ? (
+                                                        <div className="text-xs bg-indigo-50 text-indigo-800 p-4 rounded-2xl border-l-4 border-indigo-500 font-bold leading-relaxed">{log.response}</div>
+                                                    ) : (
+                                                        <button onClick={async ()=>{ const r = prompt("請輸入回覆給讀者的內容："); if(r){ setAiLogs(aiLogs.map(l=>l.id===log.id?{...l, response: r, status: '已回覆'}:l)); await syncWithGAS('UPDATE_CS_LOG', {id: log.id, response: r}); showMsg("回覆已送出並寫入試算表"); }}} className="bg-indigo-600 text-white px-6 py-2.5 rounded-xl text-xs font-bold shadow-lg hover:bg-indigo-700 transition">點此發送回覆</button>
+                                                    )}
                                                 </div>
                                             ))}
-                                            {aiLogs.length === 0 && <div className="col-span-2 p-20 text-center text-zinc-400 border-dashed border-2 m-4 rounded-[2rem]">目前沒有任何讀者反映。</div>}
+                                            {aiLogs.length === 0 && <div className="p-20 text-center text-zinc-300 font-bold bg-white rounded-3xl border-dashed border-2">目前沒有任何讀者反映。</div>}
                                         </div>
                                     )}
                                 </>
@@ -926,83 +923,38 @@
                         </div>
                     </main>
 
-                    {/* 🔥 Modals 區域 */}
+                    {/* Modals */}
                     {showBookModal && (
                         <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowBookModal(false)}>
-                            <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl animate-in border border-zinc-100 flex flex-col max-h-[90vh]" onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-6 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50 shrink-0 rounded-t-[2.5rem]">
-                                    <div className="flex items-center gap-3 font-black text-lg text-zinc-800">
-                                        <div className={`p-2 rounded-xl text-white ${modalType === 'choice' ? 'bg-emerald-500' : 'bg-blue-500'}`} style={modalType === 'choice' ? {backgroundColor: settings.sidebarActiveColor} : {}}>
-                                            {modalType === 'choice' ? <Sparkles size={18}/> : <Database size={18}/>}
-                                        </div>
-                                        {modalType === 'choice' ? '編輯推薦內容' : '書籍內容管理'}
+                            <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in" onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-5 border-b bg-zinc-50 flex justify-between items-center font-bold tracking-tight"><div className="flex items-center gap-2"><Database size={18} className="text-blue-500"/> 書籍內容管理</div><button onClick={() => setShowBookModal(false)} className="text-zinc-400 hover:text-zinc-900">✖</button></div>
+                                <form onSubmit={handleSaveBook} className="p-6 space-y-4">
+                                    <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">書籍標題</label><input name="title" defaultValue={editingBook?.title || ''} required className="w-full border p-3 rounded-xl text-sm font-bold outline-none focus:ring-2 ring-blue-500/20" placeholder="例如：新版論語譯註" /></div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">分類</label><select name="category" defaultValue={editingBook?.category || '文學'} className="w-full border p-3 rounded-xl text-sm font-bold outline-none"><option>文學</option><option>歷史</option><option>哲學</option><option>其他</option></select></div>
+                                        <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">定價</label><input name="price" type="number" defaultValue={editingBook?.price || ''} required className="w-full border p-3 rounded-xl text-sm font-mono font-bold" /></div>
                                     </div>
-                                    <button onClick={() => setShowBookModal(false)} className="bg-white p-2 rounded-full border border-zinc-200 text-zinc-400 hover:text-zinc-800 transition"><X size={16}/></button>
-                                </div>
-                                <div className="overflow-y-auto flex-1 p-6 lg:p-8">
-                                    <form onSubmit={handleSaveBook} className="space-y-5 pb-8">
-                                        <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">書籍標題</label><input name="title" defaultValue={editingBook?.title || ''} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors" placeholder="例如：新版論語譯註" /></div>
-                                        <div className="grid grid-cols-2 gap-5">
-                                            <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">作者</label><input name="author" defaultValue={editingBook?.author || ''} className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors" placeholder="作者名稱" /></div>
-                                            <div className="space-y-1.5"><label className="text-[10px] font-bold text-zinc-400 uppercase tracking-widest ml-1">出版年</label><input name="year" defaultValue={editingBook?.year || ''} className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors" placeholder="例如: 2024" /></div>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-5">
-                                            <div className="space-y-1.5">
-                                                <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">分類</label>
-                                                <select name="category" defaultValue={editingBook?.category || '文學'} className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors appearance-none">
-                                                    <option>文學</option><option>歷史</option><option>哲學</option><option>史地</option><option>語言</option><option>藝術</option><option>社會科學</option><option>其他</option>
-                                                </select>
-                                            </div>
-                                            <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">定價</label><input name="price" type="number" defaultValue={editingBook?.price || ''} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-mono font-bold focus:border-indigo-500 focus:bg-white transition-colors" /></div>
-                                        </div>
-                                        <div className="grid grid-cols-2 gap-5">
-                                            <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">現有庫存</label><input name="stock" type="number" defaultValue={editingBook?.stock || 0} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-mono font-bold focus:border-indigo-500 focus:bg-white transition-colors" /></div>
-                                        </div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">封面網址 (支援 Drive ID/網址/Base64)</label>
-                                            <input name="cover" defaultValue={editingBook?.cover || ''} className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors" placeholder="1vdsadasxcqe..." />
-                                        </div>
-                                        
-                                        <div className="pt-4 pb-2">
-                                            <button className={`w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 hover:opacity-90`} style={{ backgroundColor: settings.sidebarActiveColor }}>
-                                                確認儲存設定
-                                            </button>
-                                        </div>
-                                    </form>
-                                </div>
+                                    <div className="grid grid-cols-2 gap-4">
+                                        <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">現有庫存</label><input name="stock" type="number" defaultValue={editingBook?.stock || 0} required className="w-full border p-3 rounded-xl text-sm font-mono font-bold" /></div>
+                                    </div>
+                                    <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">封面網址 (支援 Drive ID/網址/Base64)</label><input name="cover" defaultValue={editingBook?.cover || ''} className="w-full border p-3 rounded-xl text-sm font-bold outline-none" placeholder="1vdsadasxcqe..." /></div>
+                                    <button className="w-full bg-blue-600 text-white py-4 rounded-2xl font-bold shadow-lg hover:bg-blue-700 transition active:scale-95">確認儲存設定</button>
+                                </form>
                             </div>
                         </div>
                     )}
 
                     {showCarouselModal && (
                         <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowCarouselModal(false)}>
-                            <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl animate-in border border-zinc-100 flex flex-col max-h-[90vh]" onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-6 border-b border-zinc-100 flex justify-between items-center bg-orange-50/50 shrink-0 rounded-t-[2.5rem]">
-                                    <div className="flex items-center gap-3 font-black text-lg text-orange-900">
-                                        <div className="p-2 rounded-xl bg-orange-500 text-white"><Zap size={18}/></div>
-                                        輪播宣傳編輯
-                                    </div>
-                                    <button onClick={() => setShowCarouselModal(false)} className="bg-white p-2 rounded-full border border-orange-200 text-orange-400 hover:text-orange-800 transition"><X size={16}/></button>
-                                </div>
-                                <div className="overflow-y-auto flex-1 p-6 lg:p-8">
-                                    <form onSubmit={handleSaveCarousel} className="space-y-5 pb-8">
-                                        <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">促銷標題</label><input name="title" defaultValue={editingCarousel?.title || ''} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold focus:border-orange-500 focus:bg-white transition-colors outline-none" placeholder="例如：夏季大特價" /></div>
-                                        <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">簡介描述</label><textarea name="description" defaultValue={editingCarousel?.description || ''} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm h-28 resize-none font-bold focus:border-orange-500 focus:bg-white transition-colors outline-none" placeholder="顯示在標題下方的副標題..." /></div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">底圖 URL (支援 Drive ID/網址/Base64)</label>
-                                            <input name="image" defaultValue={editingCarousel?.image || ''} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold focus:border-orange-500 focus:bg-white transition-colors outline-none" placeholder="1vdzHDxs..." />
-                                        </div>
-                                        <div className="space-y-1.5">
-                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">發佈狀態</label>
-                                            <select name="status" defaultValue={editingCarousel?.status || '已發佈'} className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold focus:border-orange-500 focus:bg-white transition-colors outline-none appearance-none">
-                                                <option>已發佈</option><option>草稿</option><option>已下架</option>
-                                            </select>
-                                        </div>
-                                        <div className="pt-4 pb-2">
-                                            <button className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}>發佈行銷模組</button>
-                                        </div>
-                                    </form>
-                                </div>
+                            <div className="bg-white w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in" onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-5 border-b bg-orange-50 flex justify-between items-center font-bold text-orange-800"><div className="flex items-center gap-2"><Zap size={18}/> 輪播宣傳編輯</div><button onClick={() => setShowCarouselModal(false)}>✖</button></div>
+                                <form onSubmit={handleSaveCarousel} className="p-6 space-y-4">
+                                    <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">促銷標題</label><input name="title" defaultValue={editingCarousel?.title || ''} required className="w-full border p-3 rounded-xl text-sm font-bold" placeholder="例如：夏季大特價" /></div>
+                                    <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">簡介描述</label><textarea name="description" defaultValue={editingCarousel?.description || ''} required className="w-full border p-3 rounded-xl text-sm h-24 resize-none font-bold" placeholder="顯示在標題下方的副標題..." /></div>
+                                    <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">底圖 URL (支援 Drive ID/網址/Base64)</label><input name="image" defaultValue={editingCarousel?.image || ''} required className="w-full border p-3 rounded-xl text-sm font-bold" placeholder="1vdzHDxs..." /></div>
+                                    <div className="space-y-1"><label className="text-[10px] font-bold text-zinc-400 uppercase">發佈狀態</label><select name="status" defaultValue={editingCarousel?.status || '已發佈'} className="w-full border p-3 rounded-xl text-sm font-bold"><option>已發佈</option><option>草稿</option><option>已下架</option></select></div>
+                                    <button className="w-full bg-orange-500 text-white py-4 rounded-2xl font-bold shadow-lg hover:bg-orange-600 transition active:scale-95">發佈行銷模組</button>
+                                </form>
                             </div>
                         </div>
                     )}
@@ -1038,6 +990,13 @@
                                         </div>
                                         <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">寄送地址</label><input name="address" defaultValue={editingOrder.address || ''} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors" /></div>
                                         <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">購買內容 (格式: 書名 x數量, ...)</label><textarea name="items" defaultValue={editingOrder.items} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors h-24 resize-none leading-relaxed" /></div>
+                                        
+                                        {/* 🔥 寄件備註 */}
+                                        <div className="space-y-1.5 col-span-2">
+                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">寄件備註</label>
+                                            <textarea name="memo" defaultValue={editingOrder.memo || ''} className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors min-h-[80px] resize-none" placeholder="買家留下的備註將顯示於此..."></textarea>
+                                        </div>
+
                                         <div className="grid grid-cols-2 gap-6">
                                             <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest ml-1">訂單總金額</label><input name="total" type="number" defaultValue={editingOrder.total} required className="w-full bg-zinc-50 border border-zinc-200 p-3.5 rounded-2xl text-sm font-mono font-bold outline-none focus:border-indigo-500 focus:bg-white transition-colors text-red-600" /></div>
                                             <div className="space-y-1.5">
@@ -1051,144 +1010,6 @@
                                             <button className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Save size={18}/> 儲存訂單變更</button>
                                         </div>
                                     </form>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* 🔥 自訂 KPI 管理 Modal */}
-                    {showKpiModal && (
-                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowKpiModal(false)}>
-                            <div className="bg-white w-full max-w-2xl rounded-[2.5rem] shadow-2xl animate-in border border-zinc-100 flex flex-col max-h-[90vh]" onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-6 border-b border-zinc-100 flex justify-between items-center bg-zinc-50/50 shrink-0 rounded-t-[2.5rem]">
-                                    <div className="flex items-center gap-3 font-black text-lg text-zinc-800">
-                                        <div className="p-2 rounded-xl text-white" style={{ backgroundColor: settings.sidebarActiveColor }}><TrendingUp size={18}/></div>
-                                        管理自訂指標 (KPI)
-                                    </div>
-                                    <button onClick={() => { setShowKpiModal(false); setEditingKpi(null); }} className="bg-white p-2 rounded-full border border-zinc-200 text-zinc-400 hover:text-zinc-800 transition"><X size={16}/></button>
-                                </div>
-                                <div className="overflow-y-auto flex-1 p-6 lg:p-8">
-                                    <form onSubmit={handleSaveKpi} className="bg-zinc-50 p-6 rounded-2xl border border-zinc-200 mb-8">
-                                        <h4 className="text-sm font-black text-zinc-700 mb-4">{editingKpi ? '編輯指標' : '新增指標'}</h4>
-                                        <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
-                                            <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase">標題 (Title)</label><input name="title" defaultValue={editingKpi?.title || ''} required className="w-full bg-white border border-zinc-200 p-2.5 rounded-xl text-sm font-bold outline-none focus:border-indigo-500" placeholder="例如: 本月訪客" /></div>
-                                            <div className="space-y-1.5"><label className="text-[10px] font-black text-zinc-400 uppercase">數值 (Value)</label><input name="value" defaultValue={editingKpi?.value || ''} required className="w-full bg-white border border-zinc-200 p-2.5 rounded-xl text-sm font-bold outline-none focus:border-indigo-500" placeholder="例如: 12,345" /></div>
-                                            
-                                            <div className="space-y-1.5">
-                                                <label className="text-[10px] font-black text-zinc-400 uppercase">單位 (Unit)</label>
-                                                <input 
-                                                    name="unit" 
-                                                    defaultValue={editingKpi ? (String(editingKpi.unit || '').includes('||') ? String(editingKpi.unit).split('||')[0] : editingKpi.unit) : ''} 
-                                                    className="w-full bg-white border border-zinc-200 p-2.5 rounded-xl text-sm font-bold outline-none focus:border-indigo-500" 
-                                                    placeholder="例如: 人次" 
-                                                />
-                                            </div>
-                                        </div>
-
-                                        <div className="md:col-span-3 space-y-2 mt-4 mb-6">
-                                            <label className="text-[10px] font-black text-zinc-400 uppercase">選擇卡片圖示與顏色 (Icon & Theme)</label>
-                                            <div className="flex flex-wrap gap-2">
-                                                {Object.keys(availableIcons).map(iconKey => {
-                                                    const IconComp = availableIcons[iconKey].icon;
-                                                    const isSelected = selectedKpiIcon === iconKey;
-                                                    return (
-                                                        <button 
-                                                            type="button" 
-                                                            key={iconKey}
-                                                            onClick={() => setSelectedKpiIcon(iconKey)}
-                                                            className={`p-3 rounded-xl transition-all shadow-sm ${isSelected ? 'bg-indigo-100 border-2 border-indigo-500 scale-110' : 'bg-white border border-zinc-200 hover:bg-zinc-50 hover:scale-105'} ${availableIcons[iconKey].color}`}
-                                                        >
-                                                            <IconComp size={20} />
-                                                        </button>
-                                                    )
-                                                })}
-                                            </div>
-                                        </div>
-
-                                        <div className="flex justify-end gap-2">
-                                            {editingKpi && <button type="button" onClick={() => { setEditingKpi(null); setSelectedKpiIcon('TrendingUp'); }} className="px-4 py-2 rounded-xl text-xs font-bold text-zinc-500 hover:bg-zinc-200 transition">取消編輯</button>}
-                                            <button className="text-white px-6 py-2.5 rounded-xl text-xs font-bold transition-all active:scale-95 flex items-center gap-1.5 shadow-md hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Save size={14}/> 儲存指標</button>
-                                        </div>
-                                    </form>
-
-                                    <h4 className="text-sm font-black text-zinc-700 mb-3">現有指標列表</h4>
-                                    <div className="space-y-3 pb-8">
-                                        {kpis.map(k => {
-                                            const displayTitle = k.title || k.id || '';
-                                            const rawUnit = String(k.unit || '');
-                                            const displayUnit = rawUnit.includes('||') ? rawUnit.split('||')[0] : rawUnit;
-
-                                            return (
-                                                <div key={k.id} className="flex justify-between items-center bg-white p-4 rounded-2xl border border-zinc-100 shadow-sm">
-                                                    <div>
-                                                        <div className="text-[10px] font-bold text-zinc-400 tracking-wider uppercase mb-0.5">{displayTitle}</div>
-                                                        <div className="text-lg font-black text-zinc-800">{k.value} <span className="text-xs text-zinc-400">{displayUnit}</span></div>
-                                                    </div>
-                                                    <div className="flex gap-2">
-                                                        <button onClick={() => { setEditingKpi(k); }} className="text-zinc-400 hover:text-indigo-600 bg-zinc-50 hover:bg-indigo-50 p-2 rounded-lg transition"><Edit2 size={14}/></button>
-                                                        <button onClick={() => handleDeleteKpi(k.id)} className="text-zinc-400 hover:text-red-500 bg-zinc-50 hover:bg-red-50 p-2 rounded-lg transition"><Trash2 size={14}/></button>
-                                                    </div>
-                                                </div>
-                                            )
-                                        })}
-                                        {kpis.length === 0 && <div className="text-center text-zinc-400 text-sm py-8 border-2 border-dashed rounded-2xl">尚無自訂指標</div>}
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {showCSModal && editingCSLog && (
-                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={()=>setShowCSModal(false)}>
-                            <div className="bg-white w-full max-w-xl rounded-[2.5rem] shadow-2xl animate-in border border-zinc-100 flex flex-col max-h-[90vh]" onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-6 border-b border-indigo-100 flex justify-between items-center bg-indigo-50/50 shrink-0 rounded-t-[2.5rem]">
-                                    <div className="flex items-center gap-3 font-black text-lg text-indigo-900">
-                                        <div className="p-2 rounded-xl bg-indigo-500 text-white"><MessageSquare size={18}/></div>
-                                        智能客服回覆中心
-                                    </div>
-                                    <button onClick={() => setShowCSModal(false)} className="bg-white p-2 rounded-full border border-indigo-200 text-indigo-400 hover:text-indigo-800 transition"><X size={16}/></button>
-                                </div>
-                                <div className="p-6 lg:p-8 space-y-6 overflow-y-auto flex-1">
-                                    <div className="bg-zinc-50 p-5 rounded-2xl border border-zinc-200 relative">
-                                        <div className="absolute -top-3 left-4 bg-white px-2 text-[10px] font-black text-zinc-400 tracking-widest uppercase">讀者 {editingCSLog.user} 的訊息</div>
-                                        <div className="text-sm font-bold text-zinc-700 leading-relaxed pt-2">「{editingCSLog.query}」</div>
-                                    </div>
-                                    
-                                    <div className="space-y-3">
-                                        <div className="flex justify-between items-end px-1">
-                                            <label className="text-[10px] font-black text-zinc-400 uppercase tracking-widest">您的回覆內容</label>
-                                            <button onClick={handleGenerateAI} disabled={isAIGenerating} className="text-[10px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 hover:shadow-lg hover:shadow-indigo-500/30 transition-all active:scale-95 disabled:opacity-50">
-                                                {isAIGenerating ? <Clock size={12} className="animate-spin"/> : <Sparkles size={12}/>}
-                                                {isAIGenerating ? 'AI 撰寫中...' : '✨ 啟動 AI 擬稿'}
-                                            </button>
-                                        </div>
-                                        <textarea 
-                                            value={csResponseText}
-                                            onChange={(e) => setCsResponseText(e.target.value)}
-                                            placeholder="請輸入您要回覆給讀者的訊息..." 
-                                            className="w-full bg-zinc-50 border-2 border-zinc-200 p-5 rounded-2xl text-sm h-40 resize-none font-bold focus:border-indigo-500 focus:bg-white transition-colors outline-none leading-relaxed text-indigo-900"
-                                        />
-                                    </div>
-                                    <div className="pt-2 pb-4">
-                                        <button onClick={handleSaveCS} className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}>
-                                            <CheckCircle size={18}/> 確認送出回覆
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    )}
-
-                    {/* 外部 iframe 彈出視窗 */}
-                    {iframeModal.isOpen && (
-                        <div className="fixed inset-0 bg-zinc-950/40 backdrop-blur-md flex items-center justify-center z-50 p-4 py-10" onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })}>
-                            <div className="bg-white w-full max-w-5xl h-full max-h-[90vh] rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden animate-in border border-zinc-100" onClick={(e) => e.stopPropagation()}>
-                                <div className="p-5 border-b border-zinc-100 flex justify-between items-center bg-zinc-50 shrink-0">
-                                    <h2 className="text-xl font-black flex items-center gap-3 text-zinc-800 tracking-widest"><ExternalLink size={20} className="text-indigo-500" /> {iframeModal.title}</h2>
-                                    <button onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })} className="bg-white border border-zinc-200 hover:bg-zinc-100 px-4 py-2 rounded-full text-sm font-bold text-zinc-600 transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
-                                </div>
-                                <div className="flex-1 w-full bg-white relative overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
-                                    <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>
                                 </div>
                             </div>
                         </div>
