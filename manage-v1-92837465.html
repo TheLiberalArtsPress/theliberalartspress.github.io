@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -125,7 +126,6 @@
             { user: 'candyni', password: '605' }
         ];
 
-        // 🔥 【更新】加入自訂義各區塊、字體顏色的預設值
         const defaultSettings = {
             systemName: '文史哲出版社', systemSubName: 'Digital CMS',
             loginBgColor: '#09090b', sidebarBgColor: '#09090b', sidebarActiveColor: '#4f46e5', sidebarTextColor: '#a1a1aa', kpiBgColor: '#ffffff',
@@ -152,7 +152,10 @@
             const [activeTab, setActiveTab] = useState('dashboard');
             const [isSidebarOpen, setIsSidebarOpen] = useState(true);
             const [notification, setNotification] = useState(null);
+            
             const [bookSearchQuery, setBookSearchQuery] = useState('');
+            // 🔥 新增：管理書籍列表的顯示數量，防止 DOM 渲染過載
+            const [adminVisibleCount, setAdminVisibleCount] = useState(20); 
 
             const [loadStatus, setLoadStatus] = useState({
                 kpis: true, orders: true, cs: true, carousels: true, choices: true, books: true
@@ -177,7 +180,6 @@
             const [editingKpi, setEditingKpi] = useState(null);
             const [selectedKpiIcon, setSelectedKpiIcon] = useState('TrendingUp'); 
 
-            // 🔥 確保 iframeModal 在此定義，避免發生 undefined 錯誤
             const [iframeModal, setIframeModal] = useState({ isOpen: false, url: '', title: '' });
 
             const [expandedMenus, setExpandedMenus] = useState({
@@ -302,7 +304,6 @@
                 }
             }, [editingKpi]);
 
-            // KPI 自動連動更新
             useEffect(() => {
                 if (kpis.length === 0 || loadStatus.kpis || !isAuthenticated) return;
                 let hasChanges = false;
@@ -368,6 +369,11 @@
                     (b.category && b.category.toLowerCase().includes(query))
                 );
             }, [books, choiceBooks, bookSearchQuery, activeTab]);
+
+            // 🔥 計算分頁顯示的書籍
+            const visibleAdminBooks = useMemo(() => {
+                return filteredAdminBooks.slice(0, adminVisibleCount);
+            }, [filteredAdminBooks, adminVisibleCount]);
 
             const handleSaveBook = async (e) => {
                 e.preventDefault();
@@ -583,6 +589,8 @@
                                                             window.open(item.url, '_blank');
                                                         } else {
                                                             setActiveTab(item.tab);
+                                                            setAdminVisibleCount(20); // 載入重置
+                                                            setBookSearchQuery('');
                                                         }
                                                     }} className="w-full text-left py-2.5 px-4 rounded-lg transition-all text-xs font-bold flex items-center gap-2 hover:bg-white/5" style={isActive ? { backgroundColor: settings.sidebarActiveColor, color: '#ffffff', boxShadow: `0 4px 14px 0 ${settings.sidebarActiveColor}50` } : { color: settings.sidebarTextColor }}>
                                                         {isActive && <span className="w-1.5 h-1.5 rounded-full bg-white"></span>}
@@ -738,54 +746,54 @@
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">系統主標題 (System Name)</label>
-                                                    <input name="systemName" defaultValue={settings.systemName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
+                                                    <input name="systemName" defaultValue={settings.systemName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">系統副標題 (Sub Name)</label>
-                                                    <input name="systemSubName" defaultValue={settings.systemSubName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
+                                                    <input name="systemSubName" defaultValue={settings.systemSubName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
                                                 </div>
                                             </div>
                                             
                                             <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 1 名稱 (儀表板)</label>
-                                                    <input name="menuDashName" defaultValue={settings.menuDashName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
-                                                    <select name="menuDashIcon" defaultValue={settings.menuDashIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: 'inherit' }}>
+                                                    <input name="menuDashName" defaultValue={settings.menuDashName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuDashIcon" defaultValue={settings.menuDashIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
                                                         {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 2 名稱 (行銷)</label>
-                                                    <input name="menuMarketingName" defaultValue={settings.menuMarketingName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
-                                                    <select name="menuMarketingIcon" defaultValue={settings.menuMarketingIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: 'inherit' }}>
+                                                    <input name="menuMarketingName" defaultValue={settings.menuMarketingName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuMarketingIcon" defaultValue={settings.menuMarketingIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
                                                         {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 3 名稱 (庫存)</label>
-                                                    <input name="menuBooksName" defaultValue={settings.menuBooksName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
-                                                    <select name="menuBooksIcon" defaultValue={settings.menuBooksIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: 'inherit' }}>
+                                                    <input name="menuBooksName" defaultValue={settings.menuBooksName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuBooksIcon" defaultValue={settings.menuBooksIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
                                                         {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 4 名稱 (物流)</label>
-                                                    <input name="menuOrdersName" defaultValue={settings.menuOrdersName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
-                                                    <select name="menuOrdersIcon" defaultValue={settings.menuOrdersIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: 'inherit' }}>
+                                                    <input name="menuOrdersName" defaultValue={settings.menuOrdersName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuOrdersIcon" defaultValue={settings.menuOrdersIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
                                                         {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 5 名稱 (客服)</label>
-                                                    <input name="menuCsName" defaultValue={settings.menuCsName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
-                                                    <select name="menuCsIcon" defaultValue={settings.menuCsIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: 'inherit' }}>
+                                                    <input name="menuCsName" defaultValue={settings.menuCsName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuCsIcon" defaultValue={settings.menuCsIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
                                                         {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
                                                     </select>
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 6 名稱 (外部系統)</label>
-                                                    <input name="menuExtName" defaultValue={settings.menuExtName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
-                                                    <select name="menuExtIcon" defaultValue={settings.menuExtIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: 'inherit' }}>
+                                                    <input name="menuExtName" defaultValue={settings.menuExtName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none focus:border-indigo-500" style={{ color: settings.cardTextColor }} />
+                                                    <select name="menuExtIcon" defaultValue={settings.menuExtIcon} className="w-full bg-black/5 border border-black/10 p-2 rounded-xl text-xs font-bold outline-none appearance-none" style={{ color: settings.cardTextColor }}>
                                                         {Object.keys(availableIcons).map(k => <option key={k} value={k}>{k}</option>)}
                                                     </select>
                                                 </div>
@@ -837,11 +845,14 @@
                                                 type="text" 
                                                 placeholder={`在 ${activeTab === 'choice' ? '編輯推薦' : '全部庫存'} 中搜尋書碼、書名...`} 
                                                 value={bookSearchQuery} 
-                                                onChange={e => setBookSearchQuery(e.target.value)} 
+                                                onChange={e => {
+                                                    setBookSearchQuery(e.target.value);
+                                                    setAdminVisibleCount(20); // 搜尋時重置顯示數量
+                                                }} 
                                                 className="w-full bg-transparent outline-none text-sm font-bold placeholder-black/30 p-1"
                                                 style={{ color: 'inherit' }}
                                             />
-                                            {bookSearchQuery && <button onClick={()=>setBookSearchQuery('')} className="opacity-50 hover:opacity-100 px-2 bg-black/5 rounded-full p-1"><X size={12}/></button>}
+                                            {bookSearchQuery && <button onClick={()=>{setBookSearchQuery(''); setAdminVisibleCount(20);}} className="opacity-50 hover:opacity-100 px-2 bg-black/5 rounded-full p-1"><X size={12}/></button>}
                                         </div>
                                         <div className="text-xs font-bold px-4 py-2 rounded-full border border-black/5 shadow-sm hidden md:block" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
                                             {loadStatus.books && activeTab === 'books' ? '同步萬筆庫存中...' : `共 ${filteredAdminBooks.length} 筆資料`}
@@ -866,7 +877,8 @@
                                                         </tr>
                                                     </thead>
                                                     <tbody className="text-sm font-bold divide-y divide-black/5">
-                                                        {filteredAdminBooks.map(b => (
+                                                        {/* 🔥 使用 visibleAdminBooks 分頁陣列 */}
+                                                        {visibleAdminBooks.map(b => (
                                                             <tr key={b.id} className="hover:bg-black/5 transition-colors group">
                                                                 <td className="p-4 pl-6 flex items-center gap-4 overflow-hidden">
                                                                     <img src={formatImageUrl(b.cover)} className="w-10 h-14 object-cover rounded-lg shadow-sm border border-black/10 bg-white shrink-0 group-hover:scale-105 transition-transform" onError={(e)=>e.target.src='https://via.placeholder.com/40x50?text=?'}/>
@@ -884,7 +896,7 @@
                                                                 <td className="p-4 font-mono whitespace-nowrap opacity-90 overflow-hidden">NT$ {b.price}</td>
                                                                 <td className="p-4 text-right pr-6 whitespace-nowrap">
                                                                     <div className="flex justify-end gap-2">
-                                                                        <button onClick={() => { setModalType(activeTab); setEditingBook(b); setShowBookModal(true); }} className="opacity-50 hover:opacity-100 p-2 rounded-xl transition-all bg-black/5" style={{ color: settings.sidebarActiveColor }}><Edit2 size={16}/></button>
+                                                                        <button onClick={() => { setModalType(activeTab); setEditingBook(b); setShowBookModal(true); }} className="opacity-50 hover:opacity-100 hover:text-indigo-600 p-2 rounded-xl transition-all bg-black/5"><Edit2 size={16}/></button>
                                                                         <button onClick={() => handleDeleteBook(b.id, activeTab === 'choice')} className="opacity-50 hover:opacity-100 hover:text-red-500 p-2 rounded-xl transition-all bg-black/5"><Trash2 size={16}/></button>
                                                                     </div>
                                                                 </td>
@@ -894,6 +906,18 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            {/* 🔥 新增向下戴入按鈕 */}
+                                            {filteredAdminBooks.length > adminVisibleCount && (
+                                                <div className="p-4 text-center border-t border-black/5" style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}>
+                                                    <button 
+                                                        onClick={() => setAdminVisibleCount(prev => prev + 20)}
+                                                        className="bg-black/5 border border-black/10 px-6 py-2.5 rounded-full text-xs font-bold shadow-sm hover:bg-black/10 transition-colors flex items-center gap-2 mx-auto"
+                                                        style={{ color: settings.cardTextColor }}
+                                                    >
+                                                        向下戴入更多書籍... (目前顯示 {adminVisibleCount} / 總共 {filteredAdminBooks.length}) <ChevronDown size={14} />
+                                                    </button>
+                                                </div>
+                                            )}
                                         </div>
                                     )}
                                 </div>
@@ -966,7 +990,7 @@
                                                         <span className={`text-[10px] font-black px-4 py-1.5 rounded-full tracking-widest border ${log.status === '已回覆' ? 'border-emerald-500/50 text-emerald-500 bg-emerald-500/10' : 'border-red-500/50 text-red-500 bg-red-500/10 animate-pulse'}`}>{log.status}</span>
                                                     </div>
                                                     <div className="text-sm bg-black/5 p-5 rounded-2xl mb-6 font-bold border border-black/10 leading-relaxed opacity-80 relative ml-2 whitespace-pre-wrap">
-                                                        <div className="absolute -left-2 -top-2 text-zinc-400 rounded-full" style={{ backgroundColor: settings.cardBgColor }}><MessageSquare size={16}/></div>
+                                                        <div className="absolute -left-2 -top-2 bg-white text-zinc-400 rounded-full" style={{ backgroundColor: settings.cardBgColor }}><MessageSquare size={16}/></div>
                                                         {log.query}
                                                     </div>
                                                     <div className="mt-auto ml-2">
@@ -997,7 +1021,7 @@
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={()=>setShowBookModal(false)}>
                             <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-black/10 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
                                 <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold tracking-tight bg-black/5"><div className="flex items-center gap-2"><Database size={18} style={{ color: settings.sidebarActiveColor }}/> 書籍內容管理</div><button onClick={() => setShowBookModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
-                                <form onSubmit={handleSaveBook} className="p-6 space-y-4 overflow-y-auto">
+                                <form onSubmit={handleSaveBook} className="p-6 space-y-4 overflow-y-auto sidebar-scroll">
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">書籍標題</label><input name="title" defaultValue={editingBook?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="例如：新版論語譯註" style={{ color: 'inherit' }}/></div>
                                     <div className="grid grid-cols-2 gap-4">
                                         <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">作者</label><input name="author" defaultValue={editingBook?.author || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="作者名稱" style={{ color: 'inherit' }}/></div>
@@ -1031,7 +1055,7 @@
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={()=>setShowCarouselModal(false)}>
                             <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-black/10 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
                                 <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold bg-orange-50/50 text-orange-800"><div className="flex items-center gap-2"><Zap size={18}/> 輪播宣傳編輯</div><button onClick={() => setShowCarouselModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
-                                <form onSubmit={handleSaveCarousel} className="p-6 space-y-4 overflow-y-auto">
+                                <form onSubmit={handleSaveCarousel} className="p-6 space-y-4 overflow-y-auto sidebar-scroll">
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">促銷標題</label><input name="title" defaultValue={editingCarousel?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="例如：夏季大特價" style={{ color: 'inherit' }}/></div>
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">簡介描述</label><textarea name="description" defaultValue={editingCarousel?.description || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm h-24 resize-none font-bold outline-none transition-colors" placeholder="顯示在標題下方的副標題..." style={{ color: 'inherit' }}/></div>
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">底圖 URL (支援 Drive ID/網址/Base64)</label><input name="image" defaultValue={editingCarousel?.image || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="1vdzHDxs..." style={{ color: 'inherit' }}/></div>
@@ -1052,7 +1076,7 @@
                                     </div>
                                     <button onClick={() => setShowOrderModal(false)} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
                                 </div>
-                                <div className="overflow-y-auto flex-1 p-6 lg:p-8">
+                                <div className="overflow-y-auto flex-1 p-6 lg:p-8 sidebar-scroll">
                                     <form onSubmit={handleSaveOrder} className="space-y-6 pb-8">
                                         <div className="space-y-1.5 col-span-2">
                                             <label className="text-[10px] font-black text-indigo-500 uppercase tracking-widest ml-1">訂單編號 (可修改)</label>
@@ -1108,7 +1132,7 @@
                                     </div>
                                     <button onClick={() => { setShowKpiModal(false); setEditingKpi(null); }} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
                                 </div>
-                                <div className="overflow-y-auto flex-1 p-6 lg:p-8">
+                                <div className="overflow-y-auto flex-1 p-6 lg:p-8 sidebar-scroll">
                                     <form onSubmit={handleSaveKpi} className="bg-black/5 p-6 rounded-2xl border border-black/10 mb-8">
                                         <h4 className="text-sm font-black mb-4 opacity-80">{editingKpi ? '編輯指標' : '新增指標'}</h4>
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
@@ -1190,7 +1214,7 @@
                                     </div>
                                     <button onClick={() => setShowCSModal(false)} className="bg-white p-2 rounded-full border border-indigo-200 text-indigo-400 hover:text-indigo-800 transition"><X size={16}/></button>
                                 </div>
-                                <div className="p-6 lg:p-8 space-y-6 overflow-y-auto flex-1">
+                                <div className="p-6 lg:p-8 space-y-6 overflow-y-auto flex-1 sidebar-scroll">
                                     <div className="bg-black/5 p-5 rounded-2xl border border-black/10 relative">
                                         <div className="absolute -top-3 left-4 px-2 text-[10px] font-black opacity-60 tracking-widest uppercase" style={{ backgroundColor: settings.cardBgColor }}>讀者 {editingCSLog.user} 的訊息</div>
                                         <div className="text-sm font-bold leading-relaxed pt-2 whitespace-pre-wrap">「{editingCSLog.query}」</div>
