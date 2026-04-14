@@ -96,8 +96,25 @@
             ExternalLink: { icon: ExternalLink, color: 'opacity-70' }
         };
 
-        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3Q1pZLUFGd3pLYjJFcXJ6UmlSSzlQa3Nxa09jN3hXdWM0YjhPYkxsaUhPX0g2MUpzSU1RLVBUODluUnM1M1N3VkgvZXhlYw==";
+        // 🔥 更新為最新給定的 GAS_URL
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4dUFZVWR2VEFhM3JfVm9LWUJLajFtcnVicXhWZHQxRURydVFMcm5yTE5aOFpaWGxneW5PT1g2ZDYwRVFvYko5SUYvZXhlYw==";
         const GAS_URL = atob(_0x4a21);
+        
+        // 🔥 系統防護的共用 SECRET_KEY
+        const SECRET_KEY = "cd6ca599bdbb083d34a3012b84071c848cc4bca0698a53c3cc65a2c296dd3ddf";
+
+        // 🔥 HMAC-SHA256 生成器 (Web Crypto API)
+        async function generateSignature(message, secret) {
+            const encoder = new TextEncoder();
+            const keyData = encoder.encode(secret);
+            const msgData = encoder.encode(message);
+            const cryptoKey = await window.crypto.subtle.importKey(
+                "raw", keyData, { name: "HMAC", hash: "SHA-256" }, false, ["sign"]
+            );
+            const signatureBuffer = await window.crypto.subtle.sign("HMAC", cryptoKey, msgData);
+            const hashArray = Array.from(new Uint8Array(signatureBuffer));
+            return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
+        }
 
         const formatImageUrl = (url) => {
             if (!url) return '';
@@ -125,7 +142,6 @@
             { user: 'candyni', password: '605' }
         ];
 
-        // 🔥 更新預設值，加入 ADMIN PANEL 與 Online 的文字與顏色設定
         const defaultSettings = {
             systemName: '文史哲出版社', systemSubName: 'Digital CMS', logoUrl: '', subLogoUrl: '', userAvatarUrl: '',
             adminPanelName: 'ADMIN PANEL', onlineStatusText: 'Online',
@@ -165,22 +181,17 @@
             const [showBookModal, setShowBookModal] = useState(false);
             const [editingBook, setEditingBook] = useState(null);
             const [modalType, setModalType] = useState('book');
-            
             const [showCarouselModal, setShowCarouselModal] = useState(false);
             const [editingCarousel, setEditingCarousel] = useState(null);
-            
             const [showOrderModal, setShowOrderModal] = useState(false);
             const [editingOrder, setEditingOrder] = useState(null);
-            
             const [showCSModal, setShowCSModal] = useState(false);
             const [editingCSLog, setEditingCSLog] = useState(null);
             const [csResponseText, setCsResponseText] = useState('');
             const [isAIGenerating, setIsAIGenerating] = useState(false);
-
             const [showKpiModal, setShowKpiModal] = useState(false);
             const [editingKpi, setEditingKpi] = useState(null);
             const [selectedKpiIcon, setSelectedKpiIcon] = useState('TrendingUp'); 
-
             const [iframeModal, setIframeModal] = useState({ isOpen: false, url: '', title: '' });
 
             const [expandedMenus, setExpandedMenus] = useState({
@@ -220,22 +231,31 @@
                 return hh === '00' && min === '00' ? `${yyyy}/${mm}/${dd}` : `${yyyy}/${mm}/${dd} ${hh}:${min}`;
             };
 
-            const syncWithGAS = async (action, payload = null) => {
+            // 🔥 軍規級前端 fetch 模組 (支援 HMAC-SHA256, 時間戳, Origin)
+            const syncWithGAS = async (action, payloadData = null) => {
                 try {
-                    if (action.startsWith('FETCH_')) {
-                        const url = new URL(GAS_URL);
-                        url.searchParams.append('action', action);
-                        url.searchParams.append('key', 'Y2FuZHluaWxvdmU='); 
-                        const response = await fetch(url.toString());
-                        return await response.json();
-                    } else {
-                        const response = await fetch(GAS_URL, {
-                            method: "POST",
-                            headers: { "Content-Type": "text/plain;charset=utf-8" },
-                            body: JSON.stringify({ action, payload, key: "Y2FuZHluaWxvdmU=" }) 
-                        });
-                        return await response.json();
-                    }
+                    const payloadObj = { 
+                        action: action, 
+                        payload: payloadData,
+                        origin: window.location.origin
+                    };
+                    const payloadStr = JSON.stringify(payloadObj);
+                    const timestamp = Date.now().toString();
+                    
+                    // 防竄改簽章計算
+                    const messageToSign = payloadStr + timestamp;
+                    const signature = await generateSignature(messageToSign, SECRET_KEY);
+
+                    const response = await fetch(GAS_URL, {
+                        method: "POST",
+                        headers: { "Content-Type": "text/plain;charset=utf-8" },
+                        body: JSON.stringify({
+                            payload: payloadStr,
+                            timestamp: timestamp,
+                            signature: signature
+                        })
+                    });
+                    return await response.json();
                 } catch (e) {
                     console.error("GAS Sync Error:", e);
                     return { status: 'error', msg: e.toString() };
@@ -305,7 +325,6 @@
                 }
             }, [editingKpi]);
 
-            // KPI 自動連動更新
             useEffect(() => {
                 if (kpis.length === 0 || loadStatus.kpis || !isAuthenticated) return;
                 let hasChanges = false;
@@ -591,9 +610,9 @@
                     )}
 
                     <aside className={`flex-shrink-0 transition-all z-30 shadow-2xl flex flex-col ${isSidebarOpen ? '' : '-translate-x-full absolute md:relative'}`} style={{ width: isSidebarOpen ? '260px' : '0px', backgroundColor: settings.sidebarBgColor }}>
-                        {/* 側邊欄 Logo 區塊 (滿版圖片，點擊收起) */}
+                        {/* 🔥 側邊欄 Logo 區塊 (滿版圖片，點擊收起) */}
                         <div className="flex items-center gap-3 h-20 shrink-0 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-colors pr-4" onClick={() => setIsSidebarOpen(false)} title="點擊收起側邊欄">
-                            <div className="h-full aspect-square text-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm" style={{ backgroundColor: settings.logoUrl ? 'transparent' : settings.sidebarActiveColor }}>
+                            <div className="h-full aspect-square text-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm p-0" style={{ backgroundColor: settings.logoUrl ? 'transparent' : settings.sidebarActiveColor }}>
                                 {settings.logoUrl ? (
                                     <img src={formatImageUrl(settings.logoUrl)} className="w-full h-full object-cover" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
                                 ) : (
@@ -647,6 +666,7 @@
                         </nav>
                         <div className="p-4 border-t border-white/5 shrink-0" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
                             <div className="flex items-center gap-3 px-3 py-2 mb-3">
+                                {/* 🔥 側邊欄左下角使用者頭像 (可自訂) */}
                                 <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white border border-white/20 shrink-0 overflow-hidden shadow-sm" style={{ backgroundColor: settings.userAvatarUrl ? 'transparent' : settings.sidebarActiveColor }}>
                                     {settings.userAvatarUrl ? (
                                         <img src={formatImageUrl(settings.userAvatarUrl)} className="w-full h-full object-cover" alt="User" onError={(e)=>{e.target.style.display='none'}} />
@@ -752,7 +772,7 @@
                                     <form onSubmit={handleSaveSettings} className="space-y-8 p-8 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
                                         <div>
                                             <h4 className="text-sm font-black mb-5 flex items-center gap-2 border-b border-black/10 pb-2"><Palette size={16} className="opacity-50"/> 基礎視覺顏色</h4>
-                                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
+                                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">登入頁背景</label>
                                                     <input type="color" name="loginBgColor" defaultValue={settings.loginBgColor} className="shadow-sm border border-black/10" />
@@ -764,6 +784,22 @@
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">登入文字顏色</label>
                                                     <input type="color" name="loginTextColor" defaultValue={settings.loginTextColor} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊欄背景</label>
+                                                    <input type="color" name="sidebarBgColor" defaultValue={settings.sidebarBgColor} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊選單文字色</label>
+                                                    <input type="color" name="sidebarTextColor" defaultValue={settings.sidebarTextColor} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊用戶名稱色</label>
+                                                    <input type="color" name="sidebarUserColor" defaultValue={settings.sidebarUserColor || '#ffffff'} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">高亮主題色 (選單)</label>
+                                                    <input type="color" name="sidebarActiveColor" defaultValue={settings.sidebarActiveColor} className="shadow-sm border border-black/10" />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">內頁主背景顏色</label>
@@ -784,36 +820,6 @@
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">KPI 卡片底色</label>
                                                     <input type="color" name="kpiBgColor" defaultValue={settings.kpiBgColor} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">高亮主題色 (選單)</label>
-                                                    <input type="color" name="sidebarActiveColor" defaultValue={settings.sidebarActiveColor} className="shadow-sm border border-black/10" />
-                                                </div>
-                                            </div>
-                                        </div>
-                                        
-                                        <div>
-                                            <h4 className="text-sm font-black mb-5 flex items-center gap-2 border-b border-black/10 pb-2"><BookOpen size={16} className="opacity-50"/> 側邊欄專屬顏色</h4>
-                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊欄背景</label>
-                                                    <input type="color" name="sidebarBgColor" defaultValue={settings.sidebarBgColor} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊選單文字色</label>
-                                                    <input type="color" name="sidebarTextColor" defaultValue={settings.sidebarTextColor} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊用戶名稱色</label>
-                                                    <input type="color" name="sidebarUserColor" defaultValue={settings.sidebarUserColor || '#ffffff'} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">Admin Panel 文字色</label>
-                                                    <input type="color" name="adminPanelColor" defaultValue={settings.adminPanelColor || '#a1a1aa'} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">上線狀態 (Online) 色</label>
-                                                    <input type="color" name="onlineStatusColor" defaultValue={settings.onlineStatusColor || '#34d399'} className="shadow-sm border border-black/10" />
                                                 </div>
                                             </div>
                                         </div>
@@ -837,7 +843,7 @@
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">自訂副標題圖片 (Sub Logo URL)</label>
                                                     <input name="subLogoUrl" defaultValue={settings.subLogoUrl || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} placeholder="留空則使用文字副標題" />
                                                 </div>
-                                                <div className="space-y-2">
+                                                <div className="space-y-2 md:col-span-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">自訂使用者頭像 (Drive ID / URL)</label>
                                                     <input name="userAvatarUrl" defaultValue={settings.userAvatarUrl || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} placeholder="留空則顯示帳號首字母" />
                                                 </div>
@@ -961,6 +967,7 @@
                                     ) : (
                                         <div className="rounded-[2rem] border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
                                             <div className="overflow-x-auto pb-4 sidebar-scroll">
+                                                {/* 🔥 table-fixed 強制固定比例佈局 */}
                                                 <table className="w-full text-left border-collapse min-w-[800px] table-fixed">
                                                     <thead className="border-b border-black/10" style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
                                                         <tr className="text-[10px] font-black uppercase tracking-[0.15em] opacity-60">
@@ -1001,7 +1008,6 @@
                                                     </tbody>
                                                 </table>
                                             </div>
-                                            {/* 向下戴入按鈕 */}
                                             {filteredAdminBooks.length > adminVisibleCount && (
                                                 <div className="p-4 text-center border-t border-black/5" style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}>
                                                     <button 
@@ -1082,7 +1088,7 @@
                                                             <div className="bg-black/5 w-12 h-12 rounded-2xl flex items-center justify-center opacity-60 border border-black/10"><User size={20}/></div>
                                                             <div><p className="font-black text-lg opacity-90">{log.user}</p><p className="text-[10px] font-bold opacity-50 tracking-wider uppercase mt-0.5">{formatDate(log.timestamp)} • {log.platform}</p></div>
                                                         </div>
-                                                        <span className={`text-[10px] font-black px-4 py-1.5 rounded-full tracking-widest border ${log.status === '已回覆' ? 'border-emerald-500/50 text-emerald-500 bg-emerald-500/10' : 'border-red-500/50 text-red-500 bg-red-500/10 animate-pulse'}`}>{log.status}</span>
+                                                        <span className={`text-[10px] font-black px-4 py-1.5 rounded-full tracking-widest border ${log.status === '已回覆' ? 'border-emerald-500/50 text-emerald-500 bg-emerald-500/10' : 'border-red-500/50 text-red-500 bg-red-500/10 animate-pulse shadow-sm shadow-red-500/20'}`}>{log.status}</span>
                                                     </div>
                                                     <div className="text-sm bg-black/5 p-5 rounded-2xl mb-6 font-bold border border-black/10 leading-relaxed opacity-80 relative ml-2 whitespace-pre-wrap">
                                                         <div className="absolute -left-2 -top-2 text-zinc-400 rounded-full" style={{ backgroundColor: settings.cardBgColor }}><MessageSquare size={16}/></div>
