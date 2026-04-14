@@ -116,9 +116,12 @@
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        // 🔥 徹底防範 Location Crash 的防護型圖片網址產生器
         const formatImageUrl = (url) => {
-            if (!url) return '';
+            const transparentFallback = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; // 安全的透明像素
+            if (!url) return transparentFallback;
             let strUrl = String(url).trim();
+            if (!strUrl || strUrl === '') return transparentFallback;
             if (strUrl.startsWith('data:image')) return strUrl; 
             
             let driveId = null;
@@ -144,7 +147,7 @@
 
         const defaultSettings = {
             systemName: '文史哲出版社', systemSubName: 'Digital CMS', logoUrl: '', subLogoUrl: '', userAvatarUrl: '',
-            adminPanelName: 'ADMIN PANEL', onlineStatusText: 'Online',
+            adminPanelName: 'ADMIN PANEL', sidebarSubText: 'Digital CMS', onlineStatusText: 'Online',
             loginBgColor: '#09090b', loginCardBgColor: '#ffffff', loginTextColor: '#27272a',
             sidebarBgColor: '#09090b', sidebarActiveColor: '#4f46e5', sidebarTextColor: '#a1a1aa', sidebarUserColor: '#ffffff',
             adminPanelColor: '#a1a1aa', onlineStatusColor: '#34d399',
@@ -325,6 +328,7 @@
                 }
             }, [editingKpi]);
 
+            // KPI 自動連動更新
             useEffect(() => {
                 if (kpis.length === 0 || loadStatus.kpis || !isAuthenticated) return;
                 let hasChanges = false;
@@ -549,7 +553,8 @@
                                     )}
                                 </div>
                                 <h2 className="text-3xl font-black tracking-tight" style={{ color: settings.loginTextColor }}>{settings.systemName}</h2>
-                                <p className="text-xs mt-2 font-bold uppercase tracking-[0.3em]" style={{ color: settings.loginTextColor, opacity: 0.7 }}>{settings.systemSubName}</p>
+                                {/* 🔥 放大登入頁小字 */}
+                                <p className="text-sm mt-3 font-bold uppercase tracking-[0.3em]" style={{ color: settings.loginTextColor, opacity: 0.8 }}>{settings.systemSubName}</p>
                             </div>
                             
                             <form onSubmit={handleLogin} className="space-y-6">
@@ -581,7 +586,8 @@
                                 </button>
                                 
                                 <div className="text-center pt-4">
-                                    <button type="button" onClick={() => { window.location.href = 'index.html'; }} className="text-xs font-bold transition-colors hover:opacity-100" style={{ color: settings.loginTextColor, opacity: 0.6 }}>← 返回前台官網</button>
+                                    {/* 🔥 防崩潰修復：改用 window.open */}
+                                    <button type="button" onClick={() => { window.open('index.html', '_self'); }} className="text-xs font-bold transition-colors hover:opacity-100" style={{ color: settings.loginTextColor, opacity: 0.6 }}>← 返回前台官網</button>
                                 </div>
                             </form>
                         </div>
@@ -610,7 +616,7 @@
                     )}
 
                     <aside className={`flex-shrink-0 transition-all z-30 shadow-2xl flex flex-col ${isSidebarOpen ? '' : '-translate-x-full absolute md:relative'}`} style={{ width: isSidebarOpen ? '260px' : '0px', backgroundColor: settings.sidebarBgColor }}>
-                        {/* 🔥 側邊欄 Logo 區塊 (滿版圖片，點擊收起) */}
+                        {/* 側邊欄 Logo 區塊 (可點擊收起) */}
                         <div className="flex items-center gap-3 h-20 shrink-0 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-colors pr-4" onClick={() => setIsSidebarOpen(false)} title="點擊收起側邊欄">
                             <div className="h-full aspect-square text-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm p-0" style={{ backgroundColor: settings.logoUrl ? 'transparent' : settings.sidebarActiveColor }}>
                                 {settings.logoUrl ? (
@@ -623,9 +629,10 @@
                                 {settings.subLogoUrl ? (
                                     <img src={formatImageUrl(settings.subLogoUrl)} className="h-6 object-contain object-left" alt="SubLogo" />
                                 ) : (
-                                    <span className="font-black tracking-widest uppercase text-sm block truncate" style={{ color: settings.adminPanelColor || settings.sidebarTextColor }}>{settings.adminPanelName || 'ADMIN PANEL'}</span>
+                                    <span className="font-black tracking-widest uppercase text-base block truncate" style={{ color: settings.adminPanelColor || settings.sidebarTextColor }}>{settings.adminPanelName || 'ADMIN PANEL'}</span>
                                 )}
-                                <span className="text-[9px] font-bold tracking-widest uppercase" style={{ color: settings.sidebarTextColor, opacity: 0.6 }}>Digital CMS</span>
+                                {/* 🔥 放大側邊欄小字並提高清晰度 */}
+                                <span className="text-xs font-bold tracking-widest uppercase mt-1" style={{ color: settings.sidebarTextColor, opacity: 0.85 }}>{settings.sidebarSubText || 'Digital CMS'}</span>
                             </div>
                         </div>
 
@@ -666,7 +673,6 @@
                         </nav>
                         <div className="p-4 border-t border-white/5 shrink-0" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
                             <div className="flex items-center gap-3 px-3 py-2 mb-3">
-                                {/* 🔥 側邊欄左下角使用者頭像 (可自訂) */}
                                 <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white border border-white/20 shrink-0 overflow-hidden shadow-sm" style={{ backgroundColor: settings.userAvatarUrl ? 'transparent' : settings.sidebarActiveColor }}>
                                     {settings.userAvatarUrl ? (
                                         <img src={formatImageUrl(settings.userAvatarUrl)} className="w-full h-full object-cover" alt="User" onError={(e)=>{e.target.style.display='none'}} />
@@ -679,7 +685,8 @@
                                     <div className="text-[10px] font-bold truncate tracking-widest mt-0.5" style={{ color: settings.onlineStatusColor || '#34d399' }}>{settings.onlineStatusText || 'Online'}</div>
                                 </div>
                             </div>
-                            <button onClick={() => { window.location.href = 'index.html'; }} className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-xs font-bold shadow-sm" style={{ color: settings.sidebarTextColor }}><Globe size={14} /> 前往網站前台</button>
+                            {/* 🔥 防崩潰修復：改用 window.open */}
+                            <button onClick={() => { window.open('index.html', '_self'); }} className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-xs font-bold shadow-sm" style={{ color: settings.sidebarTextColor }}><Globe size={14} /> 前往網站前台</button>
                         </div>
                     </aside>
                     
@@ -701,10 +708,10 @@
                             </div>
                             <div className="flex items-center gap-4 relative z-50">
                                 <div className="hidden sm:flex items-center gap-2 text-[11px] font-bold px-3 py-1.5 rounded-full" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor, opacity: 0.8 }}><Clock size={12}/> 系統狀態正常</div>
-                                {activeTab === 'dashboard' && <button onClick={() => { setEditingKpi(null); setShowKpiModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-80" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增 KPI 指標</button>}
-                                {activeTab === 'books' && <button onClick={() => { setModalType('book'); setEditingBook(null); setShowBookModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 上架新書</button>}
-                                {activeTab === 'choice' && <button onClick={() => { setModalType('choice'); setEditingBook(null); setShowBookModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-80" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增推薦書籍</button>}
-                                {activeTab === 'carousel' && <button onClick={() => { setEditingCarousel(null); setShowCarouselModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增輪播項目</button>}
+                                {activeTab === 'dashboard' && <button type="button" onClick={() => { setEditingKpi(null); setShowKpiModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-80" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增 KPI 指標</button>}
+                                {activeTab === 'books' && <button type="button" onClick={() => { setModalType('book'); setEditingBook(null); setShowBookModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 上架新書</button>}
+                                {activeTab === 'choice' && <button type="button" onClick={() => { setModalType('choice'); setEditingBook(null); setShowBookModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-80" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增推薦書籍</button>}
+                                {activeTab === 'carousel' && <button type="button" onClick={() => { setEditingCarousel(null); setShowCarouselModal(true); }} className="text-white px-5 py-2.5 rounded-full shadow-lg transition-colors active:scale-95 flex items-center gap-2 font-bold text-sm hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}><Plus size={16} /> 新增輪播項目</button>}
                             </div>
                         </header>
                         
@@ -744,8 +751,8 @@
                                                         <div className="flex justify-between items-start mb-3 z-10 relative">
                                                             <p className="text-[11px] opacity-60 font-black uppercase tracking-widest" style={{ color: settings.cardTextColor }}>{titleText}</p>
                                                             <div className="flex gap-2">
-                                                                <button onClick={() => { setEditingKpi(k); setShowKpiModal(true); }} className="opacity-40 hover:opacity-100 transition relative z-20 cursor-pointer" style={{ color: settings.cardTextColor }}><Edit2 size={12}/></button>
-                                                                <button onClick={() => handleDeleteKpi(k.id)} className="opacity-40 hover:opacity-100 text-red-500 transition relative z-20 cursor-pointer"><Trash2 size={12}/></button>
+                                                                <button type="button" onClick={() => { setEditingKpi(k); setShowKpiModal(true); }} className="opacity-40 hover:opacity-100 transition relative z-20 cursor-pointer" style={{ color: settings.cardTextColor }}><Edit2 size={12}/></button>
+                                                                <button type="button" onClick={() => handleDeleteKpi(k.id)} className="opacity-40 hover:opacity-100 text-red-500 transition relative z-20 cursor-pointer"><Trash2 size={12}/></button>
                                                             </div>
                                                         </div>
                                                         <p className="text-4xl font-black tracking-tighter relative z-10" style={{ color: settings.cardTextColor }}>
@@ -828,11 +835,11 @@
                                             <h4 className="text-sm font-black mb-5 flex items-center gap-2 border-b border-black/10 pb-2"><FileEdit size={16} className="opacity-50"/> 系統標誌與選單名稱</h4>
                                             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
                                                 <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">系統主標題 (System Name)</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">登入頁大字 (System Name)</label>
                                                     <input name="systemName" defaultValue={settings.systemName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">系統副標題 (Sub Name)</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">登入頁小字 (Sub Name)</label>
                                                     <input name="systemSubName" defaultValue={settings.systemSubName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
                                                 </div>
                                                 <div className="space-y-2">
@@ -848,8 +855,12 @@
                                                     <input name="userAvatarUrl" defaultValue={settings.userAvatarUrl || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} placeholder="留空則顯示帳號首字母" />
                                                 </div>
                                                 <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">管理面板小字 (Admin Panel)</label>
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊欄大字 (Sidebar Title)</label>
                                                     <input name="adminPanelName" defaultValue={settings.adminPanelName || 'ADMIN PANEL'} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊欄小字 (Sidebar Subtext)</label>
+                                                    <input name="sidebarSubText" defaultValue={settings.sidebarSubText || 'Digital CMS'} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">連線狀態文字 (Online)</label>
@@ -926,8 +937,8 @@
                                                         <h3 className="font-black text-xl mb-2">{c.title}</h3>
                                                         <p className="text-sm opacity-70 line-clamp-2 mb-6 leading-relaxed">{c.description}</p>
                                                         <div className="mt-auto flex justify-end gap-3 pt-4 border-t border-black/5">
-                                                            <button onClick={() => { setEditingCarousel(c); setShowCarouselModal(true); }} className="opacity-60 hover:opacity-100 hover:text-indigo-600 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs bg-black/5"><Edit2 size={14}/> 編輯</button>
-                                                            <button onClick={() => handleDeleteCarousel(c.id)} className="opacity-60 hover:opacity-100 text-red-500 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs bg-black/5"><Trash2 size={14}/> 刪除</button>
+                                                            <button type="button" onClick={() => { setEditingCarousel(c); setShowCarouselModal(true); }} className="opacity-60 hover:opacity-100 hover:text-indigo-600 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs bg-black/5"><Edit2 size={14}/> 編輯</button>
+                                                            <button type="button" onClick={() => handleDeleteCarousel(c.id)} className="opacity-60 hover:opacity-100 text-red-500 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs bg-black/5"><Trash2 size={14}/> 刪除</button>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -955,7 +966,7 @@
                                                 className="w-full bg-transparent outline-none text-sm font-bold placeholder-black/30 p-1"
                                                 style={{ color: 'inherit' }}
                                             />
-                                            {bookSearchQuery && <button onClick={()=>{setBookSearchQuery(''); setAdminVisibleCount(20);}} className="opacity-50 hover:opacity-100 px-2 bg-black/5 rounded-full p-1"><X size={12}/></button>}
+                                            {bookSearchQuery && <button type="button" onClick={()=>{setBookSearchQuery(''); setAdminVisibleCount(20);}} className="opacity-50 hover:opacity-100 px-2 bg-black/5 rounded-full p-1"><X size={12}/></button>}
                                         </div>
                                         <div className="text-xs font-bold px-4 py-2 rounded-full border border-black/5 shadow-sm hidden md:block" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
                                             {loadStatus.books && activeTab === 'books' ? '同步萬筆庫存中...' : `共 ${filteredAdminBooks.length} 筆資料`}
@@ -967,7 +978,6 @@
                                     ) : (
                                         <div className="rounded-[2rem] border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden flex flex-col" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
                                             <div className="overflow-x-auto pb-4 sidebar-scroll">
-                                                {/* 🔥 table-fixed 強制固定比例佈局 */}
                                                 <table className="w-full text-left border-collapse min-w-[800px] table-fixed">
                                                     <thead className="border-b border-black/10" style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
                                                         <tr className="text-[10px] font-black uppercase tracking-[0.15em] opacity-60">
@@ -998,8 +1008,8 @@
                                                                 <td className="p-4 font-mono whitespace-nowrap opacity-90 overflow-hidden">NT$ {b.price}</td>
                                                                 <td className="p-4 text-right pr-6 whitespace-nowrap">
                                                                     <div className="flex justify-end gap-2">
-                                                                        <button onClick={() => { setModalType(activeTab); setEditingBook(b); setShowBookModal(true); }} className="opacity-50 hover:opacity-100 p-2 rounded-xl transition-all bg-black/5" style={{ color: settings.sidebarActiveColor }}><Edit2 size={16}/></button>
-                                                                        <button onClick={() => handleDeleteBook(b.id, activeTab === 'choice')} className="opacity-50 hover:opacity-100 hover:text-red-500 p-2 rounded-xl transition-all bg-black/5"><Trash2 size={16}/></button>
+                                                                        <button type="button" onClick={() => { setModalType(activeTab); setEditingBook(b); setShowBookModal(true); }} className="opacity-50 hover:opacity-100 p-2 rounded-xl transition-all bg-black/5" style={{ color: settings.sidebarActiveColor }}><Edit2 size={16}/></button>
+                                                                        <button type="button" onClick={() => handleDeleteBook(b.id, activeTab === 'choice')} className="opacity-50 hover:opacity-100 hover:text-red-500 p-2 rounded-xl transition-all bg-black/5"><Trash2 size={16}/></button>
                                                                     </div>
                                                                 </td>
                                                             </tr>
@@ -1008,9 +1018,10 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            {/* 向下戴入按鈕 */}
                                             {filteredAdminBooks.length > adminVisibleCount && (
                                                 <div className="p-4 text-center border-t border-black/5" style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}>
-                                                    <button 
+                                                    <button type="button" 
                                                         onClick={() => setAdminVisibleCount(prev => prev + 20)}
                                                         className="bg-black/5 border border-black/10 px-6 py-2.5 rounded-full text-xs font-bold shadow-sm hover:bg-black/10 transition-colors flex items-center gap-2 mx-auto"
                                                         style={{ color: settings.cardTextColor }}
@@ -1043,7 +1054,7 @@
                                                 <tbody className="text-sm font-bold divide-y divide-black/5">{orders.map(o => (
                                                     <tr key={o.id} className="hover:bg-black/5 transition-colors">
                                                         <td className="p-4 pl-6 whitespace-nowrap">
-                                                            <button onClick={() => { setEditingOrder(o); setShowOrderModal(true); }} className="font-mono text-[13px] bg-black/5 hover:bg-black/10 opacity-80 hover:opacity-100 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 group whitespace-nowrap" style={{ color: 'inherit' }}>#{o.id} <FileEdit size={12} className="opacity-50 group-hover:opacity-100"/></button>
+                                                            <button type="button" onClick={() => { setEditingOrder(o); setShowOrderModal(true); }} className="font-mono text-[13px] bg-black/5 hover:bg-black/10 opacity-80 hover:opacity-100 px-3 py-1.5 rounded-lg transition-colors flex items-center gap-1.5 group whitespace-nowrap" style={{ color: 'inherit' }}>#{o.id} <FileEdit size={12} className="opacity-50 group-hover:opacity-100"/></button>
                                                             <div className="text-[10px] opacity-60 mt-2 font-sans pl-1 whitespace-nowrap">{formatDate(o.date)}</div>
                                                         </td>
                                                         <td className="p-4 whitespace-nowrap">
@@ -1098,10 +1109,10 @@
                                                         {log.response ? (
                                                             <div className="text-xs bg-indigo-50 text-indigo-900 p-5 rounded-2xl border border-indigo-100 font-bold leading-relaxed relative group whitespace-pre-wrap">
                                                                 {log.response}
-                                                                <button onClick={() => { setEditingCSLog(log); setCsResponseText(log.response); setShowCSModal(true); }} className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm text-[10px] text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-1"><Edit2 size={10}/> 修改回覆</button>
+                                                                <button type="button" onClick={() => { setEditingCSLog(log); setCsResponseText(log.response); setShowCSModal(true); }} className="absolute top-3 right-3 opacity-0 group-hover:opacity-100 bg-white border border-indigo-100 px-3 py-1.5 rounded-lg shadow-sm text-[10px] text-indigo-600 hover:bg-indigo-600 hover:text-white transition-all flex items-center gap-1"><Edit2 size={10}/> 修改回覆</button>
                                                             </div>
                                                         ) : (
-                                                            <button onClick={()=>{ setEditingCSLog(log); setCsResponseText(''); setShowCSModal(true); }} className="w-full text-white py-3.5 rounded-2xl text-xs font-bold shadow-lg opacity-90 hover:opacity-100 transition-all active:scale-95 flex items-center justify-center gap-2" style={{ backgroundColor: settings.sidebarActiveColor }}>
+                                                            <button type="button" onClick={()=>{ setEditingCSLog(log); setCsResponseText(''); setShowCSModal(true); }} className="w-full text-white py-3.5 rounded-2xl text-xs font-bold shadow-lg opacity-90 hover:opacity-100 transition-all active:scale-95 flex items-center justify-center gap-2" style={{ backgroundColor: settings.sidebarActiveColor }}>
                                                                 <MessageSquare size={14}/> 擬定回覆
                                                             </button>
                                                         )}
@@ -1121,7 +1132,7 @@
                     {showBookModal && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={()=>setShowBookModal(false)}>
                             <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-black/10 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold tracking-tight bg-black/5"><div className="flex items-center gap-2"><Database size={18} style={{ color: settings.sidebarActiveColor }}/> 書籍內容管理</div><button onClick={() => setShowBookModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
+                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold tracking-tight bg-black/5"><div className="flex items-center gap-2"><Database size={18} style={{ color: settings.sidebarActiveColor }}/> 書籍內容管理</div><button type="button" onClick={() => setShowBookModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
                                 <form onSubmit={handleSaveBook} className="p-6 space-y-4 overflow-y-auto sidebar-scroll">
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">書籍標題</label><input name="title" defaultValue={editingBook?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="例如：新版論語譯註" style={{ color: 'inherit' }}/></div>
                                     <div className="grid grid-cols-2 gap-4">
@@ -1163,7 +1174,7 @@
                     {showCarouselModal && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={()=>setShowCarouselModal(false)}>
                             <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-black/10 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold bg-orange-50/50 text-orange-800"><div className="flex items-center gap-2"><Zap size={18}/> 輪播宣傳編輯</div><button onClick={() => setShowCarouselModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
+                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold bg-orange-50/50 text-orange-800"><div className="flex items-center gap-2"><Zap size={18}/> 輪播宣傳編輯</div><button type="button" onClick={() => setShowCarouselModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
                                 <form onSubmit={handleSaveCarousel} className="p-6 space-y-4 overflow-y-auto sidebar-scroll">
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">促銷標題</label><input name="title" defaultValue={editingCarousel?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="例如：夏季大特價" style={{ color: 'inherit' }}/></div>
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">簡介描述</label><textarea name="description" defaultValue={editingCarousel?.description || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm h-24 resize-none font-bold outline-none transition-colors" placeholder="顯示在標題下方的副標題..." style={{ color: 'inherit' }}/></div>
@@ -1183,7 +1194,7 @@
                                         <div className="p-2 rounded-xl text-white" style={{ backgroundColor: settings.sidebarActiveColor }}><Truck size={18}/></div>
                                         編輯訂單細節
                                     </div>
-                                    <button onClick={() => setShowOrderModal(false)} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
+                                    <button type="button" onClick={() => setShowOrderModal(false)} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
                                 </div>
                                 <div className="overflow-y-auto flex-1 p-6 lg:p-8 sidebar-scroll">
                                     <form onSubmit={handleSaveOrder} className="space-y-6 pb-8">
@@ -1239,7 +1250,7 @@
                                         <div className="p-2 rounded-xl text-white" style={{ backgroundColor: settings.sidebarActiveColor }}><TrendingUp size={18}/></div>
                                         管理自訂指標 (KPI)
                                     </div>
-                                    <button onClick={() => { setShowKpiModal(false); setEditingKpi(null); }} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
+                                    <button type="button" onClick={() => { setShowKpiModal(false); setEditingKpi(null); }} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
                                 </div>
                                 <div className="overflow-y-auto flex-1 p-6 lg:p-8 sidebar-scroll">
                                     <form onSubmit={handleSaveKpi} className="bg-black/5 p-6 rounded-2xl border border-black/10 mb-8">
@@ -1300,8 +1311,8 @@
                                                         <div className="text-lg font-black">{k.value} <span className="text-xs opacity-60">{displayUnit}</span></div>
                                                     </div>
                                                     <div className="flex gap-2">
-                                                        <button onClick={() => { setEditingKpi(k); }} className="opacity-50 hover:opacity-100 hover:text-indigo-500 p-2 rounded-lg transition"><Edit2 size={14}/></button>
-                                                        <button onClick={() => handleDeleteKpi(k.id)} className="opacity-50 hover:opacity-100 hover:text-red-500 p-2 rounded-lg transition"><Trash2 size={14}/></button>
+                                                        <button type="button" onClick={() => { setEditingKpi(k); }} className="opacity-50 hover:opacity-100 hover:text-indigo-500 p-2 rounded-lg transition"><Edit2 size={14}/></button>
+                                                        <button type="button" onClick={() => handleDeleteKpi(k.id)} className="opacity-50 hover:opacity-100 hover:text-red-500 p-2 rounded-lg transition"><Trash2 size={14}/></button>
                                                     </div>
                                                 </div>
                                             )
@@ -1321,7 +1332,7 @@
                                         <div className="p-2 rounded-xl bg-indigo-500 text-white"><MessageSquare size={18}/></div>
                                         智能客服回覆中心
                                     </div>
-                                    <button onClick={() => setShowCSModal(false)} className="bg-white p-2 rounded-full border border-indigo-200 text-indigo-400 hover:text-indigo-800 transition"><X size={16}/></button>
+                                    <button type="button" onClick={() => setShowCSModal(false)} className="bg-white p-2 rounded-full border border-indigo-200 text-indigo-400 hover:text-indigo-800 transition"><X size={16}/></button>
                                 </div>
                                 <div className="p-6 lg:p-8 space-y-6 overflow-y-auto flex-1 sidebar-scroll">
                                     <div className="bg-black/5 p-5 rounded-2xl border border-black/10 relative">
@@ -1332,7 +1343,7 @@
                                     <div className="space-y-3">
                                         <div className="flex justify-between items-end px-1">
                                             <label className="text-[10px] font-black opacity-60 uppercase tracking-widest">您的回覆內容</label>
-                                            <button onClick={handleGenerateAI} disabled={isAIGenerating} className="text-[10px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 hover:shadow-lg hover:shadow-indigo-500/30 transition-all active:scale-95 disabled:opacity-50">
+                                            <button type="button" onClick={handleGenerateAI} disabled={isAIGenerating} className="text-[10px] bg-gradient-to-r from-indigo-500 to-purple-500 text-white px-4 py-2 rounded-xl font-bold flex items-center gap-1.5 hover:shadow-lg hover:shadow-indigo-500/30 transition-all active:scale-95 disabled:opacity-50">
                                                 {isAIGenerating ? <Clock size={12} className="animate-spin"/> : <Sparkles size={12}/>}
                                                 {isAIGenerating ? 'AI 撰寫中...' : '✨ 啟動 AI 擬稿'}
                                             </button>
@@ -1346,7 +1357,7 @@
                                         />
                                     </div>
                                     <div className="pt-2 pb-4">
-                                        <button onClick={handleSaveCS} className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }}>
+                                        <button className="w-full text-white py-4 rounded-2xl font-bold shadow-xl transition-all active:scale-95 flex items-center justify-center gap-2 hover:opacity-90" style={{ backgroundColor: settings.sidebarActiveColor }} onClick={handleSaveCS}>
                                             <CheckCircle size={18}/> 確認送出回覆
                                         </button>
                                     </div>
@@ -1357,14 +1368,15 @@
 
                     {/* 外部 iframe 彈出視窗 */}
                     {iframeModal.isOpen && (
-                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })}>
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))}>
                             <div className="w-full max-w-5xl h-full max-h-[90vh] rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden animate-in border border-black/10" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e) => e.stopPropagation()}>
                                 <div className="p-5 border-b border-black/5 flex justify-between items-center bg-black/5 shrink-0">
                                     <h2 className="text-xl font-black flex items-center gap-3 tracking-widest"><ExternalLink size={20} style={{ color: settings.sidebarActiveColor }} /> {iframeModal.title}</h2>
-                                    <button onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })} className="bg-black/5 border border-black/10 hover:bg-black/10 px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
+                                    <button type="button" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))} className="bg-black/5 border border-black/10 hover:bg-black/10 px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
                                 </div>
                                 <div className="flex-1 w-full relative overflow-y-auto sidebar-scroll" style={{ backgroundColor: '#ffffff' }}>
-                                    <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>
+                                    {/* 🔥 URL 若為空則不嘗試渲染 iframe src，避免 Location Error */}
+                                    {iframeModal.url && <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>}
                                 </div>
                             </div>
                         </div>
