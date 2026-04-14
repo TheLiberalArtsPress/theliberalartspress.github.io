@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
@@ -53,6 +54,8 @@
         const MessageCircle = lib.MessageCircle || FallbackIcon;
         const ChevronRight = lib.ChevronRight || FallbackIcon;
         const ChevronLeft = lib.ChevronLeft || FallbackIcon;
+        const ChevronDown = lib.ChevronDown || FallbackIcon;
+        const ChevronUp = lib.ChevronUp || FallbackIcon; // 🔥 新增向上箭頭
         const Database = lib.Database || FallbackIcon;
         const Clock = lib.Clock || FallbackIcon;
         const CheckCircle = lib.CheckCircle || FallbackIcon;
@@ -81,46 +84,36 @@
             </svg>
         );
 
-        // 🔥 更新為最新的 GAS_URL Base64 編碼
+        // 🔥 更新為最新的 GAS_URL
         const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3aVllUVVIVHdyb1FSR2U5ZlN2a1h3VDk1RVpLRFdyZndIcHRxRDRUY3E5Q1JPTjhZc2MtdENHWURkb2Q3LWJnclQvZXhlYw==";
         const GAS_URL = atob(_0x4a21); 
 
-        // 🔥 【修復】強化版 Google Drive 圖片解析器：使用 Thumbnail API 避開跨域與封鎖
+        // 圖片 URL 轉換工具
         const formatImageUrl = (url) => {
             if (!url) return '';
             let strUrl = String(url).trim();
-            if (strUrl.startsWith('data:image')) return strUrl; // Base64 直接過
+            if (strUrl.startsWith('data:image')) return strUrl;
             
             let driveId = null;
-            
-            // 處理貼上完整網址的情況
             if (strUrl.includes('drive.google.com')) {
                 const match = strUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
                 if (match) driveId = match[1];
-            } 
-            // 處理只貼上 ID 的情況 (長度通常大於 20 的亂碼)
-            else if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
+            } else if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
                 driveId = strUrl;
             }
 
             if (driveId) {
-                // 使用 thumbnail 參數繞過 uc?export=view 在近期 Chrome 上的限制
                 return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
             }
-            
             return strUrl;
         };
 
         const fallbackCarousels = [
-            { id: 'fb1', title: '傳承千年智慧', description: '致力於出版高品質文學、歷史、哲學著作。讓深厚底蘊更貼近當代讀者。', image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200' },
-            { id: 'fb2', title: '發現歷史新視野', description: '本月精選好書，帶您重返歷史現場，看見不同面向的時代脈絡。', image: 'https://images.unsplash.com/photo-1524995997946-a1c2e315a42f?q=80&w=1200' }
+            { id: 'fb1', title: '傳承千年智慧', description: '致力於出版高品質文學、歷史、哲學著作。讓深厚底蘊更貼近當代讀者。', image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200' }
         ];
 
         const fallbackBooks = [
-            { id: 'fb_1', title: '中國目錄學', author: '昌彼得', year: '1971', price: 400, category: '文學', stock: 10, cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400' },
-            { id: 'fb_2', title: '文心雕龍與經學', author: '蔡宗陽', year: '1985', price: 350, category: '哲學', stock: 15, cover: 'https://images.unsplash.com/photo-1589829085413-56de8ae18c73?q=80&w=400' },
-            { id: 'fb_3', title: '中日關係史研究論集', author: '鄭樑生', year: '1992', price: 500, category: '歷史', stock: 5, cover: 'https://images.unsplash.com/photo-1532012197267-da84d127e765?q=80&w=400' },
-            { id: 'fb_4', title: '清史論集', author: '莊吉發', year: '1998', price: 450, category: '歷史', stock: 8, cover: 'https://images.unsplash.com/photo-1589998059171-989d887dda1e?q=80&w=400' }
+            { id: 'fb_1', title: '正在向資料庫索取書籍', author: '讀取中', year: '讀取中', price: 0, category: '文學', stock: 10, cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400' }
         ];
 
         const fixedCategories = ['全部', '文學', '歷史', '哲學', '史地', '語言', '社會科學', '藝術'];
@@ -168,12 +161,26 @@
             const [isRandomBooksOpen, setIsRandomBooksOpen] = useState(false);
             const [randomBooks, setRandomBooks] = useState([]);
             
+            // 🔥 新增：手機版選單收折狀態
+            const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+            // 🔥 新增：回到頂端按鈕顯示狀態
+            const [showBackToTop, setShowBackToTop] = useState(false);
+            
             const sliderRef = useRef(null);
 
             const showMsg = (text) => {
                 setNotification(text);
                 setTimeout(() => setNotification(null), 3000);
             };
+
+            // 偵測滾動事件，控制「回到頂部」按鈕顯示
+            useEffect(() => {
+                const handleScroll = () => {
+                    setShowBackToTop(window.scrollY > 300);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
 
             const syncWithGAS = async (action, payload = null) => {
                 try {
@@ -201,9 +208,7 @@
                 syncWithGAS('FETCH_SETTINGS').then(resSettings => {
                     if (resSettings && resSettings.data) {
                         setSettings(prev => ({...prev, ...resSettings.data}));
-                        if (resSettings.data.systemName) {
-                            document.title = `${resSettings.data.systemName} - 首頁`;
-                        }
+                        if (resSettings.data.systemName) document.title = `${resSettings.data.systemName} - 首頁`;
                     }
                 }).catch(() => {});
 
@@ -213,8 +218,6 @@
                         if (published.length > 0) {
                             setCarousels(published);
                             localStorage.setItem('lapen_carousels_v4', JSON.stringify(published));
-                        } else {
-                            setCarousels(fallbackCarousels);
                         }
                     }
                 }).catch(() => {});
@@ -231,13 +234,8 @@
                         const validBooks = resBooks.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
                         const shuffledBooks = validBooks.sort(() => 0.5 - Math.random());
                         setBooks(shuffledBooks);
-                        
-                        try {
-                            localStorage.setItem('lapen_books_v4', JSON.stringify(shuffledBooks.slice(0, 150)));
-                        } catch (e) { console.warn("Cache save error", e); }
+                        try { localStorage.setItem('lapen_books_v4', JSON.stringify(shuffledBooks.slice(0, 150))); } catch (e) {}
                     }
-                }).catch(err => {
-                    console.error("背景下載書籍失敗", err);
                 }).finally(() => {
                     setIsBooksLoading(false);
                 });
@@ -256,7 +254,7 @@
 
             const excelCategories = useMemo(() => {
                 const cats = books.map(b => b.category).filter(c => c && c.trim() !== "");
-                return [...new Set(cats)];
+                return [...new Set(cats)].sort();
             }, [books]);
 
             const filteredBooks = useMemo(() => {
@@ -265,7 +263,6 @@
             }, [books, selectedCategory]);
 
             const visibleBooks = filteredBooks.slice(0, visibleCount);
-
             const displayChoiceBooks = choiceBooks.length > 0 ? choiceBooks : books.slice(0, 10);
 
             const handleSearchSubmit = (e) => {
@@ -337,15 +334,12 @@
                         const nextNum = resOrders.data.length + 1;
                         orderId = `ORD-${String(nextNum).padStart(4, '0')}`;
                     }
-                } catch(error) {
-                    console.error("流水號產生失敗", error);
-                }
+                } catch(error) {}
 
-                // 🔥【新增】包含 memo 備註欄位
                 const newOrder = {
                     id: orderId, customer: info.name, phone: info.phone, email: info.email, address: info.address, payment: info.payment,
                     items: itemsStr, total: cartTotal, status: '處理中', date: formattedDate,
-                    memo: info.memo || '', // 將備註加入 Payload
+                    memo: info.memo || '', // 寄件備註
                     '訂單編號': orderId, '客戶姓名': info.name, '電話': info.phone, '電子信箱': info.email, 'Email': info.email,
                     '地址': info.address, '付款方式': info.payment, '購買項目': itemsStr, '總金額': cartTotal, '狀態': '處理中', '日期': formattedDate
                 };
@@ -402,16 +396,26 @@
             };
 
             return (
-                <div className="selection:bg-[#8C5A2B] selection:text-white min-h-screen font-serif transition-all duration-300 relative scroll-smooth flex flex-col">
-                    <nav className="p-4 md:px-8 border-b border-[#E6D5C3] flex justify-between items-center bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-sm">
-                        <div className="flex items-center space-x-4 cursor-pointer" onClick={() => window.scrollTo(0,0)}>
-                            <ModernLogo className="w-10 h-10" />
+                <div className="selection:bg-[#8C5A2B] selection:text-white min-h-screen bg-[#FDFBF7] font-serif transition-all duration-300 relative pb-10 scroll-smooth">
+                    {/* 導覽列 */}
+                    <nav className="p-4 md:px-8 border-b border-[#E6D5C3] flex justify-between items-center bg-white/95 backdrop-blur-md sticky top-0 z-40 shadow-sm relative">
+                        {/* 左側商標區：手機版點擊展開選單 */}
+                        <div className="flex items-center space-x-2 md:space-x-4 cursor-pointer select-none" onClick={() => {
+                            if (window.innerWidth < 1024) setIsMobileMenuOpen(!isMobileMenuOpen);
+                            else window.scrollTo(0,0);
+                        }}>
+                            <ModernLogo className="w-8 h-8 md:w-10 md:h-10" />
                             <div className="flex flex-col">
-                                <h1 className="text-xl md:text-[22px] font-black text-[#2C241B] tracking-[0.1em] hidden sm:block font-sans">{settings.systemName || '文史哲出版社'}</h1>
-                                <span className="text-[9px] tracking-[0.22em] text-[#8C5A2B] hidden sm:block font-sans font-bold uppercase">{settings.systemSubName || 'The Liberal Arts Press'}</span>
+                                <div className="flex items-center gap-1">
+                                    <h1 className="text-lg md:text-[22px] font-black text-[#2C241B] tracking-[0.1em] font-sans">{settings.systemName || '文史哲出版社'}</h1>
+                                    <ChevronDown className={`lg:hidden transition-transform text-[#8C5A2B] ${isMobileMenuOpen ? 'rotate-180' : ''}`} size={16} />
+                                </div>
+                                <span className="text-[8px] md:text-[9px] tracking-[0.22em] text-[#8C5A2B] font-sans font-bold uppercase block">{settings.systemSubName || 'The Liberal Arts Press'}</span>
                             </div>
                         </div>
-                        <div className="flex items-center space-x-6">
+
+                        <div className="flex items-center space-x-4 md:space-x-6">
+                            {/* 電腦版選單 */}
                             <div className="hidden lg:flex space-x-8 text-[15px] font-sans font-bold text-[#4A3728]">
                                 <button onClick={() => setIsAboutOpen(true)} className="hover:text-[#8C5A2B] transition flex items-center gap-1.5"><Compass size={16}/> 關於我們</button>
                                 <button onClick={() => setIframeModal({ isOpen: true, url: 'https://hanlinma.github.io/candyni/%E9%97%9C%E6%96%BC%E7%A4%BE%E9%95%B7.html', title: '關於社長' })} className="hover:text-[#8C5A2B] transition flex items-center gap-1.5"><User size={16}/> 關於社長</button>
@@ -420,17 +424,31 @@
                                 <button onClick={() => setIsSearchModalOpen(true)} className="hover:text-[#F9F6F0] transition flex items-center gap-1.5 text-[#F9F6F0] bg-[#2C241B] hover:bg-[#8C5A2B] px-4 py-1.5 rounded-full shadow-sm"><Search size={16}/> 書籍檢索</button>
                             </div>
                             
-                            <div className="flex items-center space-x-4 border-l pl-4 border-[#E6D5C3]">
-                                <button onClick={() => setIsCartOpen(true)} className="relative bg-[#F9F6F0] border border-[#C4B29E] text-[#2C241B] px-5 py-2.5 rounded-full flex items-center gap-2 hover:bg-[#8C5A2B] hover:text-white hover:border-[#8C5A2B] transition-all shadow-sm font-sans font-bold group">
+                            {/* 購物車與管理入口 (常駐顯示) */}
+                            <div className="flex items-center space-x-3 md:space-x-4 border-l pl-3 md:pl-4 border-[#E6D5C3]">
+                                <button onClick={() => setIsCartOpen(true)} className="relative bg-[#F9F6F0] border border-[#C4B29E] text-[#2C241B] px-3 md:px-5 py-2.5 rounded-full flex items-center gap-2 hover:bg-[#8C5A2B] hover:text-white hover:border-[#8C5A2B] transition-all shadow-sm font-sans font-bold group">
                                     <ShoppingCart size={20} className="group-hover:scale-110 transition-transform" />
                                     <span className="hidden sm:inline">我的書包</span>
                                     {cart.length > 0 && <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[12px] min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center font-bold shadow-md border-2 border-white animate-bounce">{cart.length}</span>}
                                 </button>
-                                <button onClick={() => window.open('https://hanlinma.github.io', '_blank')} className="bg-[#2C241B] text-[#F9F6F0] px-4 py-2.5 rounded-full text-sm font-sans flex items-center gap-2 hover:bg-[#8C5A2B] transition shadow-md font-bold">
+                                <button onClick={() => window.open('admin.html', '_blank')} className="hidden sm:flex bg-[#2C241B] text-[#F9F6F0] px-4 py-2.5 rounded-full text-sm font-sans items-center gap-2 hover:bg-[#8C5A2B] transition shadow-md font-bold">
                                     <LayoutDashboard size={16} /> <span className="hidden md:inline">管理入口</span>
                                 </button>
                             </div>
                         </div>
+
+                        {/* 🔥 手機版下拉選單 */}
+                        {isMobileMenuOpen && (
+                            <div className="absolute top-full left-0 w-full bg-white border-b border-[#E6D5C3] shadow-xl flex flex-col p-2 lg:hidden z-50 animate-in font-sans">
+                                <button onClick={() => { setIsMobileMenuOpen(false); setIsAboutOpen(true); }} className="text-left font-bold text-[#4A3728] hover:text-[#8C5A2B] hover:bg-[#F9F6F0] p-4 rounded-xl flex items-center gap-3 transition"><Compass size={18} className="text-[#8C5A2B]"/> 關於我們</button>
+                                <button onClick={() => { setIsMobileMenuOpen(false); setIframeModal({ isOpen: true, url: 'https://hanlinma.github.io/candyni/%E9%97%9C%E6%96%BC%E7%A4%BE%E9%95%B7.html', title: '關於社長' }); }} className="text-left font-bold text-[#4A3728] hover:text-[#8C5A2B] hover:bg-[#F9F6F0] p-4 rounded-xl flex items-center gap-3 transition"><User size={18} className="text-[#8C5A2B]"/> 關於社長</button>
+                                <button onClick={() => { setIsMobileMenuOpen(false); setIframeModal({ isOpen: true, url: 'https://hanlinma.github.io/candyni/%E8%81%AF%E7%B9%AB%E6%88%91%E5%80%91.html', title: '聯繫我們' }); }} className="text-left font-bold text-[#4A3728] hover:text-[#8C5A2B] hover:bg-[#F9F6F0] p-4 rounded-xl flex items-center gap-3 transition"><MessageCircle size={18} className="text-[#8C5A2B]"/> 聯繫我們</button>
+                                <button onClick={() => { setIsMobileMenuOpen(false); openRandomBooksModal(); }} className="text-left font-bold text-[#4A3728] hover:text-[#8C5A2B] hover:bg-[#F9F6F0] p-4 rounded-xl flex items-center gap-3 transition"><Zap size={18} className="text-[#8C5A2B]"/> 新書上市</button>
+                                <div className="border-t border-[#E6D5C3] my-1"></div>
+                                <button onClick={() => { setIsMobileMenuOpen(false); setIsSearchModalOpen(true); }} className="text-left font-bold text-[#4A3728] hover:text-[#8C5A2B] hover:bg-[#F9F6F0] p-4 rounded-xl flex items-center gap-3 transition"><Search size={18} className="text-[#8C5A2B]"/> 書籍檢索</button>
+                                <button onClick={() => { setIsMobileMenuOpen(false); window.open('admin.html', '_blank'); }} className="text-left font-bold text-[#4A3728] hover:text-[#8C5A2B] hover:bg-[#F9F6F0] p-4 rounded-xl flex items-center gap-3 transition sm:hidden"><LayoutDashboard size={18} className="text-[#8C5A2B]"/> 管理入口</button>
+                            </div>
+                        )}
                     </nav>
 
                     <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8">
@@ -636,10 +654,10 @@
                         </div>
                     </footer>
 
-                    {/* 🔥 包含 Email 與手機的客訴表單 */}
-                    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end">
+                    {/* 🔥 包含 Email、手機與回到最上方的右下角選單 */}
+                    <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
                         {isContactOpen && (
-                            <div className="bg-white w-80 shadow-2xl rounded-2xl mb-4 border border-[#E6D5C3] overflow-hidden animate-in">
+                            <div className="bg-white w-80 shadow-2xl rounded-2xl border border-[#E6D5C3] overflow-hidden animate-in">
                                 <div className="bg-[#2C241B] p-4 text-[#F9F6F0] flex justify-between items-center font-sans border-b-4 border-[#8C5A2B]">
                                     <span className="font-bold flex items-center gap-2 tracking-wide"><MessageCircle size={18} /> 客服與建議</span>
                                     <button onClick={() => setIsContactOpen(false)} className="hover:bg-white/20 p-1.5 rounded-full transition bg-white/10"><X size={16} /></button>
@@ -656,9 +674,18 @@
                                 </form>
                             </div>
                         )}
-                        <button onClick={() => setIsContactOpen(!isContactOpen)} className="bg-[#2C241B] text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 hover:bg-[#8C5A2B] transition-all border-2 border-[#F9F6F0]">
-                            {isContactOpen ? <X size={28} /> : <MessageCircle size={28} />}
-                        </button>
+                        <div className="flex flex-col gap-3">
+                            {/* 🔥 回到最上方按鈕 */}
+                            {showBackToTop && (
+                                <button onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="bg-white text-[#8C5A2B] w-12 h-12 rounded-full shadow-xl flex items-center justify-center hover:scale-105 hover:bg-[#8C5A2B] hover:text-white transition-all border border-[#E6D5C3] self-end animate-in">
+                                    <ChevronUp size={24} />
+                                </button>
+                            )}
+                            {/* 客服對話框按鈕 */}
+                            <button onClick={() => setIsContactOpen(!isContactOpen)} className="bg-[#2C241B] text-white w-14 h-14 rounded-full shadow-2xl flex items-center justify-center hover:scale-105 hover:bg-[#8C5A2B] transition-all border-2 border-[#F9F6F0]">
+                                {isContactOpen ? <X size={28} /> : <MessageCircle size={28} />}
+                            </button>
+                        </div>
                     </div>
 
                     {isAboutOpen && (
@@ -719,6 +746,7 @@
                         </div>
                     )}
 
+                    {/* iframe 網頁彈出視窗 (用於「關於社長」與「聯繫我們」) */}
                     {iframeModal.isOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })}>
                             <div className="bg-[#F9F6F0] w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in font-sans border border-[#E6D5C3]" onClick={(e) => e.stopPropagation()}>
@@ -726,152 +754,26 @@
                                     <h2 className="text-xl font-black flex items-center gap-3 text-[#2C241B] font-serif tracking-widest">{iframeModal.title}</h2>
                                     <button onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })} className="bg-[#F9F6F0] border border-[#C4B29E] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[#4A3728] transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
                                 </div>
-                                <div className="flex-1 w-full bg-white relative"><iframe src={iframeModal.url} className="w-full h-full border-0"></iframe></div>
-                            </div>
-                        </div>
-                    )}
-
-                    {isRandomBooksOpen && (
-                        <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsRandomBooksOpen(false)}>
-                            <div className="bg-[#F9F6F0] w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in" onClick={(e) => e.stopPropagation()}>
-                                <div className="bg-[#2C241B] p-4 flex justify-between items-center border-b-4 border-[#8C5A2B]">
-                                    <h2 className="text-xl font-serif font-black text-[#F9F6F0] flex items-center gap-3 tracking-widest"><Zap size={24} className="text-[#8C5A2B]" /> 新書上市 - 隨機推薦</h2>
-                                    <button onClick={() => setIsRandomBooksOpen(false)} className="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm font-bold text-white transition flex items-center gap-2"><X size={16} /> 關閉</button>
-                                </div>
-                                <div className="flex-1 overflow-y-auto p-6 md:p-8 font-sans">
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
-                                        {randomBooks.map(book => (
-                                            <div key={book.id} className="group bg-white border border-[#E6D5C3] rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col shadow-sm">
-                                                <div className="h-64 bg-[#F9F6F0] relative overflow-hidden p-4">
-                                                    <div className="w-full h-full relative shadow-[3px_3px_10px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500">
-                                                        <img src={formatImageUrl(book.cover)} className="w-full h-full object-cover" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
-                                                    </div>
-                                                    <div className="absolute top-4 left-4 bg-[#2C241B] text-[#F9F6F0] text-[10px] px-2 py-1 rounded-r-full shadow-md font-sans tracking-widest font-bold border-l-2 border-[#8C5A2B]">{book.category}</div>
-                                                    {book.stock <= 0 && <div className="absolute inset-0 bg-[#2C241B]/70 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl">已售罄</div>}
-                                                </div>
-                                                <div className="p-5 flex flex-col flex-1 bg-white border-t border-[#F9F6F0]">
-                                                    <h3 className="font-bold text-lg mb-2 text-[#2C241B] line-clamp-2 font-serif leading-snug group-hover:text-[#8C5A2B] transition-colors" title={book.title}>{book.title}</h3>
-                                                    <p className="text-[#8C5A2B] font-black mb-4 text-xl font-sans mt-auto">NT$ {book.price}</p>
-                                                    <button onClick={() => addToCart(book)} className="w-full bg-[#F9F6F0] border border-[#C4B29E] text-[#4A3728] py-2.5 rounded-xl font-bold hover:bg-[#8C5A2B] hover:border-[#8C5A2B] hover:text-white transition-all flex items-center justify-center gap-2 font-sans group/btn">
-                                                        <ShoppingCart size={18} className="group-hover/btn:-rotate-12 transition-transform" /> 加入書包
-                                                    </button>
-                                                </div>
-                                            </div>
-                                        ))}
-                                    </div>
-                                    {randomBooks.length === 0 && (
-                                        <div className="text-center text-[#8C5A2B] py-10 font-bold">書籍載入中或資料庫無書籍...</div>
-                                    )}
-                                    <div className="mt-8 text-center">
-                                        <button onClick={openRandomBooksModal} className="bg-[#2C241B] text-white px-8 py-3 rounded-full font-bold shadow-md hover:bg-[#8C5A2B] transition flex items-center justify-center mx-auto gap-2">
-                                            <Zap size={18} /> 再換一批看看
-                                        </button>
-                                    </div>
+                                <div className="flex-1 w-full bg-white relative overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                                    <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>
                                 </div>
                             </div>
                         </div>
                     )}
 
-                    {isSearchModalOpen && (
-                        <div className="fixed inset-0 bg-[#F9F6F0] z-[150] overflow-y-auto animate-in flex flex-col">
-                            <nav className="p-4 md:px-8 border-b border-[#E6D5C3] flex justify-between items-center bg-white shadow-sm sticky top-0 z-40">
-                                <div className="flex items-center space-x-3">
-                                    <ModernLogo className="w-8 h-8" />
-                                    <div>
-                                        <h1 className="text-xl font-black text-[#2C241B] tracking-[0.1em] font-sans">書籍目錄查詢</h1>
-                                        <span className="text-[10px] tracking-widest text-[#8C5A2B] font-sans font-bold">{settings.systemName || '文史哲出版社'}圖書檢索</span>
-                                    </div>
-                                </div>
-                                <div className="flex items-center gap-3">
-                                    <button onClick={() => setIsCartOpen(true)} className="relative bg-[#F9F6F0] border border-[#C4B29E] text-[#2C241B] px-4 py-2 rounded-full flex items-center gap-2 hover:bg-[#E6D5C3] transition-all shadow-sm font-sans font-bold group">
-                                        <ShoppingCart size={18} className="group-hover:scale-110 transition-transform" />
-                                        <span className="hidden sm:inline">我的書包</span>
-                                        {cart.length > 0 && <span className="absolute -top-2 -right-2 bg-red-600 text-white text-[12px] min-w-[24px] h-6 px-1 rounded-full flex items-center justify-center font-bold shadow-md border-2 border-white animate-bounce">{cart.length}</span>}
-                                    </button>
-                                    <button onClick={() => setIsSearchModalOpen(false)} className="bg-[#E6D5C3]/40 border border-[#C4B29E] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[#4A3728] transition flex items-center gap-2 shadow-sm">
-                                        <X size={16} /> <span className="hidden sm:inline">關閉檢索，返回首頁</span>
-                                    </button>
-                                </div>
-                            </nav>
-                            <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8">
-                                <div className="mb-8 flex justify-between items-end border-b-2 border-[#E6D5C3] pb-4">
-                                    <h3 className="text-3xl font-black text-[#36454F] flex items-center gap-3 font-serif tracking-widest">
-                                        進階篩選器
-                                    </h3>
-                                    <div className="text-sm text-[#8C5A2B] font-sans font-bold flex items-center gap-1.5">
-                                        查詢到共 <span className="text-xl font-black bg-[#E6D5C3]/30 px-2 rounded">{indexSearchBooks.length}</span> 本書籍
-                                    </div>
-                                </div>
-                                <form onSubmit={handleSearchSubmit} className="bg-white p-6 md:p-8 rounded-2xl border border-[#E6D5C3] shadow-sm mb-10 font-sans">
-                                    <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-6">
-                                        <div><label className="block text-sm font-bold text-[#4A3728] mb-2">書碼查詢</label><input type="text" value={searchForm.code} onChange={(e) => setSearchForm({...searchForm, code: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]" /></div>
-                                        <div><label className="block text-sm font-bold text-[#4A3728] mb-2">書名關鍵字</label><input type="text" value={searchForm.title} onChange={(e) => setSearchForm({...searchForm, title: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]" /></div>
-                                        <div><label className="block text-sm font-bold text-[#4A3728] mb-2">作者關鍵字</label><input type="text" value={searchForm.author} onChange={(e) => setSearchForm({...searchForm, author: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]" /></div>
-                                        <div><label className="block text-sm font-bold text-[#4A3728] mb-2">出版年</label><input type="text" value={searchForm.year} onChange={(e) => setSearchForm({...searchForm, year: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]" /></div>
-                                        <div className="md:col-span-2">
-                                            <label className="block text-sm font-bold text-[#4A3728] mb-2">書籍類別 (與試算表同步)</label>
-                                            <select value={searchForm.category} onChange={(e) => setSearchForm({...searchForm, category: e.target.value})} className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl outline-none focus:border-[#8C5A2B] bg-[#F9F6F0]">
-                                                <option value="">全部</option>
-                                                {/* 🔥 確保檢索分類與 Excel 中的 Book_ALL 分類一致 */}
-                                                {excelCategories.map(cat => (<option key={cat} value={cat}>{cat}</option>))}
-                                            </select>
-                                        </div>
-                                    </div>
-                                    <button type="submit" className="bg-[#2C241B] text-[#F9F6F0] px-8 py-3 rounded-full font-bold hover:bg-[#8C5A2B] transition-colors flex items-center gap-2 shadow-sm border border-transparent active:scale-95"><Search size={18} /> 查詢</button>
-                                </form>
-                                <div className="bg-white border border-[#E6D5C3] rounded-2xl overflow-hidden shadow-sm font-sans mb-8">
-                                    <div className="overflow-x-auto">
-                                        <table className="w-full text-left border-collapse min-w-[900px]">
-                                            <thead>
-                                                <tr className="bg-[#2C241B] text-[#F9F6F0] text-[15px] tracking-wider border-b-4 border-[#8C5A2B]">
-                                                    <th className="p-4 font-bold whitespace-nowrap">書碼</th><th className="p-4 font-bold min-w-[200px]">書名</th>
-                                                    <th className="p-4 font-bold">作者</th><th className="p-4 font-bold">出版年</th><th className="p-4 font-bold">定價</th>
-                                                    <th className="p-4 font-bold">叢書類別</th><th className="p-4 font-bold text-center">操作</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody className="divide-y divide-[#E6D5C3]">
-                                                {visibleSearchBooks.map((book, idx) => (
-                                                    <tr key={book.id || idx} className="hover:bg-[#F9F6F0] transition-colors text-[#2C241B] text-sm group">
-                                                        <td className="p-4 font-mono text-[#8C5A2B] border-b border-dashed border-[#E6D5C3]">{book.id || '-'}</td>
-                                                        <td className="p-4 font-bold border-b border-dashed border-[#E6D5C3] flex items-center gap-3">
-                                                            <img src={formatImageUrl(book.cover)} className="w-10 h-12 object-cover rounded shadow-sm border bg-white" onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
-                                                            {book.title}
-                                                        </td>
-                                                        <td className="p-4 border-b border-dashed border-[#E6D5C3]">{book.author || '-'}</td>
-                                                        <td className="p-4 border-b border-dashed border-[#E6D5C3]">{book.year || '-'}</td>
-                                                        <td className="p-4 font-bold text-[#8C5A2B] border-b border-dashed border-[#E6D5C3]">{book.price ? `${book.price}元` : '-'}</td>
-                                                        <td className="p-4 border-b border-dashed border-[#E6D5C3]">{book.category || '-'}</td>
-                                                        <td className="p-3 text-center border-b border-dashed border-[#E6D5C3]">
-                                                            {book.stock > 0 ? (
-                                                                <button onClick={() => addToCart(book)} className="bg-white border border-[#C4B29E] text-[#2C241B] p-2.5 rounded-lg hover:bg-[#8C5A2B] hover:text-white transition-all shadow-sm flex items-center justify-center mx-auto active:scale-95"><ShoppingCart size={18} /></button>
-                                                            ) : (<span className="text-gray-400 font-bold text-xs bg-gray-100 px-2 py-1 rounded">缺貨中</span>)}
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </div>
-                                </div>
-                                {indexSearchBooks.length > searchVisibleCount && (
-                                    <div className="text-center font-sans mb-10">
-                                        <button onClick={() => setSearchVisibleCount(prev => prev + 8)} className="bg-[#F9F6F0] border-2 border-[#C4B29E] text-[#2C241B] px-8 py-3 rounded-full font-bold hover:bg-[#2C241B] hover:text-[#F9F6F0] transition-all flex items-center gap-2 mx-auto shadow-sm">
-                                            顯示更多書籍 <ChevronRight size={18}/>
-                                        </button>
-                                    </div>
-                                )}
-                            </main>
-                        </div>
-                    )}
-
+                    {/* 🔥 購物車 Modal (修復手機版捲動與新增寄件備註) */}
                     {isCartOpen && (
-                        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex justify-center items-center p-4 md:p-6" onClick={() => setIsCartOpen(false)}>
-                            <div className="bg-[#F9F6F0] w-full max-w-5xl max-h-[90vh] flex flex-col md:flex-row shadow-2xl rounded-2xl animate-in font-sans overflow-hidden" onClick={(e) => e.stopPropagation()}>
-                                <div className="flex-1 flex flex-col bg-[#F9F6F0] max-h-[50vh] md:max-h-none border-b md:border-b-0 md:border-r border-[#E6D5C3]">
-                                    <div className="p-5 md:p-6 border-b border-[#E6D5C3] flex justify-between items-center bg-white shrink-0">
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex justify-end" onClick={() => setIsCartOpen(false)}>
+                            {/* 🔥 調整整體包裹容器，讓手機版可以垂直完整滾動，電腦版才分成左右區塊 */}
+                            <div className="bg-[#F9F6F0] w-full max-w-5xl h-[100vh] md:h-auto md:max-h-[90vh] flex flex-col md:flex-row shadow-2xl md:rounded-l-2xl animate-in font-sans overflow-y-auto md:overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                                
+                                {/* 左側：我的書包清單 */}
+                                <div className="flex-1 flex flex-col bg-[#F9F6F0] h-auto md:h-[90vh] md:overflow-y-auto border-b md:border-b-0 md:border-r border-[#E6D5C3] shrink-0 md:shrink">
+                                    <div className="sticky top-0 z-10 p-5 md:p-6 border-b border-[#E6D5C3] flex justify-between items-center bg-white shrink-0">
                                         <h2 className="text-xl md:text-2xl font-black flex items-center gap-3 text-[#2C241B] font-serif tracking-widest"><ShoppingCart className="text-[#8C5A2B]" size={28} /> 我的書包</h2>
                                         <button onClick={() => setIsCartOpen(false)} className="md:hidden bg-[#F9F6F0] border border-[#C4B29E] hover:bg-[#E6D5C3] px-3 py-1.5 rounded-full text-sm font-bold text-[#4A3728] transition flex items-center gap-1 shadow-sm"><X size={16} /> 關閉</button>
                                     </div>
-                                    <div className="flex-1 overflow-y-auto p-4 md:p-6">
+                                    <div className="flex-1 p-4 md:p-6">
                                         {cart.length === 0 ? (
                                             <div className="text-center mt-10 md:mt-20 flex flex-col items-center gap-6">
                                                 <div className="w-24 h-24 bg-[#E6D5C3]/30 rounded-full flex items-center justify-center text-[#C4B29E]"><ShoppingCart size={48} /></div>
@@ -903,8 +805,9 @@
                                     </div>
                                 </div>
 
+                                {/* 右側：填寫資料與結帳 */}
                                 {cart.length > 0 && (
-                                    <div className="w-full md:w-[400px] lg:w-[450px] bg-white p-6 shadow-[-10px_0_20px_rgba(0,0,0,0.02)] flex flex-col shrink-0 overflow-y-auto">
+                                    <div className="w-full md:w-[400px] lg:w-[450px] bg-white p-6 shadow-[-10px_0_20px_rgba(0,0,0,0.02)] flex flex-col shrink-0 h-auto md:h-[90vh] md:overflow-y-auto">
                                         <div className="hidden md:flex justify-end mb-6">
                                             <button onClick={() => setIsCartOpen(false)} className="bg-[#F9F6F0] border border-[#C4B29E] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[#4A3728] transition flex items-center gap-1 shadow-sm"><X size={16} /> 關閉</button>
                                         </div>
@@ -931,12 +834,12 @@
                                                     <option value="線上刷卡">線上刷卡</option>
                                                 </select>
                                             </div>
-                                            {/* 🔥 新增：寄件備註欄位 */}
+                                            {/* 🔥 寄件備註 (選填) */}
                                             <div>
                                                 <label className="block text-xs font-bold text-gray-500 mb-1">寄件備註 (選填)</label>
                                                 <textarea name="memo" placeholder="若有特殊收件需求請填寫於此..." className="w-full border-2 border-[#E6D5C3] p-3 rounded-xl focus:border-[#8C5A2B] bg-[#F9F6F0] text-sm outline-none h-16 resize-none"></textarea>
                                             </div>
-                                            <button disabled={isCheckingOut} className={`w-full bg-[#2C241B] text-white py-4 rounded-xl font-bold mt-auto shadow-lg transition-colors flex justify-center items-center gap-2 text-lg ${isCheckingOut ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#8C5A2B] active:scale-[0.98]'}`}>
+                                            <button disabled={isCheckingOut} className={`w-full bg-[#2C241B] text-white py-4 rounded-xl font-bold mt-auto shadow-lg transition-colors flex justify-center items-center gap-2 text-lg mb-6 md:mb-0 ${isCheckingOut ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[#8C5A2B] active:scale-[0.98]'}`}>
                                                 {isCheckingOut ? <Clock className="animate-spin" size={22} /> : <CheckCircle size={22} />}
                                                 {isCheckingOut ? '訂單處理中...' : '確認結帳下單'}
                                             </button>
@@ -960,3 +863,6 @@
     </script>
 </body>
 </html>
+
+
+
