@@ -142,7 +142,7 @@
             { user: 'candyni', password: '605' }
         ];
 
-        // 🔥 更新預設值，加入 sidebarSubText (DIGITAL CMS 替代品)
+        // 🔥 更新預設值，加入 sidebarSubText
         const defaultSettings = {
             systemName: '文史哲出版社', systemSubName: 'Digital CMS', logoUrl: '', subLogoUrl: '', userAvatarUrl: '',
             adminPanelName: 'ADMIN PANEL', sidebarSubText: 'Digital CMS', onlineStatusText: 'Online',
@@ -551,7 +551,7 @@
                                     )}
                                 </div>
                                 <h2 className="text-3xl font-black tracking-tight" style={{ color: settings.loginTextColor }}>{settings.systemName}</h2>
-                                <p className="text-xs mt-2 font-bold uppercase tracking-[0.3em]" style={{ color: settings.loginTextColor, opacity: 0.7 }}>{settings.systemSubName}</p>
+                                <p className="text-sm mt-3 font-bold uppercase tracking-[0.3em]" style={{ color: settings.loginTextColor, opacity: 0.8 }}>{settings.systemSubName}</p>
                             </div>
                             
                             <form onSubmit={handleLogin} className="space-y-6">
@@ -625,9 +625,9 @@
                                 {settings.subLogoUrl ? (
                                     <img src={formatImageUrl(settings.subLogoUrl)} className="h-6 object-contain object-left" alt="SubLogo" />
                                 ) : (
-                                    <span className="font-black tracking-widest uppercase text-sm block truncate" style={{ color: settings.adminPanelColor || settings.sidebarTextColor }}>{settings.adminPanelName || 'ADMIN PANEL'}</span>
+                                    <span className="font-black tracking-widest uppercase text-base block truncate" style={{ color: settings.adminPanelColor || settings.sidebarTextColor }}>{settings.adminPanelName || 'ADMIN PANEL'}</span>
                                 )}
-                                <span className="text-[9px] font-bold tracking-widest uppercase" style={{ color: settings.sidebarTextColor, opacity: 0.6 }}>{settings.sidebarSubText || 'Digital CMS'}</span>
+                                <span className="text-xs font-bold tracking-widest uppercase mt-1" style={{ color: settings.sidebarTextColor, opacity: 0.85 }}>{settings.sidebarSubText || 'Digital CMS'}</span>
                             </div>
                         </div>
 
@@ -1030,7 +1030,7 @@
                             )}
 
                             {activeTab === 'orders' && (
-                                <div className="rounded-[2rem] border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden animate-in flex flex-col relative h-full min-h-[500px]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
+                                <div className="rounded-[2rem] border border-black/5 shadow-[0_8px_30px_rgb(0,0,0,0.04)] overflow-hidden animate-in flex flex-col relative h-full min-h-[500px]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
                                     {loadStatus.orders ? (
                                         <div className="flex justify-center items-center h-48 opacity-60"><Clock size={20} className="animate-spin mr-2"/> 載入訂單中...</div>
                                     ) : (
@@ -1126,7 +1126,7 @@
                     {showBookModal && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={()=>setShowBookModal(false)}>
                             <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-black/10 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold tracking-tight bg-black/5"><div className="flex items-center gap-2"><Database size={18} style={{ color: settings.sidebarActiveColor }}/> 書籍內容管理</div><button onClick={() => setShowBookModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
+                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold tracking-tight bg-black/5"><div className="flex items-center gap-2"><Database size={18} style={{ color: settings.sidebarActiveColor }}/> 書籍內容管理</div><button onClick={() => setShowBookModal(prev => false)} className="opacity-50 hover:opacity-100">✖</button></div>
                                 <form onSubmit={handleSaveBook} className="p-6 space-y-4 overflow-y-auto sidebar-scroll">
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">書籍標題</label><input name="title" defaultValue={editingBook?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="例如：新版論語譯註" style={{ color: 'inherit' }}/></div>
                                     <div className="grid grid-cols-2 gap-4">
@@ -1168,7 +1168,7 @@
                     {showCarouselModal && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={()=>setShowCarouselModal(false)}>
                             <div className="w-full max-w-lg rounded-[2.5rem] shadow-2xl overflow-hidden animate-in border border-black/10 flex flex-col max-h-[90vh]" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e)=>e.stopPropagation()}>
-                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold bg-orange-50/50 text-orange-800"><div className="flex items-center gap-2"><Zap size={18}/> 輪播宣傳編輯</div><button onClick={() => setShowCarouselModal(false)} className="opacity-50 hover:opacity-100">✖</button></div>
+                                <div className="p-5 border-b border-black/5 flex justify-between items-center font-bold bg-orange-50/50 text-orange-800"><div className="flex items-center gap-2"><Zap size={18}/> 輪播宣傳編輯</div><button onClick={() => setShowCarouselModal(prev => false)} className="opacity-50 hover:opacity-100">✖</button></div>
                                 <form onSubmit={handleSaveCarousel} className="p-6 space-y-4 overflow-y-auto sidebar-scroll">
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">促銷標題</label><input name="title" defaultValue={editingCarousel?.title || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none transition-colors" placeholder="例如：夏季大特價" style={{ color: 'inherit' }}/></div>
                                     <div className="space-y-1"><label className="text-[10px] font-black opacity-60 uppercase tracking-widest ml-1">簡介描述</label><textarea name="description" defaultValue={editingCarousel?.description || ''} required className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm h-24 resize-none font-bold outline-none transition-colors" placeholder="顯示在標題下方的副標題..." style={{ color: 'inherit' }}/></div>
@@ -1188,7 +1188,7 @@
                                         <div className="p-2 rounded-xl text-white" style={{ backgroundColor: settings.sidebarActiveColor }}><Truck size={18}/></div>
                                         編輯訂單細節
                                     </div>
-                                    <button onClick={() => setShowOrderModal(false)} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
+                                    <button onClick={() => setShowOrderModal(prev => false)} className="opacity-50 hover:opacity-100 transition"><X size={16}/></button>
                                 </div>
                                 <div className="overflow-y-auto flex-1 p-6 lg:p-8 sidebar-scroll">
                                     <form onSubmit={handleSaveOrder} className="space-y-6 pb-8">
@@ -1238,14 +1238,15 @@
 
                     {/* 外部 iframe 彈出視窗 */}
                     {iframeModal.isOpen && (
-                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })}>
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-50 p-4 py-10 flex items-center justify-center" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))}>
                             <div className="w-full max-w-5xl h-full max-h-[90vh] rounded-[2.5rem] shadow-2xl flex flex-col overflow-hidden animate-in border border-black/10" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }} onClick={(e) => e.stopPropagation()}>
                                 <div className="p-5 border-b border-black/5 flex justify-between items-center bg-black/5 shrink-0">
                                     <h2 className="text-xl font-black flex items-center gap-3 tracking-widest"><ExternalLink size={20} style={{ color: settings.sidebarActiveColor }} /> {iframeModal.title}</h2>
-                                    <button onClick={() => setIframeModal({ isOpen: false, url: '', title: '' })} className="bg-black/5 border border-black/10 hover:bg-black/10 px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
+                                    <button onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))} className="bg-black/5 border border-black/10 hover:bg-black/10 px-4 py-2 rounded-full text-sm font-bold transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
                                 </div>
                                 <div className="flex-1 w-full relative overflow-y-auto sidebar-scroll" style={{ backgroundColor: '#ffffff' }}>
-                                    <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>
+                                    {/* 🔥 URL 若為空則不嘗試渲染 iframe src */}
+                                    {iframeModal.url && <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>}
                                 </div>
                             </div>
                         </div>
