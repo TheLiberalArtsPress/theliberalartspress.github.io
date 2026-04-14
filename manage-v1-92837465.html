@@ -125,11 +125,13 @@
             { user: 'candyni', password: '605' }
         ];
 
-        // 🔥 更新預設值，加入 sidebarUserColor 與 subLogoUrl
+        // 🔥 更新預設值，加入 ADMIN PANEL 與 Online 的文字與顏色設定
         const defaultSettings = {
-            systemName: '文史哲出版社', systemSubName: 'Digital CMS', logoUrl: '', subLogoUrl: '',
+            systemName: '文史哲出版社', systemSubName: 'Digital CMS', logoUrl: '', subLogoUrl: '', userAvatarUrl: '',
+            adminPanelName: 'ADMIN PANEL', onlineStatusText: 'Online',
             loginBgColor: '#09090b', loginCardBgColor: '#ffffff', loginTextColor: '#27272a',
             sidebarBgColor: '#09090b', sidebarActiveColor: '#4f46e5', sidebarTextColor: '#a1a1aa', sidebarUserColor: '#ffffff',
+            adminPanelColor: '#a1a1aa', onlineStatusColor: '#34d399',
             mainBgColor: '#F4F4F5', mainTextColor: '#27272a', cardBgColor: '#ffffff', cardTextColor: '#3f3f46', kpiBgColor: '#ffffff',
             menuDashName: '營運分析中心', menuMarketingName: '行銷與推薦', menuBooksName: '總商品庫存',
             menuOrdersName: '銷售與物流', menuCsName: '智能客戶關係', menuExtName: '外部系統鏈接',
@@ -303,6 +305,7 @@
                 }
             }, [editingKpi]);
 
+            // KPI 自動連動更新
             useEffect(() => {
                 if (kpis.length === 0 || loadStatus.kpis || !isAuthenticated) return;
                 let hasChanges = false;
@@ -575,11 +578,12 @@
                     {!isSidebarOpen && (
                         <button 
                             onClick={() => setIsSidebarOpen(true)} 
-                            className="fixed top-4 left-4 z-[60] w-12 h-12 rounded-2xl shadow-xl flex items-center justify-center overflow-hidden hover:scale-105 transition-all border border-black/10 cursor-pointer"
-                            style={{ backgroundColor: settings.logoUrl ? 'transparent' : settings.sidebarActiveColor }}
+                            className="fixed top-4 left-4 z-[60] w-14 h-14 rounded-full shadow-2xl flex items-center justify-center overflow-hidden hover:scale-105 transition-all border-2 border-white/20 cursor-pointer"
+                            style={{ backgroundColor: (settings.userAvatarUrl || settings.logoUrl) ? 'transparent' : settings.sidebarActiveColor }}
+                            title="展開側邊欄"
                         >
-                            {settings.logoUrl ? (
-                                <img src={formatImageUrl(settings.logoUrl)} className="w-full h-full object-cover" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                            {(settings.userAvatarUrl || settings.logoUrl) ? (
+                                <img src={formatImageUrl(settings.userAvatarUrl || settings.logoUrl)} className="w-full h-full object-cover" alt="Expand" />
                             ) : (
                                 <Menu size={24} className="text-white" />
                             )}
@@ -587,22 +591,22 @@
                     )}
 
                     <aside className={`flex-shrink-0 transition-all z-30 shadow-2xl flex flex-col ${isSidebarOpen ? '' : '-translate-x-full absolute md:relative'}`} style={{ width: isSidebarOpen ? '260px' : '0px', backgroundColor: settings.sidebarBgColor }}>
-                        {/* 🔥 側邊欄 Logo 區塊 (可點擊收起) */}
-                        <div className="p-6 flex items-center gap-3 h-20 shrink-0 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-colors" onClick={() => setIsSidebarOpen(false)} title="點擊收起側邊欄">
-                            <div className="w-12 h-12 rounded-xl text-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm p-0" style={{ backgroundColor: settings.logoUrl ? 'transparent' : settings.sidebarActiveColor }}>
+                        {/* 側邊欄 Logo 區塊 (滿版圖片，點擊收起) */}
+                        <div className="flex items-center gap-3 h-20 shrink-0 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-colors pr-4" onClick={() => setIsSidebarOpen(false)} title="點擊收起側邊欄">
+                            <div className="h-full aspect-square text-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm" style={{ backgroundColor: settings.logoUrl ? 'transparent' : settings.sidebarActiveColor }}>
                                 {settings.logoUrl ? (
                                     <img src={formatImageUrl(settings.logoUrl)} className="w-full h-full object-cover" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
                                 ) : (
                                     <BookOpen size={24} className="text-white" />
                                 )}
                             </div>
-                            <div className="overflow-hidden flex flex-col justify-center gap-1">
+                            <div className="overflow-hidden flex flex-col justify-center gap-1 py-2">
                                 {settings.subLogoUrl ? (
                                     <img src={formatImageUrl(settings.subLogoUrl)} className="h-6 object-contain object-left" alt="SubLogo" />
                                 ) : (
-                                    <span className="font-black tracking-widest uppercase text-sm block truncate" style={{ color: settings.sidebarTextColor }}>{settings.systemSubName}</span>
+                                    <span className="font-black tracking-widest uppercase text-sm block truncate" style={{ color: settings.adminPanelColor || settings.sidebarTextColor }}>{settings.adminPanelName || 'ADMIN PANEL'}</span>
                                 )}
-                                <span className="text-[9px] font-bold tracking-widest uppercase" style={{ color: settings.sidebarTextColor, opacity: 0.6 }}>Admin Panel</span>
+                                <span className="text-[9px] font-bold tracking-widest uppercase" style={{ color: settings.sidebarTextColor, opacity: 0.6 }}>Digital CMS</span>
                             </div>
                         </div>
 
@@ -643,13 +647,19 @@
                         </nav>
                         <div className="p-4 border-t border-white/5 shrink-0" style={{ backgroundColor: 'rgba(0,0,0,0.2)' }}>
                             <div className="flex items-center gap-3 px-3 py-2 mb-3">
-                                <div className="w-8 h-8 rounded-full flex items-center justify-center font-bold text-xs text-white border border-white/20 shrink-0" style={{ backgroundColor: settings.sidebarActiveColor }}> {selectedAccount.charAt(0).toUpperCase()} </div>
+                                <div className="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm text-white border border-white/20 shrink-0 overflow-hidden shadow-sm" style={{ backgroundColor: settings.userAvatarUrl ? 'transparent' : settings.sidebarActiveColor }}>
+                                    {settings.userAvatarUrl ? (
+                                        <img src={formatImageUrl(settings.userAvatarUrl)} className="w-full h-full object-cover" alt="User" onError={(e)=>{e.target.style.display='none'}} />
+                                    ) : (
+                                        selectedAccount.charAt(0).toUpperCase()
+                                    )}
+                                </div>
                                 <div className="overflow-hidden">
                                     <div className="text-xs font-bold leading-tight truncate" style={{ color: settings.sidebarUserColor || settings.sidebarTextColor }}>{selectedAccount}</div>
-                                    <div className="text-[10px] text-emerald-400 font-bold truncate">Online</div>
+                                    <div className="text-[10px] font-bold truncate tracking-widest mt-0.5" style={{ color: settings.onlineStatusColor || '#34d399' }}>{settings.onlineStatusText || 'Online'}</div>
                                 </div>
                             </div>
-                            <button onClick={() => { window.location.href = 'index.html'; }} className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-xs font-bold" style={{ color: settings.sidebarTextColor }}><Globe size={14} /> 前往網站前台</button>
+                            <button onClick={() => { window.location.href = 'index.html'; }} className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-xs font-bold shadow-sm" style={{ color: settings.sidebarTextColor }}><Globe size={14} /> 前往網站前台</button>
                         </div>
                     </aside>
                     
@@ -742,7 +752,7 @@
                                     <form onSubmit={handleSaveSettings} className="space-y-8 p-8 rounded-[2.5rem] shadow-[0_8px_30px_rgb(0,0,0,0.04)] border border-black/5" style={{ backgroundColor: settings.cardBgColor, color: settings.cardTextColor }}>
                                         <div>
                                             <h4 className="text-sm font-black mb-5 flex items-center gap-2 border-b border-black/10 pb-2"><Palette size={16} className="opacity-50"/> 基礎視覺顏色</h4>
-                                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                                            <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-6">
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">登入頁背景</label>
                                                     <input type="color" name="loginBgColor" defaultValue={settings.loginBgColor} className="shadow-sm border border-black/10" />
@@ -754,22 +764,6 @@
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">登入文字顏色</label>
                                                     <input type="color" name="loginTextColor" defaultValue={settings.loginTextColor} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊欄背景</label>
-                                                    <input type="color" name="sidebarBgColor" defaultValue={settings.sidebarBgColor} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊選單文字色</label>
-                                                    <input type="color" name="sidebarTextColor" defaultValue={settings.sidebarTextColor} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊用戶名稱色</label>
-                                                    <input type="color" name="sidebarUserColor" defaultValue={settings.sidebarUserColor || '#ffffff'} className="shadow-sm border border-black/10" />
-                                                </div>
-                                                <div className="space-y-2">
-                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">高亮主題色 (選單)</label>
-                                                    <input type="color" name="sidebarActiveColor" defaultValue={settings.sidebarActiveColor} className="shadow-sm border border-black/10" />
                                                 </div>
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">內頁主背景顏色</label>
@@ -790,6 +784,36 @@
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">KPI 卡片底色</label>
                                                     <input type="color" name="kpiBgColor" defaultValue={settings.kpiBgColor} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">高亮主題色 (選單)</label>
+                                                    <input type="color" name="sidebarActiveColor" defaultValue={settings.sidebarActiveColor} className="shadow-sm border border-black/10" />
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div>
+                                            <h4 className="text-sm font-black mb-5 flex items-center gap-2 border-b border-black/10 pb-2"><BookOpen size={16} className="opacity-50"/> 側邊欄專屬顏色</h4>
+                                            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 mb-6">
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊欄背景</label>
+                                                    <input type="color" name="sidebarBgColor" defaultValue={settings.sidebarBgColor} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊選單文字色</label>
+                                                    <input type="color" name="sidebarTextColor" defaultValue={settings.sidebarTextColor} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">側邊用戶名稱色</label>
+                                                    <input type="color" name="sidebarUserColor" defaultValue={settings.sidebarUserColor || '#ffffff'} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">Admin Panel 文字色</label>
+                                                    <input type="color" name="adminPanelColor" defaultValue={settings.adminPanelColor || '#a1a1aa'} className="shadow-sm border border-black/10" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">上線狀態 (Online) 色</label>
+                                                    <input type="color" name="onlineStatusColor" defaultValue={settings.onlineStatusColor || '#34d399'} className="shadow-sm border border-black/10" />
                                                 </div>
                                             </div>
                                         </div>
@@ -813,9 +837,21 @@
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">自訂副標題圖片 (Sub Logo URL)</label>
                                                     <input name="subLogoUrl" defaultValue={settings.subLogoUrl || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} placeholder="留空則使用文字副標題" />
                                                 </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">自訂使用者頭像 (Drive ID / URL)</label>
+                                                    <input name="userAvatarUrl" defaultValue={settings.userAvatarUrl || ''} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} placeholder="留空則顯示帳號首字母" />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">管理面板小字 (Admin Panel)</label>
+                                                    <input name="adminPanelName" defaultValue={settings.adminPanelName || 'ADMIN PANEL'} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
+                                                </div>
+                                                <div className="space-y-2">
+                                                    <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">連線狀態文字 (Online)</label>
+                                                    <input name="onlineStatusText" defaultValue={settings.onlineStatusText || 'Online'} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
+                                                </div>
                                             </div>
                                             
-                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-8 border-t border-black/10 pt-6">
                                                 <div className="space-y-2">
                                                     <label className="text-[10px] font-black uppercase tracking-widest ml-1 opacity-60">模組 1 名稱 (儀表板)</label>
                                                     <input name="menuDashName" defaultValue={settings.menuDashName} className="w-full bg-black/5 border border-black/10 p-3.5 rounded-2xl text-sm font-bold outline-none" style={{ color: 'inherit' }} />
@@ -884,7 +920,7 @@
                                                         <h3 className="font-black text-xl mb-2">{c.title}</h3>
                                                         <p className="text-sm opacity-70 line-clamp-2 mb-6 leading-relaxed">{c.description}</p>
                                                         <div className="mt-auto flex justify-end gap-3 pt-4 border-t border-black/5">
-                                                            <button onClick={() => { setEditingCarousel(c); setShowCarouselModal(true); }} className="opacity-60 hover:opacity-100 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs bg-black/5" style={{ color: settings.sidebarActiveColor }}><Edit2 size={14}/> 編輯</button>
+                                                            <button onClick={() => { setEditingCarousel(c); setShowCarouselModal(true); }} className="opacity-60 hover:opacity-100 hover:text-indigo-600 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs bg-black/5"><Edit2 size={14}/> 編輯</button>
                                                             <button onClick={() => handleDeleteCarousel(c.id)} className="opacity-60 hover:opacity-100 text-red-500 px-5 py-2 rounded-xl flex items-center gap-2 transition font-bold text-xs bg-black/5"><Trash2 size={14}/> 刪除</button>
                                                         </div>
                                                     </div>
@@ -928,10 +964,10 @@
                                                 <table className="w-full text-left border-collapse min-w-[800px] table-fixed">
                                                     <thead className="border-b border-black/10" style={{ backgroundColor: 'rgba(0,0,0,0.03)' }}>
                                                         <tr className="text-[10px] font-black uppercase tracking-[0.15em] opacity-60">
-                                                            <th className="p-4 pl-6 w-[35%]">書籍詳情 (書碼)</th>
-                                                            <th className="p-4 w-[20%]">作者 / 年份</th>
-                                                            <th className="p-4 w-[10%]">類別</th>
-                                                            <th className="p-4 w-[10%]">庫存</th>
+                                                            <th className="p-4 pl-6 w-[30%]">書籍詳情 (書碼)</th>
+                                                            <th className="p-4 w-[15%]">作者 / 年份</th>
+                                                            <th className="p-4 w-[15%]">類別</th>
+                                                            <th className="p-4 w-[15%]">庫存</th>
                                                             <th className="p-4 w-[15%]">價格</th>
                                                             <th className="p-4 w-[10%] text-right pr-6">操作</th>
                                                         </tr>
@@ -965,6 +1001,7 @@
                                                     </tbody>
                                                 </table>
                                             </div>
+                                            {/* 向下戴入按鈕 */}
                                             {filteredAdminBooks.length > adminVisibleCount && (
                                                 <div className="p-4 text-center border-t border-black/5" style={{ backgroundColor: 'rgba(0,0,0,0.02)' }}>
                                                     <button 
