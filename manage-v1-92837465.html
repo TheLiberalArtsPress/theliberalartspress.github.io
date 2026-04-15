@@ -97,7 +97,7 @@
         };
 
         // 🔥 更新為最新給定的 GAS_URL
-        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5STBncDVWXzFTaDRhMmJWYmRoaEQzd1pkY1dBdVVkTzZTaG4zT2Etd2xzYnVNTUREODJGdkpfZll1M3YwbGYzMFMvZXhlYw==";
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4MG4yX0tOVlNNdVBRY21hOE1IZG4yb0t0SS1ncUFZMjhzcWROQ3VrYnFXTGg5My1rTFFaMVJnbkdaSWRmV1VOSm4vZXhlYw==";
         const GAS_URL = atob(_0x4a21);
         const SECRET_KEY = "cd6ca599bdbb083d34a3012b84071c848cc4bca0698a53c3cc65a2c296dd3ddf";
 
@@ -231,10 +231,9 @@
                 return hh === '00' && min === '00' ? `${yyyy}/${mm}/${dd}` : `${yyyy}/${mm}/${dd} ${hh}:${min}`;
             };
 
-            // 🔥 加入嚴格的錯誤攔截與 Alert 提示
+            // 🔥 解決中文加密雜湊不匹配的完美解法
             const syncWithGAS = async (action, payloadData = null) => {
                 try {
-                    // 🔥 防崩潰修復：如果是在預覽環境，把 Origin 偽裝為允許的 GitHub 網址
                     const currentOrigin = window.location.origin;
                     const safeOrigin = currentOrigin.includes("usercontent.goog") 
                         ? "https://theliberalartspress.github.io" 
@@ -245,17 +244,23 @@
                         payload: payloadData,
                         origin: safeOrigin
                     };
-                    const payloadStr = JSON.stringify(payloadObj);
+                    
+                    // 將包含中文的 JSON 轉為精準的 Base64 字串，消除環境編碼差異
+                    const jsonStr = JSON.stringify(payloadObj);
+                    const utf8Bytes = new TextEncoder().encode(jsonStr);
+                    const payloadBase64 = btoa(String.fromCharCode(...utf8Bytes));
+                    
                     const timestamp = Date.now().toString();
                     
-                    const messageToSign = payloadStr + timestamp;
+                    // 針對純英文數字的 Base64 進行簽名，保證 100% 一致
+                    const messageToSign = payloadBase64 + timestamp;
                     const signature = await generateSignature(messageToSign, SECRET_KEY);
 
                     const response = await fetch(GAS_URL, {
                         method: "POST",
                         headers: { "Content-Type": "text/plain;charset=utf-8" },
                         body: JSON.stringify({
-                            payload: payloadStr,
+                            payload: payloadBase64,
                             timestamp: timestamp,
                             signature: signature
                         })
@@ -265,7 +270,7 @@
                     
                     if (data.status === 'error') {
                         console.error("後端拒絕請求:", data.msg);
-                        alert("API 執行失敗: " + data.msg + "\n(請確認 Code.gs 已成功部署為最新版本)");
+                        alert("API 執行失敗: " + data.msg);
                     }
                     
                     return data;
@@ -554,6 +559,7 @@
                 }
             };
 
+            // 登入畫面
             if (!isAuthenticated) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden transition-colors duration-500" style={{ backgroundColor: settings.loginBgColor }}>
