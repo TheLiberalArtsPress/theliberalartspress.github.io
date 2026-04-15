@@ -99,7 +99,7 @@
         );
 
         // 🔥 更新為最新指定的 GAS_URL
-        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5STBncDVWXzFTaDRhMmJWYmRoaEQzd1pkY1dBdVVkTzZTaG4zT2Etd2xzYnVNTUREODJGdkpfZll1M3YwbGYzMFMvZXhlYw==";
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4MG4yX0tOVlNNdVBRY21hOE1IZG4yb0t0SS1ncUFZMjhzcWROQ3VrYnFXTGg5My1rTFFaMVJnbkdaSWRmV1VOSm4vZXhlYw==";
         const GAS_URL = atob(_0x4a21); 
         const SECRET_KEY = "cd6ca599bdbb083d34a3012b84071c848cc4bca0698a53c3cc65a2c296dd3ddf";
 
@@ -210,10 +210,9 @@
                 return () => window.removeEventListener('scroll', handleScroll);
             }, []);
 
-            // 🔥 軍規級前端 fetch 模組 (支援 HMAC-SHA256, 時間戳, Origin)
+            // 🔥 前台軍規級安全：支援 Base64 + HMAC-SHA256 (消除中文簽章失敗問題)
             const syncWithGAS = async (action, payloadData = null) => {
                 try {
-                    // 🔥 防崩潰修復：如果是在預覽環境，把 Origin 偽裝為允許的 GitHub 網址
                     const currentOrigin = window.location.origin;
                     const safeOrigin = currentOrigin.includes("usercontent.goog") 
                         ? "https://theliberalartspress.github.io" 
@@ -224,19 +223,23 @@
                         payload: payloadData,
                         origin: safeOrigin
                     };
-                    const payloadStr = JSON.stringify(payloadObj);
+                    
+                    // 將包含中文的 JSON 轉為精準的 Base64 字串，消除環境編碼差異
+                    const jsonStr = JSON.stringify(payloadObj);
+                    const utf8Bytes = new TextEncoder().encode(jsonStr);
+                    const payloadBase64 = btoa(String.fromCharCode(...utf8Bytes));
+                    
                     const timestamp = Date.now().toString();
                     
-                    // 防竄改簽章計算
-                    const messageToSign = payloadStr + timestamp;
+                    // 針對純英文數字的 Base64 進行簽名，保證 100% 一致
+                    const messageToSign = payloadBase64 + timestamp;
                     const signature = await generateSignature(messageToSign, SECRET_KEY);
 
-                    // 統一使用 POST 請求
                     const response = await fetch(GAS_URL, {
                         method: "POST",
                         headers: { "Content-Type": "text/plain;charset=utf-8" },
                         body: JSON.stringify({
-                            payload: payloadStr,
+                            payload: payloadBase64,
                             timestamp: timestamp,
                             signature: signature
                         })
@@ -246,15 +249,16 @@
                     
                     if (data.status === 'error') {
                         console.error("後端拒絕請求:", data.msg);
-                        // 若為預覽環境跳出提示，正式環境則不干擾用戶
+                        // 若為預覽環境跳出提示，正式環境則不干擾一般讀者瀏覽
                         if(currentOrigin.includes("localhost") || currentOrigin.includes("usercontent.goog")) {
-                             alert("API 執行失敗: " + data.msg + "\n(請確認 Code.gs 已成功部署為最新版本)");
+                             alert("API 執行失敗: " + data.msg);
                         }
                     }
                     
                     return data;
                 } catch (e) {
                     console.error("GAS Sync Error:", e);
+                    // 只有在非一般讀者操作失敗時才顯示網路錯誤，避免打擾
                     return { status: 'error', msg: e.toString() };
                 }
             };
@@ -475,6 +479,7 @@
                                 <button type="button" onClick={() => setIsAboutOpen(true)} className="hover:text-[#8C5A2B] transition flex items-center gap-1.5"><Compass size={16}/> 關於我們</button>
                                 <button type="button" onClick={() => setIframeModal({ isOpen: true, url: 'https://hanlinma.github.io/candyni/%E9%97%9C%E6%96%BC%E7%A4%BE%E9%95%B7.html', title: '關於社長' })} className="hover:text-[#8C5A2B] transition flex items-center gap-1.5"><User size={16}/> 關於社長</button>
                                 <button type="button" onClick={() => setIframeModal({ isOpen: true, url: 'https://hanlinma.github.io/candyni/%E8%81%AF%E7%B9%AB%E6%88%91%E5%80%91.html', title: '聯繫我們' })} className="hover:text-[#8C5A2B] transition flex items-center gap-1.5"><MessageCircle size={16}/> 聯繫我們</button>
+                                {/* 🔥 按鈕皆已正確綁定開啟函數 */}
                                 <button type="button" onClick={openRandomBooksModal} className="hover:text-[#8C5A2B] transition flex items-center gap-1.5"><Zap size={16}/> 新書上市</button>
                                 <button type="button" onClick={() => setIsSearchModalOpen(true)} className="hover:text-[#F9F6F0] transition flex items-center gap-1.5 text-[#F9F6F0] bg-[#2C241B] hover:bg-[#8C5A2B] px-4 py-1.5 rounded-full shadow-sm"><Search size={16}/> 書籍檢索</button>
                             </div>
@@ -1024,6 +1029,7 @@
                                     <button type="button" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))} className="bg-[#F9F6F0] border border-[#C4B29E] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[#4A3728] transition flex items-center gap-2 shadow-sm"><X size={16} /> 關閉</button>
                                 </div>
                                 <div className="flex-1 w-full bg-white relative overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                                    {/* 🔥 URL 若為空則不嘗試渲染 iframe src，避免 Location Error */}
                                     {iframeModal.url && <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>}
                                 </div>
                             </div>
