@@ -97,13 +97,11 @@
         };
 
         // 🔥 更新為最新給定的 GAS_URL
-        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J3ZEcyc0FjX0VuTC1RR3k4cUhxemg4ZG5MZ0dMa3lLRFMzVWpxWTZBOXNka0xLd2pCMG42V3JHR3NsMkoyQTN1TFkvZXhlYw==";
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5STBncDVWXzFTaDRhMmJWYmRoaEQzd1pkY1dBdVVkTzZTaG4zT2Etd2xzYnVNTUREODJGdkpfZll1M3YwbGYzMFMvZXhlYw==";
         const GAS_URL = atob(_0x4a21);
-        
-        // 🔥 系統防護的共用 SECRET_KEY
         const SECRET_KEY = "cd6ca599bdbb083d34a3012b84071c848cc4bca0698a53c3cc65a2c296dd3ddf";
 
-        // 🔥 HMAC-SHA256 生成器 (Web Crypto API)
+        // 🔥 HMAC-SHA256 生成器
         async function generateSignature(message, secret) {
             const encoder = new TextEncoder();
             const keyData = encoder.encode(secret);
@@ -116,9 +114,8 @@
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
-        // 🔥 徹底防範 Location Crash 的防護型圖片網址產生器
         const formatImageUrl = (url) => {
-            const transparentFallback = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs='; // 安全的透明像素
+            const transparentFallback = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
             if (!url) return transparentFallback;
             let strUrl = String(url).trim();
             if (!strUrl || strUrl === '') return transparentFallback;
@@ -234,18 +231,23 @@
                 return hh === '00' && min === '00' ? `${yyyy}/${mm}/${dd}` : `${yyyy}/${mm}/${dd} ${hh}:${min}`;
             };
 
-            // 🔥 軍規級前端 fetch 模組 (支援 HMAC-SHA256, 時間戳, Origin)
+            // 🔥 加入嚴格的錯誤攔截與 Alert 提示
             const syncWithGAS = async (action, payloadData = null) => {
                 try {
+                    // 🔥 防崩潰修復：如果是在預覽環境，把 Origin 偽裝為允許的 GitHub 網址
+                    const currentOrigin = window.location.origin;
+                    const safeOrigin = currentOrigin.includes("usercontent.goog") 
+                        ? "https://theliberalartspress.github.io" 
+                        : currentOrigin;
+
                     const payloadObj = { 
                         action: action, 
                         payload: payloadData,
-                        origin: window.location.origin
+                        origin: safeOrigin
                     };
                     const payloadStr = JSON.stringify(payloadObj);
                     const timestamp = Date.now().toString();
                     
-                    // 防竄改簽章計算
                     const messageToSign = payloadStr + timestamp;
                     const signature = await generateSignature(messageToSign, SECRET_KEY);
 
@@ -258,9 +260,18 @@
                             signature: signature
                         })
                     });
-                    return await response.json();
+                    
+                    const data = await response.json();
+                    
+                    if (data.status === 'error') {
+                        console.error("後端拒絕請求:", data.msg);
+                        alert("API 執行失敗: " + data.msg + "\n(請確認 Code.gs 已成功部署為最新版本)");
+                    }
+                    
+                    return data;
                 } catch (e) {
                     console.error("GAS Sync Error:", e);
+                    alert("網路連線錯誤: " + e.toString());
                     return { status: 'error', msg: e.toString() };
                 }
             };
@@ -418,29 +429,27 @@
                 const updateAction = isChoice ? 'UPDATE_CHOICE' : 'UPDATE_BOOK';
                 const addAction = isChoice ? 'ADD_CHOICE' : 'ADD_BOOK';
 
-                if (editingBook) {
-                    const updated = { ...editingBook, ...bookData };
-                    setList(currentList.map(b => b.id === updated.id ? updated : b));
-                    await syncWithGAS(updateAction, updated);
-                } else {
-                    const newBook = { ...bookData, id: Date.now() }; 
-                    setList([newBook, ...currentList]);
-                    await syncWithGAS(addAction, newBook);
+                const res = await syncWithGAS(editingBook ? updateAction : addAction, editingBook ? { ...editingBook, ...bookData } : { ...bookData, id: Date.now() });
+                
+                if (res.status === 'success') {
+                    if (editingBook) {
+                        setList(currentList.map(b => b.id === editingBook.id ? { ...editingBook, ...bookData } : b));
+                    } else {
+                        setList([{ ...bookData, id: Date.now() }, ...currentList]);
+                    }
+                    setShowBookModal(false); setEditingBook(null);
+                    showMsg(`${isChoice ? '精選推薦' : '書籍庫存'}已更新至雲端`);
                 }
-                setShowBookModal(false); setEditingBook(null);
-                showMsg(`${isChoice ? '精選推薦' : '書籍庫存'}已更新至雲端`);
             };
 
             const handleDeleteBook = async (id, isChoice) => {
                 if(confirm(`確定要刪除這本${isChoice ? '精選推薦' : '書籍'}嗎？`)) {
-                    if (isChoice) {
-                        setChoiceBooks(choiceBooks.filter(b => b.id !== id));
-                        await syncWithGAS('DELETE_CHOICE', { id });
-                    } else {
-                        setBooks(books.filter(b => b.id !== id));
-                        await syncWithGAS('DELETE_BOOK', { id });
+                    const res = await syncWithGAS(isChoice ? 'DELETE_CHOICE' : 'DELETE_BOOK', { id });
+                    if (res.status === 'success') {
+                        if (isChoice) setChoiceBooks(choiceBooks.filter(b => b.id !== id));
+                        else setBooks(books.filter(b => b.id !== id));
+                        showMsg('資料已刪除');
                     }
-                    showMsg('資料已刪除');
                 }
             }
 
@@ -453,32 +462,36 @@
                     items: formData.get('items'), total: parseInt(formData.get('total')) || 0, payment: formData.get('payment'), status: formData.get('status'),
                     memo: formData.get('memo') || '' 
                 };
-                setOrders(orders.map(o => o.id === editingOrder.id ? { ...updated, id: newId || updated.id } : o));
-                await syncWithGAS('UPDATE_ORDER', updated); 
-                setShowOrderModal(false); setEditingOrder(null);
-                showMsg('訂單完整內容已修改');
+                
+                const res = await syncWithGAS('UPDATE_ORDER', updated); 
+                if(res.status === 'success') {
+                    setOrders(orders.map(o => o.id === editingOrder.id ? { ...updated, id: newId || updated.id } : o));
+                    setShowOrderModal(false); setEditingOrder(null);
+                    showMsg('訂單完整內容已修改');
+                }
             };
 
             const handleSaveCarousel = async (e) => {
                 e.preventDefault();
                 const formData = new FormData(e.target);
                 const slideData = { title: formData.get('title'), description: formData.get('description'), image: formData.get('image') || '', status: formData.get('status') };
-                if (editingCarousel) {
-                    const updated = { ...editingCarousel, ...slideData };
-                    setCarousels(carousels.map(c => c.id === updated.id ? updated : c));
-                    await syncWithGAS('UPDATE_CAROUSEL', updated);
-                } else {
-                    const newSlide = { ...slideData, id: Date.now() };
-                    setCarousels([newSlide, ...carousels]);
-                    await syncWithGAS('ADD_CAROUSEL', newSlide);
+                
+                const res = await syncWithGAS(editingCarousel ? 'UPDATE_CAROUSEL' : 'ADD_CAROUSEL', editingCarousel ? { ...editingCarousel, ...slideData } : { ...slideData, id: Date.now() });
+                
+                if (res.status === 'success') {
+                    if (editingCarousel) setCarousels(carousels.map(c => c.id === editingCarousel.id ? { ...editingCarousel, ...slideData } : c));
+                    else setCarousels([{ ...slideData, id: Date.now() }, ...carousels]);
+                    setShowCarouselModal(false); setEditingCarousel(null); showMsg('輪播設定已儲存');
                 }
-                setShowCarouselModal(false); setEditingCarousel(null); showMsg('輪播設定已儲存');
             };
 
             const handleDeleteCarousel = async (id) => {
                 if(confirm('確定要刪除此行銷輪播項目嗎？')) {
-                    setCarousels(carousels.filter(c => c.id !== id));
-                    await syncWithGAS('DELETE_CAROUSEL', { id }); showMsg('已刪除該輪播');
+                    const res = await syncWithGAS('DELETE_CAROUSEL', { id });
+                    if(res.status === 'success') {
+                        setCarousels(carousels.filter(c => c.id !== id));
+                        showMsg('已刪除該輪播');
+                    }
                 }
             };
 
@@ -488,22 +501,23 @@
                 const inputUnit = formData.get('unit') || '';
                 const combinedUnit = `${inputUnit}||${selectedKpiIcon}`;
                 const kpiData = { title: formData.get('title'), value: formData.get('value'), unit: combinedUnit };
-                if (editingKpi) {
-                    const updated = { ...editingKpi, ...kpiData };
-                    setKpis(kpis.map(k => k.id === updated.id ? updated : k));
-                    await syncWithGAS('UPDATE_KPI', updated);
-                } else {
-                    const newKpi = { ...kpiData, id: Date.now() };
-                    setKpis([...kpis, newKpi]);
-                    await syncWithGAS('ADD_KPI', newKpi);
+                
+                const res = await syncWithGAS(editingKpi ? 'UPDATE_KPI' : 'ADD_KPI', editingKpi ? { ...editingKpi, ...kpiData } : { ...kpiData, id: Date.now() });
+
+                if (res.status === 'success') {
+                    if (editingKpi) setKpis(kpis.map(k => k.id === editingKpi.id ? { ...editingKpi, ...kpiData } : k));
+                    else setKpis([...kpis, { ...kpiData, id: Date.now() }]);
+                    setEditingKpi(null); setShowKpiModal(false); showMsg('KPI 指標已更新');
                 }
-                setEditingKpi(null); setShowKpiModal(false); showMsg('KPI 指標已更新');
             };
 
             const handleDeleteKpi = async (id) => {
                 if(confirm('確定要刪除此 KPI 嗎？')) {
-                    setKpis(kpis.filter(k => k.id !== id));
-                    await syncWithGAS('DELETE_KPI', { id }); showMsg('KPI 已刪除');
+                    const res = await syncWithGAS('DELETE_KPI', { id });
+                    if (res.status === 'success') {
+                        setKpis(kpis.filter(k => k.id !== id));
+                        showMsg('KPI 已刪除');
+                    }
                 }
             };
 
@@ -514,9 +528,11 @@
                 for (let [key, value] of formData.entries()) {
                     newSettings[key] = value;
                 }
-                setSettings(newSettings);
-                await syncWithGAS('UPDATE_SETTINGS', newSettings);
-                showMsg('系統設定已套用並同步至雲端！');
+                const res = await syncWithGAS('UPDATE_SETTINGS', newSettings);
+                if (res.status === 'success') {
+                    setSettings(newSettings);
+                    showMsg('系統設定已套用並同步至雲端！');
+                }
             };
 
             const handleGenerateAI = () => {
@@ -531,12 +547,13 @@
 
             const handleSaveCS = async () => {
                 if (!csResponseText.trim()) return showMsg('請輸入回覆內容');
-                setAiLogs(aiLogs.map(l => l.id === editingCSLog.id ? { ...l, response: csResponseText, status: '已回覆' } : l));
-                await syncWithGAS('UPDATE_CS_LOG', { id: editingCSLog.id, response: csResponseText });
-                setShowCSModal(false); setEditingCSLog(null); setCsResponseText(''); showMsg('客服回覆已送出並同步至雲端');
+                const res = await syncWithGAS('UPDATE_CS_LOG', { id: editingCSLog.id, response: csResponseText });
+                if(res.status === 'success') {
+                    setAiLogs(aiLogs.map(l => l.id === editingCSLog.id ? { ...l, response: csResponseText, status: '已回覆' } : l));
+                    setShowCSModal(false); setEditingCSLog(null); setCsResponseText(''); showMsg('客服回覆已送出並同步至雲端');
+                }
             };
 
-            // 登入畫面
             if (!isAuthenticated) {
                 return (
                     <div className="min-h-screen flex flex-col items-center justify-center p-4 relative overflow-hidden transition-colors duration-500" style={{ backgroundColor: settings.loginBgColor }}>
@@ -553,7 +570,6 @@
                                     )}
                                 </div>
                                 <h2 className="text-3xl font-black tracking-tight" style={{ color: settings.loginTextColor }}>{settings.systemName}</h2>
-                                {/* 🔥 放大登入頁小字 */}
                                 <p className="text-sm mt-3 font-bold uppercase tracking-[0.3em]" style={{ color: settings.loginTextColor, opacity: 0.8 }}>{settings.systemSubName}</p>
                             </div>
                             
@@ -586,7 +602,6 @@
                                 </button>
                                 
                                 <div className="text-center pt-4">
-                                    {/* 🔥 防崩潰修復：改用 window.open */}
                                     <button type="button" onClick={() => { window.open('index.html', '_self'); }} className="text-xs font-bold transition-colors hover:opacity-100" style={{ color: settings.loginTextColor, opacity: 0.6 }}>← 返回前台官網</button>
                                 </div>
                             </form>
@@ -596,12 +611,11 @@
                 );
             }
 
-            // 主畫面
             return (
                 <div className="flex h-screen overflow-hidden font-sans relative" style={{ backgroundColor: settings.mainBgColor, color: settings.mainTextColor }}>
-                    {/* 🔥 懸浮 Logo 按鈕 (側邊欄收起時顯示) */}
                     {!isSidebarOpen && (
                         <button 
+                            type="button"
                             onClick={() => setIsSidebarOpen(true)} 
                             className="fixed top-4 left-4 z-[60] w-14 h-14 rounded-full shadow-2xl flex items-center justify-center overflow-hidden hover:scale-105 transition-all border-2 border-white/20 cursor-pointer"
                             style={{ backgroundColor: (settings.userAvatarUrl || settings.logoUrl) ? 'transparent' : settings.sidebarActiveColor }}
@@ -616,7 +630,6 @@
                     )}
 
                     <aside className={`flex-shrink-0 transition-all z-30 shadow-2xl flex flex-col ${isSidebarOpen ? '' : '-translate-x-full absolute md:relative'}`} style={{ width: isSidebarOpen ? '260px' : '0px', backgroundColor: settings.sidebarBgColor }}>
-                        {/* 側邊欄 Logo 區塊 (可點擊收起) */}
                         <div className="flex items-center gap-3 h-20 shrink-0 border-b border-white/5 cursor-pointer hover:bg-white/5 transition-colors pr-4" onClick={() => setIsSidebarOpen(false)} title="點擊收起側邊欄">
                             <div className="h-full aspect-square text-white flex items-center justify-center overflow-hidden shrink-0 shadow-sm p-0" style={{ backgroundColor: settings.logoUrl ? 'transparent' : settings.sidebarActiveColor }}>
                                 {settings.logoUrl ? (
@@ -631,7 +644,6 @@
                                 ) : (
                                     <span className="font-black tracking-widest uppercase text-base block truncate" style={{ color: settings.adminPanelColor || settings.sidebarTextColor }}>{settings.adminPanelName || 'ADMIN PANEL'}</span>
                                 )}
-                                {/* 🔥 放大側邊欄小字並提高清晰度 */}
                                 <span className="text-xs font-bold tracking-widest uppercase mt-1" style={{ color: settings.sidebarTextColor, opacity: 0.85 }}>{settings.sidebarSubText || 'Digital CMS'}</span>
                             </div>
                         </div>
@@ -639,7 +651,7 @@
                         <nav className="p-4 space-y-2 overflow-y-auto flex-1 sidebar-scroll">
                             {adminMenuConfig.map(menuGroup => (
                                 <div key={menuGroup.id} className="mb-2">
-                                    <button onClick={() => toggleMenu(menuGroup.id)} className="w-full flex items-center justify-between p-3 rounded-xl transition-all hover:bg-white/5" style={expandedMenus[menuGroup.id] ? { backgroundColor: 'rgba(255,255,255,0.05)', color: '#ffffff' } : { color: settings.sidebarTextColor }}>
+                                    <button type="button" onClick={() => toggleMenu(menuGroup.id)} className="w-full flex items-center justify-between p-3 rounded-xl transition-all hover:bg-white/5" style={expandedMenus[menuGroup.id] ? { backgroundColor: 'rgba(255,255,255,0.05)', color: '#ffffff' } : { color: settings.sidebarTextColor }}>
                                         <div className="flex items-center gap-3">
                                             <menuGroup.icon size={18} style={{ color: expandedMenus[menuGroup.id] ? settings.sidebarActiveColor : settings.sidebarTextColor }} />
                                             <span className="font-bold text-sm tracking-wide">{menuGroup.title}</span>
@@ -651,7 +663,7 @@
                                             {menuGroup.items.map(item => {
                                                 const isActive = activeTab === item.tab;
                                                 return (
-                                                    <button key={item.tab || item.name} onClick={() => {
+                                                    <button type="button" key={item.tab || item.name} onClick={() => {
                                                         if (item.isExternal) {
                                                             setIframeModal({ isOpen: true, url: item.url, title: item.name });
                                                         } else {
@@ -685,8 +697,7 @@
                                     <div className="text-[10px] font-bold truncate tracking-widest mt-0.5" style={{ color: settings.onlineStatusColor || '#34d399' }}>{settings.onlineStatusText || 'Online'}</div>
                                 </div>
                             </div>
-                            {/* 🔥 防崩潰修復：改用 window.open */}
-                            <button onClick={() => { window.open('index.html', '_self'); }} className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-xs font-bold shadow-sm" style={{ color: settings.sidebarTextColor }}><Globe size={14} /> 前往網站前台</button>
+                            <button type="button" onClick={() => { window.open('index.html', '_self'); }} className="w-full flex items-center justify-center gap-2 p-3 rounded-xl bg-white/5 hover:bg-white/10 transition text-xs font-bold shadow-sm" style={{ color: settings.sidebarTextColor }}><Globe size={14} /> 前往網站前台</button>
                         </div>
                     </aside>
                     
@@ -694,7 +705,7 @@
                         <header className={`h-20 backdrop-blur-xl border-b border-black/5 flex justify-between items-center z-40 relative shrink-0 transition-all ${isSidebarOpen ? 'px-6 lg:px-10' : 'pl-20 pr-6 lg:pr-10'}`} style={{ backgroundColor: `${settings.mainBgColor}E6` }}>
                             <div className="flex items-center gap-4">
                                 {isSidebarOpen && (
-                                    <button onClick={() => setIsSidebarOpen(false)} className="p-2.5 hover:bg-black/5 rounded-xl transition opacity-70 hover:opacity-100"><Menu size={20}/></button>
+                                    <button type="button" onClick={() => setIsSidebarOpen(false)} className="p-2.5 hover:bg-black/5 rounded-xl transition opacity-70 hover:opacity-100"><Menu size={20}/></button>
                                 )}
                                 <h2 className="text-xl font-black tracking-tight flex items-center gap-2" style={{ color: settings.mainTextColor }}>
                                     {activeTab === 'dashboard' && settings.menuDashName}
@@ -1382,6 +1393,7 @@
                         </div>
                     )}
 
+                    {/* 🔥 彈出通知 */}
                     {notification && <div className="fixed bottom-12 right-12 bg-zinc-900 text-white px-8 py-5 rounded-2xl shadow-2xl animate-in font-bold text-sm z-[200] flex items-center gap-3 border border-zinc-700"><CheckCircle size={20} className="text-emerald-400" /> {notification}</div>}
                 </div> 
             );
