@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>文史哲出版社 - 首頁</title>
+    <title>文史哲出版社 </title>
     
     <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
@@ -98,8 +98,8 @@
             </svg>
         );
 
-        // 🔥 更新為最新指定的 GAS_URL
-        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4MG4yX0tOVlNNdVBRY21hOE1IZG4yb0t0SS1ncUFZMjhzcWROQ3VrYnFXTGg5My1rTFFaMVJnbkdaSWRmV1VOSm4vZXhlYw==";
+        // 🔥 更新為最新指定的 GAS_URL 編碼 (GAS_UR)
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J6VmZHV2dqNWcyWjljekRMUk9Fb3lBNGRLN1JTT3V5R0lBMW52UXJlbWN0eGt1UEFHSV9IN2lMUjFZTmtJUjVHSU4vZXhlYw==";
         const GAS_URL = atob(_0x4a21); 
         const SECRET_KEY = "cd6ca599bdbb083d34a3012b84071c848cc4bca0698a53c3cc65a2c296dd3ddf";
 
@@ -215,7 +215,7 @@
                 try {
                     const currentOrigin = window.location.origin;
                     const safeOrigin = currentOrigin.includes("usercontent.goog") 
-                        ? "https://theliberalartspress.github.io" 
+                        ? "https://candylovema.github.io" 
                         : currentOrigin;
 
                     const payloadObj = { 
@@ -251,7 +251,7 @@
                         console.error("後端拒絕請求:", data.msg);
                         // 若為預覽環境跳出提示，正式環境則不干擾一般讀者瀏覽
                         if(currentOrigin.includes("localhost") || currentOrigin.includes("usercontent.goog")) {
-                             alert("API 執行失敗: " + data.msg);
+                             showMsg("API 執行失敗: " + data.msg);
                         }
                     }
                     
@@ -345,9 +345,9 @@
                     const matchCode = !appliedSearch.code || (b.id && b.id.toString().includes(appliedSearch.code));
                     const matchTitle = !appliedSearch.title || (b.title && b.title.includes(appliedSearch.title));
                     const matchAuthor = !appliedSearch.author || (b.author && b.author.includes(appliedSearch.author));
-                    const matchYear = !appliedSearch.year || (b.year && b.year.toString().includes(appliedSearch.year));
+                    const matchPage = !appliedSearch.year || (b.year && b.year.toString().includes(appliedSearch.year));
                     const matchCat = !appliedSearch.category || appliedSearch.category === '全部' || b.category === appliedSearch.category;
-                    return matchCode && matchTitle && matchAuthor && matchYear && matchCat;
+                    return matchCode && matchTitle && matchAuthor && matchPage && matchCat;
                 });
             }, [books, appliedSearch]);
 
