@@ -114,7 +114,7 @@
         );
 
         // 🔥 更新為最新指定的 GAS_URL 編碼 (GAS_UR)
-        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5SnVrOVZ2c0phZWV2RXJ0dHJFR0xnTENEQTVTZ2xfNWE2WWNZTWktaDVuaEJxS0UxckwxX2d4bTJYT0lRMXpsVVl0dy9leGVj";
+        const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5SnVuOVZ2c0phZWV2RXJ0dHJFR0xnTENEQTVTZ2xfNWE2WWNZTWktaDVuaEJxS0UxckwxX2d4bTJYT0lRMXpsVVl0dy9leGVj";
         const GAS_URL = atob(_0x4a21); 
         const SECRET_KEY = "cd6ca599bdbb083d34a3012b84071c848cc4bca0698a53c3cc65a2c296dd3ddf";
 
@@ -999,7 +999,7 @@
                                         <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelCode}</label><input type="text" value={searchForm.code} onChange={(e) => setSearchForm({...searchForm, code: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
                                         <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelTitle}</label><input type="text" value={searchForm.title} onChange={(e) => setSearchForm({...searchForm, title: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
                                         <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelAuthor}</label><input type="text" value={searchForm.author} onChange={(e) => setSearchForm({...searchForm, author: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
-                                        <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelYear}</label><input type="text" value={searchForm.year} onChange={(e) => setSearchForm({...searchForm, year: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
+                                        <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelPage}</label><input type="text" value={searchForm.year} onChange={(e) => setSearchForm({...searchForm, year: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
                                         <div className="md:col-span-2">
                                             <label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelCategory}</label>
                                             <select value={searchForm.category} onChange={(e) => setSearchForm({...searchForm, category: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]">
@@ -1096,15 +1096,15 @@
                         </div>
                     )}
 
-                    {/* 我的書包 購物車 Modal */}
+                    {/* 我的書包 購物車 Modal (已調整置中且完整補上關閉按鈕) */}
                     {isCartOpen && (
-                        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex justify-end" onClick={() => setIsCartOpen(false)}>
-                            <div className="bg-[var(--bg-light)] w-full max-w-5xl h-[100vh] md:h-auto md:max-h-[90vh] flex flex-col md:flex-row shadow-2xl md:rounded-l-2xl animate-in font-sans overflow-y-auto md:overflow-hidden" onClick={(e) => e.stopPropagation()}>
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex justify-center items-center p-4 md:p-8" onClick={() => setIsCartOpen(false)}>
+                            <div className="bg-[var(--bg-light)] w-full max-w-5xl h-full md:h-auto max-h-[90vh] flex flex-col md:flex-row shadow-2xl rounded-2xl animate-in font-sans overflow-hidden" onClick={(e) => e.stopPropagation()}>
                                 
-                                <div className="flex-1 flex flex-col bg-[var(--bg-light)] h-auto md:h-[90vh] md:overflow-y-auto border-b md:border-b-0 md:border-r border-[var(--border-color)] shrink-0 md:shrink">
+                                <div className="flex-1 flex flex-col bg-[var(--bg-light)] overflow-y-auto border-b md:border-b-0 md:border-r border-[var(--border-color)]">
                                     <div className="sticky top-0 z-10 p-5 md:p-6 border-b border-[var(--border-color)] flex justify-between items-center bg-white shrink-0">
                                         <h2 className="text-xl md:text-2xl font-black flex items-center gap-3 text-[var(--dark-color)] font-serif tracking-widest"><ShoppingCart className="text-[var(--primary-color)]" size={28} /> {ui.cartTitle}</h2>
-                                        <button type="button" onClick={() => setIsCartOpen(false)} className="md:hidden bg-[var(--bg-light)] border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-3 py-1.5 rounded-full text-sm font-bold text-[var(--text-dark)] transition flex items-center gap-1 shadow-sm"><X size={16} /> {ui.cartCloseBtn}</button>
+                                        <button type="button" onClick={() => setIsCartOpen(false)} className="bg-[var(--bg-light)] border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[var(--text-dark)] transition flex items-center gap-1.5 shadow-sm"><X size={16} /> {ui.cartCloseBtn}</button>
                                     </div>
                                     <div className="flex-1 p-4 md:p-6">
                                         {cart.length === 0 ? (
@@ -1139,10 +1139,7 @@
                                 </div>
 
                                 {cart.length > 0 && (
-                                    <div className="w-full md:w-[400px] lg:w-[450px] bg-white p-6 shadow-[-10px_0_20px_rgba(0,0,0,0.02)] flex flex-col shrink-0 h-auto md:h-[90vh] md:overflow-y-auto">
-                                        <div className="hidden md:flex justify-end mb-6">
-                                            <button type="button" onClick={() => setIsCartOpen(false)} className="bg-[var(--bg-light)] border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[var(--text-dark)] transition flex items-center gap-1 shadow-sm"><X size={16} /> {ui.cartCloseBtn}</button>
-                                        </div>
+                                    <div className="w-full md:w-[400px] lg:w-[450px] bg-white p-6 shadow-[-10px_0_20px_rgba(0,0,0,0.02)] flex flex-col shrink-0 overflow-y-auto">
                                         <div className="flex flex-col gap-2 bg-[var(--bg-light)] p-5 rounded-xl border border-[var(--border-color)] mb-6">
                                             <div className="text-[var(--text-dark)] text-sm font-bold text-left">
                                                 {(ui.cartBookCountLabel).replace('{count}', cart.reduce((s, i) => s + i.qty, 0))}
@@ -1198,9 +1195,9 @@
                         </div>
                     )}
 
-                    {/* 彈出通知 */}
+                    {/* 彈出通知 (已調整為水平正中央置中) */}
                     {notification && (
-                        <div className="fixed bottom-24 md:bottom-10 right-8 bg-[var(--dark-color)] text-white px-6 py-4 rounded-xl shadow-2xl animate-in font-bold text-[15px] z-[300] flex items-center gap-3 border-l-4 border-[var(--primary-color)]">
+                        <div className="fixed bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 bg-[var(--dark-color)] text-white px-6 py-4 rounded-xl shadow-2xl animate-in font-bold text-[15px] z-[300] flex items-center gap-3 border-l-4 border-[var(--primary-color)] whitespace-nowrap">
                             <CheckCircle size={20} className="text-[var(--accent-color)]" /> {notification}
                         </div>
                     )}
