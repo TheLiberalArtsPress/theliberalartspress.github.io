@@ -166,8 +166,8 @@
             { id: 'fb_1', title: '正在向資料庫索取書籍', author: '讀取中', year: '讀取中', price: 0, category: '文學', stock: 10, cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400' }
         ];
 
-        // 調整類別順序，第一個顯示為文史哲詩叢
-        const fixedCategories = ['全部', '文史哲詩叢', '文學', '歷史', '哲學', '史地', '語言', '社會科學', '藝術'];
+        // 調整類別順序，第一個顯示為文史哲學集成
+        const fixedCategories = ['全部', '文史哲學集成', '文學', '歷史', '哲學', '史地', '語言', '社會科學', '藝術'];
 
         // 🎯 預設前台UI 鍵值字典，若後台未填寫，自動落入此 Fallback 設定，防爆防跑版
         const defaultUI = {
@@ -463,10 +463,10 @@
                 return () => clearInterval(timer);
             }, [carousels.length]);
 
-            // 類別排序調整：優先確保 '全部' 與 '文史哲詩叢' 為前兩項，隨後為其他動態類別，防止重複
+            // 類別排序調整：優先確保 '全部' 與 '文史哲學集成' 為前兩項，隨後為其他動態類別，防止重複
             const dynamicCategories = useMemo(() => {
                 const cats = books.map(b => b.category).filter(c => c && c.trim() !== "");
-                const combined = ['全部', '文史哲詩叢', ...cats.filter(c => c !== '文史哲詩叢' && c !== '全部')];
+                const combined = ['全部', '文史哲學集成', ...cats.filter(c => c !== '文史哲學集成' && c !== '全部')];
                 return [...new Set(combined)];
             }, [books]);
 
