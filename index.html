@@ -27,10 +27,10 @@
         };
     </script>
     
-    <!-- 引入 Tailwind CSS (移除 Markdown 格式網址污染) -->
+    <!-- 引入 Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
     
-    <!-- 鎖定 React 穩定版本 (移除 Markdown 格式網址污染) -->
+    <!-- 鎖定 React 穩定版本 -->
     <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
     <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
     
@@ -39,7 +39,8 @@
     <script src="https://unpkg.com/lucide-react@0.284.0/dist/umd/lucide-react.js"></script>
     
     <style>
-        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+        /* 🔥 加載主流雲端中英字體，補齊後台自訂毛筆、草書、魏碑、仿宋等多樣化書法字型 */
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&family=Ma+Shan+Zheng&family=Zhi+Mang+Xing&family=Liu+Jian+Mao+Cao&family=Long+Cang&display=swap');
         
         /* 🎨 CSS 樣式根變數 - 支援從後台傳入顏色進行動態渲染，並提供經典款 Fallback */
         :root {
@@ -51,12 +52,14 @@
             --border-color: #E6D5C3;
             --accent-color: #C4B29E;
             --footer-bg: #1A1412;
+            --body-font: 'Noto Sans TC', sans-serif;
+            --title-font: 'Noto Serif TC', serif;
         }
 
-        /* 🔥 強制全域套用自訂字型，避免載入後跑版 */
-        body, input, textarea, button, select { font-family: 'Noto Sans TC', sans-serif !important; }
-        .font-serif, h1, h2, h3, .font-serif * { font-family: 'Noto Serif TC', serif !important; }
-        .font-sans, p, span, .font-sans * { font-family: 'Noto Sans TC', sans-serif !important; }
+        /* 🔥 動態套用後台設定的精選自訂中式字型，避免字型無效 */
+        body, input, textarea, button, select { font-family: var(--body-font), 'Noto Sans TC', sans-serif !important; }
+        .font-serif, h1, h2, h3, .font-serif * { font-family: var(--title-font), 'Noto Serif TC', serif !important; }
+        .font-sans, p, span, .font-sans * { font-family: var(--body-font), 'Noto Sans TC', sans-serif !important; }
 
         .animate-in { animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
         @keyframes fadeIn { from { opacity: 0; transform: translateY(15px); } to { opacity: 1; transform: translateY(0); } }
@@ -70,7 +73,7 @@
         .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
 
         .drop-cap::first-letter {
-            float: left; font-size: 3.5rem; line-height: 3rem; padding-top: 0.2rem; padding-right: 0.5rem; color: var(--dark-color); font-family: 'Noto Sans TC', sans-serif !important; font-weight: 900;
+            float: left; font-size: 3.5rem; line-height: 3rem; padding-top: 0.2rem; padding-right: 0.5rem; color: var(--dark-color); font-weight: 900;
         }
     </style>
 </head>
@@ -119,12 +122,12 @@
             </svg>
         );
 
-        // 🔥 更新為最新指定的 GAS_URL 編碼 (GAS_UR)
+        // GAS_URL 解碼 (GAS_UR)
         const _0x4a21 = "aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J5SnVrOVZ2c0phZWV2RXJ0dHJFR0xnTENEQTVTZ2xfNWE2WWNZTWktaDVuaEJxS0UxckwxX2d4bTJYT0lRMXpsVVl0dy9leGVj";
         const GAS_URL = atob(_0x4a21); 
         const SECRET_KEY = "cd6ca599bdbb083d34a3012b84071c848cc4bca0698a53c3cc65a2c296dd3ddf";
 
-        // 🔥 HMAC-SHA256 生成器 (Web Crypto API)
+        // HMAC-SHA256 生成器 (Web Crypto API)
         async function generateSignature(message, secret) {
             const encoder = new TextEncoder();
             const keyData = encoder.encode(secret);
@@ -169,7 +172,7 @@
         // 調整類別順序，第一個顯示為文史哲學集成
         const fixedCategories = ['全部', '文史哲學集成', '文學', '歷史', '哲學', '史地', '語言', '社會科學', '藝術'];
 
-        // 🎯 預設前台UI 鍵值字典，若後台未填寫，自動落入此 Fallback 設定，防爆防跑版
+        // 🎯 預設前台UI 鍵值字典，補上新字型、Logo與前台網頁名稱
         const defaultUI = {
             themeColor: '#8C5A2B',
             darkThemeColor: '#2C241B',
@@ -179,6 +182,10 @@
             borderColor: '#E6D5C3',
             accentColor: '#C4B29E',
             footerBgColor: '#1A1412',
+            bodyFont: 'Noto Sans TC', // 預設內頁字體
+            titleFont: 'Noto Serif TC', // 預設標題字體
+            frontendLogoUrl: '', // 前台 Logo 圖片設定
+            frontendName: '文史哲出版社', // 前台官網名稱設定
             
             // 導覽菜單
             menuAbout: '關於我們',
@@ -297,7 +304,7 @@
         };
 
         function App() {
-            // 🔥 整併 UI 設定物件狀態，預設載入 defaultUI，一經 FETCH 成功則動態覆蓋
+            // 🔥 預設載入 defaultUI
             const [ui, setUi] = useState(defaultUI);
 
             const [settings, setSettings] = useState({
@@ -425,6 +432,10 @@
                 syncWithGAS('FETCH_UI').then(resUi => {
                     if (resUi && resUi.data) {
                         setUi(prev => ({...prev, ...resUi.data}));
+                        // ⚠️ 如果後台有設定前台官網名稱，以此優先更新標題
+                        if (resUi.data.frontendName) {
+                            document.title = `${resUi.data.frontendName} - 首頁`;
+                        }
                     }
                 }).catch(() => {});
 
@@ -528,19 +539,17 @@
                 showMsg(`已加入書包: ${book.title}`);
             };
 
-            // 優化後的購物車刪除機制
             const removeFromCart = (id) => {
                 setCart(prev => prev.filter(i => i.id !== id));
             };
             
-            // 優化數量調整機制：數量為 1 時若再減少，則直接將其從購物車中移除
             const updateCartQty = (id, delta) => {
                 setCart(prev => {
                     return prev.map(i => {
                         if (i.id === id) {
                             const newQty = i.qty + delta;
                             if (newQty < 1) {
-                                return null; // 標記為待刪除
+                                return null; 
                             }
                             if (newQty > i.stock) {
                                 showMsg("已達該書目前庫存上限！");
@@ -549,7 +558,7 @@
                             return { ...i, qty: newQty };
                         }
                         return i;
-                    }).filter(Boolean); // 過濾掉 null 的項目
+                    }).filter(Boolean); 
                 });
             };
 
@@ -631,13 +640,12 @@
                 }
             };
 
-            // 用於解析後台多行文字（以 \n 分隔）並在 React 中產生條列 list items
             const renderListFromLines = (text, defaultLines) => {
                 const lines = text ? text.split('\n').filter(l => l.trim() !== '') : defaultLines;
                 return lines.map((line, idx) => <li key={idx}>{line}</li>);
             };
 
-            // 🎨 CSS 變數動態渲染模組，確保所有 Tailwind 自訂樣式與試算表配色完美融合
+            // 🎨 CSS 變數動態渲染模組（完美包含自訂中式主字體與標題字體，防爆、防字體失真）
             const rootStyle = {
                 '--primary-color': ui.themeColor,
                 '--dark-color': ui.darkThemeColor,
@@ -647,6 +655,8 @@
                 '--border-color': ui.borderColor,
                 '--accent-color': ui.accentColor,
                 '--footer-bg': ui.footerBgColor,
+                '--body-font': ui.bodyFont || 'Noto Sans TC',
+                '--title-font': ui.titleFont || 'Noto Serif TC',
             };
 
             return (
@@ -657,10 +667,15 @@
                             if (window.innerWidth < 1024) setIsMobileMenuOpen(!isMobileMenuOpen);
                             else window.scrollTo(0,0);
                         }}>
-                            <ModernLogo className="w-8 h-8 md:w-10 md:h-10" />
+                            {/* 🔥 支援後台配置前台 Logo 的顯示邏輯 */}
+                            {ui.frontendLogoUrl ? (
+                                <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 md:w-10 md:h-10 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                            ) : (
+                                <ModernLogo className="w-8 h-8 md:w-10 md:h-10" />
+                            )}
                             <div className="flex flex-col">
                                 <div className="flex items-center gap-1">
-                                    <h1 className="text-lg md:text-[22px] font-black text-[var(--dark-color)] tracking-[0.1em] font-sans">{ui.systemName || settings.systemName}</h1>
+                                    <h1 className="text-lg md:text-[22px] font-black text-[var(--dark-color)] tracking-[0.1em] font-sans">{ui.frontendName || settings.systemName}</h1>
                                     <ChevronDown className={`lg:hidden transition-transform text-[var(--primary-color)] ${isMobileMenuOpen ? 'rotate-180' : ''}`} size={16} />
                                 </div>
                                 <span className="text-[8px] md:text-[9px] tracking-[0.22em] text-[var(--primary-color)] font-sans font-bold uppercase block">{ui.systemSubName || settings.systemSubName}</span>
@@ -864,9 +879,14 @@
                             <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-16">
                                 <div className="md:col-span-4 flex flex-col">
                                     <div className="flex items-center gap-4 mb-6">
-                                        <ModernLogo className="w-11 h-11" color1="#F9F6F0" color2="var(--primary-color)" />
+                                        {/* 🔥 頁底同樣套用自訂 Logo 配置 */}
+                                        {ui.frontendLogoUrl ? (
+                                            <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-11 h-11 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                                        ) : (
+                                            <ModernLogo className="w-11 h-11" color1="#F9F6F0" color2="var(--primary-color)" />
+                                        )}
                                         <div>
-                                            <h4 className="text-2xl font-sans font-black text-white tracking-[0.15em]">{ui.systemName || settings.systemName}</h4>
+                                            <h4 className="text-2xl font-sans font-black text-white tracking-[0.15em]">{ui.frontendName || settings.systemName}</h4>
                                             <span className="text-[10px] font-bold tracking-[0.2em] text-[var(--primary-color)] mt-1 block uppercase">{ui.systemSubName || settings.systemSubName}</span>
                                         </div>
                                     </div>
@@ -902,7 +922,7 @@
                             </div>
                             
                             <div className="mt-16 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-sm text-[var(--accent-color)] font-bold">
-                                <p>&copy; {new Date().getFullYear()} {ui.systemName || settings.systemName} {ui.systemSubName || settings.systemSubName}.</p>
+                                <p>&copy; {new Date().getFullYear()} {ui.frontendName || settings.systemName} {ui.systemSubName || settings.systemSubName}.</p>
                                 <p className="mt-2 md:mt-0 flex items-center gap-2"><ModernLogo className="w-4 h-4 opacity-50" color1="#FFF" color2="#FFF" /> {ui.footerCopyright}</p>
                             </div>
                         </div>
@@ -950,7 +970,7 @@
                                 </div>
                                 <div className="flex-1 overflow-y-auto p-6 md:p-12 font-sans relative">
                                     <ModernLogo className="absolute w-96 h-96 -right-20 -top-10 -z-10 pointer-events-none opacity-5" color1="var(--dark-color)" color2="var(--dark-color)" />
-                                    <h1 className="text-3xl md:text-4xl font-sans font-black text-[var(--dark-color)] mb-8 text-center tracking-[0.1em] border-b pb-6 border-[var(--border-color)]">{ui.systemName || settings.systemName}</h1>
+                                    <h1 className="text-3xl md:text-4xl font-sans font-black text-[var(--dark-color)] mb-8 text-center tracking-[0.1em] border-b pb-6 border-[var(--border-color)]">{ui.frontendName || settings.systemName}</h1>
                                     <div className="space-y-8 text-[var(--text-dark)] leading-[2.2] text-justify text-base md:text-lg">
                                         <div>
                                             <h3 className="font-bold text-xl text-[var(--dark-color)] mb-4 flex items-center gap-2"><Compass size={20} className="text-[var(--primary-color)]"/> {ui.aboutIntroTitle}</h3>
@@ -1008,10 +1028,14 @@
                         <div className="fixed inset-0 bg-[var(--bg-light)] z-[150] overflow-y-auto animate-in flex flex-col">
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center bg-white shadow-sm sticky top-0 z-40">
                                 <div className="flex items-center space-x-3">
-                                    <ModernLogo className="w-8 h-8" />
+                                    {ui.frontendLogoUrl ? (
+                                        <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                                    ) : (
+                                        <ModernLogo className="w-8 h-8" />
+                                    )}
                                     <div>
                                         <h1 className="text-xl font-black text-[var(--dark-color)] tracking-[0.1em] font-sans">{ui.searchTitle}</h1>
-                                        <span className="text-[10px] tracking-widest text-[var(--primary-color)] font-sans font-bold">{ui.systemName || settings.systemName}{ui.searchSubtitle}</span>
+                                        <span className="text-[10px] tracking-widest text-[var(--primary-color)] font-sans font-bold">{ui.frontendName || settings.systemName}{ui.searchSubtitle}</span>
                                     </div>
                                 </div>
                                 <div className="flex items-center gap-3">
@@ -1136,7 +1160,7 @@
                         </div>
                     )}
 
-                    {/* 我的書包 購物車 Modal (已調整置中且完整補上關閉按鈕) */}
+                    {/* 我的書包 購物車 Modal */}
                     {isCartOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex justify-center items-center p-4 md:p-8" onClick={() => setIsCartOpen(false)}>
                             <div className="bg-[var(--bg-light)] w-full max-w-5xl h-full md:h-auto max-h-[90vh] flex flex-col md:flex-row shadow-2xl rounded-2xl animate-in font-sans overflow-hidden" onClick={(e) => e.stopPropagation()}>
@@ -1236,7 +1260,7 @@
                         </div>
                     )}
 
-                    {/* 彈出通知 (已調整為水平正中央置中) */}
+                    {/* 彈出通知 (水平置中) */}
                     {notification && (
                         <div className="fixed bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 bg-[var(--dark-color)] text-white px-6 py-4 rounded-xl shadow-2xl animate-in font-bold text-[15px] z-[300] flex items-center gap-3 border-l-4 border-[var(--primary-color)] whitespace-nowrap">
                             <CheckCircle size={20} className="text-[var(--accent-color)]" /> {notification}
