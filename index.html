@@ -166,9 +166,10 @@
             { id: 'fb_1', title: '正在向資料庫索取書籍', author: '讀取中', year: '讀取中', price: 0, category: '文學', stock: 10, cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400' }
         ];
 
-        const fixedCategories = ['全部', '文學', '歷史', '哲學', '史地', '語言', '社會科學', '藝術'];
+        // 調整類別順序，第一個顯示為文史哲詩叢
+        const fixedCategories = ['全部', '文史哲詩叢', '文學', '歷史', '哲學', '史地', '語言', '社會科學', '藝術'];
 
-        // 🎯 預設前台軍規級 UI 鍵值字典，若後台未填寫，自動落入此 Fallback 設定，防爆防跑版
+        // 🎯 預設前台UI 鍵值字典，若後台未填寫，自動落入此 Fallback 設定，防爆防跑版
         const defaultUI = {
             themeColor: '#8C5A2B',
             darkThemeColor: '#2C241B',
@@ -344,6 +345,9 @@
             
             const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
             const [showBackToTop, setShowBackToTop] = useState(false);
+
+            // 類別收合狀態
+            const [isAllCategoriesExpanded, setIsAllCategoriesExpanded] = useState(false);
             
             const sliderRef = useRef(null);
 
@@ -459,10 +463,17 @@
                 return () => clearInterval(timer);
             }, [carousels.length]);
 
+            // 類別排序調整：優先確保 '全部' 與 '文史哲詩叢' 為前兩項，隨後為其他動態類別，防止重複
             const dynamicCategories = useMemo(() => {
                 const cats = books.map(b => b.category).filter(c => c && c.trim() !== "");
-                return [...new Set([...fixedCategories, ...cats])];
+                const combined = ['全部', '文史哲詩叢', ...cats.filter(c => c !== '文史哲詩叢' && c !== '全部')];
+                return [...new Set(combined)];
             }, [books]);
+
+            // 主頁顯示的分類（未展開時限制僅顯示5個項目）
+            const visibleCategories = useMemo(() => {
+                return isAllCategoriesExpanded ? dynamicCategories : dynamicCategories.slice(0, 5);
+            }, [dynamicCategories, isAllCategoriesExpanded]);
 
             const excelCategories = useMemo(() => {
                 const cats = books.map(b => b.category).filter(c => c && c.trim() !== "");
@@ -507,27 +518,39 @@
 
             const addToCart = (book) => {
                 if (book.stock <= 0) return showMsg("抱歉，目前缺貨中！");
-                const existing = cart.find(i => i.id === book.id);
-                if (existing) setCart(cart.map(i => i.id === book.id ? {...i, qty: i.qty + 1} : i));
-                else setCart([...cart, {...book, qty: 1}]);
+                setCart(prev => {
+                    const existing = prev.find(i => i.id === book.id);
+                    if (existing) {
+                        return prev.map(i => i.id === book.id ? {...i, qty: i.qty + 1} : i);
+                    }
+                    return [...prev, {...book, qty: 1}];
+                });
                 showMsg(`已加入書包: ${book.title}`);
             };
 
-            const removeFromCart = (id) => setCart(cart.filter(i => i.id !== id));
+            // 優化後的購物車刪除機制
+            const removeFromCart = (id) => {
+                setCart(prev => prev.filter(i => i.id !== id));
+            };
             
+            // 優化數量調整機制：數量為 1 時若再減少，則直接將其從購物車中移除
             const updateCartQty = (id, delta) => {
-                setCart(cart.map(i => {
-                    if (i.id === id) {
-                        const newQty = i.qty + delta;
-                        if (newQty < 1) return i; 
-                        if (newQty > i.stock) {
-                            showMsg("已達該書目前庫存上限！");
-                            return i;
+                setCart(prev => {
+                    return prev.map(i => {
+                        if (i.id === id) {
+                            const newQty = i.qty + delta;
+                            if (newQty < 1) {
+                                return null; // 標記為待刪除
+                            }
+                            if (newQty > i.stock) {
+                                showMsg("已達該書目前庫存上限！");
+                                return i;
+                            }
+                            return { ...i, qty: newQty };
                         }
-                        return { ...i, qty: newQty };
-                    }
-                    return i;
-                }));
+                        return i;
+                    }).filter(Boolean); // 過濾掉 null 的項目
+                });
             };
 
             const cartTotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
@@ -756,9 +779,10 @@
                                 </div>
                             </div>
 
+                            {/* 類別主導覽：預設僅列出5個項目，提供「更多/收合類別」切換按鈕 */}
                             {dynamicCategories.length > 1 && (
                                 <div className="flex flex-wrap gap-3 mb-10 justify-center animate-in font-sans border-t border-[var(--border-color)] pt-8 mt-8">
-                                    {dynamicCategories.map(cat => (
+                                    {visibleCategories.map(cat => (
                                         <button
                                             type="button" 
                                             key={cat}
@@ -770,6 +794,16 @@
                                             {cat}
                                         </button>
                                     ))}
+                                    {dynamicCategories.length > 5 && (
+                                        <button
+                                            type="button"
+                                            onClick={() => setIsAllCategoriesExpanded(!isAllCategoriesExpanded)}
+                                            className="px-6 py-2.5 rounded-full text-[15px] font-bold transition-all shadow-sm border-2 border-[var(--primary-color)] text-[var(--primary-color)] bg-white hover:bg-[var(--primary-color)] hover:text-white flex items-center gap-1.5 active:scale-95"
+                                        >
+                                            {isAllCategoriesExpanded ? "收合類別" : "更多類別"}
+                                            {isAllCategoriesExpanded ? <ChevronUp size={16} /> : <ChevronDown size={16} />}
+                                        </button>
+                                    )}
                                 </div>
                             )}
                             
@@ -1005,7 +1039,7 @@
                                         <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelCode}</label><input type="text" value={searchForm.code} onChange={(e) => setSearchForm({...searchForm, code: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
                                         <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelTitle}</label><input type="text" value={searchForm.title} onChange={(e) => setSearchForm({...searchForm, title: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
                                         <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelAuthor}</label><input type="text" value={searchForm.author} onChange={(e) => setSearchForm({...searchForm, author: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
-                                        <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelPage}</label><input type="text" value={searchForm.year} onChange={(e) => setSearchForm({...searchForm, year: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
+                                        <div><label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelYear}</label><input type="text" value={searchForm.year} onChange={(e) => setSearchForm({...searchForm, year: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]" /></div>
                                         <div className="md:col-span-2">
                                             <label className="block text-sm font-bold text-[var(--text-dark)] mb-2">{ui.searchLabelCategory}</label>
                                             <select value={searchForm.category} onChange={(e) => setSearchForm({...searchForm, category: e.target.value})} className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl outline-none focus:border-[var(--primary-color)] bg-[var(--bg-light)]">
@@ -1136,6 +1170,7 @@
                                                                 </div>
                                                             </div>
                                                         </div>
+                                                        {/* 右側垃圾桶刪除按鈕 */}
                                                         <button type="button" onClick={() => removeFromCart(i.id)} className="absolute top-4 right-4 text-[var(--accent-color)] hover:text-red-500 hover:bg-red-50 p-2.5 rounded-full transition-colors"><Trash2 size={18}/></button>
                                                     </div>
                                                 ))}
