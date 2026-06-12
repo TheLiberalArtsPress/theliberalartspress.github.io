@@ -1,6 +1,27 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
 <head>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BookStore",
+  "name": "文史哲出版社有限公司",
+  "alternativeName": "The Liberal Arts Press",
+  "url": "https://theliberalartspress.github.io/",
+  "logo": "https://theliberalartspress.github.io/logo.png",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "羅斯福路一段七十二巷四號",
+    "addressLocality": "中正區",
+    "addressRegion": "臺北市",
+    "postalCode": "10074",
+    "addressCountry": "TW"
+  },
+  "telephone": "+886-2-2351-1028",
+  "email": "lapentw@gmail.com"
+}
+</script>
+    
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>文史哲出版社</title>
@@ -78,7 +99,29 @@
     </style>
 </head>
 <body class="bg-[var(--bg-light)]">
-    <div id="root"></div>
+   <div id="root">
+        <article style="display:none;">
+            <h1>文史哲出版社有限公司 (The Liberal Arts Press)</h1>
+            <p>創立於1971年8月1日，以出版大學院校研究論著及文史哲學專業書籍為主。累積出版書籍約2500種，深耕國學與傳統華文學術出版市場。</p>
+            
+            <h2>聯絡我們</h2>
+            <p>地址：10074 台北市中正區羅斯福路一段七十二巷四號</p>
+            <p>電話：886-2-2351-1028</p>
+            <p>電子信箱：lapentw@gmail.com</p>
+            <p>郵政劃撥：05128812號 彭正雄帳戶</p>
+            
+            <h2>經典代表學術著作與作家</h2>
+            <ul>
+                <li>無名氏（卜乃夫）《塔裡的女人》</li>
+                <li>馮馮《霧航》</li>
+                <li>昌彼得《中國目錄學》</li>
+                <li>龔鵬程、鄭樑生《中日關係史研究論集》</li>
+                <li>莊吉發《清史論集》（1–30集）</li>
+                <li>《滿語叢刊》（共50冊）</li>
+                <li>蔡宗陽《文心雕龍與經學》、《修辭學》</li>
+            </ul>
+        </article>
+    </div>
 
     <script type="text/babel">
         const { useState, useEffect, useMemo, useRef } = React;
