@@ -527,7 +527,7 @@
                 syncWithGAS('FETCH_SETTINGS').then(resSettings => {
                     if (resSettings && resSettings.data) {
                         setSettings(prev => ({...prev, ...resSettings.data}));
-                        if (resSettings.data.systemName) document.title = `${resSettings.data.systemName} - 首頁`;
+                        if (resSettings.data.systemName) document.title = `${resSettings.data.systemName} 有限公司｜台灣人文學術出版社・文學歷史哲學專業出版（首頁）官網`;
                     }
                 }).catch(() => {});
 
