@@ -4,11 +4,44 @@
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type":"Organization",
+  "@type": "Organization",
+  "@id": "https://theliberalartspress.github.io/#organization",
   "name": "文史哲出版社有限公司",
-  "alternativeName": "The Liberal Arts Press",
+  "alternativeName": [
+    "The Liberal Arts Press",
+    "文史哲出版社",
+    "文史哲"
+  ],
   "url": "https://theliberalartspress.github.io/",
-  "logo": "https://theliberalartspress.github.io/logo.png",
+  "logo": {
+    "@type": "ImageObject",
+    "url": "https://theliberalartspress.github.io/logo.png",
+    "caption": "文史哲出版社官方標誌"
+  },
+  "description": "文史哲出版社有限公司創立於1971年8月1日，為台灣歷史悠久、享譽華文世界的人文學術出版社。創辦人彭正雄先生。本社專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學之學術論著出版。逾半世紀以來，累積出版超過2500種專業專書與國學研究論著，致力於保存中華文化遺產、推動華文學術研究及促進當代文化教育傳承。",
+  "foundingDate": "1971-08-01",
+  "founder": {
+    "@type": "Person",
+    "name": "彭正雄",
+    "jobTitle": "創辦人暨社長"
+  },
+  "publishingPrinciples": "以出版文史圖書及學術專業圖書為核心宗旨，致力保存與推廣中華文化、國學研究及華文學術成果，傳承文化，創新閱讀。",
+  "knowsAbout": [
+    "中國文學研究",
+    "台灣文學研究",
+    "歷史研究",
+    "清史",
+    "滿語研究",
+    "哲學思想",
+    "東方哲學",
+    "宗教學與文化研究",
+    "語言學與文字學",
+    "藝術史與美術研究",
+    "國學研究",
+    "修辭學",
+    "文心雕龍",
+    "目錄學"
+  ],
   "address": {
     "@type": "PostalAddress",
     "streetAddress": "羅斯福路一段七十二巷四號",
@@ -18,9 +51,131 @@
     "addressCountry": "TW"
   },
   "telephone": "+886-2-2351-1028",
-  "email": "lapentw@gmail.com"
+  "faxNumber": "+886-2-2396-5656",
+  "email": "lapentw@gmail.com",
+  "hoursAvailable": {
+    "@type": "OpeningHoursSpecification",
+    "dayOfWeek": [
+      "Monday",
+      "Tuesday",
+      "Wednesday",
+      "Thursday",
+      "Friday"
+    ],
+    "opens": "09:00",
+    "closes": "18:00"
+  },
+  "sameAs": [
+    "https://www.facebook.com/profile.php?id=61590146114229"
+  ],
+  "contactPoint": {
+    "@type": "ContactPoint",
+    "telephone": "+886-2-2351-1028",
+    "contactType": "customer service",
+    "availableLanguage": ["Chinese", "Taiwanese"]
+  },
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "文史哲出版社代表性學術著作與經典文學目錄",
+    "itemListElement": [
+      {
+        "@type": "Offer",
+        "price": "500",
+        "priceCurrency": "TWD",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "霧航",
+          "inLanguage": "zh-TW",
+          "description": "馮馮代表性自傳式長篇小說鉅作，深刻描繪時代動盪下的歷史記憶與心靈掙扎。",
+          "author": { "@type": "Person", "name": "馮馮" }
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "塔裡的女人",
+          "inLanguage": "zh-TW",
+          "description": "經典抒情文學名著，無名氏（卜乃夫）代表作。",
+          "author": { "@type": "Person", "name": "無名氏" }
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "清史論集",
+          "inLanguage": "zh-TW",
+          "description": "莊吉發教授權威歷史巨著，全套共30集，為清史研究必備參考文獻。",
+          "author": { "@type": "Person", "name": "莊吉發" }
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "滿語叢刊",
+          "inLanguage": "zh-TW",
+          "description": "邊疆語言與歷史研究重要文獻，全套共50冊。",
+          "author": { "@type": "Person", "name": "莊吉發" }
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "中國目錄學",
+          "inLanguage": "zh-TW",
+          "description": "昌彼得教授經典學術著作，國學研究與目錄學領域之基石。",
+          "author": { "@type": "Person", "name": "昌彼得" }
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "文心雕龍與經學",
+          "inLanguage": "zh-TW",
+          "description": "蔡宗陽教授國學研究專書，深入探討古典文論與經學之交融。",
+          "author": { "@type": "Person", "name": "蔡宗陽" }
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "修辭學",
+          "inLanguage": "zh-TW",
+          "description": "蔡宗陽教授權威著作，大專院校語文與修辭研究必讀教材。",
+          "author": { "@type": "Person", "name": "蔡宗陽" }
+        }
+      },
+      {
+        "@type": "Offer",
+        "availability": "https://schema.org/InStock",
+        "itemOffered": {
+          "@type": "Book",
+          "name": "中日關係史研究論集",
+          "inLanguage": "zh-TW",
+          "description": "龔鵬程、鄭樑生合著之重要歷史研究論集，全套共14冊。",
+          "author": {
+            "@type": "Person",
+            "name": "龔鵬程"
+          }
+        }
+      }
+    ]
+  }
 }
 </script>
+
     
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
