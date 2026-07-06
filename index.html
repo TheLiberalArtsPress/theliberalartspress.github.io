@@ -403,7 +403,7 @@
             <li>昌彼得《中國目錄學》</li>
             <li>龔鵬程、鄭樑生《中日關係史研究論集》</li>
             <li>莊吉發《清史論集》全30集</li>
-            <li>《滿語叢刊}全50冊</li>
+            <li>《滿語叢刊》全50冊</li>
             <li>蔡宗陽《文心雕龍與經學》</li>
             <li>蔡宗陽《修辭學》</li>
         </ul>
@@ -671,9 +671,6 @@
             const [isCartOpen, setIsCartOpen] = useState(false);
             const [isContactOpen, setIsContactOpen] = useState(false);
             const [notification, setNotification] = useState(null);
-            
-            // 🆕 用於控制購物車左側明細是否在前端收折
-            const [isCartDetailsOpen, setIsCartDetailsOpen] = useState(true);
             
             const [isBooksLoading, setIsBooksLoading] = useState(true); 
             const [isCheckingOut, setIsCheckingOut] = useState(false);
@@ -1239,7 +1236,7 @@
                                 </div>
                                 
                                 <div className="md:col-span-5">
-                                    <h4 className="text-lg font-bold text-white mb-6 border-b border-white/10 pb-3 flex items-center gap-2"><MapPin size={18} className="text-[var(--primary-color)]"/> {ui.footerContactTitle}</h4>
+                                    <h4 className="text-lg font-bold text white mb-6 border-b border-white/10 pb-3 flex items-center gap-2"><MapPin size={18} className="text-[var(--primary-color)]"/> {ui.footerContactTitle}</h4>
                                     <ul className="space-y-4 text-[15px]">
                                         <li className="flex items-start gap-3"><MapPin size={18} className="mt-0.5 flex-shrink-0 text-[var(--primary-color)]" /> <span>{ui.footerAddress}</span></li>
                                         <li className="flex items-center gap-3"><Phone size={18} className="flex-shrink-0 text-[var(--primary-color)]" /> <span>{ui.footerPhone}</span></li>
@@ -1507,78 +1504,52 @@
                     {/* 我的書包 購物車 Modal */}
                     {isCartOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex justify-center items-center p-4 md:p-8" onClick={() => setIsCartOpen(false)}>
-                            {/* 🆕 藉由 isCartDetailsOpen 狀態動態控制容器最大寬度：展開時 max-w-5xl，收折時 max-w-md 更加精緻自適應 */}
-                            <div className={`bg-[var(--bg-light)] w-full ${isCartDetailsOpen ? 'max-w-5xl' : 'max-w-md'} h-full md:h-auto max-h-[90vh] flex flex-col md:flex-row shadow-2xl rounded-2xl animate-in font-sans overflow-hidden`} onClick={(e) => e.stopPropagation()}>
+                            <div className="bg-[var(--bg-light)] w-full max-w-5xl h-full md:h-auto max-h-[90vh] flex flex-col md:flex-row shadow-2xl rounded-2xl animate-in font-sans overflow-hidden" onClick={(e) => e.stopPropagation()}>
                                 
-                                {/* 🆕 左側購物車明細面板 - 可受 isCartDetailsOpen 切換顯示與隱藏 */}
-                                {isCartDetailsOpen && (
-                                    <div className="flex-1 flex flex-col bg-[var(--bg-light)] overflow-y-auto border-b md:border-b-0 md:border-r border-[var(--border-color)] animate-in">
-                                        <div className="sticky top-0 z-10 p-5 md:p-6 border-b border-[var(--border-color)] flex justify-between items-center bg-white shrink-0">
-                                            <h2 className="text-xl md:text-2xl font-black flex items-center gap-3 text-[var(--dark-color)] font-serif tracking-widest"><ShoppingCart className="text-[var(--primary-color)]" size={28} /> {ui.cartTitle}</h2>
-                                            <button type="button" onClick={() => setIsCartOpen(false)} className="bg-[var(--bg-light)] border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[var(--text-dark)] transition flex items-center gap-1.5 shadow-sm"><X size={16} /> {ui.cartCloseBtn}</button>
-                                        </div>
-                                        <div className="flex-1 p-4 md:p-6">
-                                            {cart.length === 0 ? (
-                                                <div className="text-center mt-10 md:mt-20 flex flex-col items-center gap-6">
-                                                    <div className="w-24 h-24 bg-[var(--border-color)]/30 rounded-full flex items-center justify-center text-[var(--accent-color)]"><ShoppingCart size={48} /></div>
-                                                    <p className="text-[var(--primary-color)] font-bold text-lg">{ui.cartEmptyText}</p>
-                                                </div>
-                                            ) : (
-                                                <div className="space-y-4">
-                                                    {cart.map(i => (
-                                                        <div key={i.id} className="flex gap-4 items-center bg-white p-4 rounded-xl border border-[var(--border-color)] shadow-sm relative group">
-                                                            <div className="w-20 h-28 flex-shrink-0 bg-gray-100 rounded overflow-hidden border border-[var(--border-color)] shadow-sm">
-                                                                <img src={formatImageUrl(i.cover)} alt={i.title} className="w-full h-full object-cover" onError={(e)=>{e.target.src='https://via.placeholder.com/150?text=No+Cover'}} />
-                                                            </div>
-                                                            <div className="flex flex-col flex-1">
-                                                                <p className="font-bold text-[var(--dark-color)] mb-2 font-serif text-lg leading-tight line-clamp-2 pr-8">{i.title}</p>
-                                                                <p className="text-lg text-[var(--primary-color)] font-black mb-3">NT$ {i.price}</p>
-                                                                <div className="flex items-center">
-                                                                    <div className="flex items-center border border-[var(--accent-color)] rounded-lg overflow-hidden h-9">
-                                                                        <button type="button" onClick={() => updateCartQty(i.id, -1)} className="px-3 hover:bg-[#E6D5C3] text-[var(--text-dark)] transition font-bold"><Minus size={16} /></button>
-                                                                        <span className="px-4 text-sm font-bold text-[var(--dark-color)] bg-[var(--bg-light)] min-w-[40px] text-center border-x border-[var(--accent-color)]">{i.qty}</span>
-                                                                        <button type="button" onClick={() => updateCartQty(i.id, 1)} className="px-3 hover:bg-[#E6D5C3] text-[var(--text-dark)] transition font-bold"><Plus size={16} /></button>
-                                                                    </div>
+                                <div className="flex-1 flex flex-col bg-[var(--bg-light)] overflow-y-auto border-b md:border-b-0 md:border-r border-[var(--border-color)]">
+                                    <div className="sticky top-0 z-10 p-5 md:p-6 border-b border-[var(--border-color)] flex justify-between items-center bg-white shrink-0">
+                                        <h2 className="text-xl md:text-2xl font-black flex items-center gap-3 text-[var(--dark-color)] font-serif tracking-widest"><ShoppingCart className="text-[var(--primary-color)]" size={28} /> {ui.cartTitle}</h2>
+                                        <button type="button" onClick={() => setIsCartOpen(false)} className="bg-[var(--bg-light)] border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[var(--text-dark)] transition flex items-center gap-1.5 shadow-sm"><X size={16} /> {ui.cartCloseBtn}</button>
+                                    </div>
+                                    <div className="flex-1 p-4 md:p-6">
+                                        {cart.length === 0 ? (
+                                            <div className="text-center mt-10 md:mt-20 flex flex-col items-center gap-6">
+                                                <div className="w-24 h-24 bg-[var(--border-color)]/30 rounded-full flex items-center justify-center text-[var(--accent-color)]"><ShoppingCart size={48} /></div>
+                                                <p className="text-[var(--primary-color)] font-bold text-lg">{ui.cartEmptyText}</p>
+                                            </div>
+                                        ) : (
+                                            <div className="space-y-4">
+                                                {cart.map(i => (
+                                                    <div key={i.id} className="flex gap-4 items-center bg-white p-4 rounded-xl border border-[var(--border-color)] shadow-sm relative group">
+                                                        <div className="w-20 h-28 flex-shrink-0 bg-gray-100 rounded overflow-hidden border border-[var(--border-color)] shadow-sm">
+                                                            <img src={formatImageUrl(i.cover)} alt={i.title} className="w-full h-full object-cover" onError={(e)=>{e.target.src='https://via.placeholder.com/150?text=No+Cover'}} />
+                                                        </div>
+                                                        <div className="flex flex-col flex-1">
+                                                            <p className="font-bold text-[var(--dark-color)] mb-2 font-serif text-lg leading-tight line-clamp-2 pr-8">{i.title}</p>
+                                                            <p className="text-lg text-[var(--primary-color)] font-black mb-3">NT$ {i.price}</p>
+                                                            <div className="flex items-center">
+                                                                <div className="flex items-center border border-[var(--accent-color)] rounded-lg overflow-hidden h-9">
+                                                                    <button type="button" onClick={() => updateCartQty(i.id, -1)} className="px-3 hover:bg-[#E6D5C3] text-[var(--text-dark)] transition font-bold"><Minus size={16} /></button>
+                                                                    <span className="px-4 text-sm font-bold text-[var(--dark-color)] bg-[var(--bg-light)] min-w-[40px] text-center border-x border-[var(--accent-color)]">{i.qty}</span>
+                                                                    <button type="button" onClick={() => updateCartQty(i.id, 1)} className="px-3 hover:bg-[#E6D5C3] text-[var(--text-dark)] transition font-bold"><Plus size={16} /></button>
                                                                 </div>
                                                             </div>
-                                                            {/* 右側垃圾桶刪除按鈕 */}
-                                                            <button type="button" onClick={() => removeFromCart(i.id)} className="absolute top-4 right-4 text-[var(--accent-color)] hover:text-red-500 hover:bg-red-50 p-2.5 rounded-full transition-colors"><Trash2 size={18}/></button>
                                                         </div>
-                                                    ))}
-                                                </div>
-                                            )}
-                                        </div>
+                                                        {/* 右側垃圾桶刪除按鈕 */}
+                                                        <button type="button" onClick={() => removeFromCart(i.id)} className="absolute top-4 right-4 text-[var(--accent-color)] hover:text-red-500 hover:bg-red-50 p-2.5 rounded-full transition-colors"><Trash2 size={18}/></button>
+                                                    </div>
+                                                ))}
+                                            </div>
+                                        )}
                                     </div>
-                                )}
+                                </div>
 
                                 {cart.length > 0 && (
                                     <div className="w-full md:w-[400px] lg:w-[450px] bg-white p-6 shadow-[-10px_0_20px_rgba(0,0,0,0.02)] flex flex-col shrink-0 overflow-y-auto">
                                         <div className="flex flex-col gap-2 bg-[var(--bg-light)] p-5 rounded-xl border border-[var(--border-color)] mb-6">
-                                            
-                                            {/* 🆕 收折/展開控制列與獨立關閉按鈕 */}
-                                            <div className="flex justify-between items-center mb-1">
-                                                <button 
-                                                    type="button" 
-                                                    onClick={() => setIsCartDetailsOpen(!isCartDetailsOpen)} 
-                                                    className="text-[var(--primary-color)] text-sm font-bold flex items-center gap-1 bg-[var(--border-color)]/30 hover:bg-[var(--border-color)]/50 px-2.5 py-1 rounded-lg transition active:scale-95"
-                                                    title={isCartDetailsOpen ? "點擊收起清單" : "點擊展開清單"}
-                                                >
-                                                    {isCartDetailsOpen ? <ChevronLeft size={16} /> : <ChevronRight size={16} />}
-                                                    {(ui.cartBookCountLabel).replace('{count}', cart.reduce((s, i) => s + i.qty, 0))}
-                                                </button>
-
-                                                {/* 當左側明細被摺疊隱藏時，在右側補上關閉按鈕以維護基本操作邏輯 */}
-                                                {!isCartDetailsOpen && (
-                                                    <button 
-                                                        type="button" 
-                                                        onClick={() => setIsCartOpen(false)} 
-                                                        className="bg-white border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-3 py-1 rounded-full text-xs font-bold text-[var(--text-dark)] transition flex items-center gap-1 shadow-sm"
-                                                    >
-                                                        <X size={12} /> {ui.cartCloseBtn}
-                                                    </button>
-                                                )}
+                                            <div className="text-[var(--text-dark)] text-sm font-bold text-left">
+                                                {(ui.cartBookCountLabel).replace('{count}', cart.reduce((s, i) => s + i.qty, 0))}
                                             </div>
-
                                             <div className="flex items-baseline justify-between mt-1 text-left border-t border-[var(--border-color)] pt-3">
                                                 <span className="font-bold text-[var(--dark-color)] text-xl">{ui.cartTotalLabel}</span>
                                                 <span className="text-4xl font-black text-[var(--primary-color)]">NT$ {cartTotal.toLocaleString()}</span>
@@ -1594,10 +1565,10 @@
                                             <div><label className="block text-xs font-bold text-gray-500 mb-1">{ui.cartLabelAddress}</label><input name="address" required className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl focus:border-[var(--primary-color)] bg-[var(--bg-light)] text-sm outline-none" /></div>
                                             <div>
                                                 <label className="block text-xs font-bold text-gray-500 mb-1">{ui.cartLabelPayment}</label>
-                                                {/* 🛠️ 已修正：採用直接寫死的安全做法，不因 FETCH_UI 回傳而重設「銀行轉帳」字體 */}
+                                                {/* 🛠️ 此處已修正：只保留「店取付現金」與「銀行轉帳 (含運費)」，徹底移除線上刷卡 */}
                                                 <select name="payment" className="w-full border-2 border-[var(--border-color)] p-3 rounded-xl focus:border-[var(--primary-color)] bg-[var(--bg-light)] text-sm font-bold text-[var(--dark-color)] outline-none">
                                                     <option value="店取付現金">{ui.cartOptionCash}</option>
-                                                    <option value="銀行轉帳（運費另計）">銀行轉帳（運費另計）</option>
+                                                    <option value="銀行轉帳（運費另計）">{ui.cartOptionTransfer}</option>
                                                 </select>
                                             </div>
                                             <div>
