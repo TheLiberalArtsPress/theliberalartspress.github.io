@@ -87,7 +87,10 @@
       },
       "sameAs": [
         "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW",
-        "https://zh.wikipedia.org/wiki/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE"
+        "https://zh.wikipedia.org/wiki/文史哲出版社",
+        "https://zh.wikipedia.org/wiki/文史哲學集成",
+        "https://zh.wikipedia.org/wiki/文史哲學術叢刊"
+        
       ],
       "contactPoint": {
         "@type": "ContactPoint",
@@ -520,6 +523,30 @@
             footerLinksTitle: '推薦好站',
             footerFacebookLinkText: '文史哲出版社臉書(FB)',
             footerFacebookUrl: 'https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW',
+            footerWikiLinkText: '文史哲出版社（維基百科）',
+            footerWikiUrl: 'https://zh.wikipedia.org/wiki/文史哲出版社',
+            
+            footerSeriesLinkText: '文史哲學集成（維基百科）',
+            footerSeriesUrl: 'https://zh.wikipedia.org/wiki/文史哲學集成',
+            
+            footerJournalLinkText: '文史哲學術叢刊（維基百科）',
+            footerJournalUrl: 'https://zh.wikipedia.org/wiki/文史哲學術叢刊',
+            
+            footerNclLinkText: '國家圖書館',
+            footerNclUrl: 'https://www.ncl.edu.tw/',
+            
+            footerIsbnLinkText: 'ISBN 書目查詢',
+            footerIsbnUrl: 'https://isbn.ncl.edu.tw/',
+            
+            footerBookLinkText: '全國新書資訊網',
+            footerBookUrl: 'https://book.ncl.edu.tw/',
+            
+            footerThesisLinkText: '臺灣博碩士論文知識加值系統',
+            footerThesisUrl: 'https://ndltd.ncl.edu.tw/',
+            
+            footerMemoryLinkText: '國家文化記憶庫',
+            footerMemoryUrl: 'https://memory.culture.tw/',
+          
             footerCopyright: '傳承文化 ‧ 創新閱讀',
             
             csTitle: '客服與建議',
@@ -1293,11 +1320,70 @@
                                 <div className="md:col-span-3">
                                     <h4 className="text-lg font-bold text-white mb-6 border-b border-white/10 pb-3 flex items-center gap-2"><LinkIcon size={18} className="text-[var(--primary-color)]"/> {ui.footerLinksTitle}</h4>
                                     <ul className="space-y-4 text-[15px]">
-                                         <li>
-                                            <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
-                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div> {ui.footerFacebookLinkText}
+                                    
+                                        <li>
+                                            <a href={ui.footerFacebookUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerFacebookLinkText}
                                             </a>
                                         </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerWikiUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerWikiLinkText}
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerSeriesUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerSeriesLinkText}
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerJournalUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerJournalLinkText}
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerNclUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerNclLinkText}
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerIsbnUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerIsbnLinkText}
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerBookUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerBookLinkText}
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerThesisUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerThesisLinkText}
+                                            </a>
+                                        </li>
+                                    
+                                        <li>
+                                            <a href={ui.footerMemoryUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 group bg-white/5 p-3 rounded-xl border border-white/5 hover:border-[var(--primary-color)]">
+                                                <div className="w-2 h-2 rounded-full bg-[var(--primary-color)] group-hover:bg-white transition-colors"></div>
+                                                {ui.footerMemoryLinkText}
+                                            </a>
+                                        </li>
+                                    
                                     </ul>
                                 </div>
                             </div>
