@@ -456,6 +456,20 @@
             return hashArray.map(b => b.toString(16).padStart(2, '0')).join('');
         }
 
+        /**
+         * 🛡️ 試算表公式注入防禦 (Formula Injection Sanitizer)
+         * 防止惡意使用者輸入以 =, +, -, @ 開頭的內容，避免管理員在打開 Excel/Google 試算表時被觸發惡意公式執行。
+         */
+        const sanitizeForSpreadsheet = (val) => {
+            if (val === undefined || val === null) return "";
+            let str = String(val).trim();
+            // 如果輸入開頭是試算表公式字元，在前面強制加上單引號 "'" 轉為純文字
+            if (/^[=\+\-\@]/.test(str)) {
+                return "'" + str;
+            }
+            return str;
+        };
+
         const formatImageUrl = (url) => {
             const transparentFallback = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
             if (!url) return transparentFallback;
@@ -639,6 +653,9 @@
             const [isCheckingOut, setIsCheckingOut] = useState(false);
             const [isSubmittingCS, setIsSubmittingCS] = useState(false);
 
+            // 🛡️ 新增：防重複發送/防暴力點擊冷卻狀態 (Rate Limiter)
+            const [lastActionTime, setLastActionTime] = useState(0);
+
             const [selectedCategory, setSelectedCategory] = useState('全部');
             const [visibleCount, setVisibleCount] = useState(8); 
             
@@ -663,6 +680,16 @@
             const showMsg = (text) => {
                 setNotification(text);
                 setTimeout(() => setNotification(null), 3000);
+            };
+
+            const checkRateLimit = () => {
+                const now = Date.now();
+                if (now - lastActionTime < 15000) { // 限制 15 秒內只能提交一次
+                    const secondsLeft = Math.ceil((15000 - (now - lastActionTime)) / 1000);
+                    showMsg(`操作過於頻繁，請等待 ${secondsLeft} 秒後再試！`);
+                    return false;
+                }
+                return true;
             };
 
             useEffect(() => {
@@ -882,68 +909,110 @@
                 e.preventDefault();
                 if (isCheckingOut) return;
                 
-                setIsCheckingOut(true);
-                showMsg("訂單處理中，請稍候，請勿關閉視窗...");
+                // 🛡️ 安全檢查：防刷冷卻
+                if (!checkRateLimit()) return;
                 
                 const formData = new FormData(e.target);
                 const info = Object.fromEntries(formData);
+
+                // 🛡️ 安全檢查：嚴格欄位格式與長度驗證，並防公式注入
+                const name = sanitizeForSpreadsheet(info.name);
+                const phone = sanitizeForSpreadsheet(info.phone);
+                const email = sanitizeForSpreadsheet(info.email);
+                const address = sanitizeForSpreadsheet(info.address);
+                const memo = sanitizeForSpreadsheet(info.memo);
+
+                if (name.length < 2) return showMsg("請輸入正確的收件人姓名（至少2個字）");
+                if (!/^\+?[0-9\-\s]{8,15}$/.test(info.phone.replace(/[^0-9\+]/g, ''))) {
+                    return showMsg("請輸入有效的聯絡電話（8~15碼數字）");
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(info.email)) {
+                    return showMsg("請輸入正確的電子信箱格式");
+                }
+                if (address.length < 6) return showMsg("請輸入正確的詳細寄送地址");
+
+                setIsCheckingOut(true);
+                setLastActionTime(Date.now()); // 更新防刷冷卻時間戳
+                showMsg("訂單處理中，請稍候，請勿關閉視窗...");
                 
                 const now = new Date();
                 const pad = (n) => n.toString().padStart(2, '0');
                 const formattedDate = `${now.getFullYear()}/${pad(now.getMonth() + 1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
                 
-                const itemsStr = cart.map(i => `${i.title} (數量: ${i.qty})`).join('\n');
+                // 對購物車內每本書的名稱進行防公式注入處理
+                const itemsStr = cart.map(i => `${sanitizeForSpreadsheet(i.title)} (數量: ${i.qty})`).join('\n');
                 
-                let orderId = `ORD-${Math.floor(Math.random() * 10000)}`;
-                try {
-                    const resOrders = await syncWithGAS('FETCH_ORDERS');
-                    if (resOrders && Array.isArray(resOrders.data)) {
-                        const nextNum = resOrders.data.length + 1;
-                        orderId = `ORD-${String(nextNum).padStart(4, '0')}`;
-                    }
-                } catch(error) {}
+                const dateStr = `${now.getFullYear().toString().slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+                const randStr = Math.floor(1000 + Math.random() * 9000); 
+                const orderId = `ORD-${dateStr}-${randStr}`;
 
                 const newOrder = {
-                    id: orderId, customer: info.name, phone: info.phone, email: info.email, address: info.address, payment: info.payment,
+                    id: orderId, customer: name, phone: phone, email: email, address: address, payment: info.payment,
                     items: itemsStr, total: cartTotal, status: '處理中', date: formattedDate,
-                    memo: info.memo || '',
-                    '訂單編號': orderId, '客戶姓名': info.name, '電話': info.phone, '電子信箱': info.email, 'Email': info.email,
-                    '地址': info.address, '付款方式': info.payment, '購買項目': itemsStr, '總金額': cartTotal, '狀態': '處理中', '日期': formattedDate
+                    memo: memo,
+                    '訂單編號': orderId, '客戶姓名': name, '電話': phone, '電子信箱': email, 'Email': email,
+                    '地址': address, '付款方式': info.payment, '購買項目': itemsStr, '總金額': cartTotal, '狀態': '處理中', '日期': formattedDate
                 };
                 
-                await syncWithGAS('CREATE_ORDER', newOrder);
+                const res = await syncWithGAS('CREATE_ORDER', newOrder);
                 
-                setBooks(books.map(b => {
-                    const ci = cart.find(c => c.id === b.id);
-                    return ci ? { ...b, stock: b.stock - ci.qty } : b;
-                }));
-                
-                setCart([]); 
-                setIsCheckingOut(false);
-                setIsCartOpen(false);
-                showMsg(`訂單已成功送出！您的單號為：${orderId}`);
+                if (res && res.status === 'success') {
+                    setBooks(books.map(b => {
+                        const ci = cart.find(c => c.id === b.id);
+                        return ci ? { ...b, stock: b.stock - ci.qty } : b;
+                    }));
+                    
+                    setCart([]); 
+                    setIsCheckingOut(false);
+                    setIsCartOpen(false);
+                    showMsg(`訂單已成功送出！您的單號為：${orderId}`);
+                } else {
+                    setIsCheckingOut(false);
+                    const errorMsg = res ? res.msg : '伺服器無回應';
+                    showMsg(`訂單送出失敗：${errorMsg}`);
+                    console.error("結帳失敗原因：", errorMsg);
+                }
             };
 
             const handleCSSubmit = async (e) => {
                 e.preventDefault();
                 if (isSubmittingCS) return;
                 
-                setIsSubmittingCS(true);
-                showMsg("訊息傳送中，請稍候...");
+                // 🛡️ 安全檢查：防刷冷卻
+                if (!checkRateLimit()) return;
+
+                const name = sanitizeForSpreadsheet(e.target.name.value);
+                const phone = sanitizeForSpreadsheet(e.target.phone.value);
+                const email = sanitizeForSpreadsheet(e.target.email.value);
+                const msg = sanitizeForSpreadsheet(e.target.message.value);
                 
-                const name = e.target.name.value;
-                const phone = e.target.phone.value;
-                const email = e.target.email.value;
-                const msg = e.target.message.value;
+                // 🛡️ 安全檢查：欄位基本格式驗證
+                if (name.length < 2) return showMsg("請輸入您的稱呼");
+                if (!/^\+?[0-9\-\s]{8,15}$/.test(phone.replace(/[^0-9\+]/g, ''))) {
+                    return showMsg("請輸入有效的聯絡電話");
+                }
+                if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                    return showMsg("請輸入正確的電子信箱格式");
+                }
+                if (msg.length < 5) return showMsg("反應內容請至少輸入5個字，以利我們為您處理");
+
+                setIsSubmittingCS(true);
+                setLastActionTime(Date.now()); // 更新防刷冷卻時間戳
+                showMsg("訊息傳送中，請稍候...");
                 
                 const combinedQuery = `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`;
 
                 const newLog = { id: Date.now(), platform: 'Web官網', user: name, query: combinedQuery };
-                await syncWithGAS('NEW_CS_MSG', newLog);
+                const res = await syncWithGAS('NEW_CS_MSG', newLog);
                 
                 setIsSubmittingCS(false);
-                setIsContactOpen(false);
-                showMsg("感謝您的反映，客服專員將盡快回覆！");
+                if (res && res.status === 'success') {
+                    setIsContactOpen(false);
+                    showMsg("感謝您的反映，客服專員將盡快回覆！");
+                } else {
+                    const errorMsg = res ? res.msg : '伺服器無回應';
+                    showMsg(`發送失敗：${errorMsg}`);
+                }
             };
 
             const scrollSlider = (direction) => {
