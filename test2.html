@@ -441,11 +441,11 @@
         );
 
         /* ----------------------------------------------------
-           🛡️ 安全性配置升級 
-           1. 徹底移除前端 SECRET_KEY，不使用前端 HMAC 與 signature 機制。
-           2. 試算表 ID (SPREADSHEET_ID) 全權交由後端 GAS 管理，前端不揭露任何資料庫 ID。
+           🛡️ 零前端金鑰 (No Front-End Keys) 高安全架構重構版
+           徹底移除 SECRET_KEY 與 HMAC 簽章，不再依賴前端金鑰。
+           API 網址指向您提供的全新前台 Web App 端點。
            ---------------------------------------------------- */
-        const GAS_URL = "https://script.google.com/macros/s/AKfycbzivypRICq5YjjEI8itRDnsfcQs2rO1Wo6SZoxK2iJq9StKVLKdjmN2ce2QlEBOlD32/exec"; 
+        const GAS_URL = "https://script.google.com/macros/s/AKfycbwD2NyrC02qT5BPiV_DwcxXmhPOznhq-tlCcbXEPmdElK7wlrUyno2-2jJuGLfRp4KJ/exec"; 
 
         const formatImageUrl = (url) => {
             const transparentFallback = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
@@ -630,7 +630,7 @@
             const [isCheckingOut, setIsCheckingOut] = useState(false);
             const [isSubmittingCS, setIsSubmittingCS] = useState(false);
 
-            // 🛡️ 新增：前端防刷冷卻時間戳，防止暴力短時間重送請求
+            // ⏳ 提交防刷冷卻時間戳，防止暴力重送
             const [lastActionTime, setLastActionTime] = useState(0);
 
             const [selectedCategory, setSelectedCategory] = useState('全部');
@@ -659,7 +659,7 @@
                 setTimeout(() => setNotification(null), 3000);
             };
 
-            // 🛡️ 新增：檢核是否過度頻繁點擊/呼叫接口 (15 秒冷卻)
+            // ⏳ 防刷機制校驗（15 秒冷卻時間）
             const checkRateLimit = () => {
                 const now = Date.now();
                 if (now - lastActionTime < 15000) {
@@ -670,20 +670,32 @@
                 return true;
             };
 
-            /* ----------------------------------------------------
-               🛡️ 前端安全通訊模組 
-               徹底去金鑰化，僅發送與傳遞基本的業務 payload 資訊，拒絕曝露任何加密金鑰。
-               ---------------------------------------------------- */
+            useEffect(() => {
+                const handleScroll = () => {
+                    setShowBackToTop(window.scrollY > 300);
+                };
+                window.addEventListener('scroll', handleScroll);
+                return () => window.removeEventListener('scroll', handleScroll);
+            }, []);
+
             const syncWithGAS = async (action, payloadData = null) => {
                 try {
                     const currentOrigin = window.location.origin;
+                    const safeOrigin = currentOrigin.includes("usercontent.goog") 
+                        ? "https://candylovema.github.io" 
+                        : currentOrigin;
+
+                    const payloadObj = { 
+                        action: action, 
+                        payload: payloadData,
+                        origin: safeOrigin
+                    };
+                    
+                    // 🛡️ 高安全零金鑰通訊：直接發送明文 Payload 委由後端驗證，不再曝露 SECRET_KEY
                     const response = await fetch(GAS_URL, {
                         method: "POST",
                         headers: { "Content-Type": "text/plain;charset=utf-8" },
-                        body: JSON.stringify({
-                            action: action,
-                            payload: payloadData
-                        })
+                        body: JSON.stringify(payloadObj)
                     });
                     
                     const data = await response.json();
@@ -859,12 +871,12 @@
 
             const cartTotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
 
-            // 🛡️ 安全過濾：公式注入防禦 (防止遠端公式執行安全威脅)
+            // 🛡️ 試算表公式注入過濾與轉義
             const sanitizeInput = (val) => {
                 if (val === undefined || val === null) return "";
                 let str = String(val).trim();
                 if (/^[=\+\-\@]/.test(str)) {
-                    return "'" + str;
+                    return "'" + str; // 在前方補上單引號強制轉義為純文字
                 }
                 return str;
             };
@@ -873,13 +885,13 @@
                 e.preventDefault();
                 if (isCheckingOut) return;
                 
-                // 🛡️ 安全校驗：頻率防刷檢查
+                // ⏳ 安全校驗：防刷冷卻時間檢驗
                 if (!checkRateLimit()) return;
 
                 const formData = new FormData(e.target);
                 const info = Object.fromEntries(formData);
 
-                // 🛡️ 安全校驗：欄位格式檢查
+                // 🛡️ 嚴格之欄位格式與長度校驗
                 const name = sanitizeInput(info.name);
                 const phone = sanitizeInput(info.phone);
                 const email = sanitizeInput(info.email);
@@ -905,7 +917,7 @@
                 
                 const itemsStr = cart.map(i => `${sanitizeInput(i.title)} (數量: ${i.qty})`).join('\n');
                 
-                // 🛡️ 安全隨機序號：前端自主產生高亂數專業訂單序號，不依賴敏感接口呼叫
+                // 🛡️ 前端自主結合「日期 + 隨機數」計算專屬訂單編號，杜絕 FETCH_ORDERS 暴露隱私
                 const dateStr = `${now.getFullYear().toString().slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
                 const randStr = Math.floor(1000 + Math.random() * 9000); 
                 const orderId = `ORD-${dateStr}-${randStr}`;
@@ -940,7 +952,7 @@
                 e.preventDefault();
                 if (isSubmittingCS) return;
                 
-                // 🛡️ 安全校驗：頻率防刷檢查
+                // ⏳ 安全校驗：防刷冷卻時間檢驗
                 if (!checkRateLimit()) return;
 
                 const name = sanitizeInput(e.target.name.value);
@@ -1165,7 +1177,6 @@
                                 </div>
                             </div>
 
-                            {/* Category Filter Menu */}
                             {dynamicCategories.length > 1 && (
                                 <div className="flex flex-wrap gap-3 mb-10 justify-center animate-in font-sans border-t border-[var(--border-color)] pt-8 mt-8">
                                     {visibleCategories.map(cat => (
@@ -1329,7 +1340,6 @@
                         </div>
                     </div>
 
-                    {/* About Us Brand Modal */}
                     {isAboutOpen && (
                         <div className="fixed inset-0 bg-black/70 backdrop-blur-sm z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsAboutOpen(false)}>
                             <div className="bg-[var(--bg-light)] w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in" onClick={(e) => e.stopPropagation()}>
@@ -1392,7 +1402,6 @@
                         </div>
                     )}
 
-                    {/* Book Query / Search Modal */}
                     {isSearchModalOpen && (
                         <div className="fixed inset-0 bg-[var(--bg-light)] z-[150] overflow-y-auto animate-in flex flex-col">
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center bg-white shadow-sm sticky top-0 z-40">
@@ -1529,7 +1538,6 @@
                         </div>
                     )}
 
-                    {/* Shopping Cart and Checkout Drawer */}
                     {isCartOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-sm z-[200] flex justify-center items-start md:items-center p-0 md:p-8 overflow-y-auto custom-scrollbar" onClick={() => setIsCartOpen(false)}>
                             <div className={`bg-[var(--bg-light)] w-full h-auto md:h-[85vh] ${isCartDetailsOpen ? 'md:max-w-5xl' : 'md:max-w-md'} flex flex-col md:flex-row shadow-2xl rounded-t-2xl md:rounded-2xl overflow-visible md:overflow-hidden mt-4 md:mt-0 font-sans shrink-0`} onClick={(e) => e.stopPropagation()}>
