@@ -1,0 +1,1662 @@
+<!DOCTYPE html>
+<html lang="zh-TW" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版</title>
+    <link rel="icon" type="image/png" href="https://theliberalartspress.github.io/favicon.png">
+    <link rel="apple-touch-icon" href="https://theliberalartspress.github.io/favicon.png">
+
+    <!-- SEO Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@graph": [
+        {
+          "@type": "WebSite",
+          "@id": "https://theliberalartspress.github.io/#website",
+          "url": "https://theliberalartspress.github.io/",
+          "name": "文史哲出版社官方網站",
+          "description": "創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學之學術論著出版。",
+          "publisher": { "@id": "https://theliberalartspress.github.io/#organization" }
+        },
+        {
+          "@type": ["Organization", "Publisher"],
+          "@id": "https://theliberalartspress.github.io/#organization",
+          "name": "文史哲出版社有限公司",
+          "alternativeName": ["The Liberal Arts Press", "文史哲出版社", "文史哲"],
+          "url": "https://theliberalartspress.github.io/",
+          "logo": { "@type": "ImageObject", "url": "https://theliberalartspress.github.io/logo.png" },
+          "foundingDate": "1971-08-01",
+          "telephone": "+886-2-2351-1028",
+          "email": "lapentw@gmail.com"
+        }
+      ]
+    }
+    </script>
+
+    <meta name="description" content="文史哲出版社有限公司創立於1971年，為台灣歷史悠久的人文學術出版社。">
+    <meta property="og:title" content="文史哲出版社｜台灣人文學術出版社">
+    <meta property="og:description" content="創立於1971年，專注文學、歷史、哲學、藝術、語言學及人文社會科學出版。">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://theliberalartspress.github.io/">
+    <meta property="og:image" content="https://theliberalartspress.github.io/og-image.jpg">
+    <meta property="og:site_name" content="文史哲出版社">
+    <meta property="og:locale" content="zh_TW">
+    <meta name="robots" content="index,follow">
+
+    <link rel="canonical" href="https://theliberalartspress.github.io/">
+
+    <script>
+        window.tailwind = {
+            config: {
+                theme: {
+                    extend: {
+                        fontFamily: {
+                            sans: ['"Noto Sans TC"', 'system-ui', 'sans-serif'],
+                            serif: ['"Noto Serif TC"', 'Georgia', 'serif'],
+                        }
+                    }
+                }
+            }
+        };
+    </script>
+
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+    <script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+    <script>window.react = window.React;</script>
+    <script src="https://unpkg.com/@babel/standalone@7.22.20/babel.min.js"></script>
+    <script src="https://unpkg.com/lucide-react@0.284.0/dist/umd/lucide-react.js"></script>
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
+
+        :root {
+            --primary-color: #8C5A2B;
+            --dark-color: #1C1613;
+            --bg-color: #FAF7F2;
+            --bg-light: #F4EFE6;
+            --text-dark: #3D2D24;
+            --border-color: #E2D3C1;
+            --accent-color: #B89973;
+            --footer-bg: #140E0C;
+            --body-font: 'Noto Sans TC', sans-serif;
+            --title-font: 'Noto Serif TC', serif;
+        }
+
+        body, input, textarea, button, select { 
+            font-family: var(--body-font), 'Noto Sans TC', sans-serif !important; 
+        }
+        .font-serif, h1, h2, h3, .font-serif * { 
+            font-family: var(--title-font), 'Noto Serif TC', serif !important; 
+        }
+
+        /* Ambient Glowing Aura Backgrounds */
+        .glow-aura-1 {
+            background: radial-gradient(circle, rgba(140, 90, 43, 0.16) 0%, rgba(250, 247, 242, 0) 70%);
+        }
+        .glow-aura-2 {
+            background: radial-gradient(circle, rgba(184, 153, 115, 0.18) 0%, rgba(250, 247, 242, 0) 75%);
+        }
+
+        /* Luxury Frosted Glass Physics */
+        .glass-nav {
+            background: rgba(250, 247, 242, 0.85) !important;
+            backdrop-filter: blur(20px) saturate(190%);
+            -webkit-backdrop-filter: blur(20px) saturate(190%);
+            border-bottom: 1px solid rgba(226, 211, 193, 0.7);
+        }
+
+        .glass-modal {
+            background: rgba(250, 247, 242, 0.92) !important;
+            backdrop-filter: blur(24px) saturate(200%);
+            -webkit-backdrop-filter: blur(24px) saturate(200%);
+            border: 1px solid rgba(255, 255, 255, 0.85);
+            box-shadow: 0 30px 70px -15px rgba(28, 22, 19, 0.22);
+        }
+
+        .glass-card {
+            background: rgba(255, 255, 255, 0.82) !important;
+            backdrop-filter: blur(16px) saturate(180%);
+            -webkit-backdrop-filter: blur(16px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.9);
+            box-shadow: 0 12px 35px -8px rgba(28, 22, 19, 0.06);
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .glass-card:hover {
+            box-shadow: 0 24px 50px -12px rgba(140, 90, 43, 0.22);
+            border-color: var(--primary-color);
+            transform: translateY(-6px);
+        }
+
+        .glass-dark {
+            background: rgba(28, 22, 19, 0.94) !important;
+            backdrop-filter: blur(20px) saturate(180%);
+            -webkit-backdrop-filter: blur(20px) saturate(180%);
+            border: 1px solid rgba(255, 255, 255, 0.12);
+        }
+
+        .glass-input {
+            background: rgba(255, 255, 255, 0.92) !important;
+            backdrop-filter: blur(12px);
+            -webkit-backdrop-filter: blur(12px);
+            transition: all 0.3s ease;
+        }
+        .glass-input:focus {
+            background: #FFFFFF !important;
+            box-shadow: 0 0 0 4px rgba(140, 90, 43, 0.22);
+        }
+
+        /* 3D Book Spine Effect & Gold Foil Edge */
+        .book-3d-wrapper {
+            perspective: 1000px;
+        }
+        .book-spine-effect {
+            box-shadow: -5px 0 12px rgba(0,0,0,0.18) inset, 6px 6px 20px rgba(0,0,0,0.15);
+            border-left: 4px solid rgba(255,255,255,0.45);
+            transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+        .group:hover .book-spine-effect {
+            transform: rotateY(-6deg) rotateX(3deg) scale(1.04);
+        }
+
+        /* Gold Foil Shimmer Animation */
+        .shimmer-gold {
+            background: linear-gradient(90deg, rgba(255,255,255,0) 0%, rgba(226,203,165,0.6) 50%, rgba(255,255,255,0) 100%);
+            background-size: 200% 100%;
+            animation: goldShimmer 3.5s infinite;
+        }
+        @keyframes goldShimmer {
+            0% { background-position: -200% 0; }
+            100% { background-position: 200% 0; }
+        }
+
+        /* Animations */
+        .animate-fade-in-up { 
+            animation: fadeInUp 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards; 
+        }
+        @keyframes fadeInUp { 
+            from { opacity: 0; transform: translateY(22px) scale(0.98); } 
+            to { opacity: 1; transform: translateY(0) scale(1); } 
+        }
+
+        .hide-scrollbar::-webkit-scrollbar { display: none; }
+        .hide-scrollbar { -ms-overflow-style: none; scrollbar-width: none; }
+
+        .receipt-container {
+            background-color: #FFFFFF;
+            background-image: radial-gradient(circle, #fcfaf6 10%, transparent 11%);
+            background-size: 10px 10px;
+        }
+        .receipt-edge-zigzag {
+            background: linear-gradient(-135deg, #FFF 5px, transparent 0), linear-gradient(135deg, #FFF 5px, transparent 0);
+            background-size: 10px 10px;
+            background-repeat: repeat-x;
+        }
+    </style>
+</head>
+<body class="bg-[var(--bg-color)]">
+    <div id="root"></div>
+
+    <script type="text/babel">
+    const { useState, useEffect, useMemo, useRef } = React;
+    const lib = window.lucideReact || window.LucideReact || {};
+    const FallbackIcon = () => <span className="inline-block w-4 h-4 bg-amber-200/50 rounded-full animate-pulse"></span>;
+
+    const BookOpen = lib.BookOpen || FallbackIcon;
+    const Globe = lib.Globe || FallbackIcon;
+    const ShoppingCart = lib.ShoppingCart || FallbackIcon;
+    const X = lib.X || FallbackIcon;
+    const MessageCircle = lib.MessageCircle || FallbackIcon;
+    const ChevronRight = lib.ChevronRight || FallbackIcon;
+    const ChevronLeft = lib.ChevronLeft || FallbackIcon;
+    const ChevronDown = lib.ChevronDown || FallbackIcon;
+    const ChevronUp = lib.ChevronUp || FallbackIcon;
+    const Database = lib.Database || FallbackIcon;
+    const Clock = lib.Clock || FallbackIcon;
+    const CheckCircle = lib.CheckCircle || FallbackIcon;
+    const Zap = lib.Zap || FallbackIcon;
+    const LayoutDashboard = lib.LayoutDashboard || FallbackIcon;
+    const Trash2 = lib.Trash2 || FallbackIcon;
+    const MapPin = lib.MapPin || FallbackIcon;
+    const Phone = lib.Phone || FallbackIcon;
+    const Printer = lib.Printer || FallbackIcon;
+    const Mail = lib.Mail || FallbackIcon;
+    const CreditCard = lib.CreditCard || FallbackIcon;
+    const LinkIcon = lib.Link || FallbackIcon;
+    const Compass = lib.Compass || FallbackIcon;
+    const User = lib.User || FallbackIcon;
+    const Search = lib.Search || FallbackIcon;
+    const FileText = lib.FileText || FallbackIcon;
+    const Plus = lib.Plus || FallbackIcon;
+    const Minus = lib.Minus || FallbackIcon;
+    const RefreshCw = lib.RefreshCw || FallbackIcon;
+    const Sparkles = lib.Sparkles || FallbackIcon;
+    const Check = lib.Check || FallbackIcon;
+    const Info = lib.Info || FallbackIcon;
+    const Bot = lib.Bot || Sparkles;
+    const Send = lib.Send || ChevronRight;
+
+    // Gemini API Helper Function with Exponential Backoff
+    const callGeminiAPI = async (userQuery, systemInstruction = "", retryCount = 0) => {
+        const apiKey = ""; // Runtime auto-supplied
+        const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
+        
+        const payload = {
+            contents: [{ parts: [{ text: userQuery }] }],
+            ...(systemInstruction ? { systemInstruction: { parts: [{ text: systemInstruction }] } } : {})
+        };
+
+        try {
+            const response = await fetch(apiUrl, {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            });
+
+            if (!response.ok) {
+                if ((response.status === 429 || response.status >= 500) && retryCount < 3) {
+                    const delay = Math.pow(2, retryCount) * 1000;
+                    await new Promise(resolve => setTimeout(resolve, delay));
+                    return callGeminiAPI(userQuery, systemInstruction, retryCount + 1);
+                }
+                throw new Error(`API 請求失敗: HTTP ${response.status}`);
+            }
+
+            const data = await response.json();
+            return data.candidates?.[0]?.content?.parts?.[0]?.text || "暫時無法取得 AI 分析內容，請稍後重試。";
+        } catch (error) {
+            if (retryCount < 3) {
+                const delay = Math.pow(2, retryCount) * 1000;
+                await new Promise(resolve => setTimeout(resolve, delay));
+                return callGeminiAPI(userQuery, systemInstruction, retryCount + 1);
+            }
+            throw error;
+        }
+    };
+
+    const maskName = (name) => {
+        if (!name || name === '-') return '-';
+        const str = String(name).trim();
+        if (str.length <= 1) return str;
+        if (str.length === 2) return str[0] + "○";
+        if (str.length === 3) return str[0] + "○" + str[2];
+        let masked = "";
+        for (let i = 0; i < str.length; i++) {
+            if (i === 0 || i === 2) masked += str[i];
+            else masked += "○";
+        }
+        return masked;
+    };
+
+    const maskPhone = (phone) => {
+        if (!phone || phone === '-') return '-';
+        const str = String(phone).replace(/^'/, "").trim();
+        if (str.length <= 6) return "****";
+        return str.substring(0, 3) + "*".repeat(str.length - 6) + str.substring(str.length - 3);
+    };
+
+    const ModernLogo = ({ className = "w-8 h-8", color1 = "var(--dark-color)", color2 = "var(--primary-color)" }) => (
+        <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
+            <polygon points="18,30 8,10 13,8 23,28" fill={color1} />
+            <polygon points="22,30 32,10 27,8 17,28" fill={color2} />
+            <circle cx="20" cy="20" r="1.5" fill={color2} />
+        </svg>
+    );
+
+    const GAS_URL = "https://script.google.com/macros/s/AKfycby9YdzG-ixT9daUmSf6gbzeA5k51jlPeednWYmzclyUtShddYueylDMve1v72zy_SZE/exec"; 
+
+    const formatImageUrl = (url) => {
+        const transparentFallback = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
+        if (!url) return transparentFallback;
+        let strUrl = String(url).trim();
+        if (!strUrl || strUrl === '') return transparentFallback;
+        if (strUrl.startsWith('data:image')) return strUrl;
+        
+        let driveId = null;
+        if (strUrl.includes('drive.google.com')) {
+            const match = strUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
+            if (match) driveId = match[1];
+        } else if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
+            driveId = strUrl;
+        }
+
+        if (driveId) return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
+        return strUrl;
+    };
+
+    const fallbackCarousels = [
+        { id: 'fb1', title: '傳承千年智慧 ‧ 點亮人文典藏', description: '致力於出版高品質文學、歷史、哲學著作。讓深厚底蘊更貼近當代讀者。', image: 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200' }
+    ];
+
+    const fallbackBooks = [
+        { id: 'fb_1', title: '正在連線至雲端書庫...', author: '讀取中', year: '讀取中', price: 0, category: '文學', stock: 10, cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400' }
+    ];
+
+    const defaultUI = {
+        themeColor: '#8C5A2B',
+        darkThemeColor: '#1C1613',
+        lightBgColor: '#FAF7F2',
+        bgLightColor: '#F4EFE6',
+        textDarkColor: '#3D2D24',
+        borderColor: '#E2D3C1',
+        accentColor: '#B89973',
+        footerBgColor: '#140E0C',
+        bodyFont: 'Noto Sans TC',
+        titleFont: 'Noto Serif TC',
+        frontendLogoUrl: '',
+        frontendName: '文史哲出版社',
+        systemSubName: 'The Liberal Arts Press',
+        
+        heroBadgeText: '1971年創立 ‧ 半世紀華文學術典藏',
+        heroHeading1: '傳承千年智慧',
+        heroHeading2: '點亮數位未來',
+        heroSubheading: '創立於1971年，專注文學、歷史、哲學、藝術史及人文社會科學專業學術論著出版。',
+        
+        sectionTitleFeatured: '典藏精選好書',
+        sectionTitleRecommendation: '主編特別推薦',
+        sectionMoreBooksBtn: '探索更多書籍目錄',
+        
+        menuAbout: '品牌故事',
+        menuPresident: '創辦社長',
+        menuContact: '聯繫我們',
+        menuNewArrivals: '新書選讀',
+        menuSearch: '書籍檢索',
+        menuCart: '我的書包',
+        menuAdmin: '臉書(FB)專頁',
+        
+        footerBrandDesc: '創立於1971年，以出版大學院校研究論著及文史圖書為主。在多位名師的傳授與薰陶下，致力為文化出版事業奉獻，傳承華文智慧。',
+        footerStoryBtn: '閱讀完整品牌故事',
+        footerContactTitle: '聯絡我們',
+        footerAddress: '10074 台北市羅斯福路一段七十二巷四號',
+        footerPhone: '886-2-2351-1028',
+        footerFax: 'Fax: 886-2-2396-5656',
+        footerEmail: 'lapentw@gmail.com',
+        footerHours: '營業時間：週一到週五 AM9:00~PM6:00',
+        footerTransfer: '郵政劃撥：05128812號 彭正雄帳戶',
+        footerLinksTitle: '推薦人文好站',
+        footerFacebookLinkText: '文史哲出版社臉書(FB)',
+        footerFacebookUrl: 'https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW',
+        footerWikiLinkText: '文史哲出版社（維基百科）',
+        footerWikiUrl: 'https://zh.wikipedia.org/wiki/文史哲出版社',
+        footerSeriesLinkText: '文史哲學集成（維基百科）',
+        footerSeriesUrl: 'https://zh.wikipedia.org/wiki/文史哲學集成',
+        footerJournalLinkText: '文史哲學術叢刊（維基百科）',
+        footerJournalUrl: 'https://zh.wikipedia.org/wiki/文史哲學術叢刊',
+        footerNclLinkText: '國家圖書館',
+        footerNclUrl: 'https://www.ncl.edu.tw/',
+        footerBookLinkText: '全國新書資訊網(ISBN 書目查詢)',
+        footerBookUrl: 'https://isbn.ncl.edu.tw/NEW_ISBNNet/index.php',
+        footerCopyright: '傳承文化 ‧ 創新閱讀',
+        
+        csTitle: '客服與寶貴建議反映',
+        csNamePlaceholder: '您的尊姓大名',
+        csPhonePlaceholder: '聯絡電話',
+        csEmailPlaceholder: '電子信箱 (Email)',
+        csMessagePlaceholder: '請問您有什麼寶貴建議或問題想反映？',
+        csSubmitBtn: '送出反映訊息',
+        csSubmittingBtn: '傳送中...',
+        
+        aboutStoryTitle: '品牌故事',
+        aboutCloseBtn: '關閉說明',
+        aboutIntroTitle: '出版社簡介',
+        aboutIntroP1: '「文史哲出版社」創立於1971年8月1日，主要致力於出版大學院校研究論著及文史相關書籍。出版範圍涵蓋總類、哲學類、宗教類、社會科學類、史地類、語文類以及美術史類等領域，為華文學術出版的重要推手之一。1992年3月11日改組為「文史哲出版社有限公司」，持續深耕學術出版市場。',
+        aboutIntroP2: '本社創辦人彭正雄先生，曾師事台大教授吳相湘，並多次向毛子水、鄭騫、高明等學者請意，亦獲嚴靈峰、戴君仁、夏德儀、昌彼得、林尹等名師指導。在諸位學者的薰陶與傳授之下，逐步培養出對古籍整理的深厚興趣，並奠定投身文化出版事業的志向。',
+        aboutConceptTitle: '經營理念',
+        aboutConceptP1: '文史哲出版社以出版「文史圖書」及「學術專業圖書」為核心宗旨，目前已累積出版書籍約2500種，其中約2100種仍可供讀者選購。由於學術出版品在海外行銷較具挑戰，本社現正積極拓展網路通路與電子書市場，期望進一步打開華文地區之出版版圖。',
+        aboutAuthorTitle: '代表作家與學術著作',
+        aboutAuthorIntro: '本社出版眾多享譽盛名之學者與作家作品，包括：',
+        aboutAuthorLit: '文學作家：',
+        aboutAuthorLitItems: '無名氏（卜乃夫）《塔裡的女人》\n馮馮《霧航》\n紀弦、羅門、辛鬱等著名詩人文章',
+        aboutAuthorAcad: '學術著作：',
+        aboutAuthorAcadItems: '昌彼得《中國目錄學》\n嚴靈峰、高明、潘重規、林尹、陳新雄、李威熊、黃永武、王更生等學者著作\n龔鵬程、鄭樑生《中日關係史研究論集》（共14冊）\n莊吉發《清史論集》（1–30集）\n《滿語叢刊》（共50冊）\n蔡宗陽《文心雕龍與經學》、《修辭學》等',
+        aboutStartExploringBtn: '開始探索圖書',
+        
+        searchTitle: '圖書目錄檢索',
+        searchSubtitle: '專屬學術檢索',
+        searchFilterTitle: '進階條件篩選器',
+        searchLabelCode: '書碼查詢',
+        searchLabelTitle: '書名關鍵字',
+        searchLabelAuthor: '作者關鍵字',
+        searchLabelYear: '出版年',
+        searchLabelCategory: '書籍類別',
+        searchBtnQuery: '立即檢索',
+        searchTableHeaderCode: '書碼',
+        searchTableHeaderTitle: '書名',
+        searchTableHeaderAuthor: '作者',
+        searchTableHeaderYear: '出版年',
+        searchTableHeaderPrice: '定價',
+        searchTableHeaderCategory: '叢書類別',
+        searchTableHeaderAction: '操作',
+        searchBtnMore: '顯示更多書籍',
+        
+        newArrivalsTitle: '新書上市 - 隨機選讀',
+        newArrivalsBtnRefresh: '再換一批看',
+        newArrivalsCloseBtn: '關閉頁面',
+        
+        cartTitle: '我的挑選書包',
+        cartCloseBtn: '關閉',
+        cartEmptyText: '目前書包裡空空如也，快去挑選好書吧！',
+        cartCheckoutTitle: '填寫收件與付款資訊',
+        cartLabelName: '收件人姓名',
+        cartLabelPhone: '聯絡電話',
+        cartLabelEmail: '電子信箱 Email',
+        cartLabelAddress: '詳細寄送地址',
+        cartLabelPayment: '付款方式',
+        cartLabelMemo: '寄件備註 (選填)',
+        cartMemoPlaceholder: '若有特殊收件時間或需求請填寫於此...',
+        cartBtnCheckout: '確認下單並送出訂單',
+        cartCheckingOutBtn: '訂單處理中...',
+        cartOptionCash: '店取付現金 (預設)',
+        cartOptionTransfer: '銀行劃撥/轉帳（運費另計）',
+        cartTotalLabel: '總計金額',
+        
+        msgLoadingInventory: '完整庫存同步中...',
+        msgLoadedInventory: '最新庫存已載入',
+        msgLoadingMoreBooks: '正在載入更多書目...',
+        msgOutOfStock: '已售罄',
+        msgNoBooksFound: '目前沒有相關書籍喔！',
+        msgSearchingBooks: '雲端書庫搜尋中...',
+        
+        urlAboutPresident: 'https://hanlinma.github.io/candyni/%E9%97%9C%E6%96%BC%E7%A4%BE%E9%95%B7.html',
+        urlContactUs: 'https://hanlinma.github.io/candyni/%E8%81%AF%E7%B9%AB%E6%88%91%E5%80%91.html'
+    };
+
+    function App() {
+        const [ui, setUi] = useState(defaultUI);
+        const [settings, setSettings] = useState({
+            systemName: '文史哲出版社',
+            systemSubName: 'The Liberal Arts Press'
+        });
+
+        const [carousels, setCarousels] = useState(() => {
+            const cached = localStorage.getItem('lapen_carousels_v4');
+            if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p; } catch(e) {} }
+            return fallbackCarousels;
+        });
+        const [carouselIndex, setCarouselIndex] = useState(0); 
+        
+        const [books, setBooks] = useState(() => {
+            const cached = localStorage.getItem('lapen_books_v4');
+            if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p.sort(() => 0.5 - Math.random()); } catch(e) {} }
+            return fallbackBooks;
+        });
+
+        const [choiceBooks, setChoiceBooks] = useState([]);
+        const [cart, setCart] = useState([]);
+        const [isCartOpen, setIsCartOpen] = useState(false);
+        const [isContactOpen, setIsContactOpen] = useState(false);
+        const [notification, setNotification] = useState(null);
+        
+        const [isCartDetailsOpen, setIsCartDetailsOpen] = useState(true);
+        const [selectedPayment, setSelectedPayment] = useState('店取付現金');
+
+        const [isBooksLoading, setIsBooksLoading] = useState(true); 
+        const [isCheckingOut, setIsCheckingOut] = useState(false);
+        const [isSubmittingCS, setIsSubmittingCS] = useState(false);
+
+        const [lastActionTime, setLastActionTime] = useState(0);
+
+        const [selectedCategory, setSelectedCategory] = useState('全部');
+        const [visibleCount, setVisibleCount] = useState(8); 
+        
+        const [iframeModal, setIframeModal] = useState({ isOpen: false, url: '', title: '' });
+        const [isAboutOpen, setIsAboutOpen] = useState(false);
+
+        const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
+        const [isRandomBooksOpen, setIsRandomBooksOpen] = useState(false);
+
+        const [searchForm, setSearchForm] = useState({ code: '', title: '', author: '', year: '', category: '' });
+        const [appliedSearch, setAppliedSearch] = useState({ code: '', title: '', author: '', year: '', category: '' });
+        const [searchVisibleCount, setSearchVisibleCount] = useState(8);
+
+        const [randomBooks, setRandomBooks] = useState([]);
+        
+        const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+        const [showBackToTop, setShowBackToTop] = useState(false);
+        const [isAllCategoriesExpanded, setIsAllCategoriesExpanded] = useState(false);
+
+        const [submittedDetail, setSubmittedDetail] = useState(null);
+        
+        const [isOrderQueryOpen, setIsOrderQueryOpen] = useState(false);
+        const [orderQueryInput, setOrderQueryInput] = useState('');
+        const [queryResults, setQueryResults] = useState([]);
+        const [isQueryingGAS, setIsQueryingGAS] = useState(false);
+        const [hasQueried, setHasQueried] = useState(false);
+
+        // AI Gemini Feature States
+        const [isAiModalOpen, setIsAiModalOpen] = useState(false);
+        const [aiActiveTab, setAiActiveTab] = useState('guide'); 
+        const [selectedAiBook, setSelectedAiBook] = useState(null);
+        const [aiAnalysisResult, setAiAnalysisResult] = useState('');
+        const [isAiLoading, setIsAiLoading] = useState(false);
+        const [aiChatMessages, setAiChatMessages] = useState([
+            { role: 'model', text: '您好！我是文史哲出版社的「AI 閱覽顧問」。請問您最近對哪領域的國學、歷史、哲學或文學主題感興趣？我可以為您導覽選書與解答學術議題。' }
+        ]);
+        const [aiChatInput, setAiChatInput] = useState('');
+        
+        const sliderRef = useRef(null);
+
+        const showMsg = (text) => {
+            setNotification(text);
+            setTimeout(() => setNotification(null), 3500);
+        };
+
+        const checkRateLimit = () => {
+            const now = Date.now();
+            if (now - lastActionTime < 12000) {
+                const secondsLeft = Math.ceil((12000 - (now - lastActionTime)) / 1000);
+                showMsg(`請稍候 ${secondsLeft} 秒後再試！`);
+                return false;
+            }
+            return true;
+        };
+
+        useEffect(() => {
+            const handleScroll = () => setShowBackToTop(window.scrollY > 300);
+            window.addEventListener('scroll', handleScroll);
+            return () => window.removeEventListener('scroll', handleScroll);
+        }, []);
+
+        const syncWithGAS = async (action, payloadData = null) => {
+            try {
+                const currentOrigin = window.location.origin;
+                const safeOrigin = currentOrigin.includes("usercontent.goog") 
+                    ? "https://candylovema.github.io" 
+                    : currentOrigin;
+
+                const payloadObj = { action, payload: payloadData, origin: safeOrigin };
+                const response = await fetch(GAS_URL, {
+                    method: "POST",
+                    headers: { "Content-Type": "text/plain;charset=utf-8" },
+                    body: JSON.stringify(payloadObj)
+                });
+                
+                const data = await response.json();
+                return data;
+            } catch (e) {
+                return { status: 'error', msg: e.toString() };
+            }
+        };
+
+        useEffect(() => {
+            syncWithGAS('FETCH_SETTINGS').then(res => {
+                if (res && res.data) {
+                    setSettings(prev => ({...prev, ...res.data}));
+                    if (res.data.systemName) document.title = `${res.data.systemName} 有限公司｜極致美學人文學術出版`;
+                }
+            }).catch(() => {});
+
+            syncWithGAS('FETCH_UI').then(res => {
+                if (res && res.data) {
+                    setUi(prev => ({...prev, ...res.data}));
+                    if (res.data.frontendName) document.title = `${res.data.frontendName} 官方網站`;
+                }
+            }).catch(() => {});
+
+            syncWithGAS('FETCH_CAROUSELS').then(res => {
+                if (res && Array.isArray(res.data)) {
+                    const published = res.data.filter(c => c.status === '已發佈');
+                    if (published.length > 0) {
+                        setCarousels(published);
+                        localStorage.setItem('lapen_carousels_v4', JSON.stringify(published));
+                    }
+                }
+            }).catch(() => {});
+
+            syncWithGAS('FETCH_CHOICES').then(res => {
+                if (res && Array.isArray(res.data)) {
+                    const valid = res.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
+                    setChoiceBooks(valid);
+                }
+            }).catch(() => {});
+
+            syncWithGAS('FETCH_BOOKS').then(res => {
+                if (res && Array.isArray(res.data)) {
+                    const valid = res.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
+                    const shuffled = valid.sort(() => 0.5 - Math.random());
+                    setBooks(shuffled);
+                    try { localStorage.setItem('lapen_books_v4', JSON.stringify(shuffled.slice(0, 150))); } catch (e) {}
+                }
+            }).finally(() => setIsBooksLoading(false));
+        }, []);
+
+        const handleOrderQuerySubmit = async (e) => {
+            e.preventDefault();
+            const term = orderQueryInput.trim().toLowerCase();
+            if (term.length < 2) return showMsg("請輸入至少 2 個字進行比對");
+            
+            setIsQueryingGAS(true);
+            setHasQueried(true);
+            setQueryResults([]);
+            try {
+                const res = await syncWithGAS('FETCH_ORDERS');
+                if (res && res.status === 'success' && Array.isArray(res.data)) {
+                    const filtered = res.data.filter(ord => {
+                        const oId = String(ord.id || ord['訂單編號'] || '').toLowerCase();
+                        const oCust = String(ord.customer || ord['客戶姓名'] || '').toLowerCase();
+                        const oPhone = String(ord.phone || ord['電話'] || '').toLowerCase();
+                        return oId.includes(term) || oCust.includes(term) || oPhone.includes(term);
+                    });
+                    setQueryResults(filtered);
+                } else showMsg(res.msg || "未能取得訂單記錄");
+            } catch (error) {
+                showMsg("查詢出錯，請稍候重試");
+            } finally {
+                setIsQueryingGAS(false);
+            }
+        };
+
+        const handleOpenAiGuide = async (book) => {
+            setSelectedAiBook(book);
+            setAiActiveTab('guide');
+            setIsAiModalOpen(true);
+            setAiAnalysisResult('');
+            setIsAiLoading(true);
+
+            const systemPrompt = `你是一位享譽華文世界、深具人文學術底蘊的「文史哲出版社」總編輯與典藏專家。請用優雅、典雅且專業繁體中文為讀者剖析書籍。`;
+            const queryPrompt = `請為以下這本出版品進行專業深度導讀與價值分析：
+【書名】：${book.title}
+【作者】：${book.author || '典藏專家精選'}
+【類別】：${book.category || '人文學術'}
+【出版年份】：${book.year || '不詳'}
+
+請列出：
+1. 💡 **核心精髓與學術價值**（150字內重點解析）
+2. 📖 **適合閱讀族群**（列出2-3類讀者）
+3. 🖋️ **推薦閱讀切入點**（建議如何品讀此書）`;
+
+            try {
+                const text = await callGeminiAPI(queryPrompt, systemPrompt);
+                setAiAnalysisResult(text);
+            } catch (err) {
+                setAiAnalysisResult("連線至 AI 服務時發生錯誤，請確認網路連線或稍後再試。");
+            } finally {
+                setIsAiLoading(false);
+            }
+        };
+
+        const handleSendAiChatMessage = async (e) => {
+            e?.preventDefault();
+            if (!aiChatInput.trim() || isAiLoading) return;
+
+            const userText = aiChatInput.trim();
+            setAiChatInput('');
+            setAiChatMessages(prev => [...prev, { role: 'user', text: userText }]);
+            setIsAiLoading(true);
+
+            const systemPrompt = `你扮演「文史哲出版社」官方智慧閱覽顧問與學術總編輯。
+文史哲出版社創立於1971年，專注文學、歷史、哲學、藝術史、語言學及人文社會科學專業學術論著出版。
+你的回答風格：高雅、沉穩、富有文化學術涵養，使用繁體中文。請積極根據讀者詢問主題推薦閱讀方向與解答。`;
+
+            try {
+                const text = await callGeminiAPI(userText, systemPrompt);
+                setAiChatMessages(prev => [...prev, { role: 'model', text: text }]);
+            } catch (err) {
+                setAiChatMessages(prev => [...prev, { role: 'model', text: '抱歉，AI 服務暫時無回應，請稍後重試。' }]);
+            } finally {
+                setIsAiLoading(false);
+            }
+        };
+
+        useEffect(() => {
+            if (carousels.length <= 1) return;
+            const timer = setInterval(() => setCarouselIndex((prev) => (prev + 1) % carousels.length), 6000); 
+            return () => clearInterval(timer);
+        }, [carousels.length]);
+
+        const dynamicCategories = useMemo(() => {
+            const cats = books.map(b => b.category).filter(c => c && c.trim() !== "");
+            const combined = ['全部', '文史哲學集成', ...cats.filter(c => c !== '文史哲學集成' && c !== '全部')];
+            return [...new Set(combined)];
+        }, [books]);
+
+        const visibleCategories = useMemo(() => {
+            return isAllCategoriesExpanded ? dynamicCategories : dynamicCategories.slice(0, 6);
+        }, [dynamicCategories, isAllCategoriesExpanded]);
+
+        const excelCategories = useMemo(() => {
+            const cats = books.map(b => b.category).filter(c => c && c.trim() !== "");
+            return [...new Set(cats)].sort();
+        }, [books]);
+
+        const filteredBooks = useMemo(() => {
+            if (selectedCategory === '全部') return books;
+            return books.filter(b => b.category === selectedCategory);
+        }, [books, selectedCategory]);
+
+        const visibleBooks = filteredBooks.slice(0, visibleCount);
+        const displayChoiceBooks = choiceBooks.length > 0 ? choiceBooks : books.slice(0, 10);
+
+        const openRandomBooksModal = () => {
+            setIsMobileMenuOpen(false);
+            if (books.length > 0) {
+                const shuffled = [...books].sort(() => 0.5 - Math.random());
+                setRandomBooks(shuffled.slice(0, 8));
+            }
+            setIsRandomBooksOpen(true);
+        };
+
+        const handleSearchSubmit = (e) => {
+            e.preventDefault();
+            setAppliedSearch(searchForm);
+            setSearchVisibleCount(8);
+        };
+
+        const indexSearchBooks = useMemo(() => {
+            return books.filter(b => {
+                const matchCode = !appliedSearch.code || (b.id && b.id.toString().includes(appliedSearch.code));
+                const matchTitle = !appliedSearch.title || (b.title && b.title.includes(appliedSearch.title));
+                const matchAuthor = !appliedSearch.author || (b.author && b.author.includes(appliedSearch.author));
+                const matchPage = !appliedSearch.year || (b.year && b.year.toString().includes(appliedSearch.year));
+                const matchCat = !appliedSearch.category || appliedSearch.category === '全部' || b.category === appliedSearch.category;
+                return matchCode && matchTitle && matchAuthor && matchPage && matchCat;
+            });
+        }, [books, appliedSearch]);
+
+        const visibleSearchBooks = indexSearchBooks.slice(0, searchVisibleCount);
+
+        const addToCart = (book) => {
+            if (book.stock <= 0) return showMsg("抱歉，此書籍目前缺貨中！");
+            setCart(prev => {
+                const existing = prev.find(i => i.id === book.id);
+                if (existing) {
+                    return prev.map(i => i.id === book.id ? {...i, qty: i.qty + 1} : i);
+                }
+                return [...prev, {...book, qty: 1}];
+            });
+            showMsg(`已加入書包: ${book.title}`);
+        };
+
+        const removeFromCart = (id) => setCart(prev => prev.filter(i => i.id !== id));
+        
+        const updateCartQty = (id, delta) => {
+            setCart(prev => prev.map(i => {
+                if (i.id === id) {
+                    const newQty = i.qty + delta;
+                    if (newQty < 1) return null;
+                    if (newQty > i.stock) { showMsg("已達可供庫存上限！"); return i; }
+                    return { ...i, qty: newQty };
+                }
+                return i;
+            }).filter(Boolean));
+        };
+
+        const cartTotal = cart.reduce((sum, i) => sum + i.price * i.qty, 0);
+
+        const sanitizeInput = (val) => {
+            if (val === undefined || val === null) return "";
+            let str = String(val).trim();
+            if (/^[=\+\-\@]/.test(str)) return "'" + str; 
+            return str;
+        };
+
+        const handleCheckout = async (e) => {
+            e.preventDefault();
+            if (isCheckingOut || !checkRateLimit()) return;
+
+            const formData = new FormData(e.target);
+            const info = Object.fromEntries(formData);
+
+            const name = sanitizeInput(info.name);
+            const phone = sanitizeInput(info.phone);
+            const email = sanitizeInput(info.email);
+            const address = sanitizeInput(info.address);
+            const memo = sanitizeInput(info.memo);
+
+            if (name.length < 2) return showMsg("請輸入正確的收件人姓名");
+            if (!/^\+?[0-9\-\s]{8,15}$/.test(info.phone.replace(/[^0-9\+]/g, ''))) return showMsg("請輸入有效的聯絡電話");
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(info.email)) return showMsg("請輸入正確的電子信箱格式");
+            if (address.length < 6) return showMsg("請輸入正確的詳細寄送地址");
+
+            setIsCheckingOut(true);
+            setLastActionTime(Date.now()); 
+            showMsg("訂單處理中，請稍候...");
+            
+            const now = new Date();
+            const pad = (n) => n.toString().padStart(2, '0');
+            const formattedDate = `${now.getFullYear()}/${pad(now.getMonth() + 1)}/${pad(now.getDate())} ${pad(now.getHours())}:${pad(now.getMinutes())}:${pad(now.getSeconds())}`;
+            
+            const rawItems = cart.map(i => ({ title: i.title, qty: i.qty, price: i.price }));
+            const itemsStr = cart.map(i => `${sanitizeInput(i.title)} (數量: ${i.qty})`).join('\n');
+            
+            const dateStr = `${now.getFullYear().toString().slice(-2)}${pad(now.getMonth() + 1)}${pad(now.getDate())}`;
+            const randStr = Math.floor(1000 + Math.random() * 9000); 
+            const orderId = `ORD-${dateStr}-${randStr}`;
+
+            const newOrder = {
+                id: orderId, customer: name, phone: phone, email: email, address: address, payment: info.payment,
+                items: itemsStr, total: cartTotal, status: '處理中', date: formattedDate, memo: memo,
+                '訂單編號': orderId, '客戶姓名': name, '電話': phone, '電子信箱': email, 'Email': email,
+                '地址': address, '付款方式': info.payment, '購買項目': itemsStr, '總金額': cartTotal, '狀態': '處理中', '日期': formattedDate
+            };
+            
+            const res = await syncWithGAS('CREATE_ORDER', newOrder);
+            
+            if (res && res.status === 'success') {
+                setBooks(books.map(b => {
+                    const ci = cart.find(c => c.id === b.id);
+                    return ci ? { ...b, stock: b.stock - ci.qty } : b;
+                }));
+                
+                setSubmittedDetail({
+                    type: 'order',
+                    data: {
+                        id: orderId, customer: name, phone, email, address, payment: info.payment, memo, date: formattedDate, total: cartTotal, items: rawItems
+                    }
+                });
+
+                setCart([]); 
+                setIsCartOpen(false);
+                showMsg(`訂單已成功送出！`);
+            } else {
+                showMsg(`訂單送出失敗：${res ? res.msg : '伺服器無回應'}`);
+            }
+            setIsCheckingOut(false);
+        };
+
+        const handleCSSubmit = async (e) => {
+            e.preventDefault();
+            if (isSubmittingCS || !checkRateLimit()) return;
+
+            const name = sanitizeInput(e.target.name.value);
+            const phone = sanitizeInput(e.target.phone.value);
+            const email = sanitizeInput(e.target.email.value);
+            const msg = sanitizeInput(e.target.message.value);
+
+            if (name.length < 2) return showMsg("請輸入您的尊姓大名");
+            if (!/^\+?[0-9\-\s]{8,15}$/.test(phone.replace(/[^0-9\+]/g, ''))) return showMsg("請輸入有效的聯絡電話");
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showMsg("請輸入正確的電子信箱格式");
+            if (msg.length < 5) return showMsg("反映內容請至少輸入5個字");
+
+            setIsSubmittingCS(true);
+            setLastActionTime(Date.now()); 
+            showMsg("訊息傳送中...");
+            
+            const combinedQuery = `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`;
+            const submitId = `CS-${Date.now().toString().slice(-6)}`;
+
+            const newLog = { id: submitId, platform: 'Web官網', user: name, query: combinedQuery };
+            const res = await syncWithGAS('NEW_CS_MSG', newLog);
+            
+            setIsSubmittingCS(false);
+            if (res && res.status === 'success') {
+                setSubmittedDetail({
+                    type: 'cs',
+                    data: { id: submitId, name, phone, email, message: msg, date: new Date().toLocaleString() }
+                });
+                setIsContactOpen(false);
+                showMsg("感謝您的寶貴建議，專員將盡快覆核！");
+            } else {
+                showMsg(`發送失敗：${res ? res.msg : '伺服器無回應'}`);
+            }
+        };
+
+        const scrollSlider = (direction) => {
+            if (sliderRef.current) {
+                const { scrollLeft, clientWidth } = sliderRef.current;
+                const scrollTo = direction === 'left' ? scrollLeft - clientWidth * 0.8 : scrollLeft + clientWidth * 0.8;
+                sliderRef.current.scrollTo({ left: scrollTo, behavior: 'smooth' });
+            }
+        };
+
+        const renderListFromLines = (text, defaultLines) => {
+            const lines = text ? text.split('\n').filter(l => l.trim() !== '') : defaultLines;
+            return lines.map((line, idx) => <li key={idx} className="leading-relaxed">{line}</li>);
+        };
+
+        const rootStyle = {
+            '--primary-color': ui.themeColor || '#8C5A2B',
+            '--dark-color': ui.darkThemeColor || '#1C1613',
+            '--bg-color': ui.lightBgColor || '#FAF7F2',
+            '--bg-light': ui.bgLightColor || '#F4EFE6',
+            '--text-dark': ui.textDarkColor || '#3D2D24',
+            '--border-color': ui.borderColor || '#E2D3C1',
+            '--accent-color': ui.accentColor || '#B89973',
+            '--footer-bg': ui.footerBgColor || '#140E0C',
+            '--body-font': ui.bodyFont || 'Noto Sans TC',
+            '--title-font': ui.titleFont || 'Noto Serif TC',
+        };
+
+        return (
+            <div style={rootStyle} className="min-h-screen bg-[var(--bg-color)] font-serif relative transition-colors duration-500 flex flex-col overflow-x-hidden">
+                
+                {/* Glowing Ambient Spheres */}
+                <div className="fixed top-0 left-1/4 w-[650px] h-[650px] glow-aura-1 pointer-events-none -z-10 rounded-full blur-3xl opacity-70"></div>
+                <div className="fixed bottom-1/3 right-10 w-[750px] h-[750px] glow-aura-2 pointer-events-none -z-10 rounded-full blur-3xl opacity-60"></div>
+
+                {/* Navbar Header */}
+                <nav className="px-5 md:px-12 py-4 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40 transition-all shadow-sm">
+                    <div className="flex items-center space-x-3 cursor-pointer select-none group" onClick={() => {
+                        if (window.innerWidth < 1024) setIsMobileMenuOpen(!isMobileMenuOpen);
+                        else window.scrollTo({ top: 0, behavior: 'smooth' });
+                    }}>
+                        <div className="p-2 rounded-2xl bg-white/80 border border-[var(--border-color)] group-hover:border-[var(--primary-color)] transition-all shadow-sm">
+                            {ui.frontendLogoUrl ? (
+                                <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 md:w-9 md:h-9 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                            ) : (
+                                <ModernLogo className="w-8 h-8 md:w-9 md:h-9" />
+                            )}
+                        </div>
+                        <div className="flex flex-col">
+                            <div className="flex items-center gap-1.5">
+                                <h1 className="text-lg md:text-[22px] font-black text-[var(--dark-color)] tracking-[0.08em] font-sans group-hover:text-[var(--primary-color)] transition-colors">{ui.frontendName || settings.systemName}</h1>
+                                <ChevronDown className={`lg:hidden transition-transform text-[var(--primary-color)] ${isMobileMenuOpen ? 'rotate-180' : ''}`} size={16} />
+                            </div>
+                            <span className="text-[9px] tracking-[0.22em] text-[var(--primary-color)] font-sans font-bold uppercase block">{ui.systemSubName || settings.systemSubName}</span>
+                        </div>
+                    </div>
+
+                    <div className="flex items-center space-x-3 md:space-x-6">
+                        <div className="hidden lg:flex space-x-2 text-[14px] font-sans font-bold text-[var(--text-dark)] items-center">
+                            <button type="button" onClick={() => setIsAboutOpen(true)} className="hover:text-[var(--primary-color)] transition flex items-center gap-1.5 px-3.5 py-2 rounded-full hover:bg-white/70 active:scale-95"><Compass size={16}/> {ui.menuAbout}</button>
+                            <button type="button" onClick={() => setIframeModal({ isOpen: true, url: ui.urlAboutPresident, title: ui.menuPresident })} className="hover:text-[var(--primary-color)] transition flex items-center gap-1.5 px-3.5 py-2 rounded-full hover:bg-white/70 active:scale-95"><User size={16}/> {ui.menuPresident}</button>
+                            <button type="button" onClick={() => setIframeModal({ isOpen: true, url: ui.urlContactUs, title: ui.menuContact })} className="hover:text-[var(--primary-color)] transition flex items-center gap-1.5 px-3.5 py-2 rounded-full hover:bg-white/70 active:scale-95"><MessageCircle size={16}/> {ui.menuContact}</button>
+                            <button type="button" onClick={openRandomBooksModal} className="hover:text-[var(--primary-color)] transition flex items-center gap-1.5 px-3.5 py-2 rounded-full hover:bg-white/70 active:scale-95"><Zap size={16}/> {ui.menuNewArrivals}</button>
+                            <button type="button" onClick={() => setIsSearchModalOpen(true)} className="hover:text-[var(--primary-color)] transition flex items-center gap-1.5 px-3.5 py-2 rounded-full hover:bg-white/70 active:scale-95"><Search size={16}/> {ui.menuSearch}</button>
+                            <button type="button" onClick={() => { setAiActiveTab('chat'); setIsAiModalOpen(true); }} className="hover:text-[var(--primary-color)] transition flex items-center gap-1.5 px-3.5 py-2 rounded-full hover:bg-white/70 active:scale-95 border border-[var(--accent-color)]/50 text-[var(--primary-color)] bg-amber-50/50"><Sparkles size={16}/> AI 閱覽顧問</button>
+                            <button type="button" onClick={() => setIsOrderQueryOpen(true)} className="hover:opacity-90 transition flex items-center gap-1.5 text-white bg-[var(--primary-color)] px-4 py-2 rounded-full shadow-sm hover:shadow-md active:scale-95"><FileText size={15}/> 訂單查詢</button>
+                        </div>
+
+                        <div className="flex items-center space-x-2.5">
+                            <button type="button" onClick={() => setIsCartOpen(true)} className="relative bg-white border border-[var(--border-color)] text-[var(--dark-color)] px-4 py-2 rounded-full flex items-center gap-2 hover:border-[var(--primary-color)] transition-all shadow-sm font-sans font-bold active:scale-95">
+                                <ShoppingCart size={18} className="text-[var(--primary-color)]" />
+                                <span className="hidden sm:inline text-xs">{ui.menuCart}</span>
+                                {cart.length > 0 && <span className="bg-[var(--primary-color)] text-white text-[10px] min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center font-bold">{cart.length}</span>}
+                            </button>
+                        </div>
+                    </div>
+                </nav>
+
+                <main className="flex-1 max-w-7xl mx-auto w-full px-5 md:px-10 py-10">
+                    <section className="text-center mb-12 animate-fade-in-up">
+                        <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full border border-[var(--accent-color)]/60 bg-amber-50/60 text-[var(--primary-color)] text-xs font-sans font-bold mb-5 shadow-sm">
+                            <Sparkles size={14} /> {ui.heroBadgeText}
+                        </div>
+                        <h2 className="text-4xl md:text-6xl font-black mb-6 text-[var(--dark-color)] leading-tight font-serif tracking-widest">{ui.heroHeading1} <span className="text-[var(--primary-color)]">{ui.heroHeading2}</span></h2>
+                        <p className="text-[var(--text-dark)] max-w-2xl mx-auto leading-loose text-base md:text-lg font-sans font-medium opacity-90">{ui.heroSubheading}</p>
+                    </section>
+
+                    {carousels.length > 0 && (
+                        <div className="relative w-full max-w-6xl mx-auto h-[360px] md:h-[480px] rounded-3xl overflow-hidden shadow-2xl mb-16 group border-4 border-white glass-card">
+                            {carousels.map((c, idx) => {
+                                const isFbSlide = c.title?.toLowerCase().includes('fb') || c.title?.includes('臉書') || c.description?.toLowerCase().includes('fb') || c.description?.includes('臉書') || c.image?.includes('61590146114229') || c.id === 'fb1' || (idx === 0);
+                                const slideLink = c.link || c.url || (isFbSlide ? "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" : null);
+                                const SlideContainer = slideLink ? 'a' : 'div';
+                                const slideProps = slideLink ? {
+                                    href: slideLink, target: "_blank", rel: "noopener noreferrer",
+                                    className: `absolute inset-0 transition-opacity duration-1000 block cursor-pointer group/slide ${idx === carouselIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`
+                                } : {
+                                    className: `absolute inset-0 transition-opacity duration-1000 block ${idx === carouselIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`
+                                };
+
+                                return (
+                                    <SlideContainer key={c.id} {...slideProps}>
+                                        <div className="absolute inset-0 bg-gradient-to-t from-[var(--dark-color)]/90 via-[var(--dark-color)]/40 to-transparent z-10"></div>
+                                        <img src={formatImageUrl(c.image)} alt={c.title || "Banner"} className="w-full h-full object-cover transform scale-105 group-hover/slide:scale-100 transition duration-[8000ms]" onError={(e)=>{e.target.src='https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200'}} />
+                                        <div className="absolute bottom-0 left-0 right-0 z-20 p-8 md:p-14 text-white">
+                                            {c.title && <h3 className="text-2xl md:text-4xl font-black mb-3 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-lg">{c.title}</h3>}
+                                            {c.description && <p className="text-xs md:text-base max-w-2xl text-gray-200 line-clamp-2 drop-shadow font-sans leading-relaxed">{c.description}</p>}
+                                        </div>
+                                    </SlideContainer>
+                                );
+                            })}
+                        </div>
+                    )}
+
+                    <section className="mb-20">
+                        <div className="flex justify-between items-end mb-6 border-b border-[var(--border-color)] pb-4">
+                            <h3 className="text-2xl font-black text-[var(--dark-color)] flex items-center gap-2.5 font-serif tracking-widest"><BookOpen className="text-[var(--primary-color)]" size={28} /> {ui.sectionTitleFeatured}</h3>
+                            <div className="text-xs text-[var(--text-dark)] font-sans font-bold flex items-center gap-1.5 bg-white/80 px-3 py-1.5 rounded-full border border-[var(--border-color)]">
+                                {isBooksLoading ? <RefreshCw size={13} className="animate-spin text-[var(--primary-color)]"/> : <Database size={13} className="text-[var(--primary-color)]"/>}
+                                {isBooksLoading ? ui.msgLoadingInventory : ui.msgLoadedInventory}
+                            </div>
+                        </div>
+
+                        <div className="mb-12 relative group animate-fade-in-up">
+                            <h4 className="text-base font-bold text-[var(--text-dark)] flex items-center gap-2 mb-4 px-1 font-sans">
+                                <Sparkles className="text-[var(--primary-color)]" size={18}/> {ui.sectionTitleRecommendation}
+                            </h4>
+                            <div className="relative">
+                                <button type="button" onClick={()=>scrollSlider('left')} className="absolute -left-4 top-[45%] -translate-y-1/2 z-10 bg-white/90 border border-[var(--border-color)] hover:bg-[var(--primary-color)] hover:text-white p-2.5 rounded-full shadow-lg transition-all flex items-center justify-center">
+                                    <ChevronLeft size={20}/>
+                                </button>
+                                <button type="button" onClick={()=>scrollSlider('right')} className="absolute -right-4 top-[45%] -translate-y-1/2 z-10 bg-white/90 border border-[var(--border-color)] hover:bg-[var(--primary-color)] hover:text-white p-2.5 rounded-full shadow-lg transition-all flex items-center justify-center">
+                                    <ChevronRight size={20}/>
+                                </button>
+                                <div ref={sliderRef} className="flex overflow-x-auto gap-6 snap-x snap-mandatory hide-scrollbar pb-6 px-1 pt-2">
+                                    {displayChoiceBooks.map(book => (
+                                        <div key={`rec-${book.id}`} className="min-w-[250px] w-[250px] snap-start shrink-0 group/card glass-card rounded-2xl overflow-hidden hover:-translate-y-1 transition-all duration-300 flex flex-col">
+                                            <div className="h-48 bg-[var(--bg-light)]/60 relative overflow-hidden p-4 flex justify-center items-center book-3d-wrapper">
+                                                <div className="h-full relative book-spine-effect rounded group-hover/card:scale-105 transition-transform duration-500">
+                                                    <img src={formatImageUrl(book.cover)} className="h-full object-cover rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                                </div>
+                                                {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/70 backdrop-blur-[2px] flex items-center justify-center text-white font-black text-sm tracking-widest">{ui.msgOutOfStock}</div>}
+                                            </div>
+                                            <div className="p-4 flex flex-col flex-1 bg-white/60">
+                                                <div className="text-[10px] text-[var(--primary-color)] font-bold mb-1 tracking-wider uppercase">{book.category}</div>
+                                                <h3 className="font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 font-serif" title={book.title}>{book.title}</h3>
+                                                <p className="text-[var(--primary-color)] font-black mb-3 text-lg font-sans mt-auto">NT$ {book.price}</p>
+                                                <div className="grid grid-cols-2 gap-1.5">
+                                                    <button type="button" onClick={() => handleOpenAiGuide(book)} className="bg-amber-50 border border-[var(--accent-color)] text-[var(--primary-color)] py-2 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1 shadow-sm">
+                                                        <Sparkles size={13} /> AI 導讀
+                                                    </button>
+                                                    <button type="button" onClick={() => addToCart(book)} className="bg-white border border-[var(--accent-color)] text-[var(--text-dark)] py-2 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1 shadow-sm">
+                                                        <ShoppingCart size={13} /> 加入
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+
+                        {dynamicCategories.length > 1 && (
+                            <div className="flex flex-wrap gap-2.5 mb-10 justify-center font-sans border-t border-[var(--border-color)] pt-8">
+                                {visibleCategories.map(cat => (
+                                    <button
+                                        type="button" 
+                                        key={cat}
+                                        onClick={() => { setSelectedCategory(cat); setVisibleCount(8); }}
+                                        className={`px-5 py-2 rounded-full text-xs md:text-sm font-bold transition-all border ${
+                                            selectedCategory === cat 
+                                                ? 'bg-[var(--dark-color)] text-[var(--bg-light)] border-[var(--dark-color)] shadow-md scale-105' 
+                                                : 'bg-white/80 border-[var(--border-color)] text-[var(--text-dark)] hover:bg-[var(--bg-light)] hover:border-[var(--primary-color)]'
+                                        }`}
+                                    >
+                                        {cat}
+                                    </button>
+                                ))}
+                                {dynamicCategories.length > 6 && (
+                                    <button
+                                        type="button"
+                                        onClick={() => setIsAllCategoriesExpanded(!isAllCategoriesExpanded)}
+                                        className="px-5 py-2 rounded-full text-xs md:text-sm font-bold transition-all border border-[var(--primary-color)] text-[var(--primary-color)] bg-white/80 hover:bg-[var(--primary-color)] hover:text-white flex items-center gap-1 active:scale-95"
+                                    >
+                                        {isAllCategoriesExpanded ? "收合類別" : "更多類別"}
+                                        {isAllCategoriesExpanded ? <ChevronUp size={14} /> : <ChevronDown size={14} />}
+                                    </button>
+                                )}
+                            </div>
+                        )}
+                        
+                        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-7">
+                            {visibleBooks.map(book => (
+                                <div key={book.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-300 flex flex-col hover:-translate-y-1 animate-fade-in-up">
+                                    <div className="h-72 bg-[var(--bg-light)]/50 relative overflow-hidden p-5 flex justify-center items-center book-3d-wrapper">
+                                        <div className="h-full relative book-spine-effect rounded group-hover:scale-105 transition duration-500">
+                                            <img src={formatImageUrl(book.cover)} className="h-full object-cover rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                        </div>
+                                        <div className="absolute top-4 left-4 bg-[var(--dark-color)]/90 text-[var(--bg-light)] text-[11px] px-3 py-1 rounded-r-full shadow-md font-sans tracking-widest font-bold border-l-2 border-[var(--primary-color)]">{book.category}</div>
+                                        {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/70 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-widest text-xl">{ui.msgOutOfStock}</div>}
+                                    </div>
+                                    <div className="p-5 flex flex-col flex-1 bg-white/60">
+                                        <h3 className="font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors" title={book.title}>{book.title}</h3>
+                                        <p className="text-[var(--primary-color)] font-black mb-5 text-xl font-sans mt-auto">NT$ {book.price}</p>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            <button type="button" onClick={() => handleOpenAiGuide(book)} className="bg-amber-50/80 border border-[var(--accent-color)] text-[var(--primary-color)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-1.5 font-sans shadow-sm text-xs">
+                                                <Sparkles size={14} /> AI 導讀
+                                            </button>
+                                            <button type="button" onClick={() => addToCart(book)} className="bg-white border border-[var(--accent-color)] text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-1.5 font-sans shadow-sm text-xs">
+                                                <ShoppingCart size={14} /> 加入書包
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            ))}
+                        </div>
+
+                        {visibleBooks.length === 0 && (
+                            <div className="py-20 text-center font-bold text-[var(--primary-color)] flex flex-col items-center justify-center gap-3">
+                                {isBooksLoading ? <RefreshCw className="animate-spin" size={32}/> : <Database size={32}/>}
+                                {isBooksLoading ? ui.msgSearchingBooks : ui.msgNoBooksFound}
+                            </div>
+                        )}
+
+                        {filteredBooks.length > visibleCount && (
+                            <div className="text-center mt-14 font-sans relative">
+                                <div className="absolute inset-0 flex items-center"><div className="w-full border-t border-[var(--border-color)]"></div></div>
+                                <div className="relative flex justify-center">
+                                    <button type="button" onClick={() => setVisibleCount(prev => prev + 8)} className="bg-white border-2 border-[var(--accent-color)] text-[var(--text-dark)] px-8 py-3 rounded-full font-bold hover:bg-[var(--dark-color)] hover:border-[var(--dark-color)] hover:text-[var(--bg-light)] transition-all shadow-sm flex items-center gap-2 group text-sm">
+                                        {ui.sectionMoreBooksBtn} <ChevronRight className="group-hover:translate-x-1 transition-transform" size={16}/>
+                                    </button>
+                                </div>
+                            </div>
+                        )}
+                    </section>
+                </main>
+
+                <footer className="bg-[var(--footer-bg)] text-[var(--accent-color)] pt-16 pb-10 font-sans border-t-[6px] border-[var(--primary-color)] mt-auto">
+                    <div className="max-w-7xl mx-auto px-6 lg:px-8">
+                        <div className="grid grid-cols-1 md:grid-cols-12 gap-10 lg:gap-14">
+                            <div className="md:col-span-4 flex flex-col">
+                                <div className="flex items-center gap-3 mb-5">
+                                    {ui.frontendLogoUrl ? (
+                                        <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-10 h-10 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                                    ) : (
+                                        <ModernLogo className="w-10 h-10" color1="#F4EFE6" color2="var(--primary-color)" />
+                                    )}
+                                    <div>
+                                        <h4 className="text-xl font-sans font-black text-white tracking-widest">{ui.frontendName || settings.systemName}</h4>
+                                        <span className="text-[9px] font-bold tracking-[0.2em] text-[var(--primary-color)] uppercase block">{ui.systemSubName || settings.systemSubName}</span>
+                                    </div>
+                                </div>
+                                <p className="text-xs md:text-sm leading-relaxed mb-6 text-justify text-[var(--accent-color)] opacity-90">{ui.footerBrandDesc}</p>
+                                <button type="button" onClick={() => setIsAboutOpen(true)} className="text-white border border-[var(--accent-color)]/40 bg-white/5 hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] px-4 py-2 rounded-lg text-xs font-bold transition-all inline-flex items-center gap-2 w-max shadow-sm">{ui.footerStoryBtn} <ChevronRight size={14}/></button>
+                            </div>
+                            
+                            <div className="md:col-span-5">
+                                <h4 className="text-base font-bold text-white mb-5 border-b border-white/10 pb-2.5 flex items-center gap-2"><MapPin size={16} className="text-[var(--primary-color)]"/> {ui.footerContactTitle}</h4>
+                                <ul className="space-y-3 text-xs md:text-sm">
+                                    <li className="flex items-start gap-2.5"><MapPin size={16} className="mt-0.5 shrink-0 text-[var(--primary-color)]" /> <span>{ui.footerAddress}</span></li>
+                                    <li className="flex items-center gap-2.5"><Phone size={16} className="shrink-0 text-[var(--primary-color)]" /> <span>{ui.footerPhone}</span></li>
+                                    <li className="flex items-center gap-2.5"><Printer size={16} className="shrink-0 text-[var(--primary-color)]" /> <span>{ui.footerFax}</span></li>
+                                    <li className="flex items-center gap-2.5"><Mail size={16} className="shrink-0 text-[var(--primary-color)]" /> <a href={`mailto:${ui.footerEmail}`} className="hover:text-white transition">{ui.footerEmail}</a></li>
+                                    <li className="flex items-center gap-2.5 text-[var(--bg-light)]">
+                                        <Clock size={16} className="shrink-0 text-[var(--primary-color)]" /> 
+                                        <span className="bg-white/10 px-2.5 py-0.5 rounded text-xs font-bold">{ui.footerHours}</span>
+                                    </li>
+                                    <li className="flex items-center gap-2.5 border-t border-white/10 pt-3 mt-3"><CreditCard size={16} className="shrink-0 text-[var(--primary-color)]" /> <span>{ui.footerTransfer}</span></li>
+                                </ul>
+                            </div>
+
+                            <div className="md:col-span-3">
+                                <h4 className="text-base font-bold text-white mb-5 border-b border-white/10 pb-2.5 flex items-center gap-2"><LinkIcon size={16} className="text-[var(--primary-color)]"/> {ui.footerLinksTitle}</h4>
+                                <ul className="space-y-2 text-xs md:text-sm">
+                                    <li><a href={ui.footerFacebookUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-[var(--primary-color)]"><div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"></div> {ui.footerFacebookLinkText}</a></li>
+                                    <li><a href={ui.footerWikiUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-[var(--primary-color)]"><div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"></div> {ui.footerWikiLinkText}</a></li>
+                                    <li><a href={ui.footerSeriesUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-[var(--primary-color)]"><div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"></div> {ui.footerSeriesLinkText}</a></li>
+                                    <li><a href={ui.footerJournalUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-[var(--primary-color)]"><div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"></div> {ui.footerJournalLinkText}</a></li>
+                                    <li><a href={ui.footerNclUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-[var(--primary-color)]"><div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"></div> {ui.footerNclLinkText}</a></li>
+                                    <li><a href={ui.footerBookUrl} target="_blank" rel="noreferrer" className="hover:text-white hover:translate-x-1 transition-all flex items-center gap-2 bg-white/5 p-2 rounded-lg border border-white/5 hover:border-[var(--primary-color)]"><div className="w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"></div> {ui.footerBookLinkText}</a></li>
+                                </ul>
+                            </div>
+                        </div>
+                        
+                        <div className="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-[var(--accent-color)] font-bold">
+                            <p>&copy; {new Date().getFullYear()} {ui.frontendName || settings.systemName} {ui.systemSubName || settings.systemSubName}. All rights reserved.</p>
+                            <p className="mt-2 md:mt-0 flex items-center gap-2"><ModernLogo className="w-4 h-4 opacity-50" color1="#FFF" color2="#FFF" /> {ui.footerCopyright}</p>
+                        </div>
+                    </div>
+                </footer>
+
+                {/* Floating Contact Form Button */}
+                <div className="fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3">
+                    {isContactOpen && (
+                        <div className="glass-modal w-80 shadow-2xl rounded-2xl border border-[var(--border-color)] overflow-hidden animate-fade-in-up">
+                            <div className="glass-dark p-3.5 text-[var(--bg-light)] flex justify-between items-center font-sans border-b-2 border-[var(--primary-color)]">
+                                <span className="font-bold flex items-center gap-2 text-sm tracking-wide"><MessageCircle size={16} /> {ui.csTitle}</span>
+                                <button type="button" onClick={() => setIsContactOpen(false)} className="hover:bg-white/20 p-1 rounded-full transition bg-white/10"><X size={14} /></button>
+                            </div>
+                            <form onSubmit={handleCSSubmit} className="p-4 space-y-3 font-sans">
+                                <input name="name" placeholder={ui.csNamePlaceholder} required className="w-full border border-[var(--accent-color)]/80 glass-input p-2.5 rounded-xl text-xs outline-none font-medium text-[var(--dark-color)]" />
+                                <input name="phone" placeholder={ui.csPhonePlaceholder} required className="w-full border border-[var(--accent-color)]/80 glass-input p-2.5 rounded-xl text-xs outline-none font-medium text-[var(--dark-color)]" />
+                                <input name="email" type="email" placeholder={ui.csEmailPlaceholder} required className="w-full border border-[var(--accent-color)]/80 glass-input p-2.5 rounded-xl text-xs outline-none font-medium text-[var(--dark-color)]" />
+                                <textarea name="message" placeholder={ui.csMessagePlaceholder} required className="w-full border border-[var(--accent-color)]/80 glass-input p-2.5 text-xs rounded-xl h-20 outline-none font-medium text-[var(--dark-color)] resize-none" />
+                                <button disabled={isSubmittingCS} className={`w-full bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white py-2.5 rounded-xl font-bold shadow-md transition-all flex justify-center items-center gap-2 text-xs ${isSubmittingCS ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`}>
+                                    {isSubmittingCS ? <Clock className="animate-spin" size={14} /> : null}
+                                    {isSubmittingCS ? ui.csSubmittingBtn : ui.csSubmitBtn}
+                                </button>
+                            </form>
+                        </div>
+                    )}
+                    
+                    <div className="flex flex-col gap-2">
+                        {showBackToTop && (
+                            <button type="button" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })} className="bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white w-11 h-11 rounded-full shadow-lg flex items-center justify-center hover:scale-105 transition-all border border-white/60 animate-fade-in-up">
+                                <ChevronUp size={22} />
+                            </button>
+                        )}
+                        <button type="button" onClick={() => setIsContactOpen(!isContactOpen)} className="bg-[var(--primary-color)] text-white hover:bg-[var(--dark-color)] w-12 h-12 rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-all border-2 border-white/80">
+                            {isContactOpen ? <X size={24} /> : <MessageCircle size={24} />}
+                        </button>
+                    </div>
+                </div>
+
+                {/* 1. Brand Story Modal */}
+                {isAboutOpen && (
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsAboutOpen(false)}>
+                        <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-up border border-white/80" onClick={(e) => e.stopPropagation()}>
+                            <div className="glass-dark p-4 flex justify-between items-center border-b-2 border-[var(--primary-color)]">
+                                <h2 className="text-lg font-serif font-black text-[var(--bg-light)] flex items-center gap-2 tracking-widest"><Compass size={20} className="text-[var(--primary-color)]" /> {ui.aboutStoryTitle}</h2>
+                                <button type="button" onClick={() => setIsAboutOpen(false)} className="bg-white/10 hover:bg-white/20 px-3.5 py-1.5 rounded-full text-xs font-bold text-white transition flex items-center gap-1.5"><X size={14} /> {ui.aboutCloseBtn}</button>
+                            </div>
+                            <div className="flex-1 overflow-y-auto p-6 md:p-10 font-sans relative">
+                                <ModernLogo className="absolute w-96 h-96 -right-20 -top-10 -z-10 pointer-events-none opacity-5" color1="var(--dark-color)" color2="var(--dark-color)" />
+                                <h1 className="text-2xl md:text-3xl font-sans font-black text-[var(--dark-color)] mb-6 text-center tracking-widest border-b pb-4 border-[var(--border-color)]">{ui.frontendName || settings.systemName}</h1>
+                                <div className="space-y-6 text-[var(--text-dark)] leading-loose text-justify text-sm md:text-base">
+                                    <div>
+                                        <h3 className="font-bold text-lg text-[var(--dark-color)] mb-2 flex items-center gap-2"><Compass size={18} className="text-[var(--primary-color)]"/> {ui.aboutIntroTitle}</h3>
+                                        <p className="drop-cap">{ui.aboutIntroP1}</p>
+                                    </div>
+                                    <div className="glass-card p-5 rounded-2xl border-l-4 border-[var(--primary-color)] shadow-sm">
+                                        {ui.aboutIntroP2}
+                                    </div>
+                                    <div>
+                                        <h3 className="font-bold text-lg text-[var(--dark-color)] mb-2 flex items-center gap-2"><Globe size={18} className="text-[var(--primary-color)]"/> {ui.aboutConceptTitle}</h3>
+                                        <p>{ui.aboutConceptP1}</p>
+                                    </div>
+                                    <div className="pt-4 border-t border-[var(--border-color)]">
+                                        <h3 className="font-bold text-lg text-[var(--dark-color)] mb-3 flex items-center gap-2"><BookOpen size={18} className="text-[var(--primary-color)]"/> {ui.aboutAuthorTitle}</h3>
+                                        <div className="glass-dark text-[var(--bg-light)] p-5 rounded-2xl leading-relaxed space-y-4">
+                                            <p className="text-xs md:text-sm">{ui.aboutAuthorIntro}</p>
+                                            <div>
+                                                <span className="text-[var(--primary-color)] font-bold border-b border-[var(--primary-color)]/30 pb-1 block mb-2 text-xs">{ui.aboutAuthorLit}</span>
+                                                <ul className="list-disc list-inside pl-2 space-y-1 text-xs md:text-sm">
+                                                    {renderListFromLines(ui.aboutAuthorLitItems, ['無名氏（卜乃夫）《塔裡的女人》', '馮馮《霧航》', '紀弦、羅門、辛鬱等詩人著作'])}
+                                                </ul>
+                                            </div>
+                                            <div>
+                                                <span className="text-[var(--primary-color)] font-bold border-b border-[var(--primary-color)]/30 pb-1 block mb-2 text-xs">{ui.aboutAuthorAcad}</span>
+                                                <ul className="list-disc list-inside pl-2 space-y-1 text-xs md:text-sm">
+                                                    {renderListFromLines(ui.aboutAuthorAcadItems, ['昌彼得《中國目錄學》', '嚴靈峰、高明等學者著作', '《清史論集》等專著'])}
+                                                </ul>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="mt-8 text-center">
+                                    <button type="button" onClick={() => setIsAboutOpen(false)} className="bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-8 py-2.5 rounded-full font-bold shadow-lg transition-all text-sm">{ui.aboutStartExploringBtn}</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* 2. Book Search Modal */}
+                {isSearchModalOpen && (
+                    <div className="fixed inset-0 glass-modal z-[150] overflow-y-auto animate-fade-in-up flex flex-col">
+                        <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40">
+                            <div className="flex items-center space-x-3">
+                                {ui.frontendLogoUrl ? (
+                                    <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                                ) : (
+                                    <ModernLogo className="w-8 h-8" />
+                                )}
+                                <div>
+                                    <h1 className="text-lg font-black text-[var(--dark-color)] tracking-wider font-sans">{ui.searchTitle}</h1>
+                                    <span className="text-[9px] tracking-widest text-[var(--primary-color)] font-sans font-bold block uppercase">{ui.frontendName || settings.systemName} {ui.searchSubtitle}</span>
+                                </div>
+                            </div>
+                            <div className="flex items-center gap-3">
+                                <button type="button" onClick={() => setIsCartOpen(true)} className="relative bg-white border border-[var(--accent-color)] text-[var(--dark-color)] px-4 py-1.5 rounded-full flex items-center gap-1.5 transition-all shadow-sm font-sans font-bold text-xs">
+                                    <ShoppingCart size={16} />
+                                    <span className="hidden sm:inline">{ui.menuCart}</span>
+                                    {cart.length > 0 && <span className="bg-amber-700 text-white text-[10px] min-w-[18px] h-4 px-1 rounded-full flex items-center justify-center font-bold">{cart.length}</span>}
+                                </button>
+                                <button type="button" onClick={() => setIsSearchModalOpen(false)} className="bg-white/80 border border-[var(--accent-color)] hover:bg-white px-3.5 py-1.5 rounded-full text-xs font-bold text-[var(--text-dark)] transition flex items-center gap-1">
+                                    <X size={14} /> 關閉檢索
+                                </button>
+                            </div>
+                        </nav>
+                        <main className="flex-1 max-w-7xl mx-auto w-full p-4 md:p-8">
+                            <div className="mb-6 flex justify-between items-end border-b-2 border-[var(--border-color)] pb-3">
+                                <h3 className="text-xl font-black text-[var(--dark-color)] font-serif tracking-wider">{ui.searchFilterTitle}</h3>
+                                <div className="text-xs text-[var(--primary-color)] font-sans font-bold">
+                                    比對結果：共 <span className="text-base font-black bg-white px-2 py-0.5 rounded border border-[var(--border-color)]">{indexSearchBooks.length}</span> 本書籍
+                                </div>
+                            </div>
+                            <form onSubmit={handleSearchSubmit} className="glass-card p-5 md:p-7 rounded-2xl border border-white shadow-sm mb-8 font-sans">
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
+                                    <div><label className="block text-xs font-bold text-[var(--text-dark)] mb-1">{ui.searchLabelCode}</label><input type="text" value={searchForm.code} onChange={(e) => setSearchForm({...searchForm, code: e.target.value})} className="w-full border border-[var(--border-color)] glass-input p-2.5 rounded-xl outline-none text-xs font-medium" /></div>
+                                    <div><label className="block text-xs font-bold text-[var(--text-dark)] mb-1">{ui.searchLabelTitle}</label><input type="text" value={searchForm.title} onChange={(e) => setSearchForm({...searchForm, title: e.target.value})} className="w-full border border-[var(--border-color)] glass-input p-2.5 rounded-xl outline-none text-xs font-medium" /></div>
+                                    <div><label className="block text-xs font-bold text-[var(--text-dark)] mb-1">{ui.searchLabelAuthor}</label><input type="text" value={searchForm.author} onChange={(e) => setSearchForm({...searchForm, author: e.target.value})} className="w-full border border-[var(--border-color)] glass-input p-2.5 rounded-xl outline-none text-xs font-medium" /></div>
+                                    <div><label className="block text-xs font-bold text-[var(--text-dark)] mb-1">{ui.searchLabelYear}</label><input type="text" value={searchForm.year} onChange={(e) => setSearchForm({...searchForm, year: e.target.value})} className="w-full border border-[var(--border-color)] glass-input p-2.5 rounded-xl outline-none text-xs font-medium" /></div>
+                                    <div className="md:col-span-2">
+                                        <label className="block text-xs font-bold text-[var(--text-dark)] mb-1">{ui.searchLabelCategory}</label>
+                                        <select value={searchForm.category} onChange={(e) => setSearchForm({...searchForm, category: e.target.value})} className="w-full border border-[var(--border-color)] glass-input p-2.5 rounded-xl outline-none text-xs font-bold text-[var(--dark-color)]">
+                                            <option value="">全部</option>
+                                            {excelCategories.map(cat => (<option key={cat} value={cat}>{cat}</option>))}
+                                        </select>
+                                    </div>
+                                </div>
+                                <button type="submit" className="bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-6 py-2.5 rounded-full font-bold transition-all flex items-center gap-1.5 shadow-md active:scale-95 text-xs"><Search size={15} /> {ui.searchBtnQuery}</button>
+                            </form>
+                            
+                            <div className="glass-card border border-white rounded-2xl overflow-hidden shadow-sm font-sans mb-8">
+                                <div className="overflow-x-auto">
+                                    <table className="w-full text-left border-collapse min-w-[800px]">
+                                        <thead>
+                                            <tr className="glass-dark text-[var(--bg-light)] text-xs tracking-wider border-b-2 border-[var(--primary-color)]">
+                                                <th className="p-3.5 font-bold whitespace-nowrap">{ui.searchTableHeaderCode}</th>
+                                                <th className="p-3.5 font-bold min-w-[180px]">{ui.searchTableHeaderTitle}</th>
+                                                <th className="p-3.5 font-bold">{ui.searchTableHeaderAuthor}</th>
+                                                <th className="p-3.5 font-bold">{ui.searchTableHeaderYear}</th>
+                                                <th className="p-3.5 font-bold">{ui.searchTableHeaderPrice}</th>
+                                                <th className="p-3.5 font-bold">{ui.searchTableHeaderCategory}</th>
+                                                <th className="p-3.5 font-bold text-center">{ui.searchTableHeaderAction}</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody className="divide-y divide-[var(--border-color)]/60">
+                                            {visibleSearchBooks.map((book, idx) => (
+                                                <tr key={book.id || idx} className="hover:bg-white/60 transition-colors text-[var(--dark-color)] text-xs">
+                                                    <td className="p-3.5 font-mono text-[var(--primary-color)] font-bold">{book.id || '-'}</td>
+                                                    <td className="p-3.5 font-bold flex items-center gap-2.5">
+                                                        <img src={formatImageUrl(book.cover)} className="w-8 h-10 object-cover rounded shadow-sm border bg-white" onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                                        <span>{book.title}</span>
+                                                    </td>
+                                                    <td className="p-3.5">{book.author || '-'}</td>
+                                                    <td className="p-3.5">{book.year || '-'}</td>
+                                                    <td className="p-3.5 font-bold text-[var(--primary-color)]">{book.price ? `${book.price}元` : '-'}</td>
+                                                    <td className="p-3.5">{book.category || '-'}</td>
+                                                    <td className="p-2.5 text-center">
+                                                        {book.stock > 0 ? (
+                                                            <button type="button" onClick={() => addToCart(book)} className="bg-white border border-[var(--accent-color)] p-2 rounded-lg hover:bg-[var(--primary-color)] hover:text-white transition-all shadow-sm flex items-center justify-center mx-auto active:scale-95"><ShoppingCart size={15} /></button>
+                                                        ) : (<span className="text-gray-400 font-bold text-[10px] bg-gray-100 px-2 py-0.5 rounded">缺貨</span>)}
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </main>
+                    </div>
+                )}
+
+                {/* 3. Shopping Cart Drawer */}
+                {isCartOpen && (
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-6 overflow-y-auto" onClick={() => setIsCartOpen(false)}>
+                        <div className={`glass-modal w-full h-auto md:h-[85vh] ${isCartDetailsOpen ? 'md:max-w-5xl' : 'md:max-w-md'} flex flex-col md:flex-row shadow-2xl rounded-t-3xl md:rounded-3xl overflow-hidden mt-4 md:mt-0 font-sans shrink-0 border border-white/90`} onClick={(e) => e.stopPropagation()}>
+                            
+                            <div className="flex md:hidden shrink-0 bg-white/90 border-b border-[var(--border-color)] text-xs font-sans w-full">
+                                <button type="button" onClick={() => setIsCartDetailsOpen(true)} className={`flex-1 py-3 text-center font-bold border-b-2 transition-all flex items-center justify-center gap-1 ${isCartDetailsOpen ? 'border-[var(--primary-color)] text-[var(--primary-color)] bg-white font-black' : 'border-transparent text-gray-400'}`}>
+                                    <ShoppingCart size={14} /> 1. 確認書包 ({cart.reduce((s, i) => s + i.qty, 0)}本)
+                                </button>
+                                <button type="button" onClick={() => { if (cart.length > 0) setIsCartDetailsOpen(false); else showMsg("書包尚無內容！"); }} className={`flex-1 py-3 text-center font-bold border-b-2 transition-all flex items-center justify-center gap-1 ${!isCartDetailsOpen ? 'border-[var(--primary-color)] text-[var(--primary-color)] bg-white font-black' : 'border-transparent text-gray-400'}`}>
+                                    <FileText size={14} /> 2. 結帳送出
+                                </button>
+                            </div>
+
+                            {isCartDetailsOpen && (
+                                <div className="flex-1 flex flex-col bg-transparent overflow-hidden border-b md:border-b-0 md:border-r border-[var(--border-color)] animate-fade-in-up">
+                                    <div className="p-4 md:p-5 border-b border-[var(--border-color)] flex justify-between items-center bg-white/80 shrink-0">
+                                        <h2 className="text-lg md:text-xl font-black flex items-center gap-2 text-[var(--dark-color)] font-serif tracking-wider"><ShoppingCart className="text-[var(--primary-color)]" size={24} /> {ui.cartTitle}</h2>
+                                        <button type="button" onClick={() => setIsCartOpen(false)} className="bg-white border border-[var(--accent-color)] hover:bg-gray-100 px-3 py-1 rounded-full text-xs font-bold text-[var(--text-dark)] transition flex items-center gap-1"><X size={14} /> {ui.cartCloseBtn}</button>
+                                    </div>
+                                    <div className="flex-1 overflow-y-auto p-4 md:p-6 space-y-3">
+                                        {cart.length === 0 ? (
+                                            <div className="text-center py-16 flex flex-col items-center gap-4">
+                                                <div className="w-16 h-16 bg-[var(--border-color)]/30 rounded-full flex items-center justify-center text-[var(--accent-color)]"><ShoppingCart size={32} /></div>
+                                                <p className="text-[var(--primary-color)] font-bold text-sm">{ui.cartEmptyText}</p>
+                                            </div>
+                                        ) : (
+                                            cart.map(i => (
+                                                <div key={i.id} className="flex gap-3 items-center glass-card p-3 rounded-xl border border-white shadow-sm relative">
+                                                    <div className="w-16 h-20 flex-shrink-0 bg-gray-100 rounded overflow-hidden border border-[var(--border-color)]">
+                                                        <img src={formatImageUrl(i.cover)} alt={i.title} className="w-full h-full object-cover" onError={(e)=>{e.target.src='https://via.placeholder.com/150?text=No+Cover'}} />
+                                                    </div>
+                                                    <div className="flex flex-col flex-1">
+                                                        <p className="font-bold text-[var(--dark-color)] mb-1 font-serif text-sm line-clamp-1 pr-6">{i.title}</p>
+                                                        <p className="text-base text-[var(--primary-color)] font-black mb-2">NT$ {i.price}</p>
+                                                        <div className="flex items-center">
+                                                            <div className="flex items-center border border-[var(--accent-color)] rounded-lg overflow-hidden h-7 bg-white">
+                                                                <button type="button" onClick={() => updateCartQty(i.id, -1)} className="px-2 hover:bg-gray-100 text-[var(--text-dark)] font-bold"><Minus size={14} /></button>
+                                                                <span className="px-3 text-xs font-bold text-[var(--dark-color)] min-w-[32px] text-center">{i.qty}</span>
+                                                                <button type="button" onClick={() => updateCartQty(i.id, 1)} className="px-2 hover:bg-gray-100 text-[var(--text-dark)] font-bold"><Plus size={14} /></button>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                    <button type="button" onClick={() => removeFromCart(i.id)} className="absolute top-3 right-3 text-gray-400 hover:text-red-500 p-1 rounded-full"><Trash2 size={16}/></button>
+                                                </div>
+                                            ))
+                                        )}
+                                    </div>
+                                </div>
+                            )}
+
+                            {cart.length > 0 && (
+                                <div className={`w-full md:w-[380px] lg:w-[420px] bg-white/90 p-5 flex flex-col shrink-0 overflow-y-auto ${isCartDetailsOpen ? 'hidden md:flex' : 'flex'}`}>
+                                    <div className="glass-card p-4 rounded-2xl border border-white mb-5">
+                                        <div className="flex justify-between items-center mb-1">
+                                            <button type="button" onClick={() => setIsCartDetailsOpen(!isCartDetailsOpen)} className="text-[var(--primary-color)] text-xs font-bold flex items-center gap-1 bg-white hover:bg-gray-50 px-2.5 py-1 rounded-lg border border-[var(--border-color)]">
+                                                {isCartDetailsOpen ? <> <ChevronLeft size={14} /> <span>收起明細</span> </> : <> <ChevronLeft size={14} /><span className="md:hidden">‹ 返回修改書包</span><span className="hidden md:inline">展開明細</span> </>}
+                                                <span className="opacity-80">({cart.reduce((s, i) => s + i.qty, 0)}本)</span>
+                                            </button>
+                                        </div>
+                                        <div className="flex items-baseline justify-between mt-2 border-t border-[var(--border-color)]/60 pt-2">
+                                            <span className="font-bold text-[var(--dark-color)] text-base">{ui.cartTotalLabel}</span>
+                                            <span className="text-3xl font-black text-[var(--primary-color)]">NT$ {cartTotal.toLocaleString()}</span>
+                                        </div>
+                                    </div>
+                                    <form onSubmit={handleCheckout} className="space-y-3 flex-1 flex flex-col">
+                                        <div className="text-xs font-bold text-[var(--primary-color)] border-b border-[var(--border-color)] pb-1.5 mb-1 flex items-center gap-1.5"><MapPin size={14} /> {ui.cartCheckoutTitle}</div>
+                                        <div className="grid grid-cols-2 gap-3">
+                                            <div><label className="block text-[11px] font-bold text-gray-600 mb-0.5">{ui.cartLabelName}</label><input name="name" required className="w-full border border-[var(--border-color)] glass-input p-2 rounded-lg text-xs font-medium outline-none" /></div>
+                                            <div><label className="block text-[11px] font-bold text-gray-600 mb-0.5">{ui.cartLabelPhone}</label><input name="phone" required className="w-full border border-[var(--border-color)] glass-input p-2 rounded-lg text-xs font-medium outline-none" /></div>
+                                        </div>
+                                        <div><label className="block text-[11px] font-bold text-gray-600 mb-0.5">{ui.cartLabelEmail}</label><input name="email" type="email" required className="w-full border border-[var(--border-color)] glass-input p-2 rounded-lg text-xs font-medium outline-none" /></div>
+                                        <div><label className="block text-[11px] font-bold text-gray-600 mb-0.5">{ui.cartLabelAddress}</label><input name="address" required className="w-full border border-[var(--border-color)] glass-input p-2 rounded-lg text-xs font-medium outline-none" /></div>
+                                        <div>
+                                            <label className="block text-[11px] font-bold text-gray-600 mb-0.5">{ui.cartLabelPayment}</label>
+                                            <select name="payment" value={selectedPayment} onChange={(e) => setSelectedPayment(e.target.value)} className="w-full border border-[var(--border-color)] glass-input p-2 rounded-lg text-xs font-bold text-[var(--dark-color)] outline-none">
+                                                <option value="店取付現金">{ui.cartOptionCash}</option>
+                                                <option value="銀行轉帳（運費另計）">{ui.cartOptionTransfer}</option>
+                                            </select>
+                                        </div>
+                                        <button type="submit" disabled={isCheckingOut} className={`w-full bg-[var(--primary-color)] text-white py-3.5 rounded-xl font-bold shadow-lg transition-all flex justify-center items-center gap-2 text-sm mt-auto ${isCheckingOut ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[var(--dark-color)] active:scale-95'}`}>
+                                            {isCheckingOut ? <Clock className="animate-spin" size={18} /> : <CheckCircle size={18} />}
+                                            {isCheckingOut ? ui.cartCheckingOutBtn : ui.cartBtnCheckout}
+                                        </button>
+                                    </form>
+                                </div>
+                            )}
+                        </div>
+                    </div>
+                )}
+
+                {/* 4. Gemini AI Guide & Scholar Modal */}
+                {isAiModalOpen && (
+                    <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-center p-4 md:p-8" onClick={() => setIsAiModalOpen(false)}>
+                        <div className="glass-modal w-full max-w-3xl h-[80vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-up border border-white/90" onClick={(e) => e.stopPropagation()}>
+                            <div className="glass-dark p-4 text-[var(--bg-light)] flex justify-between items-center border-b-2 border-[var(--primary-color)] shrink-0">
+                                <div className="flex items-center gap-3">
+                                    <div className="p-2 rounded-xl bg-[var(--primary-color)]/30 border border-[var(--accent-color)]/40 text-amber-300">
+                                        <Sparkles size={20} />
+                                    </div>
+                                    <div>
+                                        <h2 className="font-serif font-black text-base md:text-lg tracking-widest text-white">Gemini 人文智慧閱覽顧問</h2>
+                                        <p className="text-[10px] text-amber-200/80 font-sans">典藏論著導讀 ‧ 學術題解答 ‧ 深度智慧陪伴</p>
+                                    </div>
+                                </div>
+                                <button type="button" onClick={() => setIsAiModalOpen(false)} className="hover:bg-white/20 p-2 rounded-full transition bg-white/10 text-white"><X size={16} /></button>
+                            </div>
+
+                            <div className="flex bg-white/80 border-b border-[var(--border-color)] shrink-0 font-sans text-xs md:text-sm font-bold">
+                                <button 
+                                    type="button" 
+                                    onClick={() => setAiActiveTab('guide')}
+                                    className={`flex-1 py-3 text-center transition flex items-center justify-center gap-2 border-b-2 ${aiActiveTab === 'guide' ? 'border-[var(--primary-color)] text-[var(--primary-color)] bg-white font-black' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                                >
+                                    <BookOpen size={16} /> 書籍 AI 專屬導讀
+                                </button>
+                                <button 
+                                    type="button" 
+                                    onClick={() => setAiActiveTab('chat')}
+                                    className={`flex-1 py-3 text-center transition flex items-center justify-center gap-2 border-b-2 ${aiActiveTab === 'chat' ? 'border-[var(--primary-color)] text-[var(--primary-color)] bg-white font-black' : 'border-transparent text-gray-500 hover:text-gray-800'}`}
+                                >
+                                    <Bot size={16} /> 人文問答與選書顧問
+                                </button>
+                            </div>
+
+                            <div className="flex-1 overflow-y-auto p-5 md:p-8 font-sans bg-transparent flex flex-col">
+                                {aiActiveTab === 'guide' ? (
+                                    <div className="space-y-4">
+                                        {selectedAiBook ? (
+                                            <div className="flex flex-col md:flex-row gap-5 items-start bg-white/70 p-4 rounded-2xl border border-[var(--border-color)] shadow-sm">
+                                                <img src={formatImageUrl(selectedAiBook.cover)} alt={selectedAiBook.title} className="w-24 h-32 object-cover rounded-lg border shadow-sm shrink-0" onError={(e)=>{e.target.src='https://via.placeholder.com/150'}} />
+                                                <div className="flex-1">
+                                                    <span className="text-[10px] font-bold text-[var(--primary-color)] uppercase tracking-wider">{selectedAiBook.category}</span>
+                                                    <h3 className="font-serif font-black text-xl text-[var(--dark-color)] mb-1">{selectedAiBook.title}</h3>
+                                                    <p className="text-xs text-gray-600 mb-3">作者：{selectedAiBook.author || '典藏著作'} ｜ 定價：NT$ {selectedAiBook.price}</p>
+                                                    <button type="button" onClick={() => addToCart(selectedAiBook)} className="bg-[var(--primary-color)] text-white px-4 py-1.5 rounded-full text-xs font-bold hover:bg-[var(--dark-color)] transition inline-flex items-center gap-1.5 shadow-sm">
+                                                        <ShoppingCart size={13} /> 加入書包
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ) : (
+                                            <div className="bg-amber-50 border border-amber-200 text-amber-900 rounded-xl p-4 text-xs">
+                                                💡 提示：點擊任何書籍卡片上的「<strong>✨ AI 導讀</strong>」按鈕，即可在此查看該書籍的專屬深度解析。
+                                            </div>
+                                        )}
+
+                                        <div className="glass-card p-5 rounded-2xl border border-white min-h-[200px] relative">
+                                            {isAiLoading ? (
+                                                <div className="py-16 text-center text-[var(--primary-color)] font-bold flex flex-col items-center justify-center gap-3">
+                                                    <RefreshCw className="animate-spin" size={32} />
+                                                    <span className="text-xs">Gemini 正在深入研讀本論著並撰寫導讀分析...</span>
+                                                </div>
+                                            ) : aiAnalysisResult ? (
+                                                <div className="prose text-xs md:text-sm text-[var(--dark-color)] leading-relaxed whitespace-pre-wrap font-sans">
+                                                    {aiAnalysisResult}
+                                                </div>
+                                            ) : (
+                                                <div className="py-12 text-center text-gray-400 font-bold text-xs flex flex-col items-center gap-2">
+                                                    <Sparkles size={28} />
+                                                    <span>尚未選擇導讀書籍。請點擊首頁或檢索頁面中的「AI 導讀」按鈕。</span>
+                                                </div>
+                                            )}
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="flex-1 flex flex-col h-full space-y-4">
+                                        <div className="flex-1 overflow-y-auto space-y-3 pr-2 min-h-[280px]">
+                                            {aiChatMessages.map((msg, idx) => (
+                                                <div key={idx} className={`flex ${msg.role === 'user' ? 'justify-end' : 'justify-start'}`}>
+                                                    <div className={`max-w-[85%] p-3.5 rounded-2xl text-xs md:text-sm leading-relaxed shadow-sm ${
+                                                        msg.role === 'user' 
+                                                            ? 'bg-[var(--primary-color)] text-white font-medium rounded-tr-none' 
+                                                            : 'bg-white/90 border border-[var(--border-color)] text-[var(--dark-color)] rounded-tl-none font-sans whitespace-pre-wrap'
+                                                    }`}>
+                                                        {msg.text}
+                                                    </div>
+                                                </div>
+                                            ))}
+                                            {isAiLoading && (
+                                                <div className="flex justify-start">
+                                                    <div className="bg-white/80 border border-[var(--border-color)] p-3 rounded-2xl rounded-tl-none text-xs text-[var(--primary-color)] font-bold flex items-center gap-2">
+                                                        <RefreshCw className="animate-spin" size={14} /> 思考整理中...
+                                                    </div>
+                                                </div>
+                                            )}
+                                        </div>
+
+                                        <form onSubmit={handleSendAiChatMessage} className="flex gap-2 shrink-0 pt-2 border-t border-[var(--border-color)]">
+                                            <input 
+                                                type="text" 
+                                                value={aiChatInput} 
+                                                onChange={(e) => setAiChatInput(e.target.value)} 
+                                                placeholder="請輸入：想詢問的學術主題或想找的圖書類型..." 
+                                                className="flex-1 border border-[var(--border-color)] glass-input p-3 rounded-xl text-xs outline-none font-bold text-[var(--dark-color)]"
+                                            />
+                                            <button 
+                                                type="submit" 
+                                                disabled={isAiLoading || !aiChatInput.trim()} 
+                                                className="bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-5 py-3 rounded-xl font-bold transition flex items-center justify-center shadow-md active:scale-95 disabled:opacity-50 text-xs shrink-0"
+                                            >
+                                                <Send size={15} />
+                                            </button>
+                                        </form>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* 5. Printable Invoice / Receipt Modal */}
+                {submittedDetail && (
+                    <div className="fixed inset-0 bg-black/80 backdrop-blur-md z-[250] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
+                        <div className="bg-[var(--bg-color)] w-full max-w-2xl rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-fade-in-up border-4 border-double border-[var(--primary-color)] relative" onClick={(e)=>e.stopPropagation()}>
+                            <div className="glass-dark text-[var(--bg-light)] p-4 flex justify-between items-center border-b-4 border-[var(--primary-color)]">
+                                <span className="font-sans font-bold flex items-center gap-2 text-base tracking-wider">
+                                    <CheckCircle className="text-emerald-400 animate-pulse" size={20} /> 
+                                    {submittedDetail.type === 'order' ? '交易處理成功・受理憑證' : '反映受理成功・明細'}
+                                </span>
+                                <button type="button" onClick={() => setSubmittedDetail(null)} className="bg-white/10 hover:bg-white/20 p-1.5 rounded-full text-white"><X size={16} /></button>
+                            </div>
+
+                            <div className="p-6 md:p-8 bg-white receipt-container flex-1 relative overflow-hidden border-b-4 border-dashed border-gray-200">
+                                <div className="text-center border-b-2 border-dashed border-[var(--border-color)] pb-4 mb-4">
+                                    <h3 className="text-xl font-black tracking-widest text-[var(--dark-color)] mb-1 font-serif">文史哲出版社有限公司</h3>
+                                    <p className="text-[10px] tracking-widest text-[var(--primary-color)] uppercase font-sans font-bold mb-2">{settings.systemSubName}</p>
+                                    <span className="font-mono text-xs tracking-widest text-gray-500 font-bold select-all">{submittedDetail.data.id}</span>
+                                </div>
+
+                                {submittedDetail.type === 'order' ? (
+                                    <div className="font-sans text-left space-y-3 text-gray-700 text-xs">
+                                        <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-3 text-center mb-4">
+                                            <p className="text-emerald-800 font-bold text-sm mb-0.5">📸 請立即將此畫面截圖保存！</p>
+                                            <p className="text-[11px] text-emerald-700">可作為劃撥對帳與取貨之正式憑證。</p>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-y-1.5 border-b border-gray-100 pb-3">
+                                            <div><span className="text-gray-400">單號：</span><strong className="text-gray-800 font-mono">{submittedDetail.data.id}</strong></div>
+                                            <div><span className="text-gray-400">日期：</span><strong className="text-gray-800">{submittedDetail.data.date}</strong></div>
+                                            <div><span className="text-gray-400">客戶：</span><strong className="text-gray-800">{submittedDetail.data.customer}</strong></div>
+                                            <div><span className="text-gray-400">電話：</span><strong className="text-gray-800">{submittedDetail.data.phone}</strong></div>
+                                            <div className="col-span-2"><span className="text-gray-400">地址：</span><strong className="text-gray-800">{submittedDetail.data.address}</strong></div>
+                                            <div className="col-span-2"><span className="text-gray-400">付款：</span><strong className="text-[var(--primary-color)] font-bold">{submittedDetail.data.payment}</strong></div>
+                                        </div>
+                                        <div className="py-1">
+                                            <p className="font-bold text-[var(--dark-color)] mb-2">購買明細：</p>
+                                            <div className="space-y-2 bg-gray-50 p-3 rounded-xl border border-gray-200">
+                                                {submittedDetail.data.items.map((it, idx) => (
+                                                    <div key={idx} className="flex justify-between items-start text-xs text-gray-700">
+                                                        <span className="font-bold pr-2 flex-1 line-clamp-1">{it.title}</span>
+                                                        <span className="text-gray-500">x{it.qty}</span>
+                                                        <span className="font-bold text-gray-900 w-16 text-right">NT$ {it.price * it.qty}</span>
+                                                    </div>
+                                                ))}
+                                                <div className="border-t border-dashed border-gray-300 pt-2 mt-2 flex justify-between items-baseline">
+                                                    <span className="font-bold text-gray-800">總金額</span>
+                                                    <span className="text-xl font-black text-[var(--primary-color)] font-sans">NT$ {submittedDetail.data.total.toLocaleString()}</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ) : (
+                                    <div className="font-sans text-left space-y-3 text-gray-700 text-xs">
+                                        <div className="bg-blue-50 border border-blue-200 rounded-xl p-3 text-center mb-4">
+                                            <p className="text-blue-800 font-bold text-sm mb-0.5">📸 請截圖保存受理序號！</p>
+                                        </div>
+                                        <div className="grid grid-cols-2 gap-y-1.5 border-b border-gray-100 pb-3">
+                                            <div><span className="text-gray-400">序號：</span><strong className="text-gray-800 font-mono">{submittedDetail.data.id}</strong></div>
+                                            <div><span className="text-gray-400">日期：</span><strong className="text-gray-800">{submittedDetail.data.date}</strong></div>
+                                        </div>
+                                        <div className="py-1">
+                                            <p className="font-bold text-[var(--dark-color)] mb-2">反映內容：</p>
+                                            <div className="bg-gray-50 p-3 rounded-xl border border-gray-200 text-xs text-gray-600 whitespace-pre-wrap leading-relaxed">
+                                                {submittedDetail.data.message}
+                                            </div>
+                                        </div>
+                                    </div>
+                                )}
+                            </div>
+
+                            <div className="receipt-edge-zigzag h-[10px] w-full bg-white relative pointer-events-none shrink-0"></div>
+
+                            <div className="bg-gray-100 p-3 flex flex-col sm:flex-row gap-2 justify-center">
+                                <button type="button" onClick={() => window.print()} className="bg-white border border-[var(--accent-color)] hover:bg-gray-50 text-[var(--text-dark)] py-2 px-5 rounded-xl font-bold flex justify-center items-center gap-1.5 text-xs shadow-sm"><Printer size={15}/> 列印 / 保存 PDF</button>
+                                <button type="button" onClick={() => setSubmittedDetail(null)} className="bg-[var(--dark-color)] hover:bg-[var(--primary-color)] text-white py-2 px-6 rounded-xl font-bold flex justify-center items-center gap-1.5 text-xs shadow-md"><Check size={15}/> 關閉並繼續瀏覽</button>
+                            </div>
+                        </div>
+                    </div>
+                )}
+
+                {/* Toast Notification */}
+                {notification && (
+                    <div className="fixed bottom-20 md:bottom-8 left-1/2 -translate-x-1/2 glass-dark text-white px-5 py-3 rounded-2xl shadow-2xl animate-fade-in-up font-bold text-xs md:text-sm z-[300] flex items-center gap-2.5 border-l-4 border-[var(--primary-color)] whitespace-nowrap">
+                        <CheckCircle size={18} className="text-[var(--accent-color)]" /> {notification}
+                    </div>
+                )}
+            </div> 
+        );
+    }
+
+    const root = ReactDOM.createRoot(document.getElementById('root'));
+    root.render(<App />);
+    </script>
+</body>
+</html>
