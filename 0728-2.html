@@ -501,7 +501,7 @@
             // 📖 書籍詳細資訊 Modal 狀態
             const [selectedBookDetail, setSelectedBookDetail] = useState(null);
 
-            // 📖 讀後心得 Modal 狀態（取代原本的 AI Modal 導向）
+            // 📖 讀後心得 Modal 狀態
             const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
             const [selectedReviewBook, setSelectedReviewBook] = useState(null);
             const [isSubmittingReview, setIsSubmittingReview] = useState(false);
@@ -663,7 +663,6 @@
             const visibleBooks = filteredBooks.slice(0, visibleCount);
             const displayChoiceBooks = choiceBooks.length > 0 ? choiceBooks : books.slice(0, 10);
 
-            // 📖 送出讀後心得功能（比照客服與建議格式，專萃送至 CustomerService / list 試算表分頁）
             const handleReviewSubmit = async (e) => {
                 e.preventDefault();
                 if (isSubmittingReview || !checkRateLimit()) return;
@@ -1273,7 +1272,6 @@
                         </div>
                     )}
 
-                    {}
                     {isSearchModalOpen && (
                         <div className="fixed inset-0 glass-modal z-[150] overflow-y-auto animate-in flex flex-col">
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40">
@@ -1372,7 +1370,418 @@
                         </div>
                     )}
 
-                    {/* 圖書詳細資訊 Modal */}
+                    {isRandomBooksOpen && (
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsRandomBooksOpen(false)}>
+                            <div className="glass-modal w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in" onClick={(e) => e.stopPropagation()}>
+                                <div className="glass-dark p-4 flex justify-between items-center border-b-2 border-[var(--primary-color)]">
+                                    <h2 className="text-xl font-serif font-black text-[var(--bg-light)] flex items-center gap-3 tracking-widest"><Zap size={24} className="text-[var(--primary-color)]" /> {ui.newArrivalsTitle}</h2>
+                                    <button type="button" onClick={() => setIsRandomBooksOpen(false)} className="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm font-bold text-white transition flex items-center gap-2"><X size={16} /> {ui.newArrivalsCloseBtn}</button>
+                                </div>
+                                <div className="flex-1 overflow-y-auto p-6 md:p-8 font-sans">
+                                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+                                        {randomBooks.map(book => (
+                                            <div key={book.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col shadow-sm cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
+                                                {/* 🖼️ Cover in Random Books modal */}
+                                                <div className="h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
+                                                    <div className="h-full relative shadow-[3px_3px_10px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
+                                                        <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                                    </div>
+                                                    <div className="absolute top-4 left-4 bg-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md shadow-md font-sans font-bold z-10 border border-white/20">{book.category}</div>
+                                                    {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/70 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl z-20">{ui.msgOutOfStock}</div>}
+                                                </div>
+                                                <div className="p-5 flex flex-col flex-1 bg-white/60 backdrop-blur-md border-t border-[var(--bg-light)]">
+                                                    <h3 className="font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors" title={book.title}>{book.title}</h3>
+                                                    <p className="text-[var(--primary-color)] font-black mb-4 text-xl font-sans mt-auto">NT$ {book.price}</p>
+                                                    <button type="button" onClick={(e) => { e.stopPropagation(); addToCart(book); }} className="w-full bg-white/80 border border-[var(--accent-color)] text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-2 font-sans shadow-sm">
+                                                        <ShoppingCart size={18} /> 加入書包
+                                                    </button>
+                                                </div>
+                                            </div>
+                                        ))}
+                                    </div>
+                                    {randomBooks.length === 0 && (
+                                        <div className="text-center text-[var(--primary-color)] py-10 font-bold">書籍載入中或資料庫無書籍...</div>
+                                    )}
+                                    <div className="mt-8 text-center">
+                                        <button type="button" onClick={openRandomBooksModal} className="bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-8 py-3 rounded-full font-bold shadow-lg transition-all flex items-center justify-center mx-auto gap-2 active:scale-95">
+                                            <Zap size={18} /> {ui.newArrivalsBtnRefresh}
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isCartOpen && (
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-8 overflow-y-auto custom-scrollbar" onClick={() => setIsCartOpen(false)}>
+                            <div className={`glass-modal w-full h-auto md:h-[85vh] ${isCartDetailsOpen ? 'md:max-w-5xl' : 'md:max-w-md'} flex flex-col md:flex-row shadow-2xl rounded-t-2xl md:rounded-2xl overflow-visible md:overflow-hidden mt-4 md:mt-0 font-sans shrink-0 border border-white/80`} onClick={(e) => e.stopPropagation()}>
+                                
+                                <div className="flex md:hidden shrink-0 bg-white/80 backdrop-blur-md border-b border-[var(--border-color)] text-xs font-sans w-full">
+                                    <button 
+                                        type="button" 
+                                        onClick={() => setIsCartDetailsOpen(true)}
+                                        className={`flex-1 py-4 text-center font-bold border-b-4 transition-all flex items-center justify-center gap-1.5 ${isCartDetailsOpen ? 'border-[var(--primary-color)] text-[var(--primary-color)] bg-white/60 font-black' : 'border-transparent text-gray-400'}`}
+                                    >
+                                        <ShoppingCart size={14} />
+                                        <span>1. 確認書包 ({cart.reduce((s, i) => s + i.qty, 0)}本)</span>
+                                    </button>
+                                    <button 
+                                        type="button" 
+                                        onClick={() => {
+                                            if (cart.length > 0) setIsCartDetailsOpen(false);
+                                            else showMsg("書包內尚無圖書，請先挑選書籍！");
+                                        }}
+                                        className={`flex-1 py-4 text-center font-bold border-b-4 transition-all flex items-center justify-center gap-1.5 ${!isCartDetailsOpen ? 'border-[var(--primary-color)] text-[var(--primary-color)] bg-white/60 font-black' : 'border-transparent text-gray-400'}`}
+                                    >
+                                        <FileText size={14} />
+                                        <span>2. 收件結帳</span>
+                                    </button>
+                                </div>
+
+                                {isCartDetailsOpen && (
+                                    <div className="flex-1 flex flex-col bg-transparent overflow-visible md:overflow-hidden border-b md:border-b-0 md:border-r border-[var(--border-color)] animate-in shrink-0 md:shrink">
+                                        <div className="sticky top-0 z-10 p-5 md:p-6 border-b border-[var(--border-color)] flex justify-between items-center bg-white/80 backdrop-blur-md shrink-0">
+                                            <h2 className="text-xl md:text-2xl font-black flex items-center gap-3 text-[var(--dark-color)] font-serif tracking-widest"><ShoppingCart className="text-[var(--primary-color)]" size={28} /> {ui.cartTitle}</h2>
+                                            <button type="button" onClick={() => setIsCartOpen(false)} className="bg-white/80 border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[var(--text-dark)] transition flex items-center gap-1.5 shadow-sm"><X size={16} /> {ui.cartCloseBtn}</button>
+                                        </div>
+                                        <div className="flex-1 overflow-y-visible md:overflow-y-auto p-4 md:p-6 custom-scrollbar md:max-h-[calc(85vh-160px)]">
+                                            {cart.length === 0 ? (
+                                                <div className="text-center mt-10 md:mt-20 flex flex-col items-center gap-6">
+                                                    <div className="w-24 h-24 bg-[var(--border-color)]/30 rounded-full flex items-center justify-center text-[var(--accent-color)]"><ShoppingCart size={48} /></div>
+                                                    <p className="text-[var(--primary-color)] font-bold text-lg">{ui.cartEmptyText}</p>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-4">
+                                                    {cart.map(i => (
+                                                        <div key={i.id} className="flex gap-4 items-center glass-card p-4 rounded-xl border border-white/90 shadow-sm relative group">
+                                                            <div className="w-20 h-28 flex-shrink-0 bg-gray-100 rounded overflow-hidden border border-[var(--border-color)] shadow-sm">
+                                                                <img src={formatImageUrl(i.cover)} alt={i.title} className="w-full h-full object-cover" onError={(e)=>{e.target.src='https://via.placeholder.com/150?text=No+Cover'}} />
+                                                            </div>
+                                                            <div className="flex flex-col flex-1">
+                                                                <p className="font-bold text-[var(--dark-color)] mb-2 font-serif text-lg leading-tight line-clamp-2 pr-8">{i.title}</p>
+                                                                <p className="text-lg text-[var(--primary-color)] font-black mb-3">NT$ {i.price}</p>
+                                                                <div className="flex items-center">
+                                                                    <div className="flex items-center border border-[var(--accent-color)] rounded-lg overflow-hidden h-9 bg-white/80 backdrop-blur-sm">
+                                                                        <button type="button" onClick={() => updateCartQty(i.id, -1)} className="px-3 hover:bg-[#E6D5C3] text-[var(--text-dark)] transition font-bold"><Minus size={16} /></button>
+                                                                        <span className="px-4 text-sm font-bold text-[var(--dark-color)] bg-[var(--bg-light)]/50 min-w-[40px] text-center border-x border-[var(--accent-color)]">{i.qty}</span>
+                                                                        <button type="button" onClick={() => updateCartQty(i.id, 1)} className="px-3 hover:bg-[#E6D5C3] text-[var(--text-dark)] transition font-bold"><Plus size={16} /></button>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <button type="button" onClick={() => removeFromCart(i.id)} className="absolute top-4 right-4 text-[var(--accent-color)] hover:text-red-500 hover:bg-red-50 p-2.5 rounded-full transition-colors"><Trash2 size={18}/></button>
+                                                        </div>
+                                                    ))}
+                                                </div>
+                                            )}
+                                        </div>
+                                        
+                                        {cart.length > 0 && (
+                                            <div className="p-4 bg-white/80 backdrop-blur-md border-t border-[var(--border-color)] md:hidden shrink-0">
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => setIsCartDetailsOpen(false)}
+                                                    className="w-full bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white py-3.5 rounded-xl font-bold flex justify-center items-center gap-2 active:scale-95 transition-all shadow-md text-base"
+                                                >
+                                                    下一步：填寫收件資訊 <ChevronRight size={18} />
+                                                </button>
+                                            </div>
+                                        )}
+                                    </div>
+                                )}
+
+                                {cart.length > 0 && (
+                                    <div className={`w-full md:w-[400px] lg:w-[450px] bg-white/80 backdrop-blur-md p-6 shadow-[-10px_0_20px_rgba(0,0,0,0.02)] flex flex-col shrink-0 overflow-y-visible md:overflow-y-auto md:max-h-[85vh] custom-scrollbar ${isCartDetailsOpen ? 'hidden md:flex' : 'flex'}`}>
+                                        <div className="flex flex-col gap-2 glass-card p-5 rounded-xl border border-white/80 mb-6">
+                                            <div className="flex justify-between items-center mb-1">
+                                                <button 
+                                                    type="button" 
+                                                    onClick={() => setIsCartDetailsOpen(!isCartDetailsOpen)} 
+                                                    className="text-[var(--primary-color)] text-sm font-bold flex items-center gap-1 bg-white/80 hover:bg-white px-3 py-1.5 rounded-lg transition active:scale-95 shadow-sm"
+                                                >
+                                                    {isCartDetailsOpen ? (
+                                                        <> <ChevronLeft size={16} /> <span>收起明細</span> </>
+                                                    ) : (
+                                                        <> <ChevronRight size={16} className="hidden md:inline" /><ChevronLeft size={16} className="md:hidden" /><span className="hidden md:inline">展開明細</span><span className="md:hidden">‹ 返回修改書包</span> </>
+                                                    )}
+                                                    <span className="ml-1 opacity-75">({cart.reduce((s, i) => s + i.qty, 0)}本)</span>
+                                                </button>
+
+                                                {!isCartDetailsOpen && (
+                                                    <button 
+                                                        type="button" 
+                                                        onClick={() => setIsCartOpen(false)} 
+                                                        className="bg-white border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-3 py-1 rounded-full text-xs font-bold text-[var(--text-dark)] transition flex items-center gap-1 shadow-sm"
+                                                    >
+                                                        <X size={12} /> {ui.cartCloseBtn}
+                                                    </button>
+                                                )}
+                                            </div>
+
+                                            <div className="flex items-baseline justify-between mt-1 text-left border-t border-[var(--border-color)]/60 pt-3">
+                                                <span className="font-bold text-[var(--dark-color)] text-xl">{ui.cartTotalLabel}</span>
+                                                <span className="text-4xl font-black text-[var(--primary-color)]">NT$ {cartTotal.toLocaleString()}</span>
+                                            </div>
+                                        </div>
+                                        <form onSubmit={handleCheckout} className="space-y-4 flex-1 flex flex-col">
+                                            <div className="text-sm font-bold text-[var(--primary-color)] border-b border-[var(--border-color)] pb-2 mb-2 flex items-center gap-2"><MapPin size={16} /> {ui.cartCheckoutTitle}</div>
+                                            <div className="grid grid-cols-2 gap-4">
+                                                <div><label className="block text-xs font-bold text-gray-600 mb-1">{ui.cartLabelName}</label><input name="name" required className="w-full border border-[var(--border-color)] glass-input p-3 rounded-xl focus:border-[var(--primary-color)] text-sm font-medium text-[var(--dark-color)] outline-none" /></div>
+                                                <div><label className="block text-xs font-bold text-gray-600 mb-1">{ui.cartLabelPhone}</label><input name="phone" required className="w-full border border-[var(--border-color)] glass-input p-3 rounded-xl focus:border-[var(--primary-color)] text-sm font-medium text-[var(--dark-color)] outline-none" /></div>
+                                            </div>
+                                            <div><label className="block text-xs font-bold text-gray-600 mb-1">{ui.cartLabelEmail}</label><input name="email" type="email" required className="w-full border border-[var(--border-color)] glass-input p-3 rounded-xl focus:border-[var(--primary-color)] text-sm font-medium text-[var(--dark-color)] outline-none" /></div>
+                                            <div><label className="block text-xs font-bold text-gray-600 mb-1">{ui.cartLabelAddress}</label><input name="address" required className="w-full border border-[var(--border-color)] glass-input p-3 rounded-xl focus:border-[var(--primary-color)] text-sm font-medium text-[var(--dark-color)] outline-none" /></div>
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-600 mb-1">{ui.cartLabelPayment}</label>
+                                                <select 
+                                                    name="payment" 
+                                                    value={selectedPayment} 
+                                                    onChange={(e) => setSelectedPayment(e.target.value)}
+                                                    className="w-full border border-[var(--border-color)] glass-input p-3 rounded-xl focus:border-[var(--primary-color)] text-sm font-bold text-[var(--dark-color)] outline-none"
+                                                >
+                                                    <option value="店取付現金">{ui.cartOptionCash}</option>
+                                                    <option value="銀行轉帳（運費另計）">銀行轉帳（運費另計）</option>
+                                                </select>
+                                            </div>
+
+                                            {selectedPayment === '銀行轉帳（運費另計）' && (
+                                                <div className="bg-amber-50/90 backdrop-blur-sm border border-amber-200 rounded-xl p-3.5 text-xs text-[var(--text-dark)] leading-relaxed animate-in text-left">
+                                                    <p className="font-bold text-[var(--primary-color)] mb-1 flex items-center gap-1">🏦 郵政劃撥資訊：</p>
+                                                    <p className="mb-1">來電詢問：<span className="font-mono font-bold">📞 886-02-2351-1028</span></p>
+                                                    <p className="flex items-center text-gray-700 mb-1">
+                                                        <span className="w-12 shrink-0">帳號：</span>
+                                                        <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
+                                                    </p>
+                                                    <p className="flex items-center text-gray-700">
+                                                        <span className="w-12 shrink-0">戶名：</span>
+                                                        <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
+                                                    </p>
+                                                </div>
+                                            )}
+                                            {selectedPayment === '店取付現金' && (
+                                                <div className="bg-emerald-50/90 backdrop-blur-sm border border-emerald-200 rounded-xl p-3.5 text-xs text-[var(--text-dark)] leading-relaxed animate-in">
+                                                    <p className="font-bold text-emerald-800 mb-1 flex items-center gap-1">🏪 門市取貨地點：</p>
+                                                    <p>台北市中正區羅斯福路一段72巷4號（文史哲門市）</p>
+                                                </div>
+                                            )}
+
+                                            <div>
+                                                <label className="block text-xs font-bold text-gray-600 mb-1">{ui.cartLabelMemo}</label>
+                                                <textarea name="memo" placeholder={ui.cartMemoPlaceholder} className="w-full border border-[var(--border-color)] glass-input p-3 rounded-xl focus:border-[var(--primary-color)] text-sm font-medium text-[var(--dark-color)] outline-none h-16 resize-none"></textarea>
+                                            </div>
+                                            
+                                            <button type="submit" disabled={isCheckingOut} className={`w-full bg-[var(--primary-color)] text-white py-4 rounded-xl font-bold mt-auto shadow-xl transition-all flex justify-center items-center gap-2 text-lg mb-12 md:mb-0 ${isCheckingOut ? 'opacity-50 cursor-not-allowed' : 'hover:bg-[var(--dark-color)] active:scale-[0.98]'}`}>
+                                                {isCheckingOut ? <Clock className="animate-spin" size={22} /> : <CheckCircle size={22} />}
+                                                {isCheckingOut ? ui.cartCheckingOutBtn : ui.cartBtnCheckout}
+                                            </button>
+                                        </form>
+                                    </div>
+                                )}
+                            </div>
+                        </div>
+                    )}
+                    
+                    {iframeModal.isOpen && (
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))}>
+                            <div className="glass-modal w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in font-sans border border-white/80" onClick={(e) => e.stopPropagation()}>
+                                <div className="p-4 md:p-5 border-b-2 border-[var(--border-color)] flex justify-between items-center glass-dark text-white">
+                                    <h2 className="text-xl font-black flex items-center gap-3 font-serif tracking-widest">{iframeModal.title}</h2>
+                                    <button type="button" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))} className="bg-white/10 hover:bg-white/20 px-4 py-2 rounded-full text-sm font-bold text-white transition flex items-center gap-2 shadow-sm"><X size={16} /> {ui.cartCloseBtn}</button>
+                                </div>
+                                <div className="flex-1 w-full bg-white/90 backdrop-blur-sm relative overflow-y-auto" style={{ WebkitOverflowScrolling: 'touch' }}>
+                                    {iframeModal.url && <iframe src={iframeModal.url} className="w-full h-full border-0 min-h-[600px]"></iframe>}
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {submittedDetail && (
+                        <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[250] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
+                            <div className="bg-[var(--bg-color)] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border-4 border-double border-[var(--primary-color)] relative" onClick={(e)=>e.stopPropagation()}>
+                                <div className="glass-dark text-[var(--bg-light)] p-5 flex justify-between items-center border-b-4 border-[var(--primary-color)]">
+                                    <span className="font-sans font-bold flex items-center gap-2 text-lg tracking-wider">
+                                        <CheckCircle className="text-emerald-400 animate-pulse" size={24} /> 
+                                        {submittedDetail.type === 'order' ? '交易處理成功・受理憑證' : '系統反映成功・受理明細'}
+                                    </span>
+                                    <button type="button" onClick={() => setSubmittedDetail(null)} className="bg-white/10 hover:bg-white/20 p-2 rounded-full text-white transition-colors"><X size={18} /></button>
+                                </div>
+
+                                <div className="p-6 md:p-10 bg-white receipt-container flex-1 relative overflow-hidden border-b-4 border-dashed border-gray-200">
+                                    <div className="text-center border-b-2 border-dashed border-[var(--border-color)] pb-6 mb-6">
+                                        <h3 className="text-2xl font-black tracking-widest text-[var(--dark-color)] mb-2 font-serif">文史哲出版社有限公司</h3>
+                                        <p className="text-xs tracking-widest text-[var(--primary-color)] uppercase font-sans font-bold mb-4">{settings.systemSubName}</p>
+                                        <span className="font-mono text-sm tracking-widest text-gray-500 font-bold select-all">{submittedDetail.data.id}</span>
+                                    </div>
+
+                                    {submittedDetail.type === 'order' ? (
+                                        <div className="font-sans text-left space-y-4 text-gray-700">
+                                            <div className="bg-emerald-50 border border-emerald-200 rounded-xl p-4 text-center mb-6 animate-pulse">
+                                                <p className="text-emerald-800 font-bold text-base flex items-center justify-center gap-1.5 mb-1">📸 請立即將此畫面截圖保存！</p>
+                                                <p className="text-xs text-emerald-700">本憑證可作為日後郵政劃撥對帳、匯款核對與取貨之正式依據。</p>
+                                            </div>
+
+                                            <div className="grid grid-cols-2 gap-y-2 border-b border-gray-100 pb-4 text-sm">
+                                                <div><span className="text-gray-400">訂單編號：</span><strong className="text-gray-800 font-mono select-all">{submittedDetail.data.id}</strong></div>
+                                                <div><span className="text-gray-400">受理日期：</span><strong className="text-gray-800">{submittedDetail.data.date}</strong></div>
+                                                <div><span className="text-gray-400">訂購客戶：</span><strong className="text-gray-800">{submittedDetail.data.customer}</strong></div>
+                                                <div><span className="text-gray-400">聯絡電話：</span><strong className="text-gray-800">{submittedDetail.data.phone}</strong></div>
+                                                <div className="col-span-2"><span className="text-gray-400">電子信箱：</span><strong className="text-gray-800">{submittedDetail.data.email}</strong></div>
+                                                <div className="col-span-2"><span className="text-gray-400">寄送地址：</span><strong className="text-gray-800">{submittedDetail.data.address}</strong></div>
+                                                <div className="col-span-2"><span className="text-gray-400">付款方式：</span><strong className="text-[var(--primary-color)] font-bold">{submittedDetail.data.payment}</strong></div>
+                                            </div>
+
+                                            <div className="py-2">
+                                                <p className="font-bold text-[var(--dark-color)] mb-3 border-b border-dashed border-[var(--border-color)] pb-1 flex items-center gap-1.5"><BookOpen size={16}/> 購買圖書明細：</p>
+                                                <div className="space-y-3 bg-gray-50 p-4 rounded-xl border border-gray-200">
+                                                    {submittedDetail.data.items.map((it, idx) => (
+                                                        <div key={idx} className="flex justify-between items-start text-xs leading-relaxed text-gray-700">
+                                                            <span className="font-bold pr-4 flex-1 line-clamp-1">{it.title}</span>
+                                                            <span className="text-gray-500 whitespace-nowrap">數量: {it.qty}</span>
+                                                            <span className="font-bold text-gray-900 w-20 text-right whitespace-nowrap">NT$ {it.price * it.qty}</span>
+                                                        </div>
+                                                    ))}
+                                                    <div className="border-t border-dashed border-gray-300 pt-3 mt-3 flex justify-between items-baseline">
+                                                        <span className="font-bold text-gray-800 text-sm">付款總額 (含稅/NT$)</span>
+                                                        <span className="text-2xl font-black text-[var(--primary-color)] font-sans">NT$ {submittedDetail.data.total.toLocaleString()}</span>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    ) : (
+                                        <div className="font-sans text-left space-y-4 text-gray-700">
+                                            <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 text-center mb-6 animate-pulse">
+                                                <p className="text-blue-800 font-bold text-base flex items-center justify-center gap-1.5 mb-1">📸 請立即截圖此反映單據！</p>
+                                                <p className="text-xs text-blue-700">請妥善留存受理序號，以便與客服人員核對處理進度。</p>
+                                            </div>
+                                            <div className="grid grid-cols-2 gap-y-2 border-b border-gray-100 pb-4 text-sm">
+                                                <div><span className="text-gray-400">受理序號：</span><strong className="text-gray-800 font-mono select-all">{submittedDetail.data.id}</strong></div>
+                                                <div><span className="text-gray-400">送出日期：</span><strong className="text-gray-800">{submittedDetail.data.date}</strong></div>
+                                                <div><span className="text-gray-400">反映人：</span><strong className="text-gray-800">{submittedDetail.data.name}</strong></div>
+                                                <div><span className="text-gray-400">聯絡電話：</span><strong className="text-gray-800">{submittedDetail.data.phone}</strong></div>
+                                            </div>
+                                            <div className="py-2">
+                                                <p className="font-bold text-[var(--dark-color)] mb-3 border-b border-dashed border-[var(--border-color)] pb-1 flex items-center gap-1.5"><MessageCircle size={16}/> 反映詳情：</p>
+                                                <div className="bg-gray-50 p-4 rounded-xl border border-gray-200 text-sm text-gray-600 italic whitespace-pre-wrap leading-relaxed">
+                                                    {submittedDetail.data.message}
+                                                </div>
+                                            </div>
+                                        </div>
+                                    )}
+                                </div>
+
+                                <div className="receipt-edge-zigzag h-[10px] w-full bg-white relative -top-0.5 pointer-events-none shrink-0"></div>
+
+                                <div className="bg-gray-100 p-4 flex flex-col sm:flex-row gap-3 justify-center">
+                                    <button type="button" onClick={() => window.print()} className="bg-white border border-[var(--accent-color)] hover:bg-gray-50 text-[var(--text-dark)] py-2.5 px-6 rounded-xl font-bold flex justify-center items-center gap-2 text-sm shadow-sm transition-all"><Printer size={16}/> 列印 / 另存 PDF</button>
+                                    <button type="button" onClick={() => setSubmittedDetail(null)} className="bg-[var(--dark-color)] hover:bg-[var(--primary-color)] text-white py-2.5 px-8 rounded-xl font-bold flex justify-center items-center gap-2 text-sm shadow-md transition-all"><Check size={16}/> 關閉明細，繼續瀏覽</button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {isOrderQueryOpen && (
+                        <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
+                            <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80" onClick={(e)=>e.stopPropagation()}>
+                                <div className="p-5 border-b border-[var(--border-color)] flex justify-between items-center bg-white/80 backdrop-blur-md">
+                                    <h2 className="text-xl md:text-2xl font-black flex items-center gap-3 text-[var(--dark-color)] font-serif tracking-widest">
+                                        <FileText className="text-[var(--primary-color)]" size={28} /> 最近訂單查詢
+                                    </h2>
+                                    <button type="button" onClick={() => { setIsOrderQueryOpen(false); setOrderQueryInput(''); setQueryResults([]); setHasQueried(false); }} className="bg-white/80 border border-[var(--accent-color)] hover:bg-[#E6D5C3] px-4 py-2 rounded-full text-sm font-bold text-[var(--text-dark)] transition flex items-center gap-1.5 shadow-sm"><X size={16} /> 關閉查詢</button>
+                                </div>
+
+                                <div className="flex-1 overflow-y-auto p-6 md:p-10 font-sans bg-transparent flex flex-col">
+                                    <div className="bg-amber-50/90 backdrop-blur-sm border border-amber-200 text-amber-900 rounded-xl p-4 text-sm mb-8 leading-relaxed text-justify flex items-start gap-2.5 shadow-sm">
+                                        <Info className="text-[var(--primary-color)] mt-0.5 shrink-0" size={18} />
+                                        <span><strong>隱私與安全提示：</strong>為保護讀者隱私，查詢僅對照比對由您輸入的<strong>客戶姓名、手機號碼或訂單編號</strong>。我們採取了高安全架構防護，絕不在前台暴露完整的試算表清單，請放心檢索。</span>
+                                    </div>
+
+                                    <form onSubmit={handleOrderQuerySubmit} className="flex gap-3 mb-8">
+                                        <input 
+                                            type="text" 
+                                            value={orderQueryInput} 
+                                            onChange={(e) => setOrderQueryInput(e.target.value)}
+                                            placeholder="請輸入：姓名、手機號碼 或 ORD- 開頭之單號" 
+                                            required
+                                            className="flex-1 border border-[var(--border-color)] glass-input p-3 rounded-xl focus:border-[var(--primary-color)] text-sm outline-none font-bold text-[var(--dark-color)]"
+                                        />
+                                        <button 
+                                            type="submit" 
+                                            disabled={isQueryingGAS} 
+                                            className="bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-8 py-3 rounded-xl font-bold transition-all flex items-center gap-2 shadow-lg shrink-0 active:scale-95 disabled:opacity-50 text-sm"
+                                        >
+                                            {isQueryingGAS ? <RefreshCw className="animate-spin" size={16}/> : <Search size={16}/>}
+                                            {isQueryingGAS ? '正在檢索...' : '立即檢索'}
+                                        </button>
+                                    </form>
+
+                                    <div className="flex-1 min-h-[150px] relative">
+                                        {isQueryingGAS ? (
+                                            <div className="absolute inset-0 flex flex-col justify-center items-center gap-3 text-[var(--primary-color)]">
+                                                <RefreshCw className="animate-spin" size={36}/>
+                                                <span className="font-bold text-sm">正在即時連線至雲端試算表，請稍候...</span>
+                                            </div>
+                                        ) : hasQueried ? (
+                                            queryResults.length === 0 ? (
+                                                <div className="py-12 text-center text-gray-500 font-bold flex flex-col items-center justify-center gap-3">
+                                                    <Info size={32} />
+                                                    <span>抱歉，找不到與「{orderQueryInput}」相符的訂單記錄。<br/>請確認您輸入的資訊（姓名、電話或訂單編號）是否正確。</span>
+                                                </div>
+                                            ) : (
+                                                <div className="space-y-6">
+                                                    <h4 className="text-gray-600 font-bold text-sm border-b pb-2">檢索比對成功 ─ 共找到 {queryResults.length} 筆符合條件之訂單：</h4>
+                                                    <div className="space-y-4">
+                                                        {queryResults.map((ord, idx) => {
+                                                            const orderNum = ord.id || ord['訂單編號'] || '-';
+                                                            const orderCust = maskName(ord.customer || ord['客戶姓名'] || '-');
+                                                            const orderPhone = maskPhone(ord.phone || ord['電話'] || '-');
+                                                            const orderDate = ord.date || ord['日期'] || '-';
+                                                            const orderTotal = ord.total || ord['總金額'] || 0;
+                                                            const orderStatus = ord.status || ord['狀態'] || '處理中';
+                                                            const orderPayment = ord.payment || ord['付款方式'] || '-';
+                                                            const orderItems = ord.items || ord['購買項目'] || '-';
+
+                                                            return (
+                                                                <div key={idx} className="glass-card p-5 rounded-2xl border border-white/90 hover:border-[var(--primary-color)] transition-all flex flex-col md:flex-row justify-between items-start md:items-center gap-4 shadow-sm">
+                                                                    <div className="space-y-2 flex-1">
+                                                                        <div className="flex flex-wrap items-center gap-2">
+                                                                            <span className="bg-[var(--dark-color)] text-[var(--bg-light)] font-mono text-xs font-bold px-2.5 py-1 rounded-md">{orderNum}</span>
+                                                                            <span className={`text-xs font-bold px-2.5 py-1 rounded-md ${
+                                                                                orderStatus === '處理中' ? 'bg-amber-100/90 text-amber-800' : 
+                                                                                orderStatus === '已出貨' ? 'bg-green-100/90 text-green-800' : 'bg-gray-100/90 text-gray-800'
+                                                                            }`}>{orderStatus}</span>
+                                                                        </div>
+                                                                        <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1 text-xs text-gray-600 leading-relaxed pt-1 font-medium">
+                                                                            <div>訂購客戶：<strong className="text-gray-800">{orderCust}</strong></div>
+                                                                            <div>聯絡電話：<strong className="text-gray-800">{orderPhone}</strong></div>
+                                                                            <div>付款方式：<strong className="text-gray-800">{orderPayment}</strong></div>
+                                                                            <div>下單時間：<strong className="text-gray-800">{orderDate}</strong></div>
+                                                                            <div className="col-span-1 sm:col-span-2 pt-2 border-t border-gray-200/60 mt-1">
+                                                                                <span className="text-gray-500 font-bold block mb-1">訂購圖書明細：</span>
+                                                                                <pre className="whitespace-pre-wrap font-sans text-xs bg-white/80 backdrop-blur-sm border border-gray-200 p-2.5 rounded-lg text-gray-700 leading-relaxed select-text">{orderItems}</pre>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div className="text-right whitespace-nowrap self-end md:self-center border-t md:border-t-0 border-dashed border-[var(--border-color)] pt-3 md:pt-0 w-full md:w-auto flex md:flex-col justify-between md:justify-center items-baseline md:items-end">
+                                                                        <span className="text-xs text-gray-500 font-bold">訂單總金額</span>
+                                                                        <strong className="text-2xl font-black text-[var(--primary-color)] mt-0.5">NT$ {parseInt(orderTotal).toLocaleString()}</strong>
+                                                                    </div>
+                                                                </div>
+                                                            );
+                                                        })}
+                                                    </div>
+                                                </div>
+                                            )
+                                        ) : (
+                                            <div className="absolute inset-0 flex flex-col justify-center items-center gap-2 text-gray-400 font-bold">
+                                                <Search size={32}/>
+                                                <span className="text-sm">請於上方輸入搜尋條件，點擊「立即檢索」查詢。</span>
+                                            </div>
+                                        )}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
                     {selectedBookDetail && (
                         <div className="fixed inset-0 bg-black/65 backdrop-blur-md z-[220] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setSelectedBookDetail(null)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -1444,7 +1853,6 @@
                         </div>
                     )}
 
-                    {/* 📖 讀後心得 Modal (讀取 Book_ALL list 欄位 / 支援讀者反映提交) */}
                     {isReviewModalOpen && selectedReviewBook && (
                         <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[260] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsReviewModalOpen(false)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80" onClick={(e) => e.stopPropagation()}>
