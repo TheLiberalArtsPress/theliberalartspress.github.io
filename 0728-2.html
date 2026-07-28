@@ -119,7 +119,6 @@
         .font-serif, h1, h2, h3, .font-serif * { font-family: var(--title-font), 'Noto Serif TC', serif !important; }
         .font-sans, p, span, .font-sans * { font-family: var(--body-font), 'Noto Sans TC', sans-serif !important; }
 
-        /* Modern Glassmorphism Utilities */
         .glass-nav {
             background: rgba(255, 255, 255, 0.78) !important;
             backdrop-filter: blur(16px) saturate(180%);
@@ -205,8 +204,7 @@
         const { useState, useEffect, useMemo, useRef } = React;
         const lib = window.lucideReact || window.LucideReact || {};
         const FallbackIcon = () => <span className="inline-block w-4 h-4 bg-gray-300 rounded-full animate-pulse"></span>;
-        
-        // 🔒 安全脫敏演算法
+
         const maskName = (name) => {
             if (!name || name === '-') return '-';
             const str = String(name).trim();
@@ -235,19 +233,33 @@
             return str.substring(0, 6) + "＊".repeat(Math.min(8, str.length - 6));
         };
 
-        // Safe localStorage wrapper to prevent Tracking Prevention security errors
         const safeGetStorage = (key) => {
-            try {
-                return localStorage.getItem(key);
-            } catch (e) {
-                return null;
-            }
+            try { return localStorage.getItem(key); } catch (e) { return null; }
         };
 
         const safeSetStorage = (key, val) => {
-            try {
-                localStorage.setItem(key, val);
-            } catch (e) {}
+            try { localStorage.setItem(key, val); } catch (e) {}
+        };
+
+        // 🔍 精確抓取 Book_ALL 試算表 `list` 欄位 Helper 函式
+        const getBookListContent = (book) => {
+            if (!book || typeof book !== 'object') return null;
+            
+            // 1. 優先精確與不分大小寫/去空白搜尋物件 Key 為 'list' 的值
+            for (const key of Object.keys(book)) {
+                if (key.trim().toLowerCase() === 'list') {
+                    const val = book[key];
+                    if (val !== undefined && val !== null && String(val).trim() !== '') {
+                        return String(val).trim();
+                    }
+                }
+            }
+            // 2. 備用標準欄位退路
+            const fallback = book.list || book['list'] || book.LIST || book.List || book.description || book.intro || book['書籍介紹'] || book['內容簡介'];
+            if (fallback && String(fallback).trim() !== '') {
+                return String(fallback).trim();
+            }
+            return null;
         };
 
         const BookOpen = lib.BookOpen || FallbackIcon;
@@ -459,14 +471,14 @@
             });
 
             const [carousels, setCarousels] = useState(() => {
-                const cached = safeGetStorage('lapen_carousels_v4');
+                const cached = safeGetStorage('lapen_carousels_v6');
                 if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p; } catch(e) {} }
                 return fallbackCarousels;
             });
             const [carouselIndex, setCarouselIndex] = useState(0); 
             
             const [books, setBooks] = useState(() => {
-                const cached = safeGetStorage('lapen_books_v4');
+                const cached = safeGetStorage('lapen_books_v6');
                 if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p.sort(() => 0.5 - Math.random()); } catch(e) {} }
                 return fallbackBooks;
             });
@@ -597,7 +609,7 @@
                         const published = res.data.filter(c => c.status === '已發佈');
                         if (published.length > 0) {
                             setCarousels(published);
-                            safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
+                            safeSetStorage('lapen_carousels_v6', JSON.stringify(published));
                         }
                     }
                 }).catch(() => {});
@@ -614,7 +626,7 @@
                         const valid = res.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
                         const shuffled = valid.sort(() => 0.5 - Math.random());
                         setBooks(shuffled);
-                        safeSetStorage('lapen_books_v4', JSON.stringify(shuffled.slice(0, 150)));
+                        safeSetStorage('lapen_books_v6', JSON.stringify(shuffled.slice(0, 150)));
                     }
                 }).finally(() => setIsBooksLoading(false));
             }, []);
@@ -706,7 +718,7 @@
                     userPrompt += `■ 叢書類別：${targetBook.category || '通用'}\n`;
                     userPrompt += `■ 書籍編號：${targetBook.id || '無'}\n`;
                     
-                    const bookIntroText = targetBook.list || targetBook['list'] || targetBook.description || targetBook.intro || targetBook['書籍介紹'];
+                    const bookIntroText = getBookListContent(targetBook);
                     if (bookIntroText) {
                         userPrompt += `■ 既有書籍介紹與綱要：${bookIntroText}\n`;
                     }
@@ -1020,7 +1032,6 @@
             return (
                 <div style={rootStyle} className="selection:bg-[var(--primary-color)] selection:text-white min-h-screen bg-[var(--bg-color)] font-serif transition-all duration-300 relative pb-10 scroll-smooth flex flex-col">
                     
-                    {/* Navigation Bar */}
                     <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40 shadow-sm relative transition-all">
                         <div className="flex items-center space-x-2 md:space-x-4 cursor-pointer select-none shrink-0" onClick={() => {
                             if (window.innerWidth < 1024) setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -1149,7 +1160,6 @@
                                     <div ref={sliderRef} className="flex overflow-x-auto gap-6 snap-x snap-mandatory hide-scrollbar pb-6 px-2 pt-2">
                                         {displayChoiceBooks.map(book => (
                                             <div key={`rec-${book.id}`} className="min-w-[260px] sm:min-w-[280px] w-[260px] sm:w-[280px] snap-start shrink-0 group/card glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
-                                                {/* 🖼️ Recommendation Book Cover Container */}
                                                 <div className="h-56 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
                                                     <div className="h-full relative shadow-[3px_3px_10px_rgba(0,0,0,0.12)] group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                                         <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
@@ -1201,7 +1211,6 @@
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8">
                                 {visibleBooks.map(book => (
                                     <div key={book.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col hover:-translate-y-1 animate-in cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
-                                        {/* 🖼️ Main Book Card Cover Container */}
                                         <div className="h-72 bg-[var(--bg-light)]/40 relative overflow-hidden p-4 flex justify-center items-center">
                                             <div className="h-full relative shadow-[4px_4px_14px_rgba(0,0,0,0.12)] group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                                 <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
@@ -1329,7 +1338,6 @@
                         </div>
                     </div>
 
-                    {/* About Story Modal */}
                     {isAboutOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsAboutOpen(false)}>
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/60" onClick={(e) => e.stopPropagation()}>
@@ -1379,7 +1387,6 @@
                         </div>
                     )}
 
-                    {/* Book Search Catalog Modal */}
                     {isSearchModalOpen && (
                         <div className="fixed inset-0 glass-modal z-[150] overflow-y-auto animate-in flex flex-col">
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40">
@@ -1478,7 +1485,6 @@
                         </div>
                     )}
 
-                    {/* Random / New Arrivals Books Modal */}
                     {isRandomBooksOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsRandomBooksOpen(false)}>
                             <div className="glass-modal w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in" onClick={(e) => e.stopPropagation()}>
@@ -1520,7 +1526,6 @@
                         </div>
                     )}
 
-                    {/* Cart Modal */}
                     {isCartOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-8 overflow-y-auto custom-scrollbar" onClick={() => setIsCartOpen(false)}>
                             <div className={`glass-modal w-full h-auto md:h-[85vh] ${isCartDetailsOpen ? 'md:max-w-5xl' : 'md:max-w-md'} flex flex-col md:flex-row shadow-2xl rounded-t-2xl md:rounded-2xl overflow-visible md:overflow-hidden mt-4 md:mt-0 font-sans shrink-0 border border-white/80`} onClick={(e) => e.stopPropagation()}>
@@ -1689,7 +1694,6 @@
                         </div>
                     )}
                     
-                    {/* External Iframe Viewer Modal */}
                     {iframeModal.isOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))}>
                             <div className="glass-modal w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in font-sans border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -1704,7 +1708,6 @@
                         </div>
                     )}
 
-                    {/* Order / Feedback Receipt Modal */}
                     {submittedDetail && (
                         <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[250] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="bg-[var(--bg-color)] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border-4 border-double border-[var(--primary-color)] relative" onClick={(e)=>e.stopPropagation()}>
@@ -1789,7 +1792,6 @@
                         </div>
                     )}
 
-                    {/* Order Query Modal */}
                     {isOrderQueryOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80" onClick={(e)=>e.stopPropagation()}>
@@ -1924,13 +1926,13 @@
                                                 <div>建議定價：<strong className="text-xl font-black text-[var(--primary-color)]">NT$ {selectedBookDetail.price}</strong></div>
                                             </div>
 
-                                            {/* 書籍介紹（對應 Book_ALL 試算表之 list 欄位） */}
+                                            {/* 書籍介紹（精確讀取 Book_ALL 試算表之 list 欄位） */}
                                             <div className="pt-2">
                                                 <h4 className="text-sm font-bold text-[var(--dark-color)] mb-2 flex items-center gap-1.5">
                                                     <FileText size={16} className="text-[var(--primary-color)]" /> 書籍簡介與研讀指南：
                                                 </h4>
                                                 <div className="bg-white/80 border border-[var(--border-color)]/80 p-4 rounded-xl text-sm leading-relaxed text-gray-700 whitespace-pre-wrap max-h-48 overflow-y-auto">
-                                                    {selectedBookDetail.list || selectedBookDetail['list'] || selectedBookDetail.description || selectedBookDetail.intro || selectedBookDetail['書籍介紹'] || '暫無內容介紹。'}
+                                                    {getBookListContent(selectedBookDetail) || '暫無內容介紹。'}
                                                 </div>
                                             </div>
                                         </div>
@@ -1986,14 +1988,14 @@
                                 </div>
 
                                 <div className="p-6 md:p-8 font-sans overflow-y-auto max-h-[80vh] space-y-6 text-gray-800">
-                                    {/* 精選讀者心得區塊 */}
+                                    {/* 精選讀者心得區塊 ─ 專門抓取 Book_ALL 的 list 欄位 */}
                                     <div className="bg-[#FFFBF2] border border-amber-200/80 rounded-2xl p-5 shadow-sm space-y-3">
                                         <h3 className="text-base font-bold text-[var(--dark-color)] flex items-center gap-2 border-b border-amber-200/60 pb-2">
                                             <BookOpen size={18} className="text-purple-600" />
                                             <span>精選讀者心得與學術評析：</span>
                                         </h3>
-                                        <div className="text-sm text-gray-700 leading-relaxed py-2">
-                                            {reviewBook.review || reviewBook['心得'] || reviewBook['評析'] || "目前本圖書尚無專選讀後心得。歡迎於下方表單寫下您的閱讀感受與建議！"}
+                                        <div className="text-sm text-gray-700 leading-relaxed py-2 whitespace-pre-wrap font-medium">
+                                            {getBookListContent(reviewBook) || "目前本圖書尚無專選讀後心得。歡迎於下方表單寫下您的閱讀感受與建議！"}
                                         </div>
                                     </div>
 
@@ -2137,7 +2139,6 @@
                         </div>
                     )}
 
-                    {/* Notification Toast */}
                     {notification && (
                         <div className="fixed bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 glass-dark text-white px-6 py-4 rounded-xl shadow-2xl animate-in font-bold text-[15px] z-[300] flex items-center gap-3 border-l-4 border-[var(--primary-color)] whitespace-nowrap">
                             <CheckCircle size={20} className="text-[var(--accent-color)]" /> {notification}
