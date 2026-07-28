@@ -235,6 +235,21 @@
             return str.substring(0, 6) + "＊".repeat(Math.min(8, str.length - 6));
         };
 
+        // Safe localStorage wrapper to prevent Tracking Prevention security errors
+        const safeGetStorage = (key) => {
+            try {
+                return localStorage.getItem(key);
+            } catch (e) {
+                return null;
+            }
+        };
+
+        const safeSetStorage = (key, val) => {
+            try {
+                localStorage.setItem(key, val);
+            } catch (e) {}
+        };
+
         const BookOpen = lib.BookOpen || FallbackIcon;
         const Globe = lib.Globe || FallbackIcon;
         const ShoppingCart = lib.ShoppingCart || FallbackIcon;
@@ -444,14 +459,14 @@
             });
 
             const [carousels, setCarousels] = useState(() => {
-                const cached = localStorage.getItem('lapen_carousels_v4');
+                const cached = safeGetStorage('lapen_carousels_v4');
                 if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p; } catch(e) {} }
                 return fallbackCarousels;
             });
             const [carouselIndex, setCarouselIndex] = useState(0); 
             
             const [books, setBooks] = useState(() => {
-                const cached = localStorage.getItem('lapen_books_v4');
+                const cached = safeGetStorage('lapen_books_v4');
                 if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p.sort(() => 0.5 - Math.random()); } catch(e) {} }
                 return fallbackBooks;
             });
@@ -582,7 +597,7 @@
                         const published = res.data.filter(c => c.status === '已發佈');
                         if (published.length > 0) {
                             setCarousels(published);
-                            localStorage.setItem('lapen_carousels_v4', JSON.stringify(published));
+                            safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
                         }
                     }
                 }).catch(() => {});
@@ -599,7 +614,7 @@
                         const valid = res.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
                         const shuffled = valid.sort(() => 0.5 - Math.random());
                         setBooks(shuffled);
-                        try { localStorage.setItem('lapen_books_v4', JSON.stringify(shuffled.slice(0, 150))); } catch (e) {}
+                        safeSetStorage('lapen_books_v4', JSON.stringify(shuffled.slice(0, 150)));
                     }
                 }).finally(() => setIsBooksLoading(false));
             }, []);
@@ -625,7 +640,7 @@
                     } else showMsg(res.msg || "未能取得訂單記錄");
                 } catch (error) {
                     showMsg("查詢出錯，請稍候重試");
-                } fontFinally {
+                } finally {
                     setIsQueryingGAS(false);
                 }
             };
@@ -656,7 +671,6 @@
 
             const visibleCategories = useMemo(() => {
                 if (isAllCategoriesExpanded) return dynamicCategories;
-                // 收折狀態時顯示：「全部」+ 4個指定類別 (合計前5個)
                 return dynamicCategories.slice(0, 5);
             }, [dynamicCategories, isAllCategoriesExpanded]);
 
@@ -1006,7 +1020,7 @@
             return (
                 <div style={rootStyle} className="selection:bg-[var(--primary-color)] selection:text-white min-h-screen bg-[var(--bg-color)] font-serif transition-all duration-300 relative pb-10 scroll-smooth flex flex-col">
                     
-                    {}
+                    {/* Navigation Bar */}
                     <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40 shadow-sm relative transition-all">
                         <div className="flex items-center space-x-2 md:space-x-4 cursor-pointer select-none shrink-0" onClick={() => {
                             if (window.innerWidth < 1024) setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -1315,6 +1329,7 @@
                         </div>
                     </div>
 
+                    {/* About Story Modal */}
                     {isAboutOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsAboutOpen(false)}>
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/60" onClick={(e) => e.stopPropagation()}>
@@ -1364,6 +1379,7 @@
                         </div>
                     )}
 
+                    {/* Book Search Catalog Modal */}
                     {isSearchModalOpen && (
                         <div className="fixed inset-0 glass-modal z-[150] overflow-y-auto animate-in flex flex-col">
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40">
@@ -1462,6 +1478,7 @@
                         </div>
                     )}
 
+                    {/* Random / New Arrivals Books Modal */}
                     {isRandomBooksOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsRandomBooksOpen(false)}>
                             <div className="glass-modal w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in" onClick={(e) => e.stopPropagation()}>
@@ -1473,7 +1490,6 @@
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                         {randomBooks.map(book => (
                                             <div key={book.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col shadow-sm cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
-                                                {/* 🖼️ Cover in Random Books modal */}
                                                 <div className="h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
                                                     <div className="h-full relative shadow-[3px_3px_10px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                                         <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
@@ -1504,6 +1520,7 @@
                         </div>
                     )}
 
+                    {/* Cart Modal */}
                     {isCartOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-8 overflow-y-auto custom-scrollbar" onClick={() => setIsCartOpen(false)}>
                             <div className={`glass-modal w-full h-auto md:h-[85vh] ${isCartDetailsOpen ? 'md:max-w-5xl' : 'md:max-w-md'} flex flex-col md:flex-row shadow-2xl rounded-t-2xl md:rounded-2xl overflow-visible md:overflow-hidden mt-4 md:mt-0 font-sans shrink-0 border border-white/80`} onClick={(e) => e.stopPropagation()}>
@@ -1672,7 +1689,7 @@
                         </div>
                     )}
                     
-                    {}
+                    {/* External Iframe Viewer Modal */}
                     {iframeModal.isOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))}>
                             <div className="glass-modal w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in font-sans border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -1687,6 +1704,7 @@
                         </div>
                     )}
 
+                    {/* Order / Feedback Receipt Modal */}
                     {submittedDetail && (
                         <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[250] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="bg-[var(--bg-color)] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border-4 border-double border-[var(--primary-color)] relative" onClick={(e)=>e.stopPropagation()}>
@@ -1771,6 +1789,7 @@
                         </div>
                     )}
 
+                    {/* Order Query Modal */}
                     {isOrderQueryOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80" onClick={(e)=>e.stopPropagation()}>
@@ -1875,6 +1894,7 @@
                         </div>
                     )}
 
+                    {/* Book Detail Modal */}
                     {selectedBookDetail && (
                         <div className="fixed inset-0 bg-black/65 backdrop-blur-md z-[220] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setSelectedBookDetail(null)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -1944,7 +1964,7 @@
                         </div>
                     )}
 
-                    {/* 💬 讀後心得與交流 Modal (對應圖片二) */}
+                    {/* 💬 讀後心得與交流 Modal */}
                     {isReviewModalOpen && reviewBook && (
                         <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[240] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsReviewModalOpen(false)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80 bg-[#433A36]/90 text-white" onClick={(e) => e.stopPropagation()}>
@@ -2020,6 +2040,7 @@
                         </div>
                     )}
 
+                    {/* AI Analysis Modal */}
                     {isAiModalOpen && (
                         <div className="fixed inset-0 bg-black/75 backdrop-blur-lg z-[260] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsAiModalOpen(false)}>
                             <div className="glass-modal w-full max-w-4xl max-h-[92vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border-2 border-indigo-300/50 bg-gradient-to-br from-slate-900/90 via-stone-900/95 to-slate-950/90 text-white" onClick={(e) => e.stopPropagation()}>
@@ -2042,7 +2063,6 @@
                                 </div>
 
                                 <div className="p-6 md:p-8 font-sans overflow-y-auto flex-1 space-y-6 text-slate-100">
-                                    {/* 選擇書籍與自訂問題控制列 */}
                                     <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 md:p-5 space-y-4">
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                                             <label className="text-xs font-bold text-indigo-300 uppercase tracking-wider block">選擇欲分析之書籍：</label>
@@ -2095,7 +2115,6 @@
                                         </div>
                                     </div>
 
-                                    {/* AI 分析輸出結果 display */}
                                     <div className="relative min-h-[250px] bg-slate-900/90 border border-indigo-500/30 rounded-2xl p-6 md:p-8 font-serif leading-relaxed text-slate-200 text-base shadow-inner">
                                         {isAiAnalyzing ? (
                                             <div className="absolute inset-0 flex flex-col justify-center items-center gap-4 text-indigo-300">
@@ -2118,6 +2137,7 @@
                         </div>
                     )}
 
+                    {/* Notification Toast */}
                     {notification && (
                         <div className="fixed bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 glass-dark text-white px-6 py-4 rounded-xl shadow-2xl animate-in font-bold text-[15px] z-[300] flex items-center gap-3 border-l-4 border-[var(--primary-color)] whitespace-nowrap">
                             <CheckCircle size={20} className="text-[var(--accent-color)]" /> {notification}
@@ -2126,6 +2146,7 @@
                 </div> 
             );
         }
+        
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
