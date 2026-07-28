@@ -235,6 +235,21 @@
             return str.substring(0, 6) + "＊".repeat(Math.min(8, str.length - 6));
         };
 
+        // Safe localStorage wrapper to prevent Tracking Prevention security errors
+        const safeGetStorage = (key) => {
+            try {
+                return localStorage.getItem(key);
+            } catch (e) {
+                return null;
+            }
+        };
+
+        const safeSetStorage = (key, val) => {
+            try {
+                localStorage.setItem(key, val);
+            } catch (e) {}
+        };
+
         const BookOpen = lib.BookOpen || FallbackIcon;
         const Globe = lib.Globe || FallbackIcon;
         const ShoppingCart = lib.ShoppingCart || FallbackIcon;
@@ -269,6 +284,7 @@
         const Brain = lib.Brain || lib.Sparkles || FallbackIcon;
         const Cpu = lib.Cpu || lib.Zap || FallbackIcon;
         const HelpCircle = lib.HelpCircle || FallbackIcon;
+        const Send = lib.Send || FallbackIcon;
 
         const ModernLogo = ({ className = "w-8 h-8", color1 = "var(--dark-color)", color2 = "var(--primary-color)" }) => (
             <svg viewBox="0 0 40 40" className={className} fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -443,14 +459,14 @@
             });
 
             const [carousels, setCarousels] = useState(() => {
-                const cached = localStorage.getItem('lapen_carousels_v4');
+                const cached = safeGetStorage('lapen_carousels_v4');
                 if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p; } catch(e) {} }
                 return fallbackCarousels;
             });
             const [carouselIndex, setCarouselIndex] = useState(0); 
             
             const [books, setBooks] = useState(() => {
-                const cached = localStorage.getItem('lapen_books_v4');
+                const cached = safeGetStorage('lapen_books_v4');
                 if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p.sort(() => 0.5 - Math.random()); } catch(e) {} }
                 return fallbackBooks;
             });
@@ -500,6 +516,11 @@
 
             // 📖 書籍詳細資訊 Modal 狀態
             const [selectedBookDetail, setSelectedBookDetail] = useState(null);
+
+            // 💬 讀後心得交流 Modal 狀態
+            const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
+            const [reviewBook, setReviewBook] = useState(null);
+            const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
             // 🤖 隱藏 AI 書籍分析 Modal 狀態
             const [isAiModalOpen, setIsAiModalOpen] = useState(false);
@@ -576,7 +597,7 @@
                         const published = res.data.filter(c => c.status === '已發佈');
                         if (published.length > 0) {
                             setCarousels(published);
-                            localStorage.setItem('lapen_carousels_v4', JSON.stringify(published));
+                            safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
                         }
                     }
                 }).catch(() => {});
@@ -593,7 +614,7 @@
                         const valid = res.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
                         const shuffled = valid.sort(() => 0.5 - Math.random());
                         setBooks(shuffled);
-                        try { localStorage.setItem('lapen_books_v4', JSON.stringify(shuffled.slice(0, 150))); } catch (e) {}
+                        safeSetStorage('lapen_books_v4', JSON.stringify(shuffled.slice(0, 150)));
                     }
                 }).finally(() => setIsBooksLoading(false));
             }, []);
@@ -650,7 +671,6 @@
 
             const visibleCategories = useMemo(() => {
                 if (isAllCategoriesExpanded) return dynamicCategories;
-                // 收折狀態時顯示：「全部」+ 4個指定類別 (合計前5個)
                 return dynamicCategories.slice(0, 5);
             }, [dynamicCategories, isAllCategoriesExpanded]);
 
@@ -685,8 +705,10 @@
                     userPrompt += `■ 出版年份：${targetBook.year || '未標明'}\n`;
                     userPrompt += `■ 叢書類別：${targetBook.category || '通用'}\n`;
                     userPrompt += `■ 書籍編號：${targetBook.id || '無'}\n`;
-                    if (targetBook.description || targetBook.intro || targetBook['書籍介紹']) {
-                        userPrompt += `■ 既有書籍介紹：${targetBook.description || targetBook.intro || targetBook['書籍介紹']}\n`;
+                    
+                    const bookIntroText = targetBook.list || targetBook['list'] || targetBook.description || targetBook.intro || targetBook['書籍介紹'];
+                    if (bookIntroText) {
+                        userPrompt += `■ 既有書籍介紹與綱要：${bookIntroText}\n`;
                     }
 
                     if (customQ.trim()) {
@@ -755,6 +777,42 @@
                     setRandomBooks(shuffled.slice(0, 8));
                 }
                 setIsRandomBooksOpen(true);
+            };
+
+            const openReviewModalForBook = (book) => {
+                setReviewBook(book);
+                setIsReviewModalOpen(true);
+            };
+
+            const handleReviewSubmit = async (e) => {
+                e.preventDefault();
+                if (isSubmittingReview || !checkRateLimit()) return;
+
+                const name = sanitizeInput(e.target.name.value);
+                const contact = sanitizeInput(e.target.contact.value);
+                const content = sanitizeInput(e.target.content.value);
+
+                if (name.length < 2) return showMsg("請輸入您的稱呼");
+                if (content.length < 5) return showMsg("讀後感言請至少輸入 5 個字");
+
+                setIsSubmittingReview(true);
+                setLastActionTime(Date.now());
+                showMsg("心得傳送中...");
+
+                const combinedQuery = `【書籍名稱】《${reviewBook ? reviewBook.title : '未知'}》\n【聯絡資訊】${contact || '未提供'}\n─────────────────\n【讀後心得感言】\n${content}`;
+                const submitId = `REV-${Date.now().toString().slice(-6)}`;
+
+                const newLog = { id: submitId, platform: 'Web讀後心得交流', user: name, query: combinedQuery };
+                const res = await syncWithGAS('NEW_CS_MSG', newLog);
+
+                setIsSubmittingReview(false);
+                if (res && res.status === 'success') {
+                    e.target.reset();
+                    setIsReviewModalOpen(false);
+                    showMsg("感謝您的寶貴心得，已成功送出與編輯部交流！");
+                } else {
+                    showMsg(`傳送失敗：${res ? res.msg : '伺服器無回應'}`);
+                }
             };
 
             const handleSearchSubmit = (e) => {
@@ -962,7 +1020,7 @@
             return (
                 <div style={rootStyle} className="selection:bg-[var(--primary-color)] selection:text-white min-h-screen bg-[var(--bg-color)] font-serif transition-all duration-300 relative pb-10 scroll-smooth flex flex-col">
                     
-                    {}
+                    {/* Navigation Bar */}
                     <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40 shadow-sm relative transition-all">
                         <div className="flex items-center space-x-2 md:space-x-4 cursor-pointer select-none shrink-0" onClick={() => {
                             if (window.innerWidth < 1024) setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -1271,6 +1329,7 @@
                         </div>
                     </div>
 
+                    {/* About Story Modal */}
                     {isAboutOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsAboutOpen(false)}>
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/60" onClick={(e) => e.stopPropagation()}>
@@ -1320,6 +1379,7 @@
                         </div>
                     )}
 
+                    {/* Book Search Catalog Modal */}
                     {isSearchModalOpen && (
                         <div className="fixed inset-0 glass-modal z-[150] overflow-y-auto animate-in flex flex-col">
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40">
@@ -1418,6 +1478,7 @@
                         </div>
                     )}
 
+                    {/* Random / New Arrivals Books Modal */}
                     {isRandomBooksOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsRandomBooksOpen(false)}>
                             <div className="glass-modal w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in" onClick={(e) => e.stopPropagation()}>
@@ -1429,7 +1490,6 @@
                                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
                                         {randomBooks.map(book => (
                                             <div key={book.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col shadow-sm cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
-                                                {/* 🖼️ Cover in Random Books modal */}
                                                 <div className="h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
                                                     <div className="h-full relative shadow-[3px_3px_10px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                                         <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
@@ -1460,6 +1520,7 @@
                         </div>
                     )}
 
+                    {/* Cart Modal */}
                     {isCartOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-8 overflow-y-auto custom-scrollbar" onClick={() => setIsCartOpen(false)}>
                             <div className={`glass-modal w-full h-auto md:h-[85vh] ${isCartDetailsOpen ? 'md:max-w-5xl' : 'md:max-w-md'} flex flex-col md:flex-row shadow-2xl rounded-t-2xl md:rounded-2xl overflow-visible md:overflow-hidden mt-4 md:mt-0 font-sans shrink-0 border border-white/80`} onClick={(e) => e.stopPropagation()}>
@@ -1628,7 +1689,7 @@
                         </div>
                     )}
                     
-                    {}
+                    {/* External Iframe Viewer Modal */}
                     {iframeModal.isOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))}>
                             <div className="glass-modal w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in font-sans border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -1643,6 +1704,7 @@
                         </div>
                     )}
 
+                    {/* Order / Feedback Receipt Modal */}
                     {submittedDetail && (
                         <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[250] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="bg-[var(--bg-color)] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border-4 border-double border-[var(--primary-color)] relative" onClick={(e)=>e.stopPropagation()}>
@@ -1727,6 +1789,7 @@
                         </div>
                     )}
 
+                    {/* Order Query Modal */}
                     {isOrderQueryOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80" onClick={(e)=>e.stopPropagation()}>
@@ -1831,6 +1894,7 @@
                         </div>
                     )}
 
+                    {/* Book Detail Modal */}
                     {selectedBookDetail && (
                         <div className="fixed inset-0 bg-black/65 backdrop-blur-md z-[220] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setSelectedBookDetail(null)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -1860,13 +1924,13 @@
                                                 <div>建議定價：<strong className="text-xl font-black text-[var(--primary-color)]">NT$ {selectedBookDetail.price}</strong></div>
                                             </div>
 
-                                            {/* 書籍介紹（對應 Book_ALL 試算表最後的介紹欄位） */}
+                                            {/* 書籍介紹（對應 Book_ALL 試算表之 list 欄位） */}
                                             <div className="pt-2">
                                                 <h4 className="text-sm font-bold text-[var(--dark-color)] mb-2 flex items-center gap-1.5">
                                                     <FileText size={16} className="text-[var(--primary-color)]" /> 書籍簡介與研讀指南：
                                                 </h4>
                                                 <div className="bg-white/80 border border-[var(--border-color)]/80 p-4 rounded-xl text-sm leading-relaxed text-gray-700 whitespace-pre-wrap max-h-48 overflow-y-auto">
-                                                    {selectedBookDetail.description || selectedBookDetail.intro || selectedBookDetail['書籍介紹'] || '本圖書暫無詳細簡介。歡迎點擊下方「AI 深度學術導讀」按鈕，由 Gemini 專萃分析本書之研讀重點與精華。'}
+                                                    {selectedBookDetail.list || selectedBookDetail['list'] || selectedBookDetail.description || selectedBookDetail.intro || selectedBookDetail['書籍介紹'] || '暫無內容介紹。'}
                                                 </div>
                                             </div>
                                         </div>
@@ -1878,18 +1942,18 @@
                                             onClick={() => {
                                                 const b = selectedBookDetail;
                                                 setSelectedBookDetail(null);
-                                                openAiModalForBook(b);
+                                                openReviewModalForBook(b);
                                             }} 
-                                            className="flex-1 bg-gradient-to-r from-purple-700 via-indigo-700 to-[var(--primary-color)] hover:opacity-95 text-white py-3.5 px-6 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg transition-all active:scale-95 text-sm"
+                                            className="flex-1 bg-gradient-to-r from-purple-500 via-indigo-500 to-purple-600 hover:opacity-95 text-white py-3.5 px-6 rounded-xl font-bold flex justify-center items-center gap-2 shadow-lg transition-all active:scale-95 text-sm"
                                         >
-                                            <Brain size={18} className="animate-pulse text-amber-300" />
-                                            <span>AI 深度學術導讀與解析</span>
+                                            <MessageCircle size={18} />
+                                            <span>💭 📖 讀後心得與交流</span>
                                         </button>
                                         <button 
                                             type="button" 
                                             onClick={() => addToCart(selectedBookDetail)} 
                                             disabled={selectedBookDetail.stock <= 0}
-                                            className={`flex-1 bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white py-3.5 px-6 rounded-xl font-bold flex justify-center items-center gap-2 shadow-md transition-all text-sm ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`}
+                                            className={`flex-1 bg-[#3B5280] hover:bg-[#2C3E63] text-white py-3.5 px-6 rounded-xl font-bold flex justify-center items-center gap-2 shadow-md transition-all text-sm ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`}
                                         >
                                             <ShoppingCart size={18} />
                                             <span>{selectedBookDetail.stock > 0 ? '加入書包' : '暫無庫存'}</span>
@@ -1900,6 +1964,83 @@
                         </div>
                     )}
 
+                    {/* 💬 讀後心得與交流 Modal */}
+                    {isReviewModalOpen && reviewBook && (
+                        <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[240] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsReviewModalOpen(false)}>
+                            <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80 bg-[#433A36]/90 text-white" onClick={(e) => e.stopPropagation()}>
+                                <div className="p-5 border-b border-white/10 flex justify-between items-center bg-[#352D2A]/90">
+                                    <div className="flex items-center gap-2.5">
+                                        <MessageCircle className="text-purple-300" size={24} />
+                                        <div>
+                                            <h2 className="text-xl font-serif font-black text-amber-100 flex items-center gap-2">
+                                                <span>📖 讀後心得 — 《{reviewBook.title}》</span>
+                                            </h2>
+                                            <p className="text-xs text-amber-200/70 font-sans mt-0.5">
+                                                作者：{reviewBook.author || '未標示'} ・ 叢書：{reviewBook.category || '通用'}
+                                            </p>
+                                        </div>
+                                    </div>
+                                    <button type="button" onClick={() => setIsReviewModalOpen(false)} className="hover:bg-white/10 p-2 rounded-full transition text-gray-300">
+                                        <X size={20} />
+                                    </button>
+                                </div>
+
+                                <div className="p-6 md:p-8 font-sans overflow-y-auto max-h-[80vh] space-y-6 text-gray-800">
+                                    {/* 精選讀者心得區塊 */}
+                                    <div className="bg-[#FFFBF2] border border-amber-200/80 rounded-2xl p-5 shadow-sm space-y-3">
+                                        <h3 className="text-base font-bold text-[var(--dark-color)] flex items-center gap-2 border-b border-amber-200/60 pb-2">
+                                            <BookOpen size={18} className="text-purple-600" />
+                                            <span>精選讀者心得與學術評析：</span>
+                                        </h3>
+                                        <div className="text-sm text-gray-700 leading-relaxed py-2">
+                                            {reviewBook.review || reviewBook['心得'] || reviewBook['評析'] || "目前本圖書尚無專選讀後心得。歡迎於下方表單寫下您的閱讀感受與建議！"}
+                                        </div>
+                                    </div>
+
+                                    {/* 發表感言表單區塊 */}
+                                    <form onSubmit={handleReviewSubmit} className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white space-y-4">
+                                        <h3 className="text-base font-bold text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-2">
+                                            <Send size={18} className="text-purple-500" />
+                                            <span>發表您的讀後感言或建議：</span>
+                                        </h3>
+
+                                        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                                            <input 
+                                                name="name" 
+                                                required 
+                                                placeholder="您的稱呼 (例：陳研究生 / 張教授)" 
+                                                className="w-full border border-sky-300 bg-white p-3 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium text-gray-800"
+                                            />
+                                            <input 
+                                                name="contact" 
+                                                placeholder="聯絡電話或 Email (選填，方便對帳與聯繫)" 
+                                                className="w-full border border-sky-300 bg-white p-3 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium text-gray-800"
+                                            />
+                                        </div>
+
+                                        <textarea 
+                                            name="content" 
+                                            required 
+                                            rows="4" 
+                                            placeholder={`請輸入您對《${reviewBook.title}》的研讀心得、修訂建議或觀點提問...`} 
+                                            className="w-full border border-sky-300 bg-white p-3.5 rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-purple-400 font-medium text-gray-800 resize-none leading-relaxed"
+                                        ></textarea>
+
+                                        <button 
+                                            type="submit" 
+                                            disabled={isSubmittingReview} 
+                                            className={`w-full bg-purple-400 hover:bg-purple-500 text-white py-3.5 rounded-xl font-bold shadow-md transition-all flex justify-center items-center gap-2 text-base ${isSubmittingReview ? 'opacity-50 cursor-not-allowed' : 'active:scale-[0.98]'}`}
+                                        >
+                                            {isSubmittingReview ? <Clock className="animate-spin" size={18} /> : <Send size={18} />}
+                                            <span>{isSubmittingReview ? "正在傳送心得..." : "送出讀後心得反映"}</span>
+                                        </button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* AI Analysis Modal */}
                     {isAiModalOpen && (
                         <div className="fixed inset-0 bg-black/75 backdrop-blur-lg z-[260] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsAiModalOpen(false)}>
                             <div className="glass-modal w-full max-w-4xl max-h-[92vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border-2 border-indigo-300/50 bg-gradient-to-br from-slate-900/90 via-stone-900/95 to-slate-950/90 text-white" onClick={(e) => e.stopPropagation()}>
@@ -1922,7 +2063,6 @@
                                 </div>
 
                                 <div className="p-6 md:p-8 font-sans overflow-y-auto flex-1 space-y-6 text-slate-100">
-                                    {/* 選擇書籍與自訂問題控制列 */}
                                     <div className="bg-slate-800/80 border border-slate-700/80 rounded-2xl p-4 md:p-5 space-y-4">
                                         <div className="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
                                             <label className="text-xs font-bold text-indigo-300 uppercase tracking-wider block">選擇欲分析之書籍：</label>
@@ -1975,7 +2115,6 @@
                                         </div>
                                     </div>
 
-                                    {/* AI 分析輸出結果 display */}
                                     <div className="relative min-h-[250px] bg-slate-900/90 border border-indigo-500/30 rounded-2xl p-6 md:p-8 font-serif leading-relaxed text-slate-200 text-base shadow-inner">
                                         {isAiAnalyzing ? (
                                             <div className="absolute inset-0 flex flex-col justify-center items-center gap-4 text-indigo-300">
@@ -1989,7 +2128,7 @@
                                         ) : (
                                             <div className="text-center py-16 text-slate-500 font-sans flex flex-col items-center gap-2">
                                                 <HelpCircle size={32} />
-                                                <span>請於上方選擇書籍，並點擊「重新分析」啟動 AI 學術解讀。</span>
+                                                <span>請於上方選擇書籍，點擊「重新分析」啟動 AI 學術解讀。</span>
                                             </div>
                                         )}
                                     </div>
@@ -1998,6 +2137,7 @@
                         </div>
                     )}
 
+                    {/* Notification Toast */}
                     {notification && (
                         <div className="fixed bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 glass-dark text-white px-6 py-4 rounded-xl shadow-2xl animate-in font-bold text-[15px] z-[300] flex items-center gap-3 border-l-4 border-[var(--primary-color)] whitespace-nowrap">
                             <CheckCircle size={20} className="text-[var(--accent-color)]" /> {notification}
@@ -2006,6 +2146,7 @@
                 </div> 
             );
         }
+        
         const root = ReactDOM.createRoot(document.getElementById('root'));
         root.render(<App />);
     </script>
