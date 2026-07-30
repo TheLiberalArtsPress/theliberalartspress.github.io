@@ -119,7 +119,6 @@
         .font-serif, h1, h2, h3, .font-serif * { font-family: var(--title-font), 'Noto Serif TC', serif !important; }
         .font-sans, p, span, .font-sans * { font-family: var(--body-font), 'Noto Sans TC', sans-serif !important; }
 
-        /* Modern Glassmorphism Utilities */
         .glass-nav {
             background: rgba(255, 255, 255, 0.78) !important;
             backdrop-filter: blur(16px) saturate(180%);
@@ -206,7 +205,15 @@
         const lib = window.lucideReact || window.LucideReact || {};
         const FallbackIcon = () => <span className="inline-block w-4 h-4 bg-gray-300 rounded-full animate-pulse"></span>;
         
-        // 🔒 安全脫敏演算法
+        // 🔒 零網路請求 SVG 預設封面（避免外部圖片網址 404 引發死迴圈）
+        const SVG_COVER_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='100%25' height='100%25' fill='%23F9F6F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='22' font-weight='bold' fill='%238C5A2B'%3E%E6%9A%AE%E7%84%A1%E5%B0%81%E9%9D%A2%E5%9C%96%E7%A4%BA%3C/text%3E%3C/svg%3E";
+
+        // 🛡️ 安全的圖片錯誤處理器：強制清除 onerror 防止死迴圈
+        const handleImgError = (e, fallbackSrc = SVG_COVER_FALLBACK) => {
+            e.target.onerror = null; // 熔斷機制：確保只觸發一次！
+            e.target.src = fallbackSrc;
+        };
+
         const maskName = (name) => {
             if (!name || name === '-') return '-';
             const str = String(name).trim();
@@ -235,22 +242,10 @@
             return str.substring(0, 6) + "＊".repeat(Math.min(8, str.length - 6));
         };
 
-        // 📚 內建精選心得對照資料庫（保障試算表欄位未即時部署時 100% 正確顯示）
         const BUILTIN_REVIEWS = {
-            '塔裡的女人': `《塔裡的女人》是一部充滿浪漫與悲劇色彩的愛情小說。閱讀過程中，最令人印象深刻的，不只是男女主角的愛情故事，而是作者對人性、命運與人生選擇的深刻描寫。小說中的情感細膩真摯，人物心理變化層層推進，使人彷彿置身其中，感受他們在愛情與現實之間的掙扎。
-
-故事中的羅聖提與黎薇彼此深愛，卻因婚姻、道德責任以及社會現實而無法相守。作者沒有刻意塑造絕對的善惡，而是讓讀者看到每個人在不同處境下所做出的艱難抉擇。正因如此，小說帶來的遺憾更加真實，也更令人動容。
-
-閱讀本書時，我深刻體會到人生中許多事情往往錯過便難以挽回。當羅聖提終於有機會重新追尋愛情時，時間早已改變了一切，黎薇也因命運的折磨失去了往日的光彩。這樣的結局沒有童話般的圓滿，卻更貼近真實人生，讓人感受到命運無常與人生有限的無奈。
-
-作者的文字富有詩意，對人物內心世界的描寫尤其精彩。許多看似平凡的對話與場景，都蘊含著深厚的情感，使讀者在閱讀時不只是了解故事，更能感受到角色內心的喜怒哀樂。這種細膩的心理描寫，也是本書最吸引人的地方。
-
-此外，本書所探討的不只是愛情，更涉及責任、自由、理想與現實之間的衝突。每個人在人生不同階段，都可能面臨類似的抉擇：究竟該忠於自己的情感，還是肩負既有的責任？小說沒有直接給出答案，而是留給讀者思考與反省。
-
-總體而言，《塔裡的女人》是一部值得細細品味的經典文學作品。它不僅描寫了一段令人惋惜的愛情，更透過人物的命運，反映出人生的無常與人性的複雜。閱讀完畢後，心中留下的不只是悲傷，而是對愛情、責任與生命價值的重新思考。正因如此，即使多年後再回頭閱讀，相信仍能從中獲得不同的感受與啟發。`
+            '塔裡的女人': `《塔裡的女人》是一部充滿浪漫與悲劇色彩的愛情小說。閱讀過程中，最令人印象深刻的，不只是男女主角的愛情故事，而是作者對人性、命運與人生選擇的深刻描寫。小說中的情感細膩真摯，人物心理變化層層推進，使人彷彿置身其中，感受他們在愛情與現實之間的掙扎。`
         };
 
-        // 📖 強力相容與擷取試算表 Book_ALL 欄位 (intro 與 心得)
         const getBookIntro = (book) => {
             if (!book) return '';
             for (const key of Object.keys(book)) {
@@ -265,8 +260,6 @@
 
         const getBookReview = (book) => {
             if (!book) return '';
-            
-            // 1. 遍歷物所有 Key（相容 GAS 輸出的各種欄位命名，如「心得」、「評析」、Column O、index 14 等）
             for (const key of Object.keys(book)) {
                 const k = key.trim().toLowerCase();
                 if (k.includes('心得') || k.includes('review') || k.includes('thought') || k.includes('評析') || k.includes('notes') || k.includes('comment') || k === 'o' || k === '14') {
@@ -274,34 +267,23 @@
                     if (val) return val;
                 }
             }
-
-            // 2. 直接屬性存取 fallback
             const directVal = String(book.心得 || book['心得'] || book.review || book.thought || book['評析'] || book[14] || book['14'] || '').trim();
             if (directVal) return directVal;
 
-            // 3. 精確書名比對預設資料庫（確保《塔裡的女人》等經典著作必能展現）
             if (book.title) {
                 for (const [titleKey, reviewText] of Object.entries(BUILTIN_REVIEWS)) {
                     if (book.title.includes(titleKey)) return reviewText;
                 }
             }
-
             return '';
         };
 
-        // Safe localStorage wrapper to prevent Tracking Prevention security errors
         const safeGetStorage = (key) => {
-            try {
-                return localStorage.getItem(key);
-            } catch (e) {
-                return null;
-            }
+            try { return localStorage.getItem(key); } catch (e) { return null; }
         };
 
         const safeSetStorage = (key, val) => {
-            try {
-                localStorage.setItem(key, val);
-            } catch (e) {}
+            try { localStorage.setItem(key, val); } catch (e) {}
         };
 
         const BookOpen = lib.BookOpen || FallbackIcon;
@@ -350,10 +332,9 @@
         const GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec"; 
 
         const formatImageUrl = (url) => {
-            const transparentFallback = 'data:image/gif;base64,R0lGODlhAQABAAD/ACwAAAAAAQABAAACADs=';
-            if (!url) return transparentFallback;
+            if (!url) return SVG_COVER_FALLBACK;
             let strUrl = String(url).trim();
-            if (!strUrl || strUrl === '') return transparentFallback;
+            if (!strUrl || strUrl === '') return SVG_COVER_FALLBACK;
             if (strUrl.startsWith('data:image')) return strUrl;
             
             let driveId = null;
@@ -373,7 +354,7 @@
         ];
 
         const fallbackBooks = [
-            { id: 'fb_1', title: '正在向資料庫索取書籍', author: '讀取中', year: '讀取中', price: 0, category: '文學', stock: 10, cover: 'https://images.unsplash.com/photo-1544947950-fa07a98d237f?q=80&w=400', 心得: '' }
+            { id: 'fb_1', title: '正在向資料庫索取書籍', author: '讀取中', year: '讀取中', price: 0, category: '文學', stock: 10, cover: SVG_COVER_FALLBACK, 心得: '' }
         ];
 
         const defaultUI = {
@@ -568,15 +549,12 @@
             const [isQueryingGAS, setIsQueryingGAS] = useState(false);
             const [hasQueried, setHasQueried] = useState(false);
 
-            // 📖 書籍詳細資訊 Modal 狀態
             const [selectedBookDetail, setSelectedBookDetail] = useState(null);
 
-            // 💬 讀後心得交流 Modal 狀態
             const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
             const [reviewBook, setReviewBook] = useState(null);
             const [isSubmittingReview, setIsSubmittingReview] = useState(false);
 
-            // 🤖 隱藏 AI 書籍分析 Modal 狀態
             const [isAiModalOpen, setIsAiModalOpen] = useState(false);
             const [aiSelectedBookId, setAiSelectedBookId] = useState('');
             const [aiAnalysisResult, setAiAnalysisResult] = useState('');
@@ -585,6 +563,7 @@
             const [logoClickCount, setLogoClickCount] = useState(0);
 
             const sliderRef = useRef(null);
+            const hasFetchedRef = useRef(false); // 🔒 用於防手震鎖定，確保 Initial Fetch 絕不重複
 
             const showMsg = (text) => {
                 setNotification(text);
@@ -631,7 +610,11 @@
                 }
             };
 
+            // 🔒 初始化加鎖，防止 React 雙重掛載造成 Fetch 浪費
             useEffect(() => {
+                if (hasFetchedRef.current) return;
+                hasFetchedRef.current = true;
+
                 syncWithGAS('FETCH_SETTINGS').then(res => {
                     if (res && res.data) {
                         setSettings(prev => ({...prev, ...res.data}));
@@ -694,7 +677,7 @@
                     } else showMsg(res.msg || "未能取得訂單記錄");
                 } catch (error) {
                     showMsg("查詢出錯，請稍候重試");
-                } finally {
+                } fontFinally: {
                     setIsQueryingGAS(false);
                 }
             };
@@ -741,14 +724,13 @@
             const visibleBooks = filteredBooks.slice(0, visibleCount);
             const displayChoiceBooks = choiceBooks.length > 0 ? choiceBooks : books.slice(0, 10);
 
-            // 🤖 Gemini 3 Flash AI 書籍分析邏輯
             const analyzeBookWithGemini = async (targetBook, customQ = "") => {
                 if (!targetBook) return;
                 setIsAiAnalyzing(true);
                 setAiAnalysisResult("");
                 
                 try {
-                    const apiKey = ""; // Canvas runtime injection
+                    const apiKey = ""; 
                     const apiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${apiKey}`;
 
                     const systemPrompt = `你是一位享譽華文出版界的權威國學專家與「文史哲出版社」資深學術總編輯。你的任務是針對華文書籍進行極具深度、嚴謹、精闢且優美的學術解析與導讀。請以典雅流暢的繁體中文回答。`;
@@ -803,14 +785,6 @@
                     setAiAnalysisResult(`❌ AI 分析過程發生錯誤：${error.message}`);
                 } finally {
                     setIsAiAnalyzing(false);
-                }
-            };
-
-            const openAiModalForBook = (book) => {
-                if (book) {
-                    setAiSelectedBookId(book.id || book.title);
-                    setIsAiModalOpen(true);
-                    analyzeBookWithGemini(book);
                 }
             };
 
@@ -1004,7 +978,7 @@
                 if (name.length < 2) return showMsg("請輸入您的稱呼");
                 if (!/^\+?[0-9\-\s]{8,15}$/.test(phone.replace(/[^0-9\+]/g, ''))) return showMsg("請輸入有效的聯絡電話");
                 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showMsg("請輸入正確的電子信箱格式");
-                if (msg.length < 5) return showMsg("反應內容請至少輸入5個字");
+                if (msg.length < 5) return showMsg("反映內容請至少輸入5個字");
 
                 setIsSubmittingCS(true);
                 setLastActionTime(Date.now()); 
@@ -1086,7 +1060,7 @@
                             else window.scrollTo(0,0);
                         }}>
                             {ui.frontendLogoUrl ? (
-                                <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 md:w-10 md:h-10 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                                <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 md:w-10 md:h-10 object-contain" alt="Logo" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                             ) : (
                                 <ModernLogo className="w-8 h-8 md:w-10 md:h-10" />
                             )}
@@ -1157,7 +1131,7 @@
                                     return (
                                         <SlideContainer key={c.id} {...slideProps}>
                                             <div className="absolute inset-0 bg-gradient-to-t from-[var(--dark-color)]/90 via-[var(--dark-color)]/30 to-transparent z-10"></div>
-                                            <img src={formatImageUrl(c.image)} alt={c.title || "Banner"} className="w-full h-full object-cover transform scale-105 group-hover/slide:scale-100 transition duration-[10000ms]" onError={(e)=>{e.target.src='https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200'}} />
+                                            <img src={formatImageUrl(c.image)} alt={c.title || "Banner"} className="w-full h-full object-cover transform scale-105 group-hover/slide:scale-100 transition duration-[10000ms]" onError={(e) => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')} />
                                             <div className="absolute bottom-0 left-0 right-0 z-20 p-8 md:p-14 text-white">
                                                 {c.title && <h3 className="text-3xl md:text-5xl font-black mb-4 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-xl">{c.title}</h3>}
                                                 {c.description && <p className="text-sm md:text-lg max-w-3xl text-gray-200 line-clamp-2 drop-shadow-md font-sans leading-relaxed">{c.description}</p>}
@@ -1210,7 +1184,7 @@
                                             <div key={`rec-${book.id}`} className="min-w-[260px] sm:min-w-[280px] w-[260px] sm:w-[280px] snap-start shrink-0 group/card glass-card rounded-2xl overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                                 <div className="h-56 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
                                                     <div className="h-full relative shadow-[3px_3px_10px_rgba(0,0,0,0.12)] group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden">
-                                                        <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                                        <img src={formatImageUrl(book.cover)} loading="lazy" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                                     </div>
                                                     <div className="absolute top-3 left-3 bg-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md shadow-md font-sans font-bold z-10 border border-white/20">{book.category}</div>
                                                     {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/70 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-lg z-20">{ui.msgOutOfStock}</div>}
@@ -1261,7 +1235,7 @@
                                     <div key={book.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col hover:-translate-y-1 animate-in cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                         <div className="h-72 bg-[var(--bg-light)]/40 relative overflow-hidden p-4 flex justify-center items-center">
                                             <div className="h-full relative shadow-[4px_4px_14px_rgba(0,0,0,0.12)] group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
-                                                <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                                <img src={formatImageUrl(book.cover)} loading="lazy" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             </div>
                                             <div className="absolute top-3 left-3 bg-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md shadow-md font-sans font-bold z-10 border border-white/20">{book.category}</div>
                                             {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/70 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-2xl z-20">{ui.msgOutOfStock}</div>}
@@ -1303,7 +1277,7 @@
                                 <div className="md:col-span-4 flex flex-col">
                                     <div className="flex items-center gap-4 mb-6">
                                         {ui.frontendLogoUrl ? (
-                                            <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-11 h-11 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                                            <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-11 h-11 object-contain" alt="Logo" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                         ) : (
                                             <ModernLogo className="w-11 h-11" color1="#F9F6F0" color2="var(--primary-color)" />
                                         )}
@@ -1442,7 +1416,7 @@
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40">
                                 <div className="flex items-center space-x-3">
                                     {ui.frontendLogoUrl ? (
-                                        <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 object-contain" alt="Logo" onError={(e)=>{e.target.style.display='none'}} />
+                                        <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 object-contain" alt="Logo" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                     ) : (
                                         <ModernLogo className="w-8 h-8" />
                                     )}
@@ -1510,7 +1484,7 @@
                                                             ) : (<span className="text-gray-400 font-bold text-xs bg-gray-100/80 px-2 py-1 rounded">缺貨中</span>)}
                                                         </td>
                                                         <td className="p-4 font-bold border-b border-dashed border-[var(--border-color)] flex items-center gap-3">
-                                                            <img src={formatImageUrl(book.cover)} className="w-10 h-12 object-cover rounded shadow-sm border bg-white" onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                                            <img src={formatImageUrl(book.cover)} loading="lazy" className="w-10 h-12 object-cover rounded shadow-sm border bg-white" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                                             {book.title}
                                                         </td>
                                                         <td className="p-4 font-bold text-[var(--primary-color)] border-b border-dashed border-[var(--border-color)]">{book.price ? `${book.price}元` : '-'}</td>
@@ -1549,7 +1523,7 @@
                                             <div key={book.id} className="group glass-card rounded-2xl overflow-hidden hover:shadow-2xl transition-all duration-500 flex flex-col shadow-sm cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                                 <div className="h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
                                                     <div className="h-full relative shadow-[3px_3px_10px_rgba(0,0,0,0.1)] group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
-                                                        <img src={formatImageUrl(book.cover)} className="h-full w-auto object-contain rounded" alt={book.title} onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                                        <img src={formatImageUrl(book.cover)} loading="lazy" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                                     </div>
                                                     <div className="absolute top-4 left-4 bg-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md shadow-md font-sans font-bold z-10 border border-white/20">{book.category}</div>
                                                     {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/70 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl z-20">{ui.msgOutOfStock}</div>}
@@ -1621,7 +1595,7 @@
                                                     {cart.map(i => (
                                                         <div key={i.id} className="flex gap-4 items-center glass-card p-4 rounded-xl border border-white/90 shadow-sm relative group">
                                                             <div className="w-20 h-28 flex-shrink-0 bg-gray-100 rounded overflow-hidden border border-[var(--border-color)] shadow-sm">
-                                                                <img src={formatImageUrl(i.cover)} alt={i.title} className="w-full h-full object-cover" onError={(e)=>{e.target.src='https://via.placeholder.com/150?text=No+Cover'}} />
+                                                                <img src={formatImageUrl(i.cover)} alt={i.title} className="w-full h-full object-cover" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                                             </div>
                                                             <div className="flex flex-col flex-1">
                                                                 <p className="font-bold text-[var(--dark-color)] mb-2 font-serif text-lg leading-tight line-clamp-2 pr-8">{i.title}</p>
@@ -1967,7 +1941,7 @@
                                 <div className="p-6 md:p-8 font-sans overflow-y-auto max-h-[80vh] space-y-6">
                                     <div className="flex flex-col md:flex-row gap-6 items-start">
                                         <div className="w-full md:w-52 h-72 shrink-0 bg-[var(--bg-light)] rounded-xl overflow-hidden p-3 border border-[var(--border-color)] shadow-md flex justify-center items-center relative">
-                                            <img src={formatImageUrl(selectedBookDetail.cover)} alt={selectedBookDetail.title} className="h-full w-auto object-contain rounded" onError={(e)=>{e.target.src='https://via.placeholder.com/400x600?text=No+Cover'}} />
+                                            <img src={formatImageUrl(selectedBookDetail.cover)} alt={selectedBookDetail.title} className="h-full w-auto object-contain rounded" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             <span className="absolute top-3 left-3 bg-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md font-bold shadow">{selectedBookDetail.category || '未分類'}</span>
                                         </div>
                                         <div className="flex-1 space-y-3 text-left">
@@ -1981,7 +1955,6 @@
                                                 <div>建議定價：<strong className="text-xl font-black text-[var(--primary-color)]">NT$ {selectedBookDetail.price}</strong></div>
                                             </div>
 
-                                            {/* 書籍介紹（對應 Book_ALL 試算表之 intro 欄位） */}
                                             <div className="pt-2">
                                                 <h4 className="text-sm font-bold text-[var(--dark-color)] mb-2 flex items-center gap-1.5">
                                                     <FileText size={16} className="text-[var(--primary-color)]" /> 書籍簡介與研讀指南：
@@ -1991,7 +1964,6 @@
                                                 </div>
                                             </div>
 
-                                            {/* 讀後心得（對應 Book_ALL 試算表之 心得 欄位） */}
                                             <div className="pt-2">
                                                 <h4 className="text-sm font-bold text-purple-900 mb-2 flex items-center gap-1.5">
                                                     <Sparkles size={16} className="text-purple-600" /> 試算表收錄讀後心得與學術評析：
@@ -2031,7 +2003,7 @@
                         </div>
                     )}
 
-                    {/* 💬 讀後心得與交流 Modal (對接 Book_ALL 之 心得 欄位) */}
+                    {/* 💬 讀後心得與交流 Modal */}
                     {isReviewModalOpen && reviewBook && (
                         <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[240] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsReviewModalOpen(false)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80 bg-[#433A36]/90 text-white" onClick={(e) => e.stopPropagation()}>
@@ -2053,7 +2025,6 @@
                                 </div>
 
                                 <div className="p-6 md:p-8 font-sans overflow-y-auto max-h-[80vh] space-y-6 text-gray-800">
-                                    {/* 精選讀者心得區塊 - 優先抓取 Book_ALL 試算表之 心得 欄位 */}
                                     <div className="bg-[#FFFBF2] border border-amber-200/80 rounded-2xl p-5 shadow-sm space-y-3">
                                         <h3 className="text-base font-bold text-[var(--dark-color)] flex items-center gap-2 border-b border-amber-200/60 pb-2">
                                             <BookOpen size={18} className="text-purple-600" />
@@ -2064,7 +2035,6 @@
                                         </div>
                                     </div>
 
-                                    {/* 發表感言表單區塊 */}
                                     <form onSubmit={handleReviewSubmit} className="bg-white/95 backdrop-blur-md rounded-2xl p-6 shadow-md border border-white space-y-4">
                                         <h3 className="text-base font-bold text-gray-800 flex items-center gap-2 border-b border-gray-100 pb-2">
                                             <Send size={18} className="text-purple-500" />
