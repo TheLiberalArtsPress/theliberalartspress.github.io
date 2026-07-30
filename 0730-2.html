@@ -607,56 +607,92 @@
                         body: JSON.stringify(payloadObj)
                     });
                     
-                    const data = await response.json();
+                    const text = await response.text();
+                    
+                    // Check if response is HTML (Google Drive 404 or permission error page)
+                    if (text.trim().startsWith("<")) {
+                        console.warn(`[GAS Warning] ${action}: Received HTML page instead of JSON (Google Apps Script endpoint may be offline or URL misconfigured).`);
+                        return { status: 'error', msg: 'Google Apps Script 端點未回應 JSON (可能網址已失效或權限限制)' };
+                    }
+
+                    let data;
+                    try {
+                        data = JSON.parse(text);
+                    } catch (jsonErr) {
+                        console.warn(`[GAS JSON Error] ${action}: Failed to parse JSON response`);
+                        return { status: 'error', msg: '伺服器回應格式非 JSON' };
+                    }
+
                     if (data.status === 'error' && (currentOrigin.includes("localhost") || currentOrigin.includes("usercontent.goog"))) {
                         showMsg("API 執行失敗: " + data.msg);
                     }
                     return data;
                 } catch (e) {
+                    console.warn(`[syncWithGAS Error] ${action}:`, e);
                     return { status: 'error', msg: e.toString() };
                 }
             };
 
-            // ⚡ 極速發射器：並行執行所有初始化 GAS 請求，完全不增加次數，速度提升 3~5 倍！
+            // 🛡️ 安全平滑佇列：防範 Google Apps Script Concurrent Lock 並發鎖定與 HTML 異常
             useEffect(() => {
                 if (hasFetchedRef.current) return;
                 hasFetchedRef.current = true;
 
-                Promise.allSettled([
-                    syncWithGAS('FETCH_SETTINGS'),
-                    syncWithGAS('FETCH_UI'),
-                    syncWithGAS('FETCH_CAROUSELS'),
-                    syncWithGAS('FETCH_CHOICES'),
-                    syncWithGAS('FETCH_BOOKS')
-                ]).then(([settingsRes, uiRes, carouselsRes, choicesRes, booksRes]) => {
-                    if (settingsRes.status === 'fulfilled' && settingsRes.value?.data) {
-                        const data = settingsRes.value.data;
-                        setSettings(prev => ({ ...prev, ...data }));
-                        if (data.systemName) document.title = `${data.systemName} 有限公司｜台灣人文學術出版社（首頁）官網`;
-                    }
-                    if (uiRes.status === 'fulfilled' && uiRes.value?.data) {
-                        const data = uiRes.value.data;
-                        setUi(prev => ({ ...prev, ...data }));
-                        if (data.frontendName) document.title = `${data.frontendName} - 首頁`;
-                    }
-                    if (carouselsRes.status === 'fulfilled' && Array.isArray(carouselsRes.value?.data)) {
-                        const published = carouselsRes.value.data.filter(c => c.status === '已發佈');
-                        if (published.length > 0) {
-                            setCarousels(published);
-                            safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
+                const loadInitialData = async () => {
+                    setIsBooksLoading(true);
+                    
+                    const queue = [
+                        { action: 'FETCH_SETTINGS', handler: (res) => {
+                            if (res?.status === 'success' && res?.data) {
+                                setSettings(prev => ({ ...prev, ...res.data }));
+                                if (res.data.systemName) document.title = `${res.data.systemName} 有限公司｜台灣人文學術出版社（首頁）官網`;
+                            }
+                        }},
+                        { action: 'FETCH_UI', handler: (res) => {
+                            if (res?.status === 'success' && res?.data) {
+                                setUi(prev => ({ ...prev, ...res.data }));
+                                if (res.data.frontendName) document.title = `${res.data.frontendName} - 首頁`;
+                            }
+                        }},
+                        { action: 'FETCH_CAROUSELS', handler: (res) => {
+                            if (res?.status === 'success' && Array.isArray(res?.data)) {
+                                const published = res.data.filter(c => c.status === '已發佈');
+                                if (published.length > 0) {
+                                    setCarousels(published);
+                                    safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
+                                }
+                            }
+                        }},
+                        { action: 'FETCH_CHOICES', handler: (res) => {
+                            if (res?.status === 'success' && Array.isArray(res?.data)) {
+                                const valid = res.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
+                                if (valid.length > 0) setChoiceBooks(valid);
+                            }
+                        }},
+                        { action: 'FETCH_BOOKS', handler: (res) => {
+                            if (res?.status === 'success' && Array.isArray(res?.data)) {
+                                const valid = res.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
+                                if (valid.length > 0) {
+                                    const shuffled = valid.sort(() => 0.5 - Math.random());
+                                    setBooks(shuffled);
+                                    safeSetStorage('lapen_books_v6', JSON.stringify(shuffled.slice(0, 150)));
+                                }
+                            }
+                        }}
+                    ];
+
+                    for (const item of queue) {
+                        try {
+                            const res = await syncWithGAS(item.action);
+                            item.handler(res);
+                        } catch (err) {
+                            console.warn(`[Init Load Warning] ${item.action}:`, err);
                         }
                     }
-                    if (choicesRes.status === 'fulfilled' && Array.isArray(choicesRes.value?.data)) {
-                        const valid = choicesRes.value.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
-                        setChoiceBooks(valid);
-                    }
-                    if (booksRes.status === 'fulfilled' && Array.isArray(booksRes.value?.data)) {
-                        const valid = booksRes.value.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
-                        const shuffled = valid.sort(() => 0.5 - Math.random());
-                        setBooks(shuffled);
-                        safeSetStorage('lapen_books_v6', JSON.stringify(shuffled.slice(0, 150)));
-                    }
-                }).finally(() => setIsBooksLoading(false));
+                    setIsBooksLoading(false);
+                };
+
+                loadInitialData();
             }, []);
 
             const handleOrderQuerySubmit = async (e) => {
