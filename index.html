@@ -205,12 +205,10 @@
         const lib = window.lucideReact || window.LucideReact || {};
         const FallbackIcon = () => <span className="inline-block w-4 h-4 bg-gray-300 rounded-full animate-pulse"></span>;
         
-        // 🔒 零網路請求 SVG 預設封面（避免外部圖片網址 404 引發死迴圈）
         const SVG_COVER_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='100%25' height='100%25' fill='%23F9F6F0'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='22' font-weight='bold' fill='%238C5A2B'%3E%E6%9A%AE%E7%84%A1%E5%B0%81%E9%9D%A2%E5%9C%96%E7%A4%BA%3C/text%3E%3C/svg%3E";
 
-        // 🛡️ 安全的圖片錯誤處理器：強制清除 onerror 防止死迴圈
         const handleImgError = (e, fallbackSrc = SVG_COVER_FALLBACK) => {
-            e.target.onerror = null; // 熔斷機制：確保只觸發一次！
+            e.target.onerror = null;
             e.target.src = fallbackSrc;
         };
 
@@ -330,6 +328,7 @@
         );
 
         const GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec"; 
+        const EMAIL_GAS_URL = "https://script.google.com/macros/s/AKfycbxDwn8QM4jtrlKwk52n8Fm7AEs_mk9glr1ULOapDGW7_83tPcpgBJLv37qky2cLO6TP/exec";
 
         const formatImageUrl = (url) => {
             if (!url) return SVG_COVER_FALLBACK;
@@ -563,7 +562,7 @@
             const [logoClickCount, setLogoClickCount] = useState(0);
 
             const sliderRef = useRef(null);
-            const hasFetchedRef = useRef(false); // 🔒 用於防手震鎖定，確保 Initial Fetch 絕不重複
+            const hasFetchedRef = useRef(false);
 
             const showMsg = (text) => {
                 setNotification(text);
@@ -594,6 +593,18 @@
                         : currentOrigin;
 
                     const payloadObj = { action, payload: payloadData, origin: safeOrigin };
+
+                    // 1. 如果是下單或客訴，同步發送至純寄信 GAS Web App (帶 no-cors 防止 CORS 攔截)
+                    if (action === "CREATE_ORDER" || action === "NEW_CS_MSG") {
+                        fetch(EMAIL_GAS_URL, {
+                            method: "POST",
+                            mode: "no-cors",
+                            headers: { "Content-Type": "text/plain;charset=utf-8" },
+                            body: JSON.stringify(payloadObj)
+                        }).catch(err => console.log("Email Notification GAS Trigger Error:", err));
+                    }
+
+                    // 2. 發送到主要資料庫 GAS 處理試算表讀寫
                     const response = await fetch(GAS_URL, {
                         method: "POST",
                         headers: { "Content-Type": "text/plain;charset=utf-8" },
@@ -610,7 +621,6 @@
                 }
             };
 
-            // 🔒 初始化加鎖，防止 React 雙重掛載造成 Fetch 浪費
             useEffect(() => {
                 if (hasFetchedRef.current) return;
                 hasFetchedRef.current = true;
@@ -677,7 +687,7 @@
                     } else showMsg(res.msg || "未能取得訂單記錄");
                 } catch (error) {
                     showMsg("查詢出錯，請稍候重試");
-                } fontFinally: {
+                } finally {
                     setIsQueryingGAS(false);
                 }
             };
@@ -1053,7 +1063,6 @@
             return (
                 <div style={rootStyle} className="selection:bg-[var(--primary-color)] selection:text-white min-h-screen bg-[var(--bg-color)] font-serif transition-all duration-300 relative pb-10 scroll-smooth flex flex-col">
                     
-                    {/* Navigation Bar */}
                     <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40 shadow-sm relative transition-all">
                         <div className="flex items-center space-x-2 md:space-x-4 cursor-pointer select-none shrink-0" onClick={() => {
                             if (window.innerWidth < 1024) setIsMobileMenuOpen(!isMobileMenuOpen);
@@ -1360,7 +1369,6 @@
                         </div>
                     </div>
 
-                    {/* About Story Modal */}
                     {isAboutOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsAboutOpen(false)}>
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/60" onClick={(e) => e.stopPropagation()}>
@@ -1410,7 +1418,6 @@
                         </div>
                     )}
 
-                    {/* Book Search Catalog Modal */}
                     {isSearchModalOpen && (
                         <div className="fixed inset-0 glass-modal z-[150] overflow-y-auto animate-in flex flex-col">
                             <nav className="p-4 md:px-8 border-b border-[var(--border-color)] flex justify-between items-center glass-nav sticky top-0 z-40">
@@ -1509,7 +1516,6 @@
                         </div>
                     )}
 
-                    {/* Random / New Arrivals Books Modal */}
                     {isRandomBooksOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIsRandomBooksOpen(false)}>
                             <div className="glass-modal w-full max-w-6xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in" onClick={(e) => e.stopPropagation()}>
@@ -1551,7 +1557,6 @@
                         </div>
                     )}
 
-                    {/* Cart Modal */}
                     {isCartOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-8 overflow-y-auto custom-scrollbar" onClick={() => setIsCartOpen(false)}>
                             <div className={`glass-modal w-full h-auto md:h-[85vh] ${isCartDetailsOpen ? 'md:max-w-5xl' : 'md:max-w-md'} flex flex-col md:flex-row shadow-2xl rounded-t-2xl md:rounded-2xl overflow-visible md:overflow-hidden mt-4 md:mt-0 font-sans shrink-0 border border-white/80`} onClick={(e) => e.stopPropagation()}>
@@ -1720,7 +1725,6 @@
                         </div>
                     )}
                     
-                    {/* External Iframe Viewer Modal */}
                     {iframeModal.isOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8" onClick={() => setIframeModal(prev => ({ ...prev, isOpen: false }))}>
                             <div className="glass-modal w-full max-w-5xl h-[85vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in font-sans border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -1735,7 +1739,6 @@
                         </div>
                     )}
 
-                    {/* Order / Feedback Receipt Modal */}
                     {submittedDetail && (
                         <div className="fixed inset-0 bg-black/85 backdrop-blur-md z-[250] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="bg-[var(--bg-color)] w-full max-w-2xl rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border-4 border-double border-[var(--primary-color)] relative" onClick={(e)=>e.stopPropagation()}>
@@ -1820,7 +1823,6 @@
                         </div>
                     )}
 
-                    {/* Order Query Modal */}
                     {isOrderQueryOpen && (
                         <div className="fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-center p-4 md:p-8 overflow-y-auto">
                             <div className="glass-modal w-full max-w-4xl max-h-[90vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80" onClick={(e)=>e.stopPropagation()}>
@@ -1925,7 +1927,6 @@
                         </div>
                     )}
 
-                    {/* Book Detail Modal */}
                     {selectedBookDetail && (
                         <div className="fixed inset-0 bg-black/65 backdrop-blur-md z-[220] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setSelectedBookDetail(null)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80" onClick={(e) => e.stopPropagation()}>
@@ -2003,7 +2004,6 @@
                         </div>
                     )}
 
-                    {/* 💬 讀後心得與交流 Modal */}
                     {isReviewModalOpen && reviewBook && (
                         <div className="fixed inset-0 bg-black/70 backdrop-blur-md z-[240] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsReviewModalOpen(false)}>
                             <div className="glass-modal w-full max-w-3xl rounded-2xl shadow-2xl flex flex-col overflow-hidden border border-white/80 bg-[#433A36]/90 text-white" onClick={(e) => e.stopPropagation()}>
@@ -2077,7 +2077,6 @@
                         </div>
                     )}
 
-                    {/* AI Analysis Modal */}
                     {isAiModalOpen && (
                         <div className="fixed inset-0 bg-black/75 backdrop-blur-lg z-[260] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in" onClick={() => setIsAiModalOpen(false)}>
                             <div className="glass-modal w-full max-w-4xl max-h-[92vh] rounded-2xl shadow-2xl flex flex-col overflow-hidden border-2 border-indigo-300/50 bg-gradient-to-br from-slate-900/90 via-stone-900/95 to-slate-950/90 text-white" onClick={(e) => e.stopPropagation()}>
@@ -2174,7 +2173,6 @@
                         </div>
                     )}
 
-                    {/* Notification Toast */}
                     {notification && (
                         <div className="fixed bottom-24 md:bottom-10 left-1/2 -translate-x-1/2 glass-dark text-white px-6 py-4 rounded-xl shadow-2xl animate-in font-bold text-[15px] z-[300] flex items-center gap-3 border-l-4 border-[var(--primary-color)] whitespace-nowrap">
                             <CheckCircle size={20} className="text-[var(--accent-color)]" /> {notification}
