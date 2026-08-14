@@ -1109,7 +1109,7 @@ function App() {
                                             <div className="h-full relative book-spine-shadow group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                                 <img src={formatImageUrl(book.cover)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             </div>
-                                            <div className="absolute top-2.5 left-2.5 bg-[var(--dark-color)]/90 text-white text-[11px] px-2 py-0.5 rounded-md font-sans font-bold backdrop-blur-sm">{book.category}</div>
+                                            <div className="absolute top-2.5 left-2.5 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[11px] px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                             {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm">{ui.msgOutOfStock}</div>}
                                         </div>
                                         <div className="p-4 flex flex-col flex-1 bg-white/70 border-t border-[var(--border-color)]/40">
@@ -1168,7 +1168,7 @@ function App() {
                                         <div className="h-full relative book-spine-shadow group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                             <img src={formatImageUrl(book.cover)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                         </div>
-                                        <div className="absolute top-3 left-3 bg-[var(--dark-color)]/90 text-white text-xs px-2.5 py-1 rounded-md font-sans font-bold backdrop-blur-sm">{book.category}</div>
+                                        <div className="absolute top-3 left-3 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl">{ui.msgOutOfStock}</div>}
                                     </div>
                                     <div className="p-5 flex flex-col flex-1 bg-white/80 border-t border-[var(--border-color)]/40">
@@ -1446,7 +1446,7 @@ function App() {
                                     <div key={book.id} className="glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                         <div className="h-48 bg-[var(--bg-light)]/50 relative overflow-hidden p-3 flex justify-center items-center">
                                             <img src={formatImageUrl(book.cover)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded book-spine-shadow" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
-                                            <div className="absolute top-2 left-2 bg-[var(--dark-color)]/90 text-white text-[10px] px-2 py-0.5 rounded font-bold">{book.category}</div>
+                                            <div className="absolute top-2 left-2 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         </div>
                                         <div className="p-3.5 flex flex-col flex-1 bg-white/70">
                                             <h3 className="font-bold text-sm mb-1 line-clamp-2" title={book.title}>{book.title}</h3>
@@ -1546,16 +1546,16 @@ function App() {
                                     </div>
                                     {selectedPayment === '銀行轉帳（運費另計）' && (
                                         <div className="bg-amber-50/90 backdrop-blur-sm border border-amber-200 rounded-xl p-3.5 text-xs text-[var(--text-dark)] leading-relaxed animate-in text-left">
-                                            <p className="font-bold text-[var(--primary-color)] mb-1 flex items-center gap-1">🏦 郵政劃撥資訊：</p>
-                                            <p className="mb-1">來電詢問：<span className="font-mono font-bold">📞 886-02-2351-1028</span></p>
-                                            <p className="flex items-center text-gray-700 mb-1">
+                                                    <p className="font-bold text-[var(--primary-color)] mb-1 flex items-center gap-1">🏦 郵政劃撥資訊：</p>
+                                                    <p className="mb-1">來電詢問：<span className="font-mono font-bold">📞 886-02-2351-1028</span></p>
+                                                    <p className="flex items-center text-gray-700 mb-1">
                                                         <span className="w-12 shrink-0">帳號：</span>
                                                         <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
-                                            </p>
-                                            <p className="flex items-center text-gray-700">
+                                                    </p>
+                                                    <p className="flex items-center text-gray-700">
                                                         <span className="w-12 shrink-0">戶名：</span>
                                                         <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
-                                            </p>
+                                                    </p>
                                         </div>
                                     )}
                                     {selectedPayment === '店取付現金' && (
