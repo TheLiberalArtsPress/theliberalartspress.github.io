@@ -294,7 +294,8 @@ const ModernLogo = ({ className = "w-8 h-8", color1 = "var(--dark-color)", color
 
 const GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec"; 
 
-const formatImageUrl = (url) => {
+// 🟢 【效能優化】：支援動態圖片尺寸 (卡片預設 400px 節省頻寬，Modal 詳細頁載入 1000px 高清圖)
+const formatImageUrl = (url, width = 400) => {
     if (!url) return SVG_COVER_FALLBACK;
     let strUrl = String(url).trim();
     if (!strUrl) return SVG_COVER_FALLBACK;
@@ -307,7 +308,7 @@ const formatImageUrl = (url) => {
     } else if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
         driveId = strUrl;
     }
-    if (driveId) return `https://drive.google.com/thumbnail?id=${driveId}&sz=w1000`;
+    if (driveId) return `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`;
     return strUrl;
 };
 
@@ -462,7 +463,7 @@ const defaultUI = {
     msgOutOfStock: '已售罄',
     msgNoBooksFound: '此分類目前沒有相關書籍喔！',
     msgSearchingBooks: '雲端書庫正在尋找符合此分類的書籍...',
-    urlAboutPresident: 'https://hanlinma.github.io/candyni/%E9%97%9C%E6%96%BC%E7%A4%BE%E9%95%B7.html',
+    urlAboutPresident: 'https://hanlinma.github.io/candyni/%E9%97%9C%E6%96%87%E7%A4%BE%E9%95%B7.html',
     urlContactUs: 'https://hanlinma.github.io/candyni/%E8%81%AF%E7%B9%AB%E6%88%91%E5%80%91.html'
 };
 
@@ -576,41 +577,67 @@ function App() {
         }
     }, []);
 
+    // 🟢 【極致效能重構】：改用單一 FETCH_INIT_DATA 合流 API 請求，一次性拿回所有初始資料！
     useEffect(() => {
         if (hasFetchedRef.current) return;
         hasFetchedRef.current = true;
 
-        Promise.allSettled([
-            syncWithGAS('FETCH_SETTINGS'),
-            syncWithGAS('FETCH_UI'),
-            syncWithGAS('FETCH_CAROUSELS'),
-            syncWithGAS('FETCH_CHOICES'),
-            syncWithGAS('FETCH_BOOKS')
-        ]).then(([resSettings, resUi, resCarousels, resChoices, resBooks]) => {
-            if (resSettings.status === 'fulfilled' && resSettings.value?.data) {
-                setSettings(prev => ({ ...prev, ...resSettings.value.data }));
-                if (resSettings.value.data.systemName) document.title = `${resSettings.value.data.systemName} 有限公司｜台灣人文學術出版社（首頁）官網`;
-            }
-            if (resUi.status === 'fulfilled' && resUi.value?.data) {
-                setUi(prev => ({ ...prev, ...resUi.value.data }));
-                if (resUi.value.data.frontendName) document.title = `${resUi.value.data.frontendName} - 首頁`;
-            }
-            if (resCarousels.status === 'fulfilled' && Array.isArray(resCarousels.value?.data)) {
-                const published = resCarousels.value.data.filter(c => c.status === '已發佈');
-                if (published.length > 0) {
-                    setCarousels(published);
-                    safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
+        syncWithGAS('FETCH_INIT_DATA').then(res => {
+            if (res && res.status === 'success' && res.data) {
+                const { settings: fetchedSettings, ui: fetchedUi, carousels: fetchedCarousels, choices: fetchedChoices, books: fetchedBooks } = res.data;
+
+                if (fetchedSettings && Object.keys(fetchedSettings).length > 0) {
+                    setSettings(prev => ({ ...prev, ...fetchedSettings }));
+                    if (fetchedSettings.systemName) document.title = `${fetchedSettings.systemName} 有限公司｜台灣人文學術出版社（首頁）官網`;
                 }
-            }
-            if (resChoices.status === 'fulfilled' && Array.isArray(resChoices.value?.data)) {
-                const valid = resChoices.value.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
-                setChoiceBooks(valid);
-            }
-            if (resBooks.status === 'fulfilled' && Array.isArray(resBooks.value?.data)) {
-                const valid = resBooks.value.data.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
-                const shuffled = valid.sort(() => 0.5 - Math.random());
-                setBooks(shuffled);
-                safeSetStorage('lapen_books_v6', JSON.stringify(shuffled.slice(0, 150)));
+                if (fetchedUi && Object.keys(fetchedUi).length > 0) {
+                    setUi(prev => ({ ...prev, ...fetchedUi }));
+                    if (fetchedUi.frontendName) document.title = `${fetchedUi.frontendName} - 首頁`;
+                }
+                if (Array.isArray(fetchedCarousels) && fetchedCarousels.length > 0) {
+                    const published = fetchedCarousels.filter(c => c.status === '已發佈');
+                    if (published.length > 0) {
+                        setCarousels(published);
+                        safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
+                    }
+                }
+                if (Array.isArray(fetchedChoices)) {
+                    const valid = fetchedChoices.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
+                    setChoiceBooks(valid);
+                }
+                if (Array.isArray(fetchedBooks)) {
+                    const valid = fetchedBooks.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
+                    const shuffled = valid.sort(() => 0.5 - Math.random());
+                    setBooks(shuffled);
+                    safeSetStorage('lapen_books_v6', JSON.stringify(shuffled.slice(0, 150)));
+                }
+            } else {
+                // 🛡️ 後備相容機制：若舊版後端尚未更新，自動降級為傳統分發 Request
+                Promise.allSettled([
+                    syncWithGAS('FETCH_SETTINGS'),
+                    syncWithGAS('FETCH_UI'),
+                    syncWithGAS('FETCH_CAROUSELS'),
+                    syncWithGAS('FETCH_CHOICES'),
+                    syncWithGAS('FETCH_BOOKS')
+                ]).then(([resSettings, resUi, resCarousels, resChoices, resBooks]) => {
+                    if (resSettings.status === 'fulfilled' && resSettings.value?.data) {
+                        setSettings(prev => ({ ...prev, ...resSettings.value.data }));
+                    }
+                    if (resUi.status === 'fulfilled' && resUi.value?.data) {
+                        setUi(prev => ({ ...prev, ...resUi.value.data }));
+                    }
+                    if (resCarousels.status === 'fulfilled' && Array.isArray(resCarousels.value?.data)) {
+                        const published = resCarousels.value.data.filter(c => c.status === '已發佈');
+                        if (published.length > 0) setCarousels(published);
+                    }
+                    if (resChoices.status === 'fulfilled' && Array.isArray(resChoices.value?.data)) {
+                        setChoiceBooks(resChoices.value.data.filter(b => b.title && b.title !== '未命名書籍'));
+                    }
+                    if (resBooks.status === 'fulfilled' && Array.isArray(resBooks.value?.data)) {
+                        const valid = resBooks.value.data.filter(b => b.title && b.title !== '未命名書籍');
+                        setBooks(valid.sort(() => 0.5 - Math.random()));
+                    }
+                });
             }
         }).finally(() => setIsBooksLoading(false));
     }, [syncWithGAS]);
@@ -976,7 +1003,7 @@ function App() {
                 <div className="flex items-center space-x-2.5 sm:space-x-3 select-none shrink-0 group">
                     <div className="flex items-center space-x-2.5 cursor-pointer" onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}>
                         {ui.frontendLogoUrl ? (
-                            <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-8 h-8 md:w-9 md:h-9 object-contain" alt="Logo" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                            <img src={formatImageUrl(ui.frontendLogoUrl, 200)} className="w-8 h-8 md:w-9 md:h-9 object-contain" alt="Logo" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                         ) : (
                             <ModernLogo className="w-8 h-8 md:w-9 md:h-9 transition-transform group-hover:rotate-6" />
                         )}
@@ -986,7 +1013,7 @@ function App() {
                         </div>
                     </div>
 
-                    {/* 📱 手機版醒目導覽選單展開/縮小切換按鈕 */}
+                    {/* 📱 手機版選單切換按鈕 */}
                     <button 
                         type="button" 
                         onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
@@ -1057,7 +1084,7 @@ function App() {
                             return (
                                 <SlideContainer key={c.id} {...slideProps}>
                                     <div className="absolute inset-0 bg-gradient-to-t from-[var(--dark-color)]/95 via-[var(--dark-color)]/40 to-transparent z-10"></div>
-                                    <img src={formatImageUrl(c.image)} alt={c.title || "Banner"} className="w-full h-full object-cover transform scale-105 group-hover/slide:scale-100 transition duration-[8000ms]" onError={(e) => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')} />
+                                    <img src={formatImageUrl(c.image, 1000)} alt={c.title || "Banner"} className="w-full h-full object-cover transform scale-105 group-hover/slide:scale-100 transition duration-[8000ms]" onError={(e) => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')} />
                                     <div className="absolute bottom-0 left-0 right-0 z-20 p-6 md:p-12 text-white">
                                         {c.title && <h3 className="text-2xl md:text-4xl font-black mb-3 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-md">{c.title}</h3>}
                                         {c.description && <p className="text-xs md:text-base max-w-3xl text-stone-200 line-clamp-2 drop-shadow font-sans leading-relaxed">{c.description}</p>}
@@ -1107,7 +1134,7 @@ function App() {
                                     <div key={`rec-${book.id}`} className="min-w-[240px] w-[240px] snap-start shrink-0 glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group/card" onClick={() => setSelectedBookDetail(book)}>
                                         <div className="h-52 bg-[var(--bg-light)]/60 relative overflow-hidden p-3.5 flex justify-center items-center">
                                             <div className="h-full relative book-spine-shadow group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden">
-                                                <img src={formatImageUrl(book.cover)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                                <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             </div>
                                             <div className="absolute top-2.5 left-2.5 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[11px] px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                             {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm">{ui.msgOutOfStock}</div>}
@@ -1166,7 +1193,7 @@ function App() {
                                 <div key={book.id} className="group glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                     <div className="h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
                                         <div className="h-full relative book-spine-shadow group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
-                                            <img src={formatImageUrl(book.cover)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                            <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                         </div>
                                         <div className="absolute top-3 left-3 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl">{ui.msgOutOfStock}</div>}
@@ -1209,7 +1236,7 @@ function App() {
                         <div className="md:col-span-4 flex flex-col">
                             <div className="flex items-center gap-3.5 mb-5">
                                 {ui.frontendLogoUrl ? (
-                                    <img src={formatImageUrl(ui.frontendLogoUrl)} className="w-10 h-10 object-contain" alt="Logo" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                    <img src={formatImageUrl(ui.frontendLogoUrl, 200)} className="w-10 h-10 object-contain" alt="Logo" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                 ) : (
                                     <ModernLogo className="w-10 h-10" color1="#FAF8F5" color2="var(--primary-color)" />
                                 )}
@@ -1409,7 +1436,7 @@ function App() {
                                                 </td>
                                                 <td className="p-3 font-mono text-[var(--primary-color)] font-bold">{book.id || '-'}</td>
                                                 <td className="p-3 font-bold flex items-center gap-2.5">
-                                                    <img src={formatImageUrl(book.cover)} loading="lazy" decoding="async" className="w-8 h-10 object-cover rounded shadow-sm border bg-white" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                                    <img src={formatImageUrl(book.cover, 200)} loading="lazy" decoding="async" className="w-8 h-10 object-cover rounded shadow-sm border bg-white" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                                     {book.title}
                                                 </td>
                                                 <td className="p-3 font-bold text-[var(--primary-color)]">{book.price ? `${book.price}元` : '-'}</td>
@@ -1445,7 +1472,7 @@ function App() {
                                 {randomBooks.map(book => (
                                     <div key={book.id} className="glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                         <div className="h-48 bg-[var(--bg-light)]/50 relative overflow-hidden p-3 flex justify-center items-center">
-                                            <img src={formatImageUrl(book.cover)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded book-spine-shadow" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                            <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded book-spine-shadow" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             <div className="absolute top-2 left-2 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         </div>
                                         <div className="p-3.5 flex flex-col flex-1 bg-white/70">
@@ -1496,7 +1523,7 @@ function App() {
                                     ) : (
                                         cart.map(i => (
                                             <div key={i.id} className="flex gap-3 items-center glass-card p-3 rounded-xl relative">
-                                                <img src={formatImageUrl(i.cover)} alt={i.title} className="w-14 h-20 object-cover rounded border" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                                <img src={formatImageUrl(i.cover, 200)} alt={i.title} className="w-14 h-20 object-cover rounded border" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                                 <div className="flex flex-col flex-1 pr-6">
                                                     <p className="font-bold text-sm text-[var(--dark-color)] line-clamp-1">{i.title}</p>
                                                     <p className="text-sm text-[var(--primary-color)] font-black my-1">NT$ {i.price}</p>
@@ -1546,16 +1573,16 @@ function App() {
                                     </div>
                                     {selectedPayment === '銀行轉帳（運費另計）' && (
                                         <div className="bg-amber-50/90 backdrop-blur-sm border border-amber-200 rounded-xl p-3.5 text-xs text-[var(--text-dark)] leading-relaxed animate-in text-left">
-                                                    <p className="font-bold text-[var(--primary-color)] mb-1 flex items-center gap-1">🏦 郵政劃撥資訊：</p>
-                                                    <p className="mb-1">來電詢問：<span className="font-mono font-bold">📞 886-02-2351-1028</span></p>
-                                                    <p className="flex items-center text-gray-700 mb-1">
-                                                        <span className="w-12 shrink-0">帳號：</span>
-                                                        <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
-                                                    </p>
-                                                    <p className="flex items-center text-gray-700">
-                                                        <span className="w-12 shrink-0">戶名：</span>
-                                                        <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
-                                                    </p>
+                                            <p className="font-bold text-[var(--primary-color)] mb-1 flex items-center gap-1">🏦 郵政劃撥資訊：</p>
+                                            <p className="mb-1">來電詢問：<span className="font-mono font-bold">📞 886-02-2351-1028</span></p>
+                                            <p className="flex items-center text-gray-700 mb-1">
+                                                <span className="w-12 shrink-0">帳號：</span>
+                                                <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
+                                            </p>
+                                            <p className="flex items-center text-gray-700">
+                                                <span className="w-12 shrink-0">戶名：</span>
+                                                <a href="https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" target="_blank" rel="noopener noreferrer" className="inline-flex items-center font-bold text-blue-600 hover:text-blue-800 hover:underline">📘 詳情請私訊臉書專頁詢問 ↗</a>
+                                            </p>
                                         </div>
                                     )}
                                     {selectedPayment === '店取付現金' && (
@@ -1735,7 +1762,7 @@ function App() {
                         <div className={`p-5 md:p-8 font-sans overflow-y-auto flex-1 space-y-5 ${isBookDetailFullscreen ? 'max-w-5xl mx-auto w-full' : ''}`}>
                             <div className="flex flex-col sm:flex-row gap-6 items-start">
                                 <div className={`w-full ${isBookDetailFullscreen ? 'sm:w-60 h-80' : 'sm:w-44 h-56'} shrink-0 bg-[var(--bg-light)] rounded-xl overflow-hidden p-2 border flex justify-center items-center transition-all`}>
-                                    <img src={formatImageUrl(selectedBookDetail.cover)} alt={selectedBookDetail.title} className="h-full w-auto object-contain rounded book-spine-shadow" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                    <img src={formatImageUrl(selectedBookDetail.cover, 1000)} alt={selectedBookDetail.title} className="h-full w-auto object-contain rounded book-spine-shadow" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                 </div>
                                 <div className="flex-1 space-y-3 text-left">
                                     <h3 className={`${isBookDetailFullscreen ? 'text-2xl md:text-3xl' : 'text-xl'} font-black text-[var(--dark-color)] font-serif`}>{selectedBookDetail.title}</h3>
