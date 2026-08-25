@@ -479,19 +479,17 @@ const defaultUI = {
 
 function App() {
     const staticData = (typeof window !== "undefined" && window.STATIC_DATA) || {};
+    const hasStaticBooks = Boolean(staticData.books && staticData.books.length > 0);
+
     const [ui, setUi] = useState(() => (staticData.ui && Object.keys(staticData.ui).length > 0) ? staticData.ui : defaultUI);
     const [settings, setSettings] = useState(() => (staticData.settings && Object.keys(staticData.settings).length > 0) ? staticData.settings : { systemName: '文史哲出版社', systemSubName: 'The Liberal Arts Press' });
     const [carousels, setCarousels] = useState(() => {
         if (staticData.carousels && staticData.carousels.length > 0) return staticData.carousels;
-        const cached = safeGetStorage('lapen_carousels_v4');
-        if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p; } catch(e) {} }
         return fallbackCarousels;
     });
     const [carouselIndex, setCarouselIndex] = useState(0); 
     const [books, setBooks] = useState(() => {
-        if (staticData.books && staticData.books.length > 0) return staticData.books;
-        const cached = safeGetStorage('lapen_books_v6');
-        if (cached) { try { const p = JSON.parse(cached); if(p.length > 0) return p.sort(() => 0.5 - Math.random()); } catch(e) {} }
+        if (hasStaticBooks) return staticData.books;
         return fallbackBooks;
     });
     const [choiceBooks, setChoiceBooks] = useState(() => (staticData.choices && staticData.choices.length > 0) ? staticData.choices : []);
@@ -504,7 +502,7 @@ function App() {
     const [isCartDetailsOpen, setIsCartDetailsOpen] = useState(true);
     const [selectedPayment, setSelectedPayment] = useState('店取付現金');
 
-    const [isBooksLoading, setIsBooksLoading] = useState(() => !(staticData.books && staticData.books.length > 0)); 
+    const [isBooksLoading, setIsBooksLoading] = useState(() => !hasStaticBooks); 
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [isSubmittingCS, setIsSubmittingCS] = useState(false);
     const [lastActionTime, setLastActionTime] = useState(0);
@@ -590,70 +588,26 @@ function App() {
         }
     }, []);
 
-    // 🟢 【極致效能重構】：改用單一 FETCH_INIT_DATA 合流 API 請求，一次性拿回所有初始資料！
+    // 🟢 若已有完整 staticData 靜態資料庫，以 staticData 為準；若無才向 GAS 索取
     useEffect(() => {
+        if (hasStaticBooks) {
+            setIsBooksLoading(false);
+            return;
+        }
         if (hasFetchedRef.current) return;
         hasFetchedRef.current = true;
 
         syncWithGAS('FETCH_INIT_DATA').then(res => {
             if (res && res.status === 'success' && res.data) {
                 const { settings: fetchedSettings, ui: fetchedUi, carousels: fetchedCarousels, choices: fetchedChoices, books: fetchedBooks } = res.data;
-
-                if (fetchedSettings && Object.keys(fetchedSettings).length > 0) {
-                    setSettings(prev => ({ ...prev, ...fetchedSettings }));
-                    if (fetchedSettings.systemName) document.title = `${fetchedSettings.systemName} 有限公司｜台灣人文學術出版社（首頁）官網`;
-                }
-                if (fetchedUi && Object.keys(fetchedUi).length > 0) {
-                    setUi(prev => ({ ...prev, ...fetchedUi }));
-                    if (fetchedUi.frontendName) document.title = `${fetchedUi.frontendName} - 首頁`;
-                }
-                if (Array.isArray(fetchedCarousels) && fetchedCarousels.length > 0) {
-                    const published = fetchedCarousels.filter(c => c.status === '已發佈');
-                    if (published.length > 0) {
-                        setCarousels(published);
-                        safeSetStorage('lapen_carousels_v4', JSON.stringify(published));
-                    }
-                }
-                if (Array.isArray(fetchedChoices)) {
-                    const valid = fetchedChoices.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
-                    setChoiceBooks(valid);
-                }
-                if (Array.isArray(fetchedBooks)) {
-                    const valid = fetchedBooks.filter(b => b.title && b.title.trim() !== '' && b.title !== '未命名書籍');
-                    const shuffled = valid.sort(() => 0.5 - Math.random());
-                    setBooks(shuffled);
-                    safeSetStorage('lapen_books_v6', JSON.stringify(shuffled.slice(0, 150)));
-                }
-            } else {
-                // 🛡️ 後備相容機制：若舊版後端尚未更新，自動降級為傳統分發 Request
-                Promise.allSettled([
-                    syncWithGAS('FETCH_SETTINGS'),
-                    syncWithGAS('FETCH_UI'),
-                    syncWithGAS('FETCH_CAROUSELS'),
-                    syncWithGAS('FETCH_CHOICES'),
-                    syncWithGAS('FETCH_BOOKS')
-                ]).then(([resSettings, resUi, resCarousels, resChoices, resBooks]) => {
-                    if (resSettings.status === 'fulfilled' && resSettings.value?.data) {
-                        setSettings(prev => ({ ...prev, ...resSettings.value.data }));
-                    }
-                    if (resUi.status === 'fulfilled' && resUi.value?.data) {
-                        setUi(prev => ({ ...prev, ...resUi.value.data }));
-                    }
-                    if (resCarousels.status === 'fulfilled' && Array.isArray(resCarousels.value?.data)) {
-                        const published = resCarousels.value.data.filter(c => c.status === '已發佈');
-                        if (published.length > 0) setCarousels(published);
-                    }
-                    if (resChoices.status === 'fulfilled' && Array.isArray(resChoices.value?.data)) {
-                        setChoiceBooks(resChoices.value.data.filter(b => b.title && b.title !== '未命名書籍'));
-                    }
-                    if (resBooks.status === 'fulfilled' && Array.isArray(resBooks.value?.data)) {
-                        const valid = resBooks.value.data.filter(b => b.title && b.title !== '未命名書籍');
-                        setBooks(valid.sort(() => 0.5 - Math.random()));
-                    }
-                });
+                if (fetchedSettings && Object.keys(fetchedSettings).length > 0) setSettings(prev => ({ ...prev, ...fetchedSettings }));
+                if (fetchedUi && Object.keys(fetchedUi).length > 0) setUi(prev => ({ ...prev, ...fetchedUi }));
+                if (Array.isArray(fetchedCarousels) && fetchedCarousels.length > 0) setCarousels(fetchedCarousels.filter(c => c.status === '已發佈'));
+                if (Array.isArray(fetchedChoices)) setChoiceBooks(fetchedChoices.filter(b => b.title && b.title !== '未命名書籍'));
+                if (Array.isArray(fetchedBooks)) setBooks(fetchedBooks.filter(b => b.title && b.title !== '未命名書籍'));
             }
         }).finally(() => setIsBooksLoading(false));
-    }, [syncWithGAS]);
+    }, [hasStaticBooks, syncWithGAS]);
 
     const handleOrderQuerySubmit = async (e) => {
         e.preventDefault();

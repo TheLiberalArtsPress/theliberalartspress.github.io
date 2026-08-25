@@ -334,11 +334,32 @@ function AdminApp() {
     }
   };
   const handleExportDataJs = () => {
+    // 💡 同步更新「編輯特別推薦」中的書籍資訊（例如價格、書名等）
+    const updatedChoices = (staticData.choices || []).map(c => {
+      const matchingBook = books.find(b => String(b.id) === String(c.id));
+      if (matchingBook) {
+        return {
+          ...c,
+          title: matchingBook.title,
+          author: matchingBook.author,
+          year: matchingBook.year,
+          price: matchingBook.price,
+          stock: matchingBook.stock,
+          category: matchingBook.category,
+          cover: matchingBook.cover,
+          localCover: matchingBook.localCover,
+          intro: matchingBook.intro,
+          心得: matchingBook.心得
+        };
+      }
+      return c;
+    });
+
     const fullData = {
       settings: settings,
       ui: staticData.ui || {},
       carousels: carousels,
-      choices: staticData.choices || [],
+      choices: updatedChoices,
       books: books
     };
     const fileContent = "window.STATIC_DATA = " + JSON.stringify(fullData, null, 2) + ";";
@@ -353,7 +374,7 @@ function AdminApp() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('已生成並下載最新 data.js！覆蓋專案目錄並推送到 GitHub 即可更新網站。', 'success');
+    showToast('已生成並下載最新 data.js！請記得將檔案覆蓋專案目錄並推送到 GitHub 即可更新網站。', 'success');
   };
   const handleUpdateOrderStatus = (orderId, newStatus) => {
     setOrders(prev => prev.map(o => o.orderId === orderId ? {
