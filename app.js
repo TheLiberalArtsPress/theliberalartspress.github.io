@@ -1712,17 +1712,8 @@ function App() {
     className: "w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"
   }), " ", ui.footerBookLinkText))))), /*#__PURE__*/React.createElement("div", {
     className: "mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-stone-400 font-bold"
-  }, /*#__PURE__*/React.createElement("p", null, "\xA9 ", new Date().getFullYear(), " ", ui.frontendName || settings.systemName, " ", ui.systemSubName || settings.systemSubName, "."), /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-4 mt-2 md:mt-0"
-  }, /*#__PURE__*/React.createElement("a", {
-    href: "admin.html",
-    target: "_blank",
-    className: "text-stone-400 hover:text-amber-300 flex items-center gap-1 transition bg-white/5 px-2.5 py-1 rounded-md border border-white/10"
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "LayoutDashboard",
-    size: 12
-  }), /*#__PURE__*/React.createElement("span", null, "\u7BA1\u7406\u5F8C\u53F0\u7CFB\u7D71")), /*#__PURE__*/React.createElement("p", {
-    className: "flex items-center gap-2 cursor-pointer select-none",
+  }, /*#__PURE__*/React.createElement("p", null, "\xA9 ", new Date().getFullYear(), " ", ui.frontendName || settings.systemName, " ", ui.systemSubName || settings.systemSubName, "."), /*#__PURE__*/React.createElement("p", {
+    className: "mt-2 md:mt-0 flex items-center gap-2 cursor-pointer select-none",
     onClick: handleLogoSecretClick,
     title: "\u9EDE\u64CA\u4E09\u6B21\u89E3\u9396\u96B1\u85CF AI \u5206\u6790"
   }, /*#__PURE__*/React.createElement(ModernLogo, {
@@ -1733,7 +1724,7 @@ function App() {
     name: "Sparkles",
     size: 11,
     className: "text-amber-400 opacity-60"
-  })))))), /*#__PURE__*/React.createElement("div", {
+  }))))), /*#__PURE__*/React.createElement("div", {
     className: "fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
   }, isContactOpen && /*#__PURE__*/React.createElement("div", {
     className: "glass-modal w-80 shadow-2xl rounded-2xl border border-[var(--border-color)] overflow-hidden animate-in"
