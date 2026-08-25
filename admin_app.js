@@ -1545,4 +1545,26 @@ function AdminApp() {
     className: `text-xs px-2.5 py-1 rounded-lg font-bold ${viewingOrder.status === st ? 'bg-[#8C5A2B] text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`
   }, st))))))));
 }
-ReactDOM.createRoot(document.getElementById('admin-root')).render( /*#__PURE__*/React.createElement(AdminApp, null));
+function mountAdminApp() {
+  var rootEl = document.getElementById('admin-root');
+  if (!rootEl) return;
+  try {
+    if (ReactDOM.createRoot) {
+      ReactDOM.createRoot(rootEl).render(React.createElement(AdminApp, null));
+    } else {
+      ReactDOM.render(React.createElement(AdminApp, null), rootEl);
+    }
+  } catch (e) {
+    console.error("Mount error:", e);
+    var errBox = document.getElementById('debug-error-box');
+    if (errBox) {
+      errBox.style.display = 'block';
+      errBox.innerHTML = '<b>渲染錯誤：</b> ' + e.message + '<br><pre>' + (e.stack || '') + '</pre>';
+    }
+  }
+}
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', mountAdminApp);
+} else {
+  mountAdminApp();
+}
