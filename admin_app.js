@@ -4,51 +4,101 @@ const {
   useMemo,
   useRef
 } = React;
-
-// 預設後端 GAS 網址（可由後台設定頁動態修改）
 const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec";
 const DEFAULT_PASS = "lapen_admin_888";
 const SVG_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'%3E%3Crect width='100%25' height='100%25' fill='%23EDE5DC'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='11' fill='%238C5A2B'%3E封面暫缺%3C/text%3E%3C/svg%3E";
+
+// 🛡️ 安全存儲輔助函式（防止 QuotaExceededError 崩潰）
+const safeSetStorage = (key, val) => {
+  try {
+    localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val));
+  } catch (e) {
+    console.warn("Storage quota limit reached for:", key);
+  }
+};
+const safeGetStorage = (key, defaultVal = null) => {
+  try {
+    const item = localStorage.getItem(key);
+    return item ? JSON.parse(item) : defaultVal;
+  } catch (e) {
+    return defaultVal;
+  }
+};
+
+// 🗄️ IndexedDB 大容量資料庫 (支援數百 MB 典籍與封面存儲)
+const DB_NAME = 'LapenAdminDB';
+const STORE_NAME = 'books_store';
+function getDB() {
+  return new Promise(resolve => {
+    try {
+      const req = window.indexedDB.open(DB_NAME, 1);
+      req.onupgradeneeded = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(STORE_NAME)) {
+          db.createObjectStore(STORE_NAME);
+        }
+      };
+      req.onsuccess = e => resolve(e.target.result);
+      req.onerror = () => resolve(null);
+    } catch (e) {
+      resolve(null);
+    }
+  });
+}
+async function saveBooksToIndexedDB(booksList) {
+  try {
+    const db = await getDB();
+    if (!db) return;
+    const tx = db.transaction(STORE_NAME, 'readwrite');
+    tx.objectStore(STORE_NAME).put(booksList, 'admin_books');
+  } catch (e) {
+    console.warn("IndexedDB save error:", e);
+  }
+}
+async function loadBooksFromIndexedDB() {
+  try {
+    const db = await getDB();
+    if (!db) return null;
+    return new Promise(resolve => {
+      const tx = db.transaction(STORE_NAME, 'readonly');
+      const req = tx.objectStore(STORE_NAME).get('admin_books');
+      req.onsuccess = () => resolve(req.result);
+      req.onerror = () => resolve(null);
+    });
+  } catch (e) {
+    return null;
+  }
+}
 function AdminApp() {
-  // 登入狀態
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return sessionStorage.getItem('lapen_admin_logged') === 'true';
   });
   const [passwordInput, setPasswordInput] = useState('');
   const [loginError, setLoginError] = useState('');
   const [savedPassword, setSavedPassword] = useState(() => {
-    return localStorage.getItem('lapen_admin_pwd') || DEFAULT_PASS;
+    try {
+      return localStorage.getItem('lapen_admin_pwd') || DEFAULT_PASS;
+    } catch (e) {
+      return DEFAULT_PASS;
+    }
   });
-
-  // 導覽標籤
-  const [activeTab, setActiveTab] = useState('books'); // dashboard, books, orders, cs, carousels, settings
-
-  // 後端與連線設定
+  const [activeTab, setActiveTab] = useState('books');
   const [gasUrl, setGasUrl] = useState(() => {
-    return localStorage.getItem('lapen_gas_url') || DEFAULT_GAS_URL;
+    try {
+      return localStorage.getItem('lapen_gas_url') || DEFAULT_GAS_URL;
+    } catch (e) {
+      return DEFAULT_GAS_URL;
+    }
   });
-  const [isSyncing, setIsSyncing] = useState(false);
   const [syncMessage, setSyncMessage] = useState(null);
-
-  // 核心資料狀態
   const staticData = typeof window !== "undefined" && window.STATIC_DATA || {};
-  const [books, setBooks] = useState(() => {
-    const cached = localStorage.getItem('lapen_admin_books');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch (e) {}
-    }
-    return staticData.books || [];
-  });
+
+  // 初始化書籍 (優先靜態資料庫)
+  const [books, setBooks] = useState(() => staticData.books || []);
+
+  // 初始化訂單
   const [orders, setOrders] = useState(() => {
-    const cached = localStorage.getItem('lapen_admin_orders');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch (e) {}
-    }
-    return [{
+    return safeGetStorage('lapen_admin_orders', [{
       orderId: "ORD20260825001",
       date: "2026/08/25 18:30:12",
       name: "王大明",
@@ -61,16 +111,12 @@ function AdminApp() {
       memo: "請協助挑選書況良好之書籍，感謝！",
       status: "待處理",
       adminNote: ""
-    }];
+    }]);
   });
+
+  // 初始化客服反映
   const [csMessages, setCsMessages] = useState(() => {
-    const cached = localStorage.getItem('lapen_admin_cs');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch (e) {}
-    }
-    return [{
+    return safeGetStorage('lapen_admin_cs', [{
       id: "CS2026082501",
       date: "2026/08/25 19:15:00",
       name: "陳教授",
@@ -79,33 +125,19 @@ function AdminApp() {
       content: "請問《滿語叢刊》一套 50 冊是否有提供大學研究室採購優惠折扣？",
       status: "未處理",
       replyNote: ""
-    }];
+    }]);
   });
   const [carousels, setCarousels] = useState(() => {
-    const cached = localStorage.getItem('lapen_admin_carousels');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch (e) {}
-    }
-    return staticData.carousels || [];
+    return safeGetStorage('lapen_admin_carousels', staticData.carousels || []);
   });
-  const [settings, setSettings] = useState(() => {
-    const cached = localStorage.getItem('lapen_admin_settings');
-    if (cached) {
-      try {
-        return JSON.parse(cached);
-      } catch (e) {}
-    }
-    return staticData.settings || {};
-  });
+  const [settings, setSettings] = useState(() => staticData.settings || {});
 
   // 書籍管理 UI 狀態
   const [bookSearch, setBookSearch] = useState('');
   const [bookCatFilter, setBookCatFilter] = useState('全部');
   const [bookPage, setBookPage] = useState(1);
   const [pageSize, setPageSize] = useState(25);
-  const [editingBook, setEditingBook] = useState(null); // null = 不顯示 modal, 'NEW' = 新增, object = 編輯
+  const [editingBook, setEditingBook] = useState(null);
   const [bookFormData, setBookFormData] = useState({
     id: '',
     title: '',
@@ -130,11 +162,6 @@ function AdminApp() {
   // 客服管理 UI 狀態
   const [csFilter, setCsFilter] = useState('全部');
   const [viewingCs, setViewingCs] = useState(null);
-
-  // 輪播管理 UI 狀態
-  const [editingCarousel, setEditingCarousel] = useState(null);
-
-  // 提示訊息通知
   const showToast = (msg, type = 'info') => {
     setSyncMessage({
       msg,
@@ -143,41 +170,52 @@ function AdminApp() {
     setTimeout(() => setSyncMessage(null), 3500);
   };
 
-  // 自動快照到 LocalStorage
+  // 啟動時從 IndexedDB 載入已修改的書籍 (若有)
   useEffect(() => {
-    localStorage.setItem('lapen_admin_books', JSON.stringify(books));
+    loadBooksFromIndexedDB().then(saved => {
+      if (saved && Array.isArray(saved) && saved.length > 0) {
+        setBooks(saved);
+      }
+    });
+  }, []);
+
+  // 當書籍異動時，儲存至 IndexedDB
+  useEffect(() => {
+    if (books && books.length > 0) {
+      saveBooksToIndexedDB(books);
+    }
   }, [books]);
+
+  // 訂單與客服留言變更時，安全存入 localStorage
   useEffect(() => {
-    localStorage.setItem('lapen_admin_orders', JSON.stringify(orders));
+    safeSetStorage('lapen_admin_orders', orders);
   }, [orders]);
   useEffect(() => {
-    localStorage.setItem('lapen_admin_cs', JSON.stringify(csMessages));
+    safeSetStorage('lapen_admin_cs', csMessages);
   }, [csMessages]);
   useEffect(() => {
-    localStorage.setItem('lapen_admin_carousels', JSON.stringify(carousels));
+    safeSetStorage('lapen_admin_carousels', carousels);
   }, [carousels]);
-
-  // 處理登入
   const handleLogin = e => {
     e.preventDefault();
     if (passwordInput === savedPassword) {
       setIsLoggedIn(true);
-      sessionStorage.setItem('lapen_admin_logged', 'true');
+      try {
+        sessionStorage.setItem('lapen_admin_logged', 'true');
+      } catch (e) {}
       setLoginError('');
       showToast('管理員登入成功！歡迎使用後台系統', 'success');
     } else {
       setLoginError('密碼不正確，請重新輸入（預設密碼為：lapen_admin_888）');
     }
   };
-
-  // 處理登出
   const handleLogout = () => {
     setIsLoggedIn(false);
-    sessionStorage.removeItem('lapen_admin_logged');
+    try {
+      sessionStorage.removeItem('lapen_admin_logged');
+    } catch (e) {}
     setPasswordInput('');
   };
-
-  // 取得現有所有分類清單
   const categoriesList = useMemo(() => {
     const set = new Set();
     books.forEach(b => {
@@ -185,8 +223,6 @@ function AdminApp() {
     });
     return ['全部', ...Array.from(set).sort()];
   }, [books]);
-
-  // 篩選後書籍清單
   const filteredBooks = useMemo(() => {
     const q = bookSearch.trim().toLowerCase();
     return books.filter(b => {
@@ -196,15 +232,11 @@ function AdminApp() {
       return String(b.id || '').toLowerCase().includes(q) || String(b.title || '').toLowerCase().includes(q) || String(b.author || '').toLowerCase().includes(q) || String(b.year || '').toLowerCase().includes(q) || String(b.isbn || '').toLowerCase().includes(q);
     });
   }, [books, bookSearch, bookCatFilter]);
-
-  // 分頁計算
   const totalPages = Math.ceil(filteredBooks.length / pageSize) || 1;
   const paginatedBooks = useMemo(() => {
     const start = (bookPage - 1) * pageSize;
     return filteredBooks.slice(start, start + pageSize);
   }, [filteredBooks, bookPage, pageSize]);
-
-  // 開啟書籍編輯 Modal
   const handleOpenEditBook = (book = null) => {
     if (book) {
       setEditingBook(book);
@@ -224,7 +256,6 @@ function AdminApp() {
         心得: book.心得 || book.review || ''
       });
     } else {
-      // 新增書籍
       const nextId = String(books.length + 1).padStart(5, '0');
       setEditingBook('NEW');
       setBookFormData({
@@ -244,8 +275,6 @@ function AdminApp() {
       });
     }
   };
-
-  // 圖片檔案轉換為 Base64
   const handleImageUpload = e => {
     const file = e.target.files[0];
     if (!file) return;
@@ -263,8 +292,6 @@ function AdminApp() {
     };
     reader.readAsDataURL(file);
   };
-
-  // 儲存書籍
   const handleSaveBook = e => {
     e.preventDefault();
     if (!bookFormData.id.trim() || !bookFormData.title.trim()) {
@@ -287,7 +314,6 @@ function AdminApp() {
       心得: bookFormData.心得.trim()
     };
     if (editingBook === 'NEW') {
-      // 檢查書碼是否重複
       const exists = books.some(b => String(b.id) === newBookObj.id);
       if (exists) {
         alert(`書碼 ${newBookObj.id} 已經存在，請更換其他書碼！`);
@@ -296,22 +322,17 @@ function AdminApp() {
       setBooks(prev => [newBookObj, ...prev]);
       showToast(`新書《${newBookObj.title}》已成功新增！`, 'success');
     } else {
-      // 編輯更新
       setBooks(prev => prev.map(b => String(b.id) === String(editingBook.id) ? newBookObj : b));
       showToast(`書籍《${newBookObj.title}》資料已更新！`, 'success');
     }
     setEditingBook(null);
   };
-
-  // 刪除書籍
   const handleDeleteBook = book => {
     if (window.confirm(`確定要刪除書籍【${book.id}】《${book.title}》嗎？此動作無法復原！`)) {
       setBooks(prev => prev.filter(b => String(b.id) !== String(book.id)));
       showToast(`書籍《${book.title}》已刪除`, 'danger');
     }
   };
-
-  // 導出 data.js 檔案
   const handleExportDataJs = () => {
     const fullData = {
       settings: settings,
@@ -332,10 +353,8 @@ function AdminApp() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('已生成並下載最新 data.js！直接覆蓋專案目錄並推送到 GitHub 即可更新網站。', 'success');
+    showToast('已生成並下載最新 data.js！覆蓋專案目錄並推送到 GitHub 即可更新網站。', 'success');
   };
-
-  // 更新訂單狀態
   const handleUpdateOrderStatus = (orderId, newStatus) => {
     setOrders(prev => prev.map(o => o.orderId === orderId ? {
       ...o,
@@ -349,8 +368,6 @@ function AdminApp() {
     }
     showToast(`訂單 ${orderId} 狀態已更新為【${newStatus}】`, 'success');
   };
-
-  // 刪除訂單
   const handleDeleteOrder = orderId => {
     if (window.confirm(`確定要刪除訂單 ${orderId} 嗎？`)) {
       setOrders(prev => prev.filter(o => o.orderId !== orderId));
@@ -358,8 +375,6 @@ function AdminApp() {
       showToast(`訂單 ${orderId} 已刪除`, 'danger');
     }
   };
-
-  // 更新客服處理狀態
   const handleUpdateCsStatus = (msgId, newStatus) => {
     setCsMessages(prev => prev.map(m => m.id === msgId ? {
       ...m,
@@ -373,8 +388,6 @@ function AdminApp() {
     }
     showToast(`客服反映 ${msgId} 狀態已更新為【${newStatus}】`, 'success');
   };
-
-  // 刪除客服紀錄
   const handleDeleteCs = msgId => {
     if (window.confirm(`確定要刪除此客服留言嗎？`)) {
       setCsMessages(prev => prev.filter(m => m.id !== msgId));
@@ -382,8 +395,6 @@ function AdminApp() {
       showToast(`客服留言已刪除`, 'danger');
     }
   };
-
-  // 儲存密碼設定
   const handleSaveNewPassword = e => {
     e.preventDefault();
     const newPwd = e.target.newPwd.value.trim();
@@ -392,21 +403,17 @@ function AdminApp() {
       return;
     }
     setSavedPassword(newPwd);
-    localStorage.setItem('lapen_admin_pwd', newPwd);
+    safeSetStorage('lapen_admin_pwd', newPwd);
     e.target.reset();
     showToast('管理員密碼已成功更新！', 'success');
   };
-
-  // 儲存 GAS URL 設定
   const handleSaveGasUrl = e => {
     e.preventDefault();
     const url = e.target.gasUrl.value.trim();
     setGasUrl(url);
-    localStorage.setItem('lapen_gas_url', url);
+    safeSetStorage('lapen_gas_url', url);
     showToast('Google Apps Script API 網址已儲存！', 'success');
   };
-
-  // 若未登入，顯示登入畫面
   if (!isLoggedIn) {
     return /*#__PURE__*/React.createElement("div", {
       className: "min-h-screen flex items-center justify-center bg-[#241D17] px-4"
@@ -474,8 +481,6 @@ function AdminApp() {
       d: "M10 19l-7-7m0 0l7-7m-7 7h18"
     })), /*#__PURE__*/React.createElement("span", null, "\u8FD4\u56DE\u51FA\u7248\u793E\u5B98\u65B9\u7DB2\u7AD9\u9996\u9801")))));
   }
-
-  // 主後台畫面
   return /*#__PURE__*/React.createElement("div", {
     className: "min-h-screen flex flex-col md:flex-row bg-[#F4EFEA]"
   }, syncMessage && /*#__PURE__*/React.createElement("div", {
@@ -728,31 +733,7 @@ function AdminApp() {
     strokeLinejoin: "round",
     strokeWidth: "2",
     d: "M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"
-  }))))), /*#__PURE__*/React.createElement("div", {
-    className: "bg-white p-6 rounded-2xl border border-[#E8DCCE] shadow-sm"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "font-serif font-bold text-lg text-[#241D17] mb-3"
-  }, "\uD83D\uDCCC \u7DB2\u7AD9\u5F8C\u53F0\u4F7F\u7528\u6559\u5B78\u8207\u767C\u4F48\u8AAA\u660E"), /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-[#4A3B32]"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DCCE]/80"
-  }, /*#__PURE__*/React.createElement("h4", {
-    className: "font-bold text-[#8C5A2B] mb-1"
-  }, "1. \u7DE8\u8F2F\u8207\u65B0\u589E\u66F8\u7C4D"), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs leading-relaxed"
-  }, "\u9EDE\u64CA\u5DE6\u5074\u300C\u66F8\u7C4D\u5EAB\u5B58\u7BA1\u7406\u300D\uFF0C\u60A8\u53EF\u4EE5\u641C\u5C0B\u4EFB\u4E00\u66F8\u7C4D\u9032\u884C\u7DE8\u8F2F\uFF08\u4FEE\u6539\u5C01\u9762\u5716\u3001\u7C21\u4ECB\u3001\u8B80\u5F8C\u5FC3\u5F97\u3001\u5B9A\u50F9\u7B49\uFF09\uFF0C\u4EA6\u53EF\u9EDE\u64CA\u300C\u65B0\u589E\u66F8\u7C4D\u300D\u589E\u52A0\u65B0\u66F8\u3002")), /*#__PURE__*/React.createElement("div", {
-    className: "p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DCCE]/80"
-  }, /*#__PURE__*/React.createElement("h4", {
-    className: "font-bold text-[#8C5A2B] mb-1"
-  }, "2. \u4E00\u9375\u66F4\u65B0\u5B98\u65B9\u7DB2\u7AD9"), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs leading-relaxed"
-  }, "\u5728\u5F8C\u53F0\u4FEE\u6539\u5B8C\u66F8\u7C4D\u5F8C\uFF0C\u9EDE\u64CA\u53F3\u4E0A\u89D2\u300C\uD83D\uDCE5 \u4E00\u9375\u5C0E\u51FA data.js\u300D\uFF0C\u5C07\u4E0B\u8F09\u7684\u6A94\u6848\u653E\u5165\u5C08\u6848\u76EE\u9304\u4E26\u63A8\u9001\u5230 GitHub\uFF0C\u5B98\u65B9\u7DB2\u7AD9\u5373\u523B\u81EA\u52D5\u66F4\u65B0\uFF01")), /*#__PURE__*/React.createElement("div", {
-    className: "p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DCCE]/80"
-  }, /*#__PURE__*/React.createElement("h4", {
-    className: "font-bold text-[#8C5A2B] mb-1"
-  }, "3. \u9867\u5BA2\u8A02\u55AE\u8207\u5BA2\u670D\u53CD\u6620"), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs leading-relaxed"
-  }, "\u524D\u53F0\u9867\u5BA2\u65BC\u300C\u6211\u7684\u66F8\u5305\u300D\u9001\u51FA\u7684\u8A02\u55AE\u8207\u300C\u5BA2\u670D\u8207\u5EFA\u8B70\u300D\u8A0A\u606F\u6703\u5373\u6642\u9001\u5165\u7CFB\u7D71\uFF0C\u60A8\u53EF\u5728\u5F8C\u53F0\u6A19\u8A18\u8655\u7406\u72C0\u614B\u8207\u67E5\u770B\u8A73\u60C5\u3002"))))), activeTab === 'books' && /*#__PURE__*/React.createElement("div", {
+  })))))), activeTab === 'books' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm flex flex-col overflow-hidden"
   }, /*#__PURE__*/React.createElement("div", {
     className: "p-5 border-b border-[#E8DCCE] bg-[#FAF8F5] flex flex-wrap items-center justify-between gap-4"
@@ -1023,13 +1004,9 @@ function AdminApp() {
     className: "px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 rounded-xl text-xs font-bold transition"
   }, "\u522A\u9664\u7D00\u9304")))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm p-6 space-y-6"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center justify-between"
-  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+  }, /*#__PURE__*/React.createElement("h3", {
     className: "font-serif font-bold text-lg text-[#241D17]"
-  }, "\u9996\u9801\u5927\u5716\u8F2A\u64AD\u7BA1\u7406"), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs text-gray-500"
-  }, "\u81EA\u8A02\u524D\u53F0\u9996\u9801\u6700\u4E0A\u65B9\u8F2A\u64AD\u770B\u677F\u8207\u5F62\u8C61\u5BA3\u50B3"))), /*#__PURE__*/React.createElement("div", {
+  }, "\u9996\u9801\u5927\u5716\u8F2A\u64AD\u7BA1\u7406"), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-3 gap-6"
   }, carousels.map((car, idx) => /*#__PURE__*/React.createElement("div", {
     key: car.id || idx,
@@ -1058,9 +1035,7 @@ function AdminApp() {
     className: "bg-white p-6 rounded-2xl border border-[#E8DCCE] shadow-sm space-y-4"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-serif font-bold text-lg text-[#241D17]"
-  }, "\uD83D\uDD12 \u4FEE\u6539\u5F8C\u53F0\u7BA1\u7406\u54E1\u5BC6\u78BC"), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs text-gray-500 leading-relaxed"
-  }, "\u8ACB\u8A2D\u5B9A\u9AD8\u5F37\u5EA6\u7BA1\u7406\u5BC6\u78BC\u4EE5\u9632\u6B62\u672A\u6388\u6B0A\u5B58\u53D6\u3002"), /*#__PURE__*/React.createElement("form", {
+  }, "\uD83D\uDD12 \u4FEE\u6539\u5F8C\u53F0\u7BA1\u7406\u54E1\u5BC6\u78BC"), /*#__PURE__*/React.createElement("form", {
     onSubmit: handleSaveNewPassword,
     className: "space-y-4"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
@@ -1078,9 +1053,7 @@ function AdminApp() {
     className: "bg-white p-6 rounded-2xl border border-[#E8DCCE] shadow-sm space-y-4"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-serif font-bold text-lg text-[#241D17]"
-  }, "\u2601\uFE0F Google Apps Script (GAS) API \u7DB2\u5740"), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs text-gray-500 leading-relaxed"
-  }, "\u82E5\u60A8\u6709\u5C07 ", /*#__PURE__*/React.createElement("code", null, "backend_gas.js"), " \u90E8\u7F72\u81F3\u60A8\u81EA\u5DF1\u7684 Google \u8A66\u7B97\u8868\uFF0C\u8ACB\u5728\u6B64\u8CBC\u4E0A Web App \u7DB2\u5740\uFF1A"), /*#__PURE__*/React.createElement("form", {
+  }, "\u2601\uFE0F Google Apps Script (GAS) API \u7DB2\u5740"), /*#__PURE__*/React.createElement("form", {
     onSubmit: handleSaveGasUrl,
     className: "space-y-4"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
