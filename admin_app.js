@@ -4,6 +4,7 @@ const {
   useMemo,
   useRef
 } = React;
+const DEFAULT_PASS = "lapen1971";
 const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec";
 const DEFAULT_REPO = "maplestorycandy/theliberalartspress";
 const DEFAULT_BRANCH = "main";
