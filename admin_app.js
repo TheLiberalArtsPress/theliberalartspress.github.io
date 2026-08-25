@@ -6,9 +6,9 @@ const {
 } = React;
 const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec";
 const DEFAULT_PASS = "lapen_admin_888";
+const DEFAULT_REPO = "maplestorycandy/theliberalartspress";
+const DEFAULT_BRANCH = "main";
 const SVG_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'%3E%3Crect width='100%25' height='100%25' fill='%23EDE5DC'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='11' fill='%238C5A2B'%3E封面暫缺%3C/text%3E%3C/svg%3E";
-
-// 🛡️ 安全存儲輔助函式（防止 QuotaExceededError 崩潰）
 const safeSetStorage = (key, val) => {
   try {
     localStorage.setItem(key, typeof val === 'string' ? val : JSON.stringify(val));
@@ -24,8 +24,6 @@ const safeGetStorage = (key, defaultVal = null) => {
     return defaultVal;
   }
 };
-
-// 🗄️ IndexedDB 大容量資料庫 (支援數百 MB 典籍與封面存儲)
 const DB_NAME = 'LapenAdminDB';
 const STORE_NAME = 'books_store';
 function getDB() {
@@ -69,6 +67,20 @@ async function loadBooksFromIndexedDB() {
     return null;
   }
 }
+
+// 📦 大容量 UTF-8 字串轉 Base64 工具 (支援數十 MB 檔案)
+function encodeUtf8Base64(str) {
+  const encoder = new TextEncoder();
+  const bytes = encoder.encode(str);
+  let binary = '';
+  const len = bytes.byteLength;
+  const chunkSize = 32768;
+  for (let i = 0; i < len; i += chunkSize) {
+    const chunk = bytes.subarray(i, Math.min(i + chunkSize, len));
+    binary += String.fromCharCode.apply(null, chunk);
+  }
+  return btoa(binary);
+}
 function AdminApp() {
   const [isLoggedIn, setIsLoggedIn] = useState(() => {
     return sessionStorage.getItem('lapen_admin_logged') === 'true';
@@ -90,6 +102,31 @@ function AdminApp() {
       return DEFAULT_GAS_URL;
     }
   });
+
+  // GitHub 一鍵同步設定
+  const [ghRepo, setGhRepo] = useState(() => {
+    try {
+      return localStorage.getItem('lapen_gh_repo') || DEFAULT_REPO;
+    } catch (e) {
+      return DEFAULT_REPO;
+    }
+  });
+  const [ghBranch, setGhBranch] = useState(() => {
+    try {
+      return localStorage.getItem('lapen_gh_branch') || DEFAULT_BRANCH;
+    } catch (e) {
+      return DEFAULT_BRANCH;
+    }
+  });
+  const [ghToken, setGhToken] = useState(() => {
+    try {
+      return localStorage.getItem('lapen_gh_token') || '';
+    } catch (e) {
+      return '';
+    }
+  });
+  const [isPushingToGithub, setIsPushingToGithub] = useState(false);
+  const [showGithubConfirm, setShowGithubConfirm] = useState(false);
   const [syncMessage, setSyncMessage] = useState(null);
   const staticData = typeof window !== "undefined" && window.STATIC_DATA || {};
 
@@ -167,10 +204,8 @@ function AdminApp() {
       msg,
       type
     });
-    setTimeout(() => setSyncMessage(null), 3500);
+    setTimeout(() => setSyncMessage(null), 4500);
   };
-
-  // 啟動時從 IndexedDB 載入已修改的書籍 (若有)
   useEffect(() => {
     loadBooksFromIndexedDB().then(saved => {
       if (saved && Array.isArray(saved) && saved.length > 0) {
@@ -178,15 +213,11 @@ function AdminApp() {
       }
     });
   }, []);
-
-  // 當書籍異動時，儲存至 IndexedDB
   useEffect(() => {
     if (books && books.length > 0) {
       saveBooksToIndexedDB(books);
     }
   }, [books]);
-
-  // 訂單與客服留言變更時，安全存入 localStorage
   useEffect(() => {
     safeSetStorage('lapen_admin_orders', orders);
   }, [orders]);
@@ -333,10 +364,9 @@ function AdminApp() {
       showToast(`書籍《${book.title}》已刪除`, 'danger');
     }
   };
-  const handleExportDataJs = () => {
-    // 💡 同步更新「編輯特別推薦」中的書籍資訊（例如價格、書名等）
+  const generateDataJsString = () => {
     const updatedChoices = (staticData.choices || []).map(c => {
-      const matchingBook = books.find(b => String(b.id) === String(c.id));
+      const matchingBook = books.find(b => String(b.id) === String(c.id) || b.title === c.title);
       if (matchingBook) {
         return {
           ...c,
@@ -354,7 +384,6 @@ function AdminApp() {
       }
       return c;
     });
-
     const fullData = {
       settings: settings,
       ui: staticData.ui || {},
@@ -362,7 +391,10 @@ function AdminApp() {
       choices: updatedChoices,
       books: books
     };
-    const fileContent = "window.STATIC_DATA = " + JSON.stringify(fullData, null, 2) + ";";
+    return "window.STATIC_DATA = " + JSON.stringify(fullData, null, 2) + ";";
+  };
+  const handleExportDataJs = () => {
+    const fileContent = generateDataJsString();
     const blob = new Blob([fileContent], {
       type: 'application/javascript;charset=utf-8'
     });
@@ -374,7 +406,72 @@ function AdminApp() {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
-    showToast('已生成並下載最新 data.js！請記得將檔案覆蓋專案目錄並推送到 GitHub 即可更新網站。', 'success');
+    showToast('已生成並下載最新 data.js！', 'success');
+  };
+
+  // 🚀 一鍵直推 GitHub (免手動下載覆蓋)
+  const handlePushToGithub = async () => {
+    if (!ghToken.trim()) {
+      alert('尚未設定 GitHub Access Token！請前往【系統與密碼設定】填寫您的 GitHub Token 即可啟用一鍵直推功能。');
+      setActiveTab('settings');
+      setShowGithubConfirm(false);
+      return;
+    }
+    setIsPushingToGithub(true);
+    setShowGithubConfirm(false);
+    try {
+      const repo = ghRepo.trim() || DEFAULT_REPO;
+      const branch = ghBranch.trim() || DEFAULT_BRANCH;
+      const token = ghToken.trim();
+      const filePath = 'data.js';
+      showToast('⏳ 正在連接 GitHub 取得目前檔案資訊...', 'info');
+
+      // 1. 取得目前 data.js 的 SHA
+      const getUrl = `https://api.github.com/repos/${repo}/contents/${filePath}?ref=${branch}`;
+      const getRes = await fetch(getUrl, {
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json'
+        }
+      });
+      if (!getRes.ok) {
+        const errData = await getRes.json().catch(() => ({}));
+        throw new Error(errData.message || `無法連接 GitHub 倉庫 (${getRes.status})`);
+      }
+      const getJson = await getRes.json();
+      const currentSha = getJson.sha;
+      showToast('⏳ 正在封裝資料庫並推送更新至 GitHub...', 'info');
+
+      // 2. 準備更新內容
+      const newContent = generateDataJsString();
+      const base64Content = encodeUtf8Base64(newContent);
+      const putUrl = `https://api.github.com/repos/${repo}/contents/${filePath}`;
+      const putRes = await fetch(putUrl, {
+        method: 'PUT',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Accept': 'application/vnd.github.v3+json',
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          message: `update(data.js): 後台管理員一鍵發佈書籍資料庫 (${new Date().toLocaleString('zh-TW')})`,
+          content: base64Content,
+          sha: currentSha,
+          branch: branch
+        })
+      });
+      if (!putRes.ok) {
+        const errData = await putRes.json().catch(() => ({}));
+        throw new Error(errData.message || `GitHub 更新失敗 (${putRes.status})`);
+      }
+      showToast('🎉 成功發佈至 GitHub！GitHub Pages 約需 30 秒自動編譯生效。', 'success');
+    } catch (err) {
+      console.error("GitHub Push Error:", err);
+      alert(`發佈至 GitHub 失敗：${err.message}\n\n請確認：\n1. GitHub Token 是否有效且具備 repo 權限\n2. 倉庫路徑是否為 ${ghRepo}`);
+      showToast(`發佈失敗：${err.message}`, 'danger');
+    } finally {
+      setIsPushingToGithub(false);
+    }
   };
   const handleUpdateOrderStatus = (orderId, newStatus) => {
     setOrders(prev => prev.map(o => o.orderId === orderId ? {
@@ -427,6 +524,19 @@ function AdminApp() {
     safeSetStorage('lapen_admin_pwd', newPwd);
     e.target.reset();
     showToast('管理員密碼已成功更新！', 'success');
+  };
+  const handleSaveGithubConfig = e => {
+    e.preventDefault();
+    const token = e.target.ghToken.value.trim();
+    const repo = e.target.ghRepo.value.trim() || DEFAULT_REPO;
+    const branch = e.target.ghBranch.value.trim() || DEFAULT_BRANCH;
+    setGhToken(token);
+    setGhRepo(repo);
+    setGhBranch(branch);
+    safeSetStorage('lapen_gh_token', token);
+    safeSetStorage('lapen_gh_repo', repo);
+    safeSetStorage('lapen_gh_branch', branch);
+    showToast('GitHub 一鍵直推設定已儲存！', 'success');
   };
   const handleSaveGasUrl = e => {
     e.preventDefault();
@@ -647,7 +757,7 @@ function AdminApp() {
   })), /*#__PURE__*/React.createElement("span", null, "\u5B89\u5168\u767B\u51FA")))), /*#__PURE__*/React.createElement("main", {
     className: "flex-1 flex flex-col min-w-0 overflow-y-auto"
   }, /*#__PURE__*/React.createElement("header", {
-    className: "bg-white border-b border-[#E8DCCE] px-6 py-4 flex items-center justify-between shadow-sm shrink-0"
+    className: "bg-white border-b border-[#E8DCCE] px-6 py-4 flex flex-wrap items-center justify-between gap-4 shadow-sm shrink-0"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-3"
   }, /*#__PURE__*/React.createElement("h2", {
@@ -655,10 +765,13 @@ function AdminApp() {
   }, activeTab === 'dashboard' && '總覽儀表板', activeTab === 'books' && '書籍庫存與內容管理', activeTab === 'orders' && '顧客訂單管理', activeTab === 'cs' && '客服與建議反映', activeTab === 'carousels' && '首頁輪播圖管理', activeTab === 'settings' && '系統與安全設定')), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-3"
   }, /*#__PURE__*/React.createElement("button", {
-    onClick: handleExportDataJs,
-    className: "px-4 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-2",
-    title: "\u5C07\u6240\u6709\u4FEE\u6539\u5BEB\u5165 data.js \u4E0B\u8F09"
-  }, /*#__PURE__*/React.createElement("svg", {
+    onClick: () => setShowGithubConfirm(true),
+    disabled: isPushingToGithub,
+    className: "px-4 py-2 bg-emerald-700 hover:bg-emerald-800 disabled:opacity-50 text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5 active:scale-95",
+    title: "\u4FEE\u6539\u5F8C\u76F4\u63A5\u767C\u4F48\u81F3 GitHub \u5009\u5EAB\uFF0C\u7121\u9700\u624B\u52D5\u8907\u88FD"
+  }, isPushingToGithub ? /*#__PURE__*/React.createElement("div", {
+    className: "w-3.5 h-3.5 border-2 border-white border-t-transparent rounded-full animate-spin"
+  }) : /*#__PURE__*/React.createElement("svg", {
     className: "w-4 h-4",
     fill: "none",
     stroke: "currentColor",
@@ -667,8 +780,22 @@ function AdminApp() {
     strokeLinecap: "round",
     strokeLinejoin: "round",
     strokeWidth: "2",
+    d: "M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12"
+  })), /*#__PURE__*/React.createElement("span", null, isPushingToGithub ? '正在發佈至 GitHub...' : '🚀 一鍵同步更新至 GitHub')), /*#__PURE__*/React.createElement("button", {
+    onClick: handleExportDataJs,
+    className: "px-3 py-2 bg-white border border-[#D4C5B9] hover:bg-[#FAF8F5] text-[#8C5A2B] text-xs font-bold rounded-xl transition flex items-center gap-1.5",
+    title: "\u5C07\u6240\u6709\u4FEE\u6539\u4E0B\u8F09\u70BA data.js \u5099\u4EFD"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-3.5 h-3.5",
+    fill: "none",
+    stroke: "currentColor",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: "2",
     d: "M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"
-  })), /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCE5 \u4E00\u9375\u5C0E\u51FA data.js (\u66F4\u65B0\u5B98\u7DB2)")))), /*#__PURE__*/React.createElement("div", {
+  })), /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCE5 \u4E0B\u8F09\u5099\u4EFD data.js")))), /*#__PURE__*/React.createElement("div", {
     className: "p-6 flex-1 space-y-6"
   }, activeTab === 'dashboard' && /*#__PURE__*/React.createElement("div", {
     className: "space-y-6"
@@ -1053,6 +1180,67 @@ function AdminApp() {
   }, car.status || '已發佈'))))))), activeTab === 'settings' && /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 gap-6"
   }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-white p-6 rounded-2xl border-2 border-emerald-600/40 shadow-sm space-y-4 md:col-span-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2.5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-8 h-8 rounded-lg bg-emerald-700 text-white flex items-center justify-center font-bold"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-5 h-5",
+    fill: "currentColor",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    d: "M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z"
+  }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    className: "font-serif font-bold text-base text-[#241D17]"
+  }, "\uD83D\uDE80 GitHub \u4E00\u9375\u76F4\u63A8\u8A2D\u5B9A\uFF08\u4FEE\u6539\u5F8C\u76F4\u63A5\u767C\u4F48\uFF0C\u514D\u624B\u52D5\u4E0B\u8F09\uFF09"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-gray-500"
+  }, "\u586B\u5BEB\u4E00\u6B21 GitHub Token \u5F8C\uFF0C\u5373\u53EF\u5728\u5F8C\u53F0\u9EDE\u64CA\u300C\u4E00\u9375\u540C\u6B65\u300D\uFF0C\u7CFB\u7D71\u81EA\u52D5\u5C07\u6700\u65B0\u66F8\u7C4D\u63A8\u9001\u5230 GitHub\uFF01"))), ghToken ? /*#__PURE__*/React.createElement("span", {
+    className: "text-xs bg-emerald-100 text-emerald-800 px-3 py-1 rounded-full font-bold"
+  }, "\u5DF2\u555F\u7528\u4E00\u9375\u76F4\u63A8") : /*#__PURE__*/React.createElement("span", {
+    className: "text-xs bg-amber-100 text-amber-800 px-3 py-1 rounded-full font-bold"
+  }, "\u5C1A\u672A\u8A2D\u5B9A Token")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSaveGithubConfig,
+    className: "space-y-4 pt-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 md:grid-cols-3 gap-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "md:col-span-2"
+  }, /*#__PURE__*/React.createElement("label", {
+    className: "block text-xs font-bold text-[#4A3B32] mb-1"
+  }, "GitHub Personal Access Token (PAT) ", /*#__PURE__*/React.createElement("span", {
+    className: "text-rose-600"
+  }, "*")), /*#__PURE__*/React.createElement("input", {
+    type: "password",
+    name: "ghToken",
+    defaultValue: ghToken,
+    placeholder: "\u8CBC\u4E0A ghp_ \u958B\u982D\u7684 GitHub Token",
+    className: "w-full px-4 py-2 border border-[#D4C5B9] rounded-xl text-sm font-mono focus:outline-none focus:ring-2 focus:ring-emerald-600",
+    required: true
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "block text-xs font-bold text-[#4A3B32] mb-1"
+  }, "\u76EE\u6A19 GitHub \u5009\u5EAB"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    name: "ghRepo",
+    defaultValue: ghRepo,
+    placeholder: "maplestorycandy/theliberalartspress",
+    className: "w-full px-4 py-2 border border-[#D4C5B9] rounded-xl text-sm font-mono bg-gray-50"
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#FAF8F5] p-3.5 rounded-xl border border-[#E8DCCE] text-xs text-gray-600 space-y-1"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "font-bold text-[#8C5A2B]"
+  }, "\uD83D\uDCA1 \u5982\u4F55\u53D6\u5F97 GitHub Token\uFF1F\uFF08\u53EA\u9700\u5EFA\u7ACB\u4E00\u6B21\uFF09"), /*#__PURE__*/React.createElement("ol", {
+    className: "list-decimal list-inside space-y-0.5 text-gray-700"
+  }, /*#__PURE__*/React.createElement("li", null, "\u9EDE\u64CA\u524D\u5F80 \uD83D\uDC49 ", /*#__PURE__*/React.createElement("a", {
+    href: "https://github.com/settings/tokens",
+    target: "_blank",
+    className: "text-emerald-700 underline font-bold"
+  }, "GitHub Personal Access Tokens")), /*#__PURE__*/React.createElement("li", null, "\u9EDE\u64CA ", /*#__PURE__*/React.createElement("strong", null, "Generate new token (classic)"), "\uFF0C\u540D\u7A31\u586B\u5BEB ", /*#__PURE__*/React.createElement("code", null, "lapen-admin")), /*#__PURE__*/React.createElement("li", null, "\u52FE\u9078 ", /*#__PURE__*/React.createElement("strong", null, "repo"), " \u6B0A\u9650\uFF08\u5177\u6709\u5BEB\u5165\u5009\u5EAB\u6B0A\u9650\uFF09\uFF0C\u7522\u751F\u5F8C\u8907\u88FD\u4EE3\u78BC\u8CBC\u5165\u4E0A\u65B9\u6B04\u4F4D\u5373\u53EF\uFF01"))), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "px-5 py-2.5 bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold rounded-xl shadow transition"
+  }, "\u5132\u5B58 GitHub \u4E00\u9375\u76F4\u63A8\u8A2D\u5B9A"))), /*#__PURE__*/React.createElement("div", {
     className: "bg-white p-6 rounded-2xl border border-[#E8DCCE] shadow-sm space-y-4"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-serif font-bold text-lg text-[#241D17]"
@@ -1089,7 +1277,34 @@ function AdminApp() {
   })), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     className: "px-5 py-2.5 bg-[#241D17] hover:bg-[#3D3126] text-white text-xs font-bold rounded-xl shadow transition"
-  }, "\u5132\u5B58 API \u7DB2\u5740")))))), editingBook && /*#__PURE__*/React.createElement("div", {
+  }, "\u5132\u5B58 API \u7DB2\u5740")))))), showGithubConfirm && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 animate-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#FAF8F5] w-full max-w-md rounded-2xl shadow-2xl border border-[#8C5A2B]/40 overflow-hidden"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#241D17] text-white px-6 py-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-serif font-bold text-base flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDE80"), /*#__PURE__*/React.createElement("span", null, "\u767C\u4F48\u66F8\u7C4D\u66F4\u65B0\u81F3 GitHub")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowGithubConfirm(false),
+    className: "text-gray-400 hover:text-white text-xl font-bold"
+  }, "\u2715")), /*#__PURE__*/React.createElement("div", {
+    className: "p-6 space-y-4"
+  }, /*#__PURE__*/React.createElement("p", {
+    className: "text-sm text-[#4A3B32] leading-relaxed"
+  }, "\u60A8\u5373\u5C07\u628A\u5F8C\u53F0\u6240\u6709\u66F8\u7C4D\u4FEE\u6539\uFF08\u5171 ", /*#__PURE__*/React.createElement("strong", null, books.length), " \u518A\uFF09\u76F4\u63A5\u540C\u6B65\u767C\u4F48\u81F3 GitHub \u5B98\u65B9\u7DB2\u7AD9\u5009\u5EAB\uFF1A"), /*#__PURE__*/React.createElement("div", {
+    className: "bg-white p-3.5 rounded-xl border border-[#E8DCCE] text-xs font-mono text-[#8C5A2B] space-y-1"
+  }, /*#__PURE__*/React.createElement("div", null, "\uD83D\uDCC1 \u76EE\u6A19\u5009\u5EAB\uFF1A", /*#__PURE__*/React.createElement("strong", null, ghRepo)), /*#__PURE__*/React.createElement("div", null, "\uD83C\uDF3F \u76EE\u6A19\u5206\u652F\uFF1A", /*#__PURE__*/React.createElement("strong", null, ghBranch)), /*#__PURE__*/React.createElement("div", null, "\uD83D\uDCC4 \u76EE\u6A19\u6A94\u6848\uFF1A", /*#__PURE__*/React.createElement("strong", null, "data.js"))), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-gray-500"
+  }, "\uD83D\uDCA1 \u767C\u4F48\u5F8C GitHub Pages \u6703\u81EA\u52D5\u69CB\u5EFA\uFF0C\u7D04 30 \u79D2\u5F8C\u5168\u7403\u8B80\u8005\u5373\u53EF\u770B\u5230\u6700\u65B0\u66F8\u7C4D\u8CC7\u6599\u3002"), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-end gap-3 pt-3 border-t border-[#E8DCCE]"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setShowGithubConfirm(false),
+    className: "px-4 py-2 rounded-xl border border-[#D4C5B9] text-gray-700 text-xs font-bold hover:bg-gray-100 transition"
+  }, "\u53D6\u6D88"), /*#__PURE__*/React.createElement("button", {
+    onClick: handlePushToGithub,
+    className: "px-5 py-2 rounded-xl bg-emerald-700 hover:bg-emerald-800 text-white text-xs font-bold shadow-md transition flex items-center gap-1.5"
+  }, /*#__PURE__*/React.createElement("span", null, "\u78BA\u8A8D\u767C\u4F48\u81F3 GitHub")))))), editingBook && /*#__PURE__*/React.createElement("div", {
     className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
   }, /*#__PURE__*/React.createElement("div", {
     className: "bg-[#FAF8F5] w-full max-w-3xl rounded-2xl shadow-2xl border border-[#8C5A2B]/40 overflow-hidden my-8"
