@@ -211,18 +211,13 @@
 </style>
 </head>
 <body class="bg-[var(--bg-color)] selection:bg-[var(--primary-color)] selection:text-white">
-<div id="root">
-    <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #FAF8F5; color: #241D17; font-family: 'Noto Serif TC', serif;">
-        <div style="width: 44px; height: 44px; border: 3.5px solid #8C5A2B; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 16px;"></div>
-        <h2 style="font-size: 22px; font-weight: 900; letter-spacing: 0.1em; margin-bottom: 6px; color: #241D17;">文史哲出版社</h2>
-        <p style="font-size: 13px; color: #8C5A2B; font-family: sans-serif; font-weight: bold; letter-spacing: 0.05em;">典籍目錄載入中，請稍候...</p>
-    </div>
-    <style>
-        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-    </style>
-</div>
+<div id="root"></div>
 
-<script src="data.js"></script>
+<!-- ⚡ 輕量初始數據 (30KB)，讓上方導覽、標題、橫幅、推薦書單 0 秒瞬間渲染 -->
+<script src="init_data.js"></script>
+
+<!-- 📚 非同步背景載入 2,632 本全館書籍 (11MB)，不阻塞網頁與畫面呈現 -->
+<script src="data.js" defer></script>
 <script type="text/babel">
 const { useState, useEffect, useMemo, useRef, memo, useCallback } = React;
 
@@ -478,21 +473,15 @@ const defaultUI = {
 };
 
 function App() {
+    const initData = (typeof window !== "undefined" && (window.INIT_DATA || window.STATIC_DATA)) || {};
     const staticData = (typeof window !== "undefined" && window.STATIC_DATA) || {};
-    const hasStaticBooks = Boolean(staticData.books && staticData.books.length > 0);
 
-    const [ui, setUi] = useState(() => (staticData.ui && Object.keys(staticData.ui).length > 0) ? staticData.ui : defaultUI);
-    const [settings, setSettings] = useState(() => (staticData.settings && Object.keys(staticData.settings).length > 0) ? staticData.settings : { systemName: '文史哲出版社', systemSubName: 'The Liberal Arts Press' });
-    const [carousels, setCarousels] = useState(() => {
-        if (staticData.carousels && staticData.carousels.length > 0) return staticData.carousels;
-        return fallbackCarousels;
-    });
+    const [ui, setUi] = useState(() => (initData.ui && Object.keys(initData.ui).length > 0) ? initData.ui : defaultUI);
+    const [settings, setSettings] = useState(() => (initData.settings && Object.keys(initData.settings).length > 0) ? initData.settings : { systemName: '文史哲出版社', systemSubName: 'The Liberal Arts Press' });
+    const [carousels, setCarousels] = useState(() => (initData.carousels && initData.carousels.length > 0) ? initData.carousels : fallbackCarousels);
     const [carouselIndex, setCarouselIndex] = useState(0); 
-    const [books, setBooks] = useState(() => {
-        if (hasStaticBooks) return staticData.books;
-        return fallbackBooks;
-    });
-    const [choiceBooks, setChoiceBooks] = useState(() => (staticData.choices && staticData.choices.length > 0) ? staticData.choices : []);
+    const [books, setBooks] = useState(() => (staticData.books && staticData.books.length > 0) ? staticData.books : []);
+    const [choiceBooks, setChoiceBooks] = useState(() => (initData.choices && initData.choices.length > 0) ? initData.choices : []);
     const [cart, setCart] = useState([]);
     const [isCartOpen, setIsCartOpen] = useState(false);
     const [isContactOpen, setIsContactOpen] = useState(false);
@@ -502,7 +491,7 @@ function App() {
     const [isCartDetailsOpen, setIsCartDetailsOpen] = useState(true);
     const [selectedPayment, setSelectedPayment] = useState('店取付現金');
 
-    const [isBooksLoading, setIsBooksLoading] = useState(() => !hasStaticBooks); 
+    const [isBooksLoading, setIsBooksLoading] = useState(() => !(staticData.books && staticData.books.length > 0)); 
     const [isCheckingOut, setIsCheckingOut] = useState(false);
     const [isSubmittingCS, setIsSubmittingCS] = useState(false);
     const [lastActionTime, setLastActionTime] = useState(0);
@@ -588,26 +577,43 @@ function App() {
         }
     }, []);
 
-    // 🟢 若已有完整 staticData 靜態資料庫，以 staticData 為準；若無才向 GAS 索取
+    // 🟢 非同步背景載入全館 2,632 冊書籍資料庫，不阻塞介面渲染
     useEffect(() => {
-        if (hasStaticBooks) {
-            setIsBooksLoading(false);
-            return;
-        }
-        if (hasFetchedRef.current) return;
-        hasFetchedRef.current = true;
-
-        syncWithGAS('FETCH_INIT_DATA').then(res => {
-            if (res && res.status === 'success' && res.data) {
-                const { settings: fetchedSettings, ui: fetchedUi, carousels: fetchedCarousels, choices: fetchedChoices, books: fetchedBooks } = res.data;
-                if (fetchedSettings && Object.keys(fetchedSettings).length > 0) setSettings(prev => ({ ...prev, ...fetchedSettings }));
-                if (fetchedUi && Object.keys(fetchedUi).length > 0) setUi(prev => ({ ...prev, ...fetchedUi }));
-                if (Array.isArray(fetchedCarousels) && fetchedCarousels.length > 0) setCarousels(fetchedCarousels.filter(c => c.status === '已發佈'));
-                if (Array.isArray(fetchedChoices)) setChoiceBooks(fetchedChoices.filter(b => b.title && b.title !== '未命名書籍'));
-                if (Array.isArray(fetchedBooks)) setBooks(fetchedBooks.filter(b => b.title && b.title !== '未命名書籍'));
+        const applyLoadedData = () => {
+            if (window.STATIC_DATA && window.STATIC_DATA.books && window.STATIC_DATA.books.length > 0) {
+                setBooks(window.STATIC_DATA.books);
+                if (window.STATIC_DATA.choices) setChoiceBooks(window.STATIC_DATA.choices);
+                if (window.STATIC_DATA.carousels) setCarousels(window.STATIC_DATA.carousels);
+                if (window.STATIC_DATA.settings) setSettings(prev => ({ ...prev, ...window.STATIC_DATA.settings }));
+                if (window.STATIC_DATA.ui) setUi(prev => ({ ...prev, ...window.STATIC_DATA.ui }));
+                setIsBooksLoading(false);
+                return true;
             }
-        }).finally(() => setIsBooksLoading(false));
-    }, [hasStaticBooks, syncWithGAS]);
+            return false;
+        };
+
+        if (applyLoadedData()) return;
+
+        // 若 deferred 腳本仍在下載，以高頻監聽載入完成事件
+        const interval = setInterval(() => {
+            if (applyLoadedData()) clearInterval(interval);
+        }, 50);
+
+        const timer = setTimeout(() => {
+            clearInterval(interval);
+            if (!applyLoadedData()) {
+                syncWithGAS('FETCH_INIT_DATA').then(res => {
+                    if (res && res.status === 'success' && res.data) {
+                        const { books: fetchedBooks, choices: fetchedChoices } = res.data;
+                        if (Array.isArray(fetchedBooks)) setBooks(fetchedBooks);
+                        if (Array.isArray(fetchedChoices)) setChoiceBooks(fetchedChoices);
+                    }
+                }).finally(() => setIsBooksLoading(false));
+            }
+        }, 4000);
+
+        return () => { clearInterval(interval); clearTimeout(timer); };
+    }, [syncWithGAS]);
 
     const handleOrderQuerySubmit = async (e) => {
         e.preventDefault();
