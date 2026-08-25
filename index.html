@@ -211,7 +211,16 @@
 </style>
 </head>
 <body class="bg-[var(--bg-color)] selection:bg-[var(--primary-color)] selection:text-white">
-<div id="root"></div>
+<div id="root">
+    <div style="min-height: 100vh; display: flex; flex-direction: column; align-items: center; justify-content: center; background-color: #FAF8F5; color: #241D17; font-family: 'Noto Serif TC', serif;">
+        <div style="width: 44px; height: 44px; border: 3.5px solid #8C5A2B; border-top-color: transparent; border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 16px;"></div>
+        <h2 style="font-size: 22px; font-weight: 900; letter-spacing: 0.1em; margin-bottom: 6px; color: #241D17;">文史哲出版社</h2>
+        <p style="font-size: 13px; color: #8C5A2B; font-family: sans-serif; font-weight: bold; letter-spacing: 0.05em;">典籍目錄載入中，請稍候...</p>
+    </div>
+    <style>
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    </style>
+</div>
 
 <script src="data.js"></script>
 <script type="text/babel">
