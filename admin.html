@@ -1,0 +1,1442 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>文史哲出版社｜管理後台系統</title>
+<link rel="icon" type="image/png" href="favicon.png">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" rel="stylesheet">
+
+<script>
+    window.tailwind = {
+        config: {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#8C5A2B',
+                        'primary-dark': '#6B421E',
+                        'primary-light': '#D4A373',
+                        dark: '#241D17',
+                        cardDark: '#1E1712',
+                        bgLight: '#FAF8F5',
+                        borderLight: '#E8DCCE',
+                    },
+                    fontFamily: {
+                        sans: ['"Noto Sans TC"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', 'serif'],
+                    }
+                }
+            }
+        }
+    };
+</script>
+<script src="https://cdn.tailwindcss.com"></script>
+<script crossorigin src="https://unpkg.com/react@18.2.0/umd/react.production.min.js"></script>
+<script crossorigin src="https://unpkg.com/react-dom@18.2.0/umd/react-dom.production.min.js"></script>
+<script>window.react = window.React;</script>
+<script src="https://unpkg.com/@babel/standalone@7.22.20/babel.min.js"></script>
+
+<!-- 載入靜態數據源 -->
+<script src="data.js"></script>
+
+<style>
+    :root {
+        --primary: #8C5A2B;
+        --dark: #241D17;
+    }
+    body {
+        font-family: 'Noto Sans TC', sans-serif;
+        background-color: #F7F4EF;
+        color: #2C241B;
+    }
+    .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+    .custom-scrollbar::-webkit-scrollbar-track { background: #EFE9E1; }
+    .custom-scrollbar::-webkit-scrollbar-thumb { background: #C5B5A5; border-radius: 99px; }
+    .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #8C5A2B; }
+    
+    .badge-primary { background: #8C5A2B; color: #FFF; }
+    .badge-pending { background: #FEF3C7; color: #92400E; border: 1px solid #FDE68A; }
+    .badge-success { background: #D1FAE5; color: #065F46; border: 1px solid #A7F3D0; }
+    .badge-info { background: #DBEAFE; color: #1E40AF; border: 1px solid #BFDBFE; }
+    .badge-danger { background: #FEE2E2; color: #991B1B; border: 1px solid #FECACA; }
+</style>
+</head>
+<body>
+<div id="admin-root"></div>
+
+<script type="text/babel">
+const { useState, useEffect, useMemo, useRef } = React;
+
+// 預設後端 GAS 網址（可由後台設定頁動態修改）
+const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec";
+const DEFAULT_PASS = "lapen_admin_888";
+
+const SVG_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'%3E%3Crect width='100%25' height='100%25' fill='%23EDE5DC'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='11' fill='%238C5A2B'%3E封面暫缺%3C/text%3E%3C/svg%3E";
+
+function AdminApp() {
+    // 登入狀態
+    const [isLoggedIn, setIsLoggedIn] = useState(() => {
+        return sessionStorage.getItem('lapen_admin_logged') === 'true';
+    });
+    const [passwordInput, setPasswordInput] = useState('');
+    const [loginError, setLoginError] = useState('');
+    const [savedPassword, setSavedPassword] = useState(() => {
+        return localStorage.getItem('lapen_admin_pwd') || DEFAULT_PASS;
+    });
+
+    // 導覽標籤
+    const [activeTab, setActiveTab] = useState('books'); // dashboard, books, orders, cs, carousels, settings
+
+    // 後端與連線設定
+    const [gasUrl, setGasUrl] = useState(() => {
+        return localStorage.getItem('lapen_gas_url') || DEFAULT_GAS_URL;
+    });
+    const [isSyncing, setIsSyncing] = useState(false);
+    const [syncMessage, setSyncMessage] = useState(null);
+
+    // 核心資料狀態
+    const staticData = (typeof window !== "undefined" && window.STATIC_DATA) || {};
+    const [books, setBooks] = useState(() => {
+        const cached = localStorage.getItem('lapen_admin_books');
+        if (cached) { try { return JSON.parse(cached); } catch(e) {} }
+        return staticData.books || [];
+    });
+    const [orders, setOrders] = useState(() => {
+        const cached = localStorage.getItem('lapen_admin_orders');
+        if (cached) { try { return JSON.parse(cached); } catch(e) {} }
+        return [
+            {
+                orderId: "ORD20260825001",
+                date: "2026/08/25 18:30:12",
+                name: "王大明",
+                phone: "0912-345-678",
+                email: "wang@example.com",
+                address: "台北市大安區和平東路一段 100 號",
+                items: "《中國圖書史略》x 1, 《滿文原檔選讀譯注》x 1",
+                total: 1020,
+                payment: "店取付現金",
+                memo: "請協助挑選書況良好之書籍，感謝！",
+                status: "待處理",
+                adminNote: ""
+            }
+        ];
+    });
+    const [csMessages, setCsMessages] = useState(() => {
+        const cached = localStorage.getItem('lapen_admin_cs');
+        if (cached) { try { return JSON.parse(cached); } catch(e) {} }
+        return [
+            {
+                id: "CS2026082501",
+                date: "2026/08/25 19:15:00",
+                name: "陳教授",
+                phone: "0922-888-999",
+                email: "chen@univ.edu.tw",
+                content: "請問《滿語叢刊》一套 50 冊是否有提供大學研究室採購優惠折扣？",
+                status: "未處理",
+                replyNote: ""
+            }
+        ];
+    });
+    const [carousels, setCarousels] = useState(() => {
+        const cached = localStorage.getItem('lapen_admin_carousels');
+        if (cached) { try { return JSON.parse(cached); } catch(e) {} }
+        return staticData.carousels || [];
+    });
+    const [settings, setSettings] = useState(() => {
+        const cached = localStorage.getItem('lapen_admin_settings');
+        if (cached) { try { return JSON.parse(cached); } catch(e) {} }
+        return staticData.settings || {};
+    });
+
+    // 書籍管理 UI 狀態
+    const [bookSearch, setBookSearch] = useState('');
+    const [bookCatFilter, setBookCatFilter] = useState('全部');
+    const [bookPage, setBookPage] = useState(1);
+    const [pageSize, setPageSize] = useState(25);
+    const [editingBook, setEditingBook] = useState(null); // null = 不顯示 modal, 'NEW' = 新增, object = 編輯
+    const [bookFormData, setBookFormData] = useState({
+        id: '',
+        title: '',
+        author: '',
+        year: '',
+        price: '',
+        isbn: '',
+        stock: '10',
+        category: '文學',
+        isNew: false,
+        isLast: false,
+        cover: '',
+        intro: '',
+        心得: ''
+    });
+
+    // 訂單管理 UI 狀態
+    const [orderFilter, setOrderFilter] = useState('全部');
+    const [orderSearch, setOrderSearch] = useState('');
+    const [viewingOrder, setViewingOrder] = useState(null);
+
+    // 客服管理 UI 狀態
+    const [csFilter, setCsFilter] = useState('全部');
+    const [viewingCs, setViewingCs] = useState(null);
+
+    // 輪播管理 UI 狀態
+    const [editingCarousel, setEditingCarousel] = useState(null);
+
+    // 提示訊息通知
+    const showToast = (msg, type = 'info') => {
+        setSyncMessage({ msg, type });
+        setTimeout(() => setSyncMessage(null), 3500);
+    };
+
+    // 自動快照到 LocalStorage
+    useEffect(() => {
+        localStorage.setItem('lapen_admin_books', JSON.stringify(books));
+    }, [books]);
+    useEffect(() => {
+        localStorage.setItem('lapen_admin_orders', JSON.stringify(orders));
+    }, [orders]);
+    useEffect(() => {
+        localStorage.setItem('lapen_admin_cs', JSON.stringify(csMessages));
+    }, [csMessages]);
+    useEffect(() => {
+        localStorage.setItem('lapen_admin_carousels', JSON.stringify(carousels));
+    }, [carousels]);
+
+    // 處理登入
+    const handleLogin = (e) => {
+        e.preventDefault();
+        if (passwordInput === savedPassword) {
+            setIsLoggedIn(true);
+            sessionStorage.setItem('lapen_admin_logged', 'true');
+            setLoginError('');
+            showToast('管理員登入成功！歡迎使用後台系統', 'success');
+        } else {
+            setLoginError('密碼不正確，請重新輸入（預設密碼為：lapen_admin_888）');
+        }
+    };
+
+    // 處理登出
+    const handleLogout = () => {
+        setIsLoggedIn(false);
+        sessionStorage.removeItem('lapen_admin_logged');
+        setPasswordInput('');
+    };
+
+    // 取得現有所有分類清單
+    const categoriesList = useMemo(() => {
+        const set = new Set();
+        books.forEach(b => { if (b.category && b.category.trim()) set.add(b.category.trim()); });
+        return ['全部', ...Array.from(set).sort()];
+    }, [books]);
+
+    // 篩選後書籍清單
+    const filteredBooks = useMemo(() => {
+        const q = bookSearch.trim().toLowerCase();
+        return books.filter(b => {
+            const matchCat = bookCatFilter === '全部' || b.category === bookCatFilter;
+            if (!matchCat) return false;
+            if (!q) return true;
+            return (
+                String(b.id || '').toLowerCase().includes(q) ||
+                String(b.title || '').toLowerCase().includes(q) ||
+                String(b.author || '').toLowerCase().includes(q) ||
+                String(b.year || '').toLowerCase().includes(q) ||
+                String(b.isbn || '').toLowerCase().includes(q)
+            );
+        });
+    }, [books, bookSearch, bookCatFilter]);
+
+    // 分頁計算
+    const totalPages = Math.ceil(filteredBooks.length / pageSize) || 1;
+    const paginatedBooks = useMemo(() => {
+        const start = (bookPage - 1) * pageSize;
+        return filteredBooks.slice(start, start + pageSize);
+    }, [filteredBooks, bookPage, pageSize]);
+
+    // 開啟書籍編輯 Modal
+    const handleOpenEditBook = (book = null) => {
+        if (book) {
+            setEditingBook(book);
+            setBookFormData({
+                id: book.id || '',
+                title: book.title || '',
+                author: book.author || '',
+                year: book.year || '',
+                price: book.price !== undefined ? book.price : '',
+                isbn: book.isbn || '',
+                stock: book.stock !== undefined ? book.stock : '10',
+                category: book.category || '文學',
+                isNew: !!book.isNew,
+                isLast: !!book.isLast,
+                cover: book.cover || book.image || '',
+                intro: book.intro || '',
+                心得: book.心得 || book.review || ''
+            });
+        } else {
+            // 新增書籍
+            const nextId = String(books.length + 1).padStart(5, '0');
+            setEditingBook('NEW');
+            setBookFormData({
+                id: nextId,
+                title: '',
+                author: '',
+                year: '115年',
+                price: '300',
+                isbn: '',
+                stock: '10',
+                category: '文史哲學集成',
+                isNew: true,
+                isLast: false,
+                cover: '',
+                intro: '',
+                心得: ''
+            });
+        }
+    };
+
+    // 圖片檔案轉換為 Base64
+    const handleImageUpload = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+        if (file.size > 2 * 1024 * 1024) {
+            alert("圖片檔案過大，建議上傳 2MB 以下的圖片以保證網頁載入速度！");
+            return;
+        }
+        const reader = new FileReader();
+        reader.onload = (ev) => {
+            setBookFormData(prev => ({ ...prev, cover: ev.target.result }));
+            showToast('圖片已成功轉換並載入預覽', 'success');
+        };
+        reader.readAsDataURL(file);
+    };
+
+    // 儲存書籍
+    const handleSaveBook = (e) => {
+        e.preventDefault();
+        if (!bookFormData.id.trim() || !bookFormData.title.trim()) {
+            alert("書碼與書名為必填欄位！");
+            return;
+        }
+
+        const newBookObj = {
+            id: String(bookFormData.id).trim(),
+            title: String(bookFormData.title).trim(),
+            author: String(bookFormData.author).trim(),
+            year: String(bookFormData.year).trim(),
+            price: Number(bookFormData.price) || 0,
+            isbn: String(bookFormData.isbn).trim(),
+            stock: String(bookFormData.stock).trim() || '10',
+            category: String(bookFormData.category).trim() || '未分類',
+            isNew: Boolean(bookFormData.isNew),
+            isLast: Boolean(bookFormData.isLast),
+            cover: bookFormData.cover.trim(),
+            intro: bookFormData.intro.trim(),
+            心得: bookFormData.心得.trim()
+        };
+
+        if (editingBook === 'NEW') {
+            // 檢查書碼是否重複
+            const exists = books.some(b => String(b.id) === newBookObj.id);
+            if (exists) {
+                alert(`書碼 ${newBookObj.id} 已經存在，請更換其他書碼！`);
+                return;
+            }
+            setBooks(prev => [newBookObj, ...prev]);
+            showToast(`新書《${newBookObj.title}》已成功新增！`, 'success');
+        } else {
+            // 編輯更新
+            setBooks(prev => prev.map(b => String(b.id) === String(editingBook.id) ? newBookObj : b));
+            showToast(`書籍《${newBookObj.title}》資料已更新！`, 'success');
+        }
+
+        setEditingBook(null);
+    };
+
+    // 刪除書籍
+    const handleDeleteBook = (book) => {
+        if (window.confirm(`確定要刪除書籍【${book.id}】《${book.title}》嗎？此動作無法復原！`)) {
+            setBooks(prev => prev.filter(b => String(b.id) !== String(book.id)));
+            showToast(`書籍《${book.title}》已刪除`, 'danger');
+        }
+    };
+
+    // 導出 data.js 檔案
+    const handleExportDataJs = () => {
+        const fullData = {
+            settings: settings,
+            ui: staticData.ui || {},
+            carousels: carousels,
+            choices: staticData.choices || [],
+            books: books
+        };
+
+        const fileContent = "window.STATIC_DATA = " + JSON.stringify(fullData, null, 2) + ";";
+        const blob = new Blob([fileContent], { type: 'application/javascript;charset=utf-8' });
+        const url = URL.createObjectURL(blob);
+        const a = document.createElement('a');
+        a.href = url;
+        a.download = 'data.js';
+        document.body.appendChild(a);
+        a.click();
+        document.body.removeChild(a);
+        URL.revokeObjectURL(url);
+
+        showToast('已生成並下載最新 data.js！直接覆蓋專案目錄並推送到 GitHub 即可更新網站。', 'success');
+    };
+
+    // 更新訂單狀態
+    const handleUpdateOrderStatus = (orderId, newStatus) => {
+        setOrders(prev => prev.map(o => o.orderId === orderId ? { ...o, status: newStatus } : o));
+        if (viewingOrder && viewingOrder.orderId === orderId) {
+            setViewingOrder(prev => ({ ...prev, status: newStatus }));
+        }
+        showToast(`訂單 ${orderId} 狀態已更新為【${newStatus}】`, 'success');
+    };
+
+    // 刪除訂單
+    const handleDeleteOrder = (orderId) => {
+        if (window.confirm(`確定要刪除訂單 ${orderId} 嗎？`)) {
+            setOrders(prev => prev.filter(o => o.orderId !== orderId));
+            setViewingOrder(null);
+            showToast(`訂單 ${orderId} 已刪除`, 'danger');
+        }
+    };
+
+    // 更新客服處理狀態
+    const handleUpdateCsStatus = (msgId, newStatus) => {
+        setCsMessages(prev => prev.map(m => m.id === msgId ? { ...m, status: newStatus } : m));
+        if (viewingCs && viewingCs.id === msgId) {
+            setViewingCs(prev => ({ ...prev, status: newStatus }));
+        }
+        showToast(`客服反映 ${msgId} 狀態已更新為【${newStatus}】`, 'success');
+    };
+
+    // 刪除客服紀錄
+    const handleDeleteCs = (msgId) => {
+        if (window.confirm(`確定要刪除此客服留言嗎？`)) {
+            setCsMessages(prev => prev.filter(m => m.id !== msgId));
+            setViewingCs(null);
+            showToast(`客服留言已刪除`, 'danger');
+        }
+    };
+
+    // 儲存密碼設定
+    const handleSaveNewPassword = (e) => {
+        e.preventDefault();
+        const newPwd = e.target.newPwd.value.trim();
+        if (newPwd.length < 6) {
+            alert('密碼長度不得少於 6 位數！');
+            return;
+        }
+        setSavedPassword(newPwd);
+        localStorage.setItem('lapen_admin_pwd', newPwd);
+        e.target.reset();
+        showToast('管理員密碼已成功更新！', 'success');
+    };
+
+    // 儲存 GAS URL 設定
+    const handleSaveGasUrl = (e) => {
+        e.preventDefault();
+        const url = e.target.gasUrl.value.trim();
+        setGasUrl(url);
+        localStorage.setItem('lapen_gas_url', url);
+        showToast('Google Apps Script API 網址已儲存！', 'success');
+    };
+
+    // 若未登入，顯示登入畫面
+    if (!isLoggedIn) {
+        return (
+            <div className="min-h-screen flex items-center justify-center bg-[#241D17] px-4">
+                <div className="max-w-md w-full bg-[#FAF8F5] rounded-2xl shadow-2xl p-8 border border-[#8C5A2B]/30">
+                    <div className="text-center mb-8">
+                        <div className="w-16 h-16 bg-[#8C5A2B] text-white rounded-2xl flex items-center justify-center mx-auto mb-4 shadow-lg">
+                            <svg className="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"/>
+                            </svg>
+                        </div>
+                        <h2 className="text-2xl font-bold font-serif text-[#241D17]">文史哲出版社</h2>
+                        <p className="text-sm text-[#8C5A2B] mt-1 tracking-wider">網站後台管理系統</p>
+                    </div>
+
+                    <form onSubmit={handleLogin} className="space-y-5">
+                        <div>
+                            <label className="block text-xs font-bold text-[#4A3B32] uppercase mb-2">管理員存取密碼</label>
+                            <input
+                                type="password"
+                                value={passwordInput}
+                                onChange={(e) => setPasswordInput(e.target.value)}
+                                placeholder="請輸入管理密碼 (預設: lapen_admin_888)"
+                                className="w-full px-4 py-3 rounded-xl border border-[#D4C5B9] focus:outline-none focus:ring-2 focus:ring-[#8C5A2B] bg-white text-sm"
+                                required
+                            />
+                        </div>
+
+                        {loginError && (
+                            <div className="p-3 bg-red-50 text-red-700 text-xs rounded-xl border border-red-200">
+                                {loginError}
+                            </div>
+                        )}
+
+                        <button
+                            type="submit"
+                            className="w-full py-3.5 bg-[#8C5A2B] hover:bg-[#6B421E] text-white font-bold rounded-xl shadow-md transition duration-200 flex items-center justify-center gap-2"
+                        >
+                            <span>驗證並進入後台</span>
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M14 5l7 7m0 0l-7 7m7-7H3"/>
+                            </svg>
+                        </button>
+                    </form>
+
+                    <div className="mt-8 pt-6 border-t border-[#E8DCCE] text-center">
+                        <a href="index.html" className="text-xs text-[#8C5A2B] hover:underline flex items-center justify-center gap-1">
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 19l-7-7m0 0l7-7m-7 7h18"/>
+                            </svg>
+                            <span>返回出版社官方網站首頁</span>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        );
+    }
+
+    // 主後台畫面
+    return (
+        <div className="min-h-screen flex flex-col md:flex-row bg-[#F4EFEA]">
+            {/* 訊息通知 Toast */}
+            {syncMessage && (
+                <div className={`fixed top-5 right-5 z-50 px-5 py-3.5 rounded-xl shadow-xl text-sm font-bold flex items-center gap-3 transition-all duration-300 ${
+                    syncMessage.type === 'success' ? 'bg-emerald-800 text-white' :
+                    syncMessage.type === 'danger' ? 'bg-rose-800 text-white' : 'bg-[#241D17] text-white'
+                }`}>
+                    <span>{syncMessage.msg}</span>
+                </div>
+            )}
+
+            {/* 側邊導航欄 */}
+            <aside className="w-full md:w-64 bg-[#241D17] text-[#FAF8F5] flex flex-col shrink-0 shadow-2xl">
+                <div className="p-6 border-b border-[#3D3126]">
+                    <div className="flex items-center gap-3">
+                        <div className="w-10 h-10 rounded-xl bg-[#8C5A2B] flex items-center justify-center text-white font-serif font-bold text-xl shadow">
+                            文
+                        </div>
+                        <div>
+                            <h1 className="font-bold font-serif text-lg leading-tight">文史哲出版社</h1>
+                            <p className="text-xs text-[#BFAF9E]">後台管理系統</p>
+                        </div>
+                    </div>
+                </div>
+
+                <nav className="p-4 space-y-1.5 flex-1">
+                    <button
+                        onClick={() => setActiveTab('dashboard')}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${
+                            activeTab === 'dashboard' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'
+                        }`}
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"/>
+                        </svg>
+                        <span>總覽儀表板</span>
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab('books')}
+                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition ${
+                            activeTab === 'books' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'
+                        }`}
+                    >
+                        <div className="flex items-center gap-3">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                            </svg>
+                            <span>書籍庫存管理</span>
+                        </div>
+                        <span className="text-xs bg-[#3D3126] px-2 py-0.5 rounded-full text-[#E8DCCE]">{books.length}</span>
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab('orders')}
+                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition ${
+                            activeTab === 'orders' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'
+                        }`}
+                    >
+                        <div className="flex items-center gap-3">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                            </svg>
+                            <span>顧客訂單管理</span>
+                        </div>
+                        {orders.filter(o => o.status === '待處理').length > 0 && (
+                            <span className="text-xs bg-amber-600 px-2 py-0.5 rounded-full text-white font-bold">
+                                {orders.filter(o => o.status === '待處理').length}
+                            </span>
+                        )}
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab('cs')}
+                        className={`w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition ${
+                            activeTab === 'cs' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'
+                        }`}
+                    >
+                        <div className="flex items-center gap-3">
+                            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                            </svg>
+                            <span>客服與建議</span>
+                        </div>
+                        {csMessages.filter(m => m.status === '未處理').length > 0 && (
+                            <span className="text-xs bg-rose-600 px-2 py-0.5 rounded-full text-white font-bold">
+                                {csMessages.filter(m => m.status === '未處理').length}
+                            </span>
+                        )}
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab('carousels')}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${
+                            activeTab === 'carousels' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'
+                        }`}
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+                        </svg>
+                        <span>首頁輪播圖</span>
+                    </button>
+
+                    <button
+                        onClick={() => setActiveTab('settings')}
+                        className={`w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${
+                            activeTab === 'settings' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'
+                        }`}
+                    >
+                        <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10.325 4.317c.426-1.756 2.924-1.756 3.35 0a1.724 1.724 0 002.573 1.066c1.543-.94 3.31.826 2.37 2.37a1.724 1.724 0 001.065 2.572c1.756.426 1.756 2.924 0 3.35a1.724 1.724 0 00-1.066 2.573c.94 1.543-.826 3.31-2.37 2.37a1.724 1.724 0 00-2.572 1.065c-.426 1.756-2.924 1.756-3.35 0a1.724 1.724 0 00-2.573-1.066c-1.543.94-3.31-.826-2.37-2.37a1.724 1.724 0 00-1.065-2.572c-1.756-.426-1.756-2.924 0-3.35a1.724 1.724 0 001.066-2.573c-.94-1.543.826-3.31 2.37-2.37.996.608 2.296.07 2.572-1.065z"/>
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                        </svg>
+                        <span>系統與密碼設定</span>
+                    </button>
+                </nav>
+
+                <div className="p-4 border-t border-[#3D3126] space-y-2">
+                    <a
+                        href="index.html"
+                        target="_blank"
+                        className="w-full flex items-center justify-center gap-2 py-2.5 bg-[#3D3126] hover:bg-[#4E3E31] text-xs text-[#E8DCCE] rounded-xl transition font-medium"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"/>
+                        </svg>
+                        <span>預覽官網前台</span>
+                    </a>
+
+                    <button
+                        onClick={handleLogout}
+                        className="w-full flex items-center justify-center gap-2 py-2.5 bg-red-950/40 hover:bg-red-900/60 text-xs text-red-300 rounded-xl transition font-medium border border-red-900/50"
+                    >
+                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/>
+                        </svg>
+                        <span>安全登出</span>
+                    </button>
+                </div>
+            </aside>
+
+            {/* 主要內容區塊 */}
+            <main className="flex-1 flex flex-col min-w-0 overflow-y-auto">
+                {/* 頂部功能列 */}
+                <header className="bg-white border-b border-[#E8DCCE] px-6 py-4 flex items-center justify-between shadow-sm shrink-0">
+                    <div className="flex items-center gap-3">
+                        <h2 className="text-xl font-bold font-serif text-[#241D17]">
+                            {activeTab === 'dashboard' && '總覽儀表板'}
+                            {activeTab === 'books' && '書籍庫存與內容管理'}
+                            {activeTab === 'orders' && '顧客訂單管理'}
+                            {activeTab === 'cs' && '客服與建議反映'}
+                            {activeTab === 'carousels' && '首頁輪播圖管理'}
+                            {activeTab === 'settings' && '系統與安全設定'}
+                        </h2>
+                    </div>
+
+                    <div className="flex items-center gap-3">
+                        <button
+                            onClick={handleExportDataJs}
+                            className="px-4 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-2"
+                            title="將所有修改寫入 data.js 下載"
+                        >
+                            <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4"/>
+                            </svg>
+                            <span>📥 一鍵導出 data.js (更新官網)</span>
+                        </button>
+                    </div>
+                </header>
+
+                {/* 頁面內容切換 */}
+                <div className="p-6 flex-1 space-y-6">
+
+                    {/* ============================================================== */}
+                    {/* TAB 1: 總覽儀表板 (Dashboard) */}
+                    {/* ============================================================== */}
+                    {activeTab === 'dashboard' && (
+                        <div className="space-y-6">
+                            {/* KPI 數據卡片 */}
+                            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                                <div className="bg-white p-5 rounded-2xl border border-[#E8DCCE] shadow-sm flex items-center justify-between">
+                                    <div>
+                                        <p className="text-xs font-bold text-[#8C5A2B]">全館書籍總數</p>
+                                        <h3 className="text-3xl font-bold text-[#241D17] mt-1 font-serif">{books.length} <span className="text-sm font-normal text-gray-500">本</span></h3>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-xl bg-amber-50 text-[#8C5A2B] flex items-center justify-center">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-5 rounded-2xl border border-[#E8DCCE] shadow-sm flex items-center justify-between">
+                                    <div>
+                                        <p className="text-xs font-bold text-amber-700">待處理訂單</p>
+                                        <h3 className="text-3xl font-bold text-amber-900 mt-1 font-serif">
+                                            {orders.filter(o => o.status === '待處理').length} <span className="text-sm font-normal text-gray-500">筆</span>
+                                        </h3>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-5 rounded-2xl border border-[#E8DCCE] shadow-sm flex items-center justify-between">
+                                    <div>
+                                        <p className="text-xs font-bold text-rose-700">未回覆客服反映</p>
+                                        <h3 className="text-3xl font-bold text-rose-900 mt-1 font-serif">
+                                            {csMessages.filter(m => m.status === '未處理').length} <span className="text-sm font-normal text-gray-500">則</span>
+                                        </h3>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-xl bg-rose-100 text-rose-800 flex items-center justify-center">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 10h.01M12 10h.01M16 10h.01M9 16H5a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v8a2 2 0 01-2 2h-5l-5 5v-5z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+
+                                <div className="bg-white p-5 rounded-2xl border border-[#E8DCCE] shadow-sm flex items-center justify-between">
+                                    <div>
+                                        <p className="text-xs font-bold text-emerald-700">收錄叢書類別</p>
+                                        <h3 className="text-3xl font-bold text-emerald-900 mt-1 font-serif">{categoriesList.length - 1} <span className="text-sm font-normal text-gray-500">種</span></h3>
+                                    </div>
+                                    <div className="w-12 h-12 rounded-xl bg-emerald-100 text-emerald-800 flex items-center justify-center">
+                                        <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"/>
+                                        </svg>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 快速操作導引 */}
+                            <div className="bg-white p-6 rounded-2xl border border-[#E8DCCE] shadow-sm">
+                                <h3 className="font-serif font-bold text-lg text-[#241D17] mb-3">📌 網站後台使用教學與發佈說明</h3>
+                                <div className="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm text-[#4A3B32]">
+                                    <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DCCE]/80">
+                                        <h4 className="font-bold text-[#8C5A2B] mb-1">1. 編輯與新增書籍</h4>
+                                        <p className="text-xs leading-relaxed">點擊左側「書籍庫存管理」，您可以搜尋任一書籍進行編輯（修改封面圖、簡介、讀後心得、定價等），亦可點擊「新增書籍」增加新書。</p>
+                                    </div>
+                                    <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DCCE]/80">
+                                        <h4 className="font-bold text-[#8C5A2B] mb-1">2. 一鍵更新官方網站</h4>
+                                        <p className="text-xs leading-relaxed">在後台修改完書籍後，點擊右上角「📥 一鍵導出 data.js」，將下載的檔案放入專案目錄並推送到 GitHub，官方網站即刻自動更新！</p>
+                                    </div>
+                                    <div className="p-4 rounded-xl bg-[#FAF8F5] border border-[#E8DCCE]/80">
+                                        <h4 className="font-bold text-[#8C5A2B] mb-1">3. 顧客訂單與客服反映</h4>
+                                        <p className="text-xs leading-relaxed">前台顧客於「我的書包」送出的訂單與「客服與建議」訊息會即時送入系統，您可在後台標記處理狀態與查看詳情。</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ============================================================== */}
+                    {/* TAB 2: 書籍庫存與內容管理 (Books Management) */}
+                    {/* ============================================================== */}
+                    {activeTab === 'books' && (
+                        <div className="bg-white rounded-2xl border border-[#E8DCCE] shadow-sm flex flex-col overflow-hidden">
+                            {/* 工具列 */}
+                            <div className="p-5 border-b border-[#E8DCCE] bg-[#FAF8F5] flex flex-wrap items-center justify-between gap-4">
+                                <div className="flex flex-wrap items-center gap-3 flex-1 min-w-[280px]">
+                                    {/* 關鍵字搜尋 */}
+                                    <div className="relative flex-1 min-w-[200px]">
+                                        <input
+                                            type="text"
+                                            value={bookSearch}
+                                            onChange={(e) => { setBookSearch(e.target.value); setBookPage(1); }}
+                                            placeholder="搜尋書名、書碼、作者、ISBN..."
+                                            className="w-full pl-9 pr-4 py-2 bg-white border border-[#D4C5B9] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
+                                        />
+                                        <svg className="w-4 h-4 text-gray-400 absolute left-3 top-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"/>
+                                        </svg>
+                                    </div>
+
+                                    {/* 分類下拉 */}
+                                    <select
+                                        value={bookCatFilter}
+                                        onChange={(e) => { setBookCatFilter(e.target.value); setBookPage(1); }}
+                                        className="px-3 py-2 bg-white border border-[#D4C5B9] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
+                                    >
+                                        {categoriesList.map(cat => (
+                                            <option key={cat} value={cat}>{cat}</option>
+                                        ))}
+                                    </select>
+                                </div>
+
+                                <div className="flex items-center gap-2">
+                                    <button
+                                        onClick={() => handleOpenEditBook(null)}
+                                        className="px-4 py-2 bg-emerald-700 hover:bg-emerald-800 text-white text-sm font-bold rounded-xl shadow transition flex items-center gap-1.5"
+                                    >
+                                        <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 4v16m8-8H4"/>
+                                        </svg>
+                                        <span>新增書籍</span>
+                                    </button>
+                                </div>
+                            </div>
+
+                            {/* 書籍資料表格 */}
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left text-sm">
+                                    <thead className="bg-[#FAF8F5] text-[#8C5A2B] font-bold text-xs uppercase border-b border-[#E8DCCE]">
+                                        <tr>
+                                            <th className="py-3 px-4 w-16 text-center">書碼</th>
+                                            <th className="py-3 px-4 w-16 text-center">封面</th>
+                                            <th className="py-3 px-4">書名</th>
+                                            <th className="py-3 px-4">作者</th>
+                                            <th className="py-3 px-4">出版年份</th>
+                                            <th className="py-3 px-4">叢書類別</th>
+                                            <th className="py-3 px-4 text-right">定價</th>
+                                            <th className="py-3 px-4 text-center">庫存</th>
+                                            <th className="py-3 px-4 text-center">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-[#E8DCCE]/60">
+                                        {paginatedBooks.length === 0 ? (
+                                            <tr>
+                                                <td colSpan="9" className="py-12 text-center text-gray-400">
+                                                    沒有找到符合條件的書籍
+                                                </td>
+                                            </tr>
+                                        ) : (
+                                            paginatedBooks.map(book => (
+                                                <tr key={book.id} className="hover:bg-[#FAF8F5]/80 transition">
+                                                    <td className="py-3 px-4 font-mono text-xs text-gray-600 text-center font-bold">{book.id}</td>
+                                                    <td className="py-3 px-4 text-center">
+                                                        <img
+                                                            src={book.localCover || book.cover || book.image || SVG_FALLBACK}
+                                                            onError={(e) => { e.target.src = SVG_FALLBACK; }}
+                                                            alt=""
+                                                            className="w-10 h-14 object-cover rounded shadow-sm mx-auto border border-[#E8DCCE]"
+                                                        />
+                                                    </td>
+                                                    <td className="py-3 px-4 font-serif font-bold text-[#241D17]">
+                                                        <div>{book.title}</div>
+                                                        {book.isbn && <div className="text-[11px] font-sans font-normal text-gray-400">ISBN: {book.isbn}</div>}
+                                                    </td>
+                                                    <td className="py-3 px-4 text-gray-700">{book.author || '-'}</td>
+                                                    <td className="py-3 px-4 text-xs text-gray-600">{book.year || '-'}</td>
+                                                    <td className="py-3 px-4">
+                                                        <span className="px-2.5 py-0.5 rounded-full text-xs bg-amber-50 text-[#8C5A2B] border border-amber-200">
+                                                            {book.category || '未分類'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-3 px-4 text-right font-bold text-[#8C5A2B]">NT$ {book.price}</td>
+                                                    <td className="py-3 px-4 text-center">
+                                                        <span className={`text-xs px-2 py-0.5 rounded-full ${
+                                                            Number(book.stock) > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'
+                                                        }`}>
+                                                            {book.stock || '10'}
+                                                        </span>
+                                                    </td>
+                                                    <td className="py-3 px-4 text-center space-x-2">
+                                                        <button
+                                                            onClick={() => handleOpenEditBook(book)}
+                                                            className="px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-bold transition"
+                                                        >
+                                                            編輯
+                                                        </button>
+                                                        <button
+                                                            onClick={() => handleDeleteBook(book)}
+                                                            className="px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-900 rounded-lg text-xs font-bold transition"
+                                                        >
+                                                            刪除
+                                                        </button>
+                                                    </td>
+                                                </tr>
+                                            ))
+                                        )}
+                                    </tbody>
+                                </table>
+                            </div>
+
+                            {/* 分頁列 */}
+                            <div className="p-4 border-t border-[#E8DCCE] bg-[#FAF8F5] flex items-center justify-between text-xs text-gray-600">
+                                <div>
+                                    共 <span className="font-bold text-[#8C5A2B]">{filteredBooks.length}</span> 本書籍（第 {bookPage} / {totalPages} 頁）
+                                </div>
+                                <div className="flex items-center gap-1">
+                                    <button
+                                        onClick={() => setBookPage(1)}
+                                        disabled={bookPage === 1}
+                                        className="px-2.5 py-1.5 rounded-lg border border-[#D4C5B9] bg-white disabled:opacity-40"
+                                    >
+                                        首頁
+                                    </button>
+                                    <button
+                                        onClick={() => setBookPage(prev => Math.max(1, prev - 1))}
+                                        disabled={bookPage === 1}
+                                        className="px-2.5 py-1.5 rounded-lg border border-[#D4C5B9] bg-white disabled:opacity-40"
+                                    >
+                                        上一頁
+                                    </button>
+                                    <span className="px-3 py-1.5 font-bold text-[#8C5A2B]">
+                                        {bookPage}
+                                    </span>
+                                    <button
+                                        onClick={() => setBookPage(prev => Math.min(totalPages, prev + 1))}
+                                        disabled={bookPage === totalPages}
+                                        className="px-2.5 py-1.5 rounded-lg border border-[#D4C5B9] bg-white disabled:opacity-40"
+                                    >
+                                        下一頁
+                                    </button>
+                                    <button
+                                        onClick={() => setBookPage(totalPages)}
+                                        disabled={bookPage === totalPages}
+                                        className="px-2.5 py-1.5 rounded-lg border border-[#D4C5B9] bg-white disabled:opacity-40"
+                                    >
+                                        末頁
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ============================================================== */}
+                    {/* TAB 3: 顧客訂單管理 (Orders Management) */}
+                    {/* ============================================================== */}
+                    {activeTab === 'orders' && (
+                        <div className="bg-white rounded-2xl border border-[#E8DCCE] shadow-sm flex flex-col overflow-hidden">
+                            <div className="p-5 border-b border-[#E8DCCE] bg-[#FAF8F5] flex flex-wrap items-center justify-between gap-4">
+                                <div className="flex items-center gap-3">
+                                    <input
+                                        type="text"
+                                        value={orderSearch}
+                                        onChange={(e) => setOrderSearch(e.target.value)}
+                                        placeholder="搜尋訂單編號、姓名、電話..."
+                                        className="px-4 py-2 bg-white border border-[#D4C5B9] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
+                                    />
+                                    <select
+                                        value={orderFilter}
+                                        onChange={(e) => setOrderFilter(e.target.value)}
+                                        className="px-3 py-2 bg-white border border-[#D4C5B9] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
+                                    >
+                                        <option value="全部">全部狀態</option>
+                                        <option value="待處理">待處理</option>
+                                        <option value="處理中">處理中</option>
+                                        <option value="已出貨">已出貨</option>
+                                        <option value="已完成">已完成</option>
+                                        <option value="已取消">已取消</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div className="overflow-x-auto">
+                                <table className="w-full text-left text-sm">
+                                    <thead className="bg-[#FAF8F5] text-[#8C5A2B] font-bold text-xs uppercase border-b border-[#E8DCCE]">
+                                        <tr>
+                                            <th className="py-3 px-4">訂單編號</th>
+                                            <th className="py-3 px-4">下單時間</th>
+                                            <th className="py-3 px-4">收件人</th>
+                                            <th className="py-3 px-4">電話</th>
+                                            <th className="py-3 px-4 text-right">總金額</th>
+                                            <th className="py-3 px-4">付款方式</th>
+                                            <th className="py-3 px-4 text-center">訂單狀態</th>
+                                            <th className="py-3 px-4 text-center">操作</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody className="divide-y divide-[#E8DCCE]/60">
+                                        {orders.filter(o => {
+                                            if (orderFilter !== '全部' && o.status !== orderFilter) return false;
+                                            if (!orderSearch) return true;
+                                            const q = orderSearch.toLowerCase();
+                                            return (o.orderId && o.orderId.toLowerCase().includes(q)) ||
+                                                   (o.name && o.name.toLowerCase().includes(q)) ||
+                                                   (o.phone && o.phone.includes(q));
+                                        }).map(order => (
+                                            <tr key={order.orderId} className="hover:bg-[#FAF8F5]/80 transition">
+                                                <td className="py-3 px-4 font-mono font-bold text-xs text-[#241D17]">{order.orderId}</td>
+                                                <td className="py-3 px-4 text-xs text-gray-500">{order.date}</td>
+                                                <td className="py-3 px-4 font-bold text-[#4A3B32]">{order.name}</td>
+                                                <td className="py-3 px-4 text-xs font-mono">{order.phone}</td>
+                                                <td className="py-3 px-4 text-right font-bold text-[#8C5A2B]">NT$ {order.total}</td>
+                                                <td className="py-3 px-4 text-xs">{order.payment}</td>
+                                                <td className="py-3 px-4 text-center">
+                                                    <span className={`text-xs px-2.5 py-1 rounded-full font-bold ${
+                                                        order.status === '待處理' ? 'badge-pending' :
+                                                        order.status === '已出貨' ? 'badge-info' :
+                                                        order.status === '已完成' ? 'badge-success' : 'badge-danger'
+                                                    }`}>
+                                                        {order.status}
+                                                    </span>
+                                                </td>
+                                                <td className="py-3 px-4 text-center space-x-2">
+                                                    <button
+                                                        onClick={() => setViewingOrder(order)}
+                                                        className="px-3 py-1 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-lg text-xs font-bold transition"
+                                                    >
+                                                        查看明細
+                                                    </button>
+                                                    <button
+                                                        onClick={() => handleDeleteOrder(order.orderId)}
+                                                        className="px-2.5 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg text-xs font-bold transition"
+                                                    >
+                                                        刪除
+                                                    </button>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ============================================================== */}
+                    {/* TAB 4: 客服與建議反映 (CS Management) */}
+                    {/* ============================================================== */}
+                    {activeTab === 'cs' && (
+                        <div className="bg-white rounded-2xl border border-[#E8DCCE] shadow-sm flex flex-col overflow-hidden">
+                            <div className="p-5 border-b border-[#E8DCCE] bg-[#FAF8F5]">
+                                <h3 className="font-serif font-bold text-base text-[#241D17]">讀者反映與建議紀錄</h3>
+                            </div>
+
+                            <div className="divide-y divide-[#E8DCCE]/60">
+                                {csMessages.length === 0 ? (
+                                    <div className="p-12 text-center text-gray-400">目前尚無客服反映紀錄</div>
+                                ) : (
+                                    csMessages.map(msg => (
+                                        <div key={msg.id} className="p-5 hover:bg-[#FAF8F5]/80 transition flex flex-col md:flex-row justify-between gap-4">
+                                            <div className="space-y-2 flex-1">
+                                                <div className="flex items-center gap-3">
+                                                    <span className="font-bold text-[#241D17] text-base">{msg.name}</span>
+                                                    <span className="text-xs text-gray-400">{msg.date}</span>
+                                                    <span className={`text-xs px-2 py-0.5 rounded-full font-bold ${
+                                                        msg.status === '未處理' ? 'badge-danger' : 'badge-success'
+                                                    }`}>
+                                                        {msg.status}
+                                                    </span>
+                                                </div>
+                                                <div className="text-xs text-[#8C5A2B] font-mono flex gap-4">
+                                                    <span>📞 {msg.phone || '未提供電話'}</span>
+                                                    <span>✉️ {msg.email || '未提供 Email'}</span>
+                                                </div>
+                                                <p className="text-sm text-[#4A3B32] bg-[#FAF8F5] p-3 rounded-xl border border-[#E8DCCE]/60 mt-2">
+                                                    {msg.content}
+                                                </p>
+                                                {msg.replyNote && (
+                                                    <div className="text-xs text-emerald-800 bg-emerald-50 p-2 rounded-lg border border-emerald-200 mt-1">
+                                                        <strong>回覆備註：</strong> {msg.replyNote}
+                                                    </div>
+                                                )}
+                                            </div>
+
+                                            <div className="flex md:flex-col items-end justify-center gap-2">
+                                                {msg.status === '未處理' ? (
+                                                    <button
+                                                        onClick={() => handleUpdateCsStatus(msg.id, '已回覆')}
+                                                        className="px-3 py-1.5 bg-emerald-700 hover:bg-emerald-800 text-white rounded-xl text-xs font-bold transition shadow"
+                                                    >
+                                                        標記為已回覆
+                                                    </button>
+                                                ) : (
+                                                    <button
+                                                        onClick={() => handleUpdateCsStatus(msg.id, '未處理')}
+                                                        className="px-3 py-1.5 bg-gray-200 hover:bg-gray-300 text-gray-700 rounded-xl text-xs font-bold transition"
+                                                    >
+                                                        重設為未處理
+                                                    </button>
+                                                )}
+                                                <button
+                                                    onClick={() => handleDeleteCs(msg.id)}
+                                                    className="px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 rounded-xl text-xs font-bold transition"
+                                                >
+                                                    刪除紀錄
+                                                </button>
+                                            </div>
+                                        </div>
+                                    ))
+                                )}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ============================================================== */}
+                    {/* TAB 5: 首頁輪播圖管理 (Carousels) */}
+                    {/* ============================================================== */}
+                    {activeTab === 'carousels' && (
+                        <div className="bg-white rounded-2xl border border-[#E8DCCE] shadow-sm p-6 space-y-6">
+                            <div className="flex items-center justify-between">
+                                <div>
+                                    <h3 className="font-serif font-bold text-lg text-[#241D17]">首頁大圖輪播管理</h3>
+                                    <p className="text-xs text-gray-500">自訂前台首頁最上方輪播看板與形象宣傳</p>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+                                {carousels.map((car, idx) => (
+                                    <div key={car.id || idx} className="bg-[#FAF8F5] rounded-2xl border border-[#E8DCCE] overflow-hidden shadow-sm flex flex-col">
+                                        <div className="h-44 bg-gray-200 relative overflow-hidden">
+                                            <img
+                                                src={car.localImage || car.image}
+                                                alt={car.title}
+                                                className="w-full h-full object-cover"
+                                            />
+                                            <div className="absolute top-2 right-2 bg-[#241D17]/80 text-white text-[11px] px-2 py-0.5 rounded-full">
+                                                輪播 {idx + 1}
+                                            </div>
+                                        </div>
+                                        <div className="p-4 flex-1 flex flex-col justify-between space-y-3">
+                                            <div>
+                                                <h4 className="font-serif font-bold text-base text-[#241D17]">{car.title}</h4>
+                                                <p className="text-xs text-gray-600 mt-1 line-clamp-2">{car.description}</p>
+                                            </div>
+                                            <div className="pt-2 border-t border-[#E8DCCE] text-right">
+                                                <span className="text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold">
+                                                    {car.status || '已發佈'}
+                                                </span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                ))}
+                            </div>
+                        </div>
+                    )}
+
+                    {/* ============================================================== */}
+                    {/* TAB 6: 系統與安全設定 (Settings) */}
+                    {/* ============================================================== */}
+                    {activeTab === 'settings' && (
+                        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+                            {/* 修改管理密碼 */}
+                            <div className="bg-white p-6 rounded-2xl border border-[#E8DCCE] shadow-sm space-y-4">
+                                <h3 className="font-serif font-bold text-lg text-[#241D17]">🔒 修改後台管理員密碼</h3>
+                                <p className="text-xs text-gray-500 leading-relaxed">請設定高強度管理密碼以防止未授權存取。</p>
+                                <form onSubmit={handleSaveNewPassword} className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-[#4A3B32] mb-1">新管理員密碼</label>
+                                        <input
+                                            type="password"
+                                            name="newPwd"
+                                            placeholder="請輸入至少 6 位數密碼"
+                                            className="w-full px-4 py-2.5 border border-[#D4C5B9] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
+                                            required
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className="px-5 py-2.5 bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-xs font-bold rounded-xl shadow transition"
+                                    >
+                                        儲存新密碼
+                                    </button>
+                                </form>
+                            </div>
+
+                            {/* Google Apps Script 串接設定 */}
+                            <div className="bg-white p-6 rounded-2xl border border-[#E8DCCE] shadow-sm space-y-4">
+                                <h3 className="font-serif font-bold text-lg text-[#241D17]">☁️ Google Apps Script (GAS) API 網址</h3>
+                                <p className="text-xs text-gray-500 leading-relaxed">若您有將 <code>backend_gas.js</code> 部署至您自己的 Google 試算表，請在此貼上 Web App 網址：</p>
+                                <form onSubmit={handleSaveGasUrl} className="space-y-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-[#4A3B32] mb-1">GAS Web App URL</label>
+                                        <input
+                                            type="url"
+                                            name="gasUrl"
+                                            defaultValue={gasUrl}
+                                            placeholder="https://script.google.com/macros/s/.../exec"
+                                            className="w-full px-4 py-2.5 border border-[#D4C5B9] rounded-xl text-xs font-mono focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
+                                            required
+                                        />
+                                    </div>
+                                    <button
+                                        type="submit"
+                                        className="px-5 py-2.5 bg-[#241D17] hover:bg-[#3D3126] text-white text-xs font-bold rounded-xl shadow transition"
+                                    >
+                                        儲存 API 網址
+                                    </button>
+                                </form>
+                            </div>
+                        </div>
+                    )}
+
+                </div>
+            </main>
+
+            {/* ============================================================== */}
+            {/* 編輯 / 新增書籍 MODAL */}
+            {/* ============================================================== */}
+            {editingBook && (
+                <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto">
+                    <div className="bg-[#FAF8F5] w-full max-w-3xl rounded-2xl shadow-2xl border border-[#8C5A2B]/40 overflow-hidden my-8">
+                        <div className="bg-[#241D17] text-white px-6 py-4 flex items-center justify-between">
+                            <h3 className="font-serif font-bold text-lg">
+                                {editingBook === 'NEW' ? '➕ 新增書籍至資料庫' : `✏️ 編輯書籍《${bookFormData.title}》`}
+                            </h3>
+                            <button onClick={() => setEditingBook(null)} className="text-gray-400 hover:text-white text-xl font-bold">
+                                ✕
+                            </button>
+                        </div>
+
+                        <form onSubmit={handleSaveBook} className="p-6 space-y-5 max-h-[80vh] overflow-y-auto custom-scrollbar">
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">書碼 (ID) *</label>
+                                    <input
+                                        type="text"
+                                        value={bookFormData.id}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, id: e.target.value })}
+                                        placeholder="例如：00001"
+                                        disabled={editingBook !== 'NEW'}
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm font-mono bg-white disabled:bg-gray-100"
+                                        required
+                                    />
+                                </div>
+                                <div className="sm:col-span-2">
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">書名 (Title) *</label>
+                                    <input
+                                        type="text"
+                                        value={bookFormData.title}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, title: e.target.value })}
+                                        placeholder="請輸入完整書名"
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm font-serif font-bold bg-white"
+                                        required
+                                    />
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">作者 (Author)</label>
+                                    <input
+                                        type="text"
+                                        value={bookFormData.author}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, author: e.target.value })}
+                                        placeholder="例如：昌彼得著"
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">出版年份 (Year)</label>
+                                    <input
+                                        type="text"
+                                        value={bookFormData.year}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, year: e.target.value })}
+                                        placeholder="例如：82年 平一"
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">叢書類別 (Category)</label>
+                                    <input
+                                        type="text"
+                                        value={bookFormData.category}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, category: e.target.value })}
+                                        placeholder="例如：文史哲學集成"
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white"
+                                        list="category-options"
+                                    />
+                                    <datalist id="category-options">
+                                        {categoriesList.filter(c => c !== '全部').map(c => <option key={c} value={c} />)}
+                                    </datalist>
+                                </div>
+                            </div>
+
+                            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+                                <div>
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">定價 (Price NT$)</label>
+                                    <input
+                                        type="number"
+                                        value={bookFormData.price}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, price: e.target.value })}
+                                        placeholder="例如：350"
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white font-mono"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">ISBN 國際書碼</label>
+                                    <input
+                                        type="text"
+                                        value={bookFormData.isbn}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, isbn: e.target.value })}
+                                        placeholder="例如：978-957-547-143-9"
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white font-mono"
+                                    />
+                                </div>
+                                <div>
+                                    <label className="block text-xs font-bold text-[#4A3B32] mb-1">庫存數量 (Stock)</label>
+                                    <input
+                                        type="text"
+                                        value={bookFormData.stock}
+                                        onChange={(e) => setBookFormData({ ...bookFormData, stock: e.target.value })}
+                                        placeholder="例如：10"
+                                        className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white font-mono"
+                                    />
+                                </div>
+                            </div>
+
+                            {/* 封面圖片網址與上傳 */}
+                            <div className="p-4 bg-white rounded-xl border border-[#E8DCCE] space-y-3">
+                                <label className="block text-xs font-bold text-[#8C5A2B]">書籍封面圖片設定</label>
+                                <div className="flex flex-col sm:flex-row gap-4 items-center">
+                                    <div className="w-20 h-28 bg-gray-100 rounded-lg border border-gray-300 overflow-hidden shrink-0 flex items-center justify-center">
+                                        <img
+                                            src={bookFormData.cover || SVG_FALLBACK}
+                                            onError={(e) => { e.target.src = SVG_FALLBACK; }}
+                                            alt="預覽"
+                                            className="w-full h-full object-cover"
+                                        />
+                                    </div>
+                                    <div className="flex-1 space-y-2 w-full">
+                                        <input
+                                            type="text"
+                                            value={bookFormData.cover.startsWith('data:') ? '已載入本機圖片 (Base64)' : bookFormData.cover}
+                                            onChange={(e) => setBookFormData({ ...bookFormData, cover: e.target.value })}
+                                            placeholder="輸入圖片網址 (Google Drive 縮圖或任何圖片 URL)"
+                                            className="w-full px-3 py-2 border border-[#D4C5B9] rounded-lg text-xs bg-[#FAF8F5]"
+                                        />
+                                        <div className="flex items-center gap-2">
+                                            <label className="cursor-pointer px-3 py-1.5 bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-xs font-bold rounded-lg transition inline-flex items-center gap-1">
+                                                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-8l-4-4m0 0L8 8m4-4v12"/>
+                                                </svg>
+                                                <span>選擇本機圖片上傳</span>
+                                                <input type="file" accept="image/*" onChange={handleImageUpload} className="hidden" />
+                                            </label>
+                                            {bookFormData.cover && (
+                                                <button
+                                                    type="button"
+                                                    onClick={() => setBookFormData({ ...bookFormData, cover: '' })}
+                                                    className="text-xs text-red-600 hover:underline"
+                                                >
+                                                    清除圖片
+                                                </button>
+                                            )}
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+
+                            {/* 書籍簡介 */}
+                            <div>
+                                <label className="block text-xs font-bold text-[#4A3B32] mb-1">📖 書籍簡介 (Intro / Description)</label>
+                                <textarea
+                                    rows="4"
+                                    value={bookFormData.intro}
+                                    onChange={(e) => setBookFormData({ ...bookFormData, intro: e.target.value })}
+                                    placeholder="請輸入本書之學術背景、內容摘要或出版特色..."
+                                    className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white"
+                                />
+                            </div>
+
+                            {/* 讀後心得與學術評析 */}
+                            <div>
+                                <label className="block text-xs font-bold text-[#4A3B32] mb-1">✍️ 讀後心得與學術評析 (Review / Commentary)</label>
+                                <textarea
+                                    rows="4"
+                                    value={bookFormData.心得}
+                                    onChange={(e) => setBookFormData({ ...bookFormData, 心得: e.target.value })}
+                                    placeholder="請輸入編輯評述、導讀評析或讀後心得..."
+                                    className="w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white"
+                                />
+                            </div>
+
+                            <div className="flex items-center justify-end gap-3 pt-4 border-t border-[#E8DCCE]">
+                                <button
+                                    type="button"
+                                    onClick={() => setEditingBook(null)}
+                                    className="px-5 py-2.5 rounded-xl border border-[#D4C5B9] text-gray-700 text-sm font-bold hover:bg-gray-100 transition"
+                                >
+                                    取消
+                                </button>
+                                <button
+                                    type="submit"
+                                    className="px-6 py-2.5 rounded-xl bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-sm font-bold shadow-md transition"
+                                >
+                                    確認儲存書籍
+                                </button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            )}
+
+            {/* ============================================================== */}
+            {/* 訂單明細 MODAL */}
+            {/* ============================================================== */}
+            {viewingOrder && (
+                <div className="fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4">
+                    <div className="bg-[#FAF8F5] w-full max-w-xl rounded-2xl shadow-2xl border border-[#8C5A2B]/40 overflow-hidden">
+                        <div className="bg-[#241D17] text-white px-6 py-4 flex items-center justify-between">
+                            <h3 className="font-serif font-bold text-lg">訂單明細 #{viewingOrder.orderId}</h3>
+                            <button onClick={() => setViewingOrder(null)} className="text-gray-400 hover:text-white text-xl font-bold">✕</button>
+                        </div>
+                        <div className="p-6 space-y-4 text-sm">
+                            <div className="grid grid-cols-2 gap-3 bg-white p-4 rounded-xl border border-[#E8DCCE]">
+                                <div><strong>收件人：</strong> {viewingOrder.name}</div>
+                                <div><strong>聯絡電話：</strong> {viewingOrder.phone}</div>
+                                <div><strong>電子信箱：</strong> {viewingOrder.email || '無'}</div>
+                                <div><strong>下單時間：</strong> {viewingOrder.date}</div>
+                                <div className="col-span-2"><strong>寄送地址：</strong> {viewingOrder.address || '自取 / 門市'}</div>
+                                <div className="col-span-2"><strong>付款方式：</strong> {viewingOrder.payment}</div>
+                                {viewingOrder.memo && <div className="col-span-2 text-amber-900 bg-amber-50 p-2 rounded"><strong>備註：</strong> {viewingOrder.memo}</div>}
+                            </div>
+
+                            <div className="bg-white p-4 rounded-xl border border-[#E8DCCE]">
+                                <h4 className="font-bold text-xs text-[#8C5A2B] uppercase mb-2">訂購商品清單</h4>
+                                <p className="font-mono text-xs whitespace-pre-line text-gray-800">{viewingOrder.items}</p>
+                                <div className="mt-3 pt-3 border-t border-gray-200 text-right text-base font-bold text-[#8C5A2B]">
+                                    總金額：NT$ {viewingOrder.total}
+                                </div>
+                            </div>
+
+                            <div className="flex items-center justify-between pt-2">
+                                <div className="flex items-center gap-2">
+                                    <span className="text-xs font-bold text-gray-600">變更狀態：</span>
+                                    {['待處理', '處理中', '已出貨', '已完成', '已取消'].map(st => (
+                                        <button
+                                            key={st}
+                                            onClick={() => handleUpdateOrderStatus(viewingOrder.orderId, st)}
+                                            className={`text-xs px-2.5 py-1 rounded-lg font-bold ${
+                                                viewingOrder.status === st ? 'bg-[#8C5A2B] text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'
+                                            }`}
+                                        >
+                                            {st}
+                                        </button>
+                                    ))}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+        </div>
+    );
+}
+
+ReactDOM.createRoot(document.getElementById('admin-root')).render(<AdminApp />);
+</script>
+</body>
+</html>

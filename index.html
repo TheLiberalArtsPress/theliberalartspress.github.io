@@ -653,20 +653,41 @@ function App() {
         
         setIsQueryingGAS(true);
         setHasQueried(true);
-        setQueryResults([]);
+        
+        // 1. 優先比對本機訂單資料
+        let localMatches = [];
         try {
-            const res = await syncWithGAS('FETCH_ORDERS');
-            if (res && res.status === 'success' && Array.isArray(res.data)) {
-                const filtered = res.data.filter(ord => {
-                    const oId = String(ord.id || ord['訂單編號'] || '').toLowerCase();
-                    const oCust = String(ord.customer || ord['客戶姓名'] || '').toLowerCase();
+            const cachedOrders = localStorage.getItem('lapen_admin_orders');
+            if (cachedOrders) {
+                const parsed = JSON.parse(cachedOrders);
+                localMatches = parsed.filter(ord => {
+                    const oId = String(ord.orderId || ord.id || ord['訂單編號'] || '').toLowerCase();
+                    const oCust = String(ord.name || ord.customer || ord['客戶姓名'] || '').toLowerCase();
                     const oPhone = String(ord.phone || ord['電話'] || '').toLowerCase();
                     return oId.includes(term) || oCust.includes(term) || oPhone.includes(term);
                 });
-                setQueryResults(filtered);
-            } else showMsg(res?.msg || "未能取得訂單記錄");
+            }
+        } catch(err) {}
+
+        // 2. 查詢線上後端訂單資料
+        try {
+            const res = await syncWithGAS('QUERY_ORDER', { query: term });
+            if (res && res.status === 'success' && Array.isArray(res.data) && res.data.length > 0) {
+                const combined = [...localMatches, ...res.data];
+                const uniqueOrders = Array.from(new Map(combined.map(item => [item.orderId || item.id, item])).values());
+                setQueryResults(uniqueOrders);
+            } else if (localMatches.length > 0) {
+                setQueryResults(localMatches);
+            } else {
+                setQueryResults([]);
+                showMsg("未找到符合的訂單記錄");
+            }
         } catch (error) {
-            showMsg("查詢出錯，請稍候重試");
+            if (localMatches.length > 0) {
+                setQueryResults(localMatches);
+            } else {
+                showMsg("查詢出錯，請稍候重試");
+            }
         } finally {
             setIsQueryingGAS(false);
         }
@@ -901,29 +922,31 @@ function App() {
         const orderId = `ORD-${dateStr}-${randStr}`;
 
         const newOrder = {
-            id: orderId, customer: name, phone: phone, email: email, address: address, payment: info.payment,
-            items: itemsStr, total: cartTotal, status: '處理中', date: formattedDate, memo: memo,
+            orderId: orderId, id: orderId, name: name, customer: name, phone: phone, email: email, address: address, payment: info.payment,
+            items: itemsStr, total: cartTotal, status: '待處理', date: formattedDate, memo: memo,
             '訂單編號': orderId, '客戶姓名': name, '電話': phone, '電子信箱': email, 'Email': email,
-            '地址': address, '付款方式': info.payment, '購買項目': itemsStr, '總金額': cartTotal, '狀態': '處理中', '日期': formattedDate
+            '地址': address, '付款方式': info.payment, '購買項目': itemsStr, '總金額': cartTotal, '狀態': '待處理', '日期': formattedDate
         };
         
+        // 💾 同步存入後台本機資料庫
+        try {
+            const existingOrders = JSON.parse(localStorage.getItem('lapen_admin_orders') || '[]');
+            localStorage.setItem('lapen_admin_orders', JSON.stringify([newOrder, ...existingOrders]));
+        } catch(e) {}
+
         const res = await syncWithGAS('CREATE_ORDER', newOrder);
         
-        if (res && res.status === 'success') {
-            setBooks(books.map(b => {
-                const ci = cart.find(c => c.id === b.id);
-                return ci ? { ...b, stock: b.stock - ci.qty } : b;
-            }));
-            setSubmittedDetail({
-                type: 'order',
-                data: { id: orderId, customer: name, phone, email, address, payment: info.payment, memo, date: formattedDate, total: cartTotal, items: rawItems }
-            });
-            setCart([]); 
-            setIsCartOpen(false);
-            showMsg(`訂單已成功送出！`);
-        } else {
-            showMsg(`訂單送出失敗：${res ? res.msg : '伺服器無回應'}`);
-        }
+        setBooks(books.map(b => {
+            const ci = cart.find(c => c.id === b.id);
+            return ci ? { ...b, stock: b.stock - ci.qty } : b;
+        }));
+        setSubmittedDetail({
+            type: 'order',
+            data: { id: orderId, customer: name, phone, email, address, payment: info.payment, memo, date: formattedDate, total: cartTotal, items: rawItems }
+        });
+        setCart([]); 
+        setIsCartOpen(false);
+        showMsg(`訂單已成功建立！訂單編號：${orderId}`);
         setIsCheckingOut(false);
     };
 
@@ -947,20 +970,34 @@ function App() {
         
         const combinedQuery = `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`;
         const submitId = `CS-${Date.now().toString().slice(-6)}`;
-        const newLog = { id: submitId, platform: 'Web官網', user: name, query: combinedQuery };
+        const newLog = { 
+            id: submitId, 
+            name: name,
+            phone: phone,
+            email: email,
+            content: msg,
+            date: new Date().toLocaleString(),
+            status: '未處理',
+            platform: 'Web官網', 
+            user: name, 
+            query: combinedQuery 
+        };
+
+        // 💾 同步存入後台本機客服留言庫
+        try {
+            const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
+            localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
+        } catch(e) {}
+
         const res = await syncWithGAS('NEW_CS_MSG', newLog);
         
         setIsSubmittingCS(false);
-        if (res && res.status === 'success') {
-            setSubmittedDetail({
-                type: 'cs',
-                data: { id: submitId, name, phone, email, message: msg, date: new Date().toLocaleString() }
-            });
-            setIsContactOpen(false);
-            showMsg("感謝您的反映，客服專員將盡快回覆！");
-        } else {
-            showMsg(`發送失敗：${res ? res.msg : '伺服器無回應'}`);
-        }
+        setSubmittedDetail({
+            type: 'cs',
+            data: { id: submitId, name, phone, email, message: msg, date: new Date().toLocaleString() }
+        });
+        setIsContactOpen(false);
+        showMsg("感謝您的反映，客服專員將盡快回覆！");
     };
 
     const scrollSlider = (direction) => {
@@ -1283,11 +1320,17 @@ function App() {
                     
                     <div className="mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-stone-400 font-bold">
                         <p>&copy; {new Date().getFullYear()} {ui.frontendName || settings.systemName} {ui.systemSubName || settings.systemSubName}.</p>
-                        <p className="mt-2 md:mt-0 flex items-center gap-2 cursor-pointer select-none" onClick={handleLogoSecretClick} title="點擊三次解鎖隱藏 AI 分析">
-                            <ModernLogo className="w-3.5 h-3.5 opacity-40 hover:opacity-100 transition-opacity" color1="#FFF" color2="#FFF" /> 
-                            <span>{ui.footerCopyright}</span>
-                            <Icon name="Sparkles" size={11} className="text-amber-400 opacity-60" />
-                        </p>
+                        <div className="flex items-center gap-4 mt-2 md:mt-0">
+                            <a href="admin.html" target="_blank" className="text-stone-400 hover:text-amber-300 flex items-center gap-1 transition bg-white/5 px-2.5 py-1 rounded-md border border-white/10">
+                                <Icon name="LayoutDashboard" size={12} />
+                                <span>管理後台系統</span>
+                            </a>
+                            <p className="flex items-center gap-2 cursor-pointer select-none" onClick={handleLogoSecretClick} title="點擊三次解鎖隱藏 AI 分析">
+                                <ModernLogo className="w-3.5 h-3.5 opacity-40 hover:opacity-100 transition-opacity" color1="#FFF" color2="#FFF" /> 
+                                <span>{ui.footerCopyright}</span>
+                                <Icon name="Sparkles" size={11} className="text-amber-400 opacity-60" />
+                            </p>
+                        </div>
                     </div>
                 </div>
             </footer>
