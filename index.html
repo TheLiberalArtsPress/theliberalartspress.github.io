@@ -688,7 +688,21 @@ function App() {
     }, [books, selectedCategory]);
 
     const visibleBooks = useMemo(() => filteredBooks.slice(0, visibleCount), [filteredBooks, visibleCount]);
-    const displayChoiceBooks = useMemo(() => choiceBooks.length > 0 ? choiceBooks : books.slice(0, 10), [choiceBooks, books]);
+    const displayChoiceBooks = useMemo(() => {
+        const sourceList = choiceBooks.length > 0 ? choiceBooks : books.slice(0, 10);
+        return sourceList.map(cb => {
+            const liveBook = books.find(b => (b.id && cb.id && String(b.id) === String(cb.id)) || (b.title && cb.title && b.title === cb.title));
+            if (liveBook) {
+                return {
+                    ...cb,
+                    ...liveBook,
+                    price: liveBook.price !== undefined ? liveBook.price : cb.price,
+                    cover: liveBook.localCover || liveBook.cover || cb.cover || cb.image
+                };
+            }
+            return cb;
+        });
+    }, [choiceBooks, books]);
 
     const analyzeBookWithGemini = async (targetBook, customQ = "") => {
         if (!targetBook) return;
