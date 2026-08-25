@@ -1,0 +1,22 @@
+# === 1. 針對 ChatGPT Search 即時搜尋爬蟲 ===
+User-agent: OAI-SearchBot
+Allow: /
+
+# === 2. 針對 OpenAI 知識庫訓練爬蟲 ===
+User-agent: GPTBot
+Allow: /
+
+# === 3. 針對 Perplexity 搜尋爬蟲 ===
+User-agent: PerplexityBot
+Allow: /
+
+# === 4. 針對 Anthropic (Claude) 爬蟲 ===
+User-agent: Anthropic-ai
+Allow: /
+
+# === 5. 通用指令：允許其餘所有爬蟲（Google, Bing 等） ===
+User-agent: *
+Allow: /
+
+# === 6. 網站地圖宣告（獨立置底，確保所有爬蟲都能讀到） ===
+Sitemap: https://theliberalartspress.github.io/sitemap.xml
