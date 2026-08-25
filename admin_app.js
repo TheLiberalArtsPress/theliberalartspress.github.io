@@ -392,7 +392,7 @@ function AdminApp() {
       choices: updatedChoices,
       books: books
     };
-    return "window.STATIC_DATA = " + JSON.stringify(fullData, null, 2) + ";";
+    return "window.STATIC_DATA = " + JSON.stringify(fullData, null, 2) + ";\nif (typeof window !== 'undefined') { window.dispatchEvent(new CustomEvent('lapenDataLoaded', { detail: window.STATIC_DATA })); }";
   };
   const handleExportDataJs = () => {
     const fileContent = generateDataJsString();

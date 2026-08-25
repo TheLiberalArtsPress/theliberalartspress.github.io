@@ -558,7 +558,7 @@ function App() {
   });
   const [carousels, setCarousels] = useState(() => initData.carousels && initData.carousels.length > 0 ? initData.carousels : fallbackCarousels);
   const [carouselIndex, setCarouselIndex] = useState(0);
-  const [books, setBooks] = useState(() => staticData.books && staticData.books.length > 0 ? staticData.books : []);
+  const [books, setBooks] = useState(() => (staticData.books && staticData.books.length > 0) ? staticData.books : (initData.initialBooks && initData.initialBooks.length > 0 ? initData.initialBooks : []));
   const [choiceBooks, setChoiceBooks] = useState(() => initData.choices && initData.choices.length > 0 ? initData.choices : []);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
@@ -665,52 +665,44 @@ function App() {
     }
   }, []);
 
-  // 🟢 非同步背景載入全館 2,632 冊書籍資料庫，不阻塞介面渲染
-  useEffect(() => {
-    const applyLoadedData = () => {
-      if (window.STATIC_DATA && window.STATIC_DATA.books && window.STATIC_DATA.books.length > 0) {
-        setBooks(window.STATIC_DATA.books);
-        if (window.STATIC_DATA.choices) setChoiceBooks(window.STATIC_DATA.choices);
-        if (window.STATIC_DATA.carousels) setCarousels(window.STATIC_DATA.carousels);
-        if (window.STATIC_DATA.settings) setSettings(prev => ({
-          ...prev,
-          ...window.STATIC_DATA.settings
-        }));
-        if (window.STATIC_DATA.ui) setUi(prev => ({
-          ...prev,
-          ...window.STATIC_DATA.ui
-        }));
-        setIsBooksLoading(false);
-        return true;
-      }
-      return false;
-    };
-    if (applyLoadedData()) return;
+  // 🟢 雙重事件驅動 + 即時響應載入全館 2,632 冊書籍
+    useEffect(() => {
+        const applyLoadedData = (customData) => {
+            const dataToUse = customData || (typeof window !== "undefined" ? window.STATIC_DATA : null);
+            if (dataToUse && dataToUse.books && dataToUse.books.length > 0) {
+                setBooks(dataToUse.books);
+                if (dataToUse.choices) setChoiceBooks(dataToUse.choices);
+                if (dataToUse.carousels) setCarousels(dataToUse.carousels);
+                if (dataToUse.settings) setSettings(prev => ({ ...prev, ...dataToUse.settings }));
+                if (dataToUse.ui) setUi(prev => ({ ...prev, ...dataToUse.ui }));
+                setIsBooksLoading(false);
+                return true;
+            }
+            return false;
+        };
 
-    // 若 deferred 腳本仍在下載，以高頻監聽載入完成事件
-    const interval = setInterval(() => {
-      if (applyLoadedData()) clearInterval(interval);
-    }, 50);
-    const timer = setTimeout(() => {
-      clearInterval(interval);
-      if (!applyLoadedData()) {
-        syncWithGAS('FETCH_INIT_DATA').then(res => {
-          if (res && res.status === 'success' && res.data) {
-            const {
-              books: fetchedBooks,
-              choices: fetchedChoices
-            } = res.data;
-            if (Array.isArray(fetchedBooks)) setBooks(fetchedBooks);
-            if (Array.isArray(fetchedChoices)) setChoiceBooks(fetchedChoices);
-          }
-        }).finally(() => setIsBooksLoading(false));
-      }
-    }, 4000);
-    return () => {
-      clearInterval(interval);
-      clearTimeout(timer);
-    };
-  }, [syncWithGAS]);
+        // 1. 若已經在記憶體中，立即套用
+        if (applyLoadedData()) return;
+
+        // 2. 監聽 data.js 載入完成的自訂廣播事件
+        const onDataLoaded = (e) => {
+            applyLoadedData(e.detail);
+        };
+        window.addEventListener('lapenDataLoaded', onDataLoaded);
+
+        // 3. 備用輪詢（確保在任何特殊瀏覽器事件遺失情況下也能捕捉）
+        const interval = setInterval(() => {
+            if (applyLoadedData()) {
+                clearInterval(interval);
+                window.removeEventListener('lapenDataLoaded', onDataLoaded);
+            }
+        }, 100);
+
+        return () => {
+            window.removeEventListener('lapenDataLoaded', onDataLoaded);
+            clearInterval(interval);
+        };
+    }, []);
   const handleOrderQuerySubmit = async e => {
     e.preventDefault();
     const term = orderQueryInput.trim().toLowerCase();
