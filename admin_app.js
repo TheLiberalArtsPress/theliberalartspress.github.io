@@ -8,6 +8,7 @@ const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3
 const DEFAULT_PASS = "lapen_admin_888";
 const DEFAULT_REPO = "maplestorycandy/theliberalartspress";
 const DEFAULT_BRANCH = "main";
+const DEFAULT_TOKEN = "";
 const SVG_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'%3E%3Crect width='100%25' height='100%25' fill='%23EDE5DC'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='11' fill='%238C5A2B'%3E封面暫缺%3C/text%3E%3C/svg%3E";
 const safeSetStorage = (key, val) => {
   try {
@@ -120,9 +121,9 @@ function AdminApp() {
   });
   const [ghToken, setGhToken] = useState(() => {
     try {
-      return localStorage.getItem('lapen_gh_token') || '';
+      return localStorage.getItem('lapen_gh_token') || DEFAULT_TOKEN;
     } catch (e) {
-      return '';
+      return DEFAULT_TOKEN;
     }
   });
   const [isPushingToGithub, setIsPushingToGithub] = useState(false);
