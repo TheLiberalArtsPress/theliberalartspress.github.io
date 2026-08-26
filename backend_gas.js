@@ -313,14 +313,21 @@ function queryOrder(payload) {
 }
 
 /**
- * 讀取所有書籍
+ * 取得書籍工作表（優先使用 Book_ALL，若無則使用 書籍清單）
+ */
+function getBookSheet() {
+  const ss = getSpreadsheet();
+  return ss.getSheetByName("Book_ALL") || ss.getSheetByName(SHEET_NAMES.BOOKS) || ss.insertSheet(SHEET_NAMES.BOOKS);
+}
+
+/**
+ * 讀取所有書籍 (支援 Book_ALL 與 書籍清單)
  */
 function getBooks() {
-  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.BOOKS);
+  const sheet = getBookSheet();
   const data = sheet.getDataRange().getValues();
   if (data.length <= 1) return [];
 
-  const headers = data[0];
   const books = [];
 
   for (let i = 1; i < data.length; i++) {
@@ -328,19 +335,19 @@ function getBooks() {
     if (!row[0] && !row[1]) continue; // 空行略過
 
     books.push({
-      id: String(row[0] || ""),
-      title: String(row[1] || ""),
-      author: String(row[2] || ""),
-      year: String(row[3] || ""),
+      id: String(row[0] || "").trim(),
+      title: String(row[1] || "").trim(),
+      author: String(row[2] || "").trim(),
+      year: String(row[3] || "").trim(),
       price: Number(row[4] || 0),
-      isbn: String(row[5] || ""),
-      stock: String(row[6] || "10"),
-      category: String(row[7] || "未分類"),
-      isNew: row[8] === true || String(row[8]).toLowerCase() === "true",
-      isLast: row[9] === true || String(row[9]).toLowerCase() === "true",
-      cover: String(row[10] || ""),
-      intro: String(row[11] || ""),
-      心得: String(row[12] || "")
+      isbn: String(row[5] || "").trim(),
+      stock: String(row[6] || "10").trim(),
+      category: String(row[7] || "未分類").trim(),
+      isNew: row[8] === true || String(row[8]).toLowerCase() === "true" || String(row[8]) === "是",
+      isLast: row[9] === true || String(row[9]).toLowerCase() === "true" || String(row[9]) === "是",
+      cover: String(row[10] || "").trim(),
+      intro: String(row[13] || row[11] || "").trim(),
+      心得: String(row[14] || row[12] || "").trim()
     });
   }
   return books;
@@ -483,39 +490,44 @@ function saveBook(book) {
     return jsonResponse({ status: "error", msg: "書碼與書名為必填欄位" });
   }
 
-  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.BOOKS);
+  const sheet = getBookSheet();
   const data = sheet.getDataRange().getValues();
   let targetRowIndex = -1;
 
   for (let i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === String(book.id)) {
+    if (String(data[i][0]).trim() === String(book.id).trim()) {
       targetRowIndex = i + 1; // 1-based row index
       break;
     }
   }
 
   const rowValues = [
-    String(book.id),
-    String(book.title || ""),
-    String(book.author || ""),
-    String(book.year || ""),
+    String(book.id).trim(),
+    String(book.title || "").trim(),
+    String(book.author || "").trim(),
+    String(book.year || "").trim(),
     Number(book.price || 0),
-    String(book.isbn || ""),
-    String(book.stock || "10"),
-    String(book.category || "未分類"),
-    book.isNew === true,
-    book.isLast === true,
-    String(book.cover || ""),
-    String(book.intro || ""),
-    String(book.心得 || book.review || "")
+    String(book.isbn || "").trim(),
+    String(book.stock || "10").trim(),
+    String(book.category || "未分類").trim(),
+    book.isNew === true ? "是" : "否",
+    book.isLast === true ? "是" : "否",
+    String(book.cover || "").trim(),
+    String(book.category || "未分類").trim(),
+    "",
+    String(book.intro || "").trim(),
+    String(book.心得 || book.review || "").trim(),
+    ""
   ];
 
   if (targetRowIndex > 0) {
-    sheet.getRange(targetRowIndex, 1, 1, rowValues.length).setValues([rowValues]);
-    return jsonResponse({ status: "success", msg: "書籍「" + book.title + "」已更新成功！" });
+    // 依現有欄位數量更新
+    const colsToUpdate = Math.min(rowValues.length, sheet.getLastColumn() || 16);
+    sheet.getRange(targetRowIndex, 1, 1, colsToUpdate).setValues([rowValues.slice(0, colsToUpdate)]);
+    return jsonResponse({ status: "success", msg: "書籍「" + book.title + "」已同步更新至試算表！" });
   } else {
     sheet.appendRow(rowValues);
-    return jsonResponse({ status: "success", msg: "書籍「" + book.title + "」已新增成功！" });
+    return jsonResponse({ status: "success", msg: "書籍「" + book.title + "」已新增至試算表！" });
   }
 }
 
@@ -526,13 +538,13 @@ function deleteBook(payload) {
   const bookId = String(payload.id || "").trim();
   if (!bookId) return jsonResponse({ status: "error", msg: "未指定要刪除的書碼" });
 
-  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.BOOKS);
+  const sheet = getBookSheet();
   const data = sheet.getDataRange().getValues();
 
   for (let i = 1; i < data.length; i++) {
-    if (String(data[i][0]) === bookId) {
+    if (String(data[i][0]).trim() === bookId) {
       sheet.deleteRow(i + 1);
-      return jsonResponse({ status: "success", msg: "書碼 " + bookId + " 已成功刪除" });
+      return jsonResponse({ status: "success", msg: "書碼 " + bookId + " 已從試算表刪除" });
     }
   }
   return jsonResponse({ status: "error", msg: "找不到書碼為 " + bookId + " 的書籍" });
