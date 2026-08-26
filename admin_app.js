@@ -198,6 +198,17 @@ function AdminApp() {
   // 客服管理 UI 狀態
   const [csFilter, setCsFilter] = useState('全部');
   const [viewingCs, setViewingCs] = useState(null);
+
+  // 輪播圖管理 UI 狀態
+  const [editingCarousel, setEditingCarousel] = useState(null);
+  const [carouselFormData, setCarouselFormData] = useState({
+    id: '',
+    title: '',
+    description: '',
+    image: '',
+    status: '已發佈'
+  });
+
   const showToast = (msg, type = 'info') => {
     setSyncMessage({
       msg,
@@ -572,7 +583,67 @@ function AdminApp() {
       setViewingCs(null);
       showToast(`客服留言已刪除`, 'danger');
     }
+  const handleOpenNewCarousel = () => {
+    setEditingCarousel('NEW');
+    setCarouselFormData({
+      id: 'CAR-' + Date.now().toString().slice(-6),
+      title: '',
+      description: '',
+      image: '',
+      status: '已發佈'
+    });
   };
+  const handleOpenEditCarousel = car => {
+    setEditingCarousel(car);
+    setCarouselFormData({
+      id: car.id || ('CAR-' + Date.now().toString().slice(-6)),
+      title: car.title || '',
+      description: car.description || '',
+      image: car.image || car.localImage || '',
+      status: car.status || '已發佈'
+    });
+  };
+  const handleSaveCarousel = e => {
+    e.preventDefault();
+    if (!carouselFormData.title.trim() || !carouselFormData.image.trim()) {
+      alert('請填寫輪播標題與圖片網址！');
+      return;
+    }
+    const newCar = {
+      id: carouselFormData.id,
+      title: carouselFormData.title.trim(),
+      description: carouselFormData.description.trim(),
+      image: carouselFormData.image.trim(),
+      status: carouselFormData.status || '已發佈'
+    };
+    if (editingCarousel === 'NEW') {
+      setCarousels(prev => [...prev, newCar]);
+      showToast(`輪播圖《${newCar.title}》已成功新增！`, 'success');
+    } else {
+      setCarousels(prev => prev.map(c => (c.id === editingCarousel.id || c.title === editingCarousel.title) ? newCar : c));
+      showToast(`輪播圖《${newCar.title}》資料已更新！`, 'success');
+    }
+    setEditingCarousel(null);
+  };
+  const handleDeleteCarousel = car => {
+    if (window.confirm(`確定要刪除輪播圖【${car.title}】嗎？此動作無法復原！`)) {
+      setCarousels(prev => prev.filter(c => c.id !== car.id && c.title !== car.title));
+      showToast(`輪播圖《${car.title}》已刪除`, 'danger');
+    }
+  };
+  const handleMoveCarousel = (index, direction) => {
+    setCarousels(prev => {
+      const targetIdx = index + direction;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const copy = [...prev];
+      const temp = copy[index];
+      copy[index] = copy[targetIdx];
+      copy[targetIdx] = temp;
+      return copy;
+    });
+    showToast('輪播圖順序已調整', 'info');
+  };
+
   const handleSaveNewPassword = e => {
     e.preventDefault();
     const newPwd = e.target.newPwd.value.trim();
@@ -788,7 +859,7 @@ function AdminApp() {
   })), /*#__PURE__*/React.createElement("span", null, "\u7CFB\u7D71\u8207\u5BC6\u78BC\u8A2D\u5B9A"))), /*#__PURE__*/React.createElement("div", {
     className: "p-4 border-t border-[#3D3126] space-y-2"
   }, /*#__PURE__*/React.createElement("a", {
-    href: "index.html",
+    href: "https://maplestorycandy.github.io/theliberalartspress/",
     target: "_blank",
     className: "w-full flex items-center justify-center gap-2 py-2.5 bg-[#3D3126] hover:bg-[#4E3E31] text-xs text-[#E8DCCE] rounded-xl transition font-medium"
   }, /*#__PURE__*/React.createElement("svg", {
@@ -1224,32 +1295,75 @@ function AdminApp() {
     className: "px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 rounded-xl text-xs font-bold transition"
   }, "\u522A\u9664\u7D00\u9304")))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm p-6 space-y-6"
-  }, /*#__PURE__*/React.createElement("h3", {
-    className: "font-serif font-bold text-lg text-[#241D17]"
-  }, "\u9996\u9801\u5927\u5716\u8F2A\u64AD\u7BA1\u7406"), /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-cols-1 md:grid-cols-3 gap-6"
-  }, carousels.map((car, idx) => /*#__PURE__*/React.createElement("div", {
-    key: car.id || idx,
-    className: "bg-[#FAF8F5] rounded-2xl border border-[#E8DCCE] overflow-hidden shadow-sm flex flex-col"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-44 bg-gray-200 relative overflow-hidden"
+    className: "flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E8DCCE]"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    className: "font-serif font-bold text-lg text-[#241D17]"
+  }, "\u9996\u9801\u5927\u5716\u8F2A\u64AD\u7BA1\u7406"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-gray-500 mt-0.5"
+  }, "\u7BA1\u7406\u524D\u53F0\u9996\u9801\u9802\u90E8\u7684\u6A6横\u5E45\u8F2A\u64AD\u770B\u7248\uFF0C\u652F\u63F4\u6392\u5E8F\u3001\u7DE8\u8F2F\u3001\u5716\u7247\u66F7\u63DB\u8207\u65B0\u589E")), /*#__PURE__*/React.createElement("button", {
+    onClick: handleOpenNewCarousel,
+    className: "px-4 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5 active:scale-95"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-4 h-4",
+    fill: "none",
+    stroke: "currentColor",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: "2",
+    d: "M12 4v16m8-8H4"
+  })), /*#__PURE__*/React.createElement("span", null, "＋ \u65B0\u589E\u9996\u9801\u8F2A\u64AD\u5716"))), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 md:grid-cols-3 gap-6"
+  }, carousels.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "col-span-3 p-12 text-center text-gray-400"
+  }, "\u76EE\u524D\u5C1A\u7121\u8F2A\u64AD\u5716\uFF0C\u8ACB\u9EDE\u64CA\u4E0A\u65B9\u6309\u9215\u65B0\u589E\uFF01") : carousels.map((car, idx) => /*#__PURE__*/React.createElement("div", {
+    key: car.id || idx,
+    className: "bg-[#FAF8F5] rounded-2xl border border-[#E8DCCE] overflow-hidden shadow-sm flex flex-col hover:shadow-md transition"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "h-44 bg-gray-200 relative overflow-hidden group"
   }, /*#__PURE__*/React.createElement("img", {
     src: car.localImage || car.image,
     alt: car.title,
     className: "w-full h-full object-cover"
   }), /*#__PURE__*/React.createElement("div", {
-    className: "absolute top-2 right-2 bg-[#241D17]/80 text-white text-[11px] px-2 py-0.5 rounded-full"
-  }, "\u8F2A\u64AD ", idx + 1)), /*#__PURE__*/React.createElement("div", {
+    className: "absolute top-2 left-2 bg-[#241D17]/80 text-white text-[11px] px-2.5 py-0.5 rounded-full font-mono font-bold shadow"
+  }, "\u8F2A\u64AD ", idx + 1), /*#__PURE__*/React.createElement("div", {
+    className: "absolute top-2 right-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: `text-[10px] px-2 py-0.5 rounded-full font-bold shadow ${car.status === '已發佈' ? 'bg-emerald-600 text-white' : 'bg-gray-500 text-white'}`
+  }, car.status || '已發佈'))), /*#__PURE__*/React.createElement("div", {
     className: "p-4 flex-1 flex flex-col justify-between space-y-3"
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
-    className: "font-serif font-bold text-base text-[#241D17]"
+    className: "font-serif font-bold text-base text-[#241D17] line-clamp-1"
   }, car.title), /*#__PURE__*/React.createElement("p", {
-    className: "text-xs text-gray-600 mt-1 line-clamp-2"
-  }, car.description)), /*#__PURE__*/React.createElement("div", {
-    className: "pt-2 border-t border-[#E8DCCE] text-right"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "text-xs bg-emerald-100 text-emerald-800 px-2 py-0.5 rounded-full font-bold"
-  }, car.status || '已發佈'))))))), activeTab === 'settings' && /*#__PURE__*/React.createElement("div", {
+    className: "text-xs text-gray-600 mt-1 line-clamp-2 leading-relaxed"
+  }, car.description || '無詳細說明')), /*#__PURE__*/React.createElement("div", {
+    className: "pt-3 border-t border-[#E8DCCE] flex items-center justify-between gap-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-1"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    disabled: idx === 0,
+    onClick: () => handleMoveCarousel(idx, -1),
+    title: "\u5F80\u524D\u79FB",
+    className: "p-1.5 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded-lg transition"
+  }, "\u2B05\uFE0F"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    disabled: idx === carousels.length - 1,
+    onClick: () => handleMoveCarousel(idx, 1),
+    title: "\u5F80\u5F8C\u79FB",
+    className: "p-1.5 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded-lg transition"
+  }, "\u27A1\uFE0F")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleOpenEditCarousel(car),
+    className: "px-3 py-1 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-lg text-xs font-bold transition shadow-sm"
+  }, "\u270F\uFE0F \u7DE8\u8F2F"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleDeleteCarousel(car),
+    className: "px-2.5 py-1 bg-red-100 hover:bg-red-200 text-red-800 rounded-lg text-xs font-bold transition"
+  }, "\uD83D\uDDD1\uFE0F \u522A\u9664")))))))), activeTab === 'settings' && /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 md:grid-cols-2 gap-6"
   }, /*#__PURE__*/React.createElement("div", {
     className: "bg-white p-6 rounded-2xl border-2 border-emerald-600/40 shadow-sm space-y-4 md:col-span-2"
@@ -1617,7 +1731,68 @@ function AdminApp() {
     key: st,
     onClick: () => handleUpdateOrderStatus(viewingOrder.orderId, st),
     className: `text-xs px-2.5 py-1 rounded-lg font-bold ${viewingOrder.status === st ? 'bg-[#8C5A2B] text-white' : 'bg-gray-200 hover:bg-gray-300 text-gray-700'}`
-  }, st))))))));
+  }, st))))))), editingCarousel && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#FAF8F5] w-full max-w-xl rounded-2xl shadow-2xl border border-[#8C5A2B]/40 overflow-hidden my-8"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#241D17] text-white px-6 py-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-serif font-bold text-lg"
+  }, editingCarousel === 'NEW' ? '➕ 新增首頁輪播圖' : `✏️ 編輯輪播圖《${carouselFormData.title}》`), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setEditingCarousel(null),
+    className: "text-gray-400 hover:text-white text-xl font-bold"
+  }, "✕")), /*#__PURE__*/React.createElement("form", {
+    onSubmit: handleSaveCarousel,
+    className: "p-6 space-y-4 max-h-[80vh] overflow-y-auto"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "block text-xs font-bold text-[#4A3B32] mb-1"
+  }, "\u8F2A\u64AD\u4E3B\u6A19\u984C *"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: carouselFormData.title,
+    onChange: e => setCarouselFormData({ ...carouselFormData, title: e.target.value }),
+    placeholder: "\u4F8B\u5982\uFF1A\u6176\u795D\u6587\u53F2\u54F2\u5B98\u65B9\u81C9\u66F8\u6B63\u5F0F\u4E0A\u7DDA\uFF01",
+    className: "w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm font-bold bg-white",
+    required: true
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "block text-xs font-bold text-[#4A3B32] mb-1"
+  }, "\u8F2A\u64AD\u8AAA\u660E\u6587\u5B57 (\u526F\u6A19\u984C)"), /*#__PURE__*/React.createElement("textarea", {
+    value: carouselFormData.description,
+    onChange: e => setCarouselFormData({ ...carouselFormData, description: e.target.value }),
+    placeholder: "\u8ACB\u8F38\u5165\u8F2A\u64AD\u5716\u7684\u7C21\u77ED\u8AAA\u660E\u6216\u5BA3\u50B3\u6587\u5B57...",
+    rows: "3",
+    className: "w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white resize-none"
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "block text-xs font-bold text-[#4A3B32] mb-1"
+  }, "\u8F2A\u64AD\u5716\u7247\u7DB2\u5740 (Image URL) *"), /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: carouselFormData.image,
+    onChange: e => setCarouselFormData({ ...carouselFormData, image: e.target.value }),
+    placeholder: "https://... \u6216 assets/... (\u652F\u63F4\u7DB2\u5740\u6216\u672C\u6A5F\u5716\u7247\u8DEF\u5F91)",
+    className: "w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm font-mono bg-white",
+    required: true
+  }), carouselFormData.image && /*#__PURE__*/React.createElement("div", {
+    className: "mt-2 p-2 bg-gray-100 rounded-xl border border-gray-200"
+  }, /*#__PURE__*/React.createElement("p", { className: "text-[11px] text-gray-500 mb-1" }, "\u5716\u7247\u5373\u6642\u9810\u89BD\uFF1A"), /*#__PURE__*/React.createElement("img", {
+    src: carouselFormData.image,
+    alt: "\u9810\u89BD",
+    className: "w-full h-32 object-cover rounded-lg bg-white"
+  }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
+    className: "block text-xs font-bold text-[#4A3B32] mb-1"
+  }, "\u767C\u4F48\u72C0\u614B"), /*#__PURE__*/React.createElement("select", {
+    value: carouselFormData.status,
+    onChange: e => setCarouselFormData({ ...carouselFormData, status: e.target.value }),
+    className: "w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white"
+  }, /*#__PURE__*/React.createElement("option", { value: "\u5DF2\u767C\u4F48" }, "\u5DF2\u767C\u4F48 (\u524D\u53F0\u6B63\u5E38\u8F2A\u64AD)"), /*#__PURE__*/React.createElement("option", { value: "\u8349\u7A3F" }, "\u8349\u7A3F (\u66AB\u6642\u96B1\u85CF)"))), /*#__PURE__*/React.createElement("div", {
+    className: "pt-4 border-t border-[#E8DCCE] flex items-center justify-end gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setEditingCarousel(null),
+    className: "px-4 py-2 border border-[#D4C5B9] hover:bg-gray-100 text-gray-700 rounded-xl text-xs font-bold transition"
+  }, "\u53D6\u6D88"), /*#__PURE__*/React.createElement("button", {
+    type: "submit",
+    className: "px-5 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-xl text-xs font-bold shadow transition"
+  }, "\u5132\u5B58\u8F2A\u64AD\u5716")))))));
 }
 function mountAdminApp() {
   var rootEl = document.getElementById('admin-root');
