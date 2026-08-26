@@ -648,14 +648,17 @@ function App() {
         payload: payloadData,
         origin: safeOrigin
       };
+      const controller = new AbortController();
+      const timeoutId = setTimeout(() => controller.abort(), 4000);
       const response = await fetch(GAS_URL, {
         method: "POST",
         headers: {
           "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify(payloadObj),
-        keepalive: true
+        signal: controller.signal
       });
+      clearTimeout(timeoutId);
       return await response.json();
     } catch (e) {
       return {
@@ -1013,38 +1016,44 @@ function App() {
       '日期': formattedDate
     };
 
-    // 💾 同步存入後台本機資料庫
     try {
-      const existingOrders = JSON.parse(localStorage.getItem('lapen_admin_orders') || '[]');
-      localStorage.setItem('lapen_admin_orders', JSON.stringify([newOrder, ...existingOrders]));
-    } catch (e) {}
-    const res = await syncWithGAS('CREATE_ORDER', newOrder);
-    setBooks(books.map(b => {
-      const ci = cart.find(c => c.id === b.id);
-      return ci ? {
-        ...b,
-        stock: b.stock - ci.qty
-      } : b;
-    }));
-    setSubmittedDetail({
-      type: 'order',
-      data: {
-        id: orderId,
-        customer: name,
-        phone,
-        email,
-        address,
-        payment: info.payment,
-        memo,
-        date: formattedDate,
-        total: cartTotal,
-        items: rawItems
-      }
-    });
-    setCart([]);
-    setIsCartOpen(false);
-    showMsg(`訂單已成功建立！訂單編號：${orderId}`);
-    setIsCheckingOut(false);
+      // 💾 同步存入後台本機資料庫
+      try {
+        const existingOrders = JSON.parse(localStorage.getItem('lapen_admin_orders') || '[]');
+        localStorage.setItem('lapen_admin_orders', JSON.stringify([newOrder, ...existingOrders]));
+      } catch (e) {}
+
+      // 🚀 異步背景發送至 Google 雲端
+      syncWithGAS('CREATE_ORDER', newOrder).catch(err => console.log("Order sync error:", err));
+
+      setBooks(books.map(b => {
+        const ci = cart.find(c => c.id === b.id);
+        return ci ? {
+          ...b,
+          stock: b.stock - ci.qty
+        } : b;
+      }));
+      setSubmittedDetail({
+        type: 'order',
+        data: {
+          id: orderId,
+          customer: name,
+          phone,
+          email,
+          address,
+          payment: info.payment,
+          memo,
+          date: formattedDate,
+          total: cartTotal,
+          items: rawItems
+        }
+      });
+      setCart([]);
+      setIsCartOpen(false);
+      showMsg(`訂單已成功建立！訂單編號：${orderId}`);
+    } finally {
+      setIsCheckingOut(false);
+    }
   };
   const handleCSSubmit = async e => {
     e.preventDefault();
@@ -1060,54 +1069,63 @@ function App() {
     setIsSubmittingCS(true);
     setLastActionTime(Date.now());
     showMsg("訊息傳送中...");
-    const combinedQuery = `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`;
-    const newLog = {
-      id: submitId,
-      msgId: submitId,
-      name: name,
-      userName: name,
-      user: name,
-      phone: phone,
-      tel: phone,
-      email: email,
-      mail: email,
-      content: msg,
-      message: msg,
-      msg: msg,
-      date: new Date().toLocaleString(),
-      status: '未處理',
-      platform: 'Web官網',
-      query: combinedQuery,
-      '留言編號': submitId,
-      '稱呼': name,
-      '姓名': name,
-      '電話': phone,
-      '電子信箱': email,
-      '反映內容': msg,
-      '狀態': '未處理',
-      '時間': new Date().toLocaleString()
-    };
-
-    // 💾 同步存入後台本機客服留言庫
     try {
-      const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
-      localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
-    } catch (e) {}
-    const res = await syncWithGAS('NEW_CS_MSG', newLog);
-    setIsSubmittingCS(false);
-    setSubmittedDetail({
-      type: 'cs',
-      data: {
+      const combinedQuery = `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`;
+      const submitId = `CS-${Date.now().toString().slice(-6)}`;
+      const newLog = {
         id: submitId,
-        name,
-        phone,
-        email,
+        msgId: submitId,
+        name: name,
+        userName: name,
+        user: name,
+        phone: phone,
+        tel: phone,
+        email: email,
+        mail: email,
+        content: msg,
         message: msg,
-        date: new Date().toLocaleString()
-      }
-    });
-    setIsContactOpen(false);
-    showMsg("感謝您的反映，客服專員將盡快回覆！");
+        msg: msg,
+        date: new Date().toLocaleString(),
+        status: '未處理',
+        platform: 'Web官網',
+        query: combinedQuery,
+        '留言編號': submitId,
+        '稱呼': name,
+        '姓名': name,
+        '電話': phone,
+        '電子信箱': email,
+        '反映內容': msg,
+        '狀態': '未處理',
+        '時間': new Date().toLocaleString()
+      };
+
+      // 💾 同步存入後台本機客服留言庫
+      try {
+        const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
+        localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
+      } catch (e) {}
+
+      // 🚀 異步背景發送至 Google 雲端
+      syncWithGAS('NEW_CS_MSG', newLog).catch(err => console.log("CS sync error:", err));
+
+      setSubmittedDetail({
+        type: 'cs',
+        data: {
+          id: submitId,
+          name,
+          phone,
+          email,
+          message: msg,
+          date: new Date().toLocaleString()
+        }
+      });
+      setIsContactOpen(false);
+      showMsg("感謝您的反映，客服專員將盡快回覆！");
+    } catch (err) {
+      showMsg("送出失敗，請稍候重試");
+    } finally {
+      setIsSubmittingCS(false);
+    }
   };
   const scrollSlider = direction => {
     if (sliderRef.current) {
