@@ -205,12 +205,50 @@ function AdminApp() {
     });
     setTimeout(() => setSyncMessage(null), 4500);
   };
+  const [isSyncingCloud, setIsSyncingCloud] = useState(false);
+  const handleSyncCloudData = async (silent = false) => {
+    if (!gasUrl) {
+      if (!silent) showToast('尚未設定 Google Apps Script 網址，請先至【系統與密碼設定】設定', 'warning');
+      return;
+    }
+    setIsSyncingCloud(true);
+    if (!silent) showToast('⏳ 正在從 Google 試算表拉取最新訂單與客服紀錄...', 'info');
+    try {
+      const resp = await fetch(gasUrl, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+        body: JSON.stringify({
+          action: 'ADMIN_GET_ALL_DATA',
+          adminPassword: savedPassword
+        })
+      });
+      const res = await resp.json();
+      if (res.status === 'success' && res.data) {
+        if (Array.isArray(res.data.orders)) {
+          setOrders(res.data.orders);
+        }
+        if (Array.isArray(res.data.csMessages)) {
+          setCsMessages(res.data.csMessages);
+        }
+        if (!silent) showToast(`🎉 雲端同步完成！共載入 ${res.data.orders?.length || 0} 筆訂單、${res.data.csMessages?.length || 0} 筆客服留言`, 'success');
+      } else {
+        if (!silent) showToast(`同步提示: ${res.msg || 'Google 試算表未回傳資料'}`, 'warning');
+      }
+    } catch (err) {
+      if (!silent) showToast(`無法連線至 Google 試算表: ${err.message}`, 'warning');
+    } finally {
+      setIsSyncingCloud(false);
+    }
+  };
+
   useEffect(() => {
     loadBooksFromIndexedDB().then(saved => {
       if (saved && Array.isArray(saved) && saved.length > 0) {
         setBooks(saved);
       }
     });
+    // 啟動時自動拉取雲端最新訂單與客服
+    handleSyncCloudData(true);
   }, []);
   useEffect(() => {
     if (books && books.length > 0) {
@@ -1031,6 +1069,14 @@ function AdminApp() {
     className: "p-5 border-b border-[#E8DCCE] bg-[#FAF8F5] flex flex-wrap items-center justify-between gap-4"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-serif font-bold text-base text-[#241D17]"
+  }, "顧客訂單管理"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleSyncCloudData(false),
+    disabled: isSyncingCloud,
+    className: "px-3.5 py-1.5 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm disabled:opacity-50"
+  }, isSyncingCloud ? "⏳ 同步中..." : "🔄 從 Google 雲端同步最新訂單")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
   }, /*#__PURE__*/React.createElement("input", {
     type: "text",
     value: orderSearch,
@@ -1112,10 +1158,14 @@ function AdminApp() {
   }, "\u522A\u9664")))))))), activeTab === 'cs' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm flex flex-col overflow-hidden"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "p-5 border-b border-[#E8DCCE] bg-[#FAF8F5]"
+    className: "p-5 border-b border-[#E8DCCE] bg-[#FAF8F5] flex flex-wrap items-center justify-between gap-4"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-serif font-bold text-base text-[#241D17]"
-  }, "\u8B80\u8005\u53CD\u6620\u8207\u5EFA\u8B70\u7D00\u9304")), /*#__PURE__*/React.createElement("div", {
+  }, "\u8B80\u8005\u53CD\u6620\u8207\u5EFA\u8B70\u7D00\u9304"), /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleSyncCloudData(false),
+    disabled: isSyncingCloud,
+    className: "px-3.5 py-1.5 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-xl text-xs font-bold transition flex items-center gap-2 shadow-sm disabled:opacity-50"
+  }, isSyncingCloud ? "⏳ 同步中..." : "🔄 從 Google 雲端同步最新客服")), /*#__PURE__*/React.createElement("div", {
     className: "divide-y divide-[#E8DCCE]/60"
   }, csMessages.length === 0 ? /*#__PURE__*/React.createElement("div", {
     className: "p-12 text-center text-gray-400"

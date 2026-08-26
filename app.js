@@ -1061,18 +1061,31 @@ function App() {
     setLastActionTime(Date.now());
     showMsg("訊息傳送中...");
     const combinedQuery = `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`;
-    const submitId = `CS-${Date.now().toString().slice(-6)}`;
     const newLog = {
       id: submitId,
+      msgId: submitId,
       name: name,
+      userName: name,
+      user: name,
       phone: phone,
+      tel: phone,
       email: email,
+      mail: email,
       content: msg,
+      message: msg,
+      msg: msg,
       date: new Date().toLocaleString(),
       status: '未處理',
       platform: 'Web官網',
-      user: name,
-      query: combinedQuery
+      query: combinedQuery,
+      '留言編號': submitId,
+      '稱呼': name,
+      '姓名': name,
+      '電話': phone,
+      '電子信箱': email,
+      '反映內容': msg,
+      '狀態': '未處理',
+      '時間': new Date().toLocaleString()
     };
 
     // 💾 同步存入後台本機客服留言庫
