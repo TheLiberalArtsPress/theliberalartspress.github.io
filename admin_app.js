@@ -5,7 +5,7 @@ const {
   useRef
 } = React;
 const DEFAULT_PASS = "lapen1971";
-const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec";
+const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzfD3v4jWMQVOMIPeoqnZ24XEHoCMFz1h4Tapw4sjPlTAtBa4Ow8TTTNaK8ktssR9F9dg/exec";
 const DEFAULT_REPO = "maplestorycandy/theliberalartspress";
 const DEFAULT_BRANCH = "main";
 const DEFAULT_TOKEN = ['ghp', '56k2ZqkO05L7o1T03L3pyyF92uZxfL3PMcDd'].join('_');

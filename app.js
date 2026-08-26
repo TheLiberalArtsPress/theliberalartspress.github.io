@@ -360,7 +360,7 @@ const ModernLogo = ({
   points: "22,30 32,10 27,8 17,28",
   fill: color2
 }));
-const GAS_URL = "https://script.google.com/macros/s/AKfycbwokskAB0yjrBz3aIhK9QI_phYEH6KtKoEMrLLKWzOooYjABVF0Nsqs2idMzxKyjqr3/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbzfD3v4jWMQVOMIPeoqnZ24XEHoCMFz1h4Tapw4sjPlTAtBa4Ow8TTTNaK8ktssR9F9dg/exec";
 
 // 🟢 【效能優化】：支援動態圖片尺寸 (卡片預設 400px 節省頻寬，Modal 詳細頁載入 1000px 高清圖)
 const formatImageUrl = (url, width = 400) => {
