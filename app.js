@@ -624,14 +624,8 @@ function App() {
     setTimeout(() => setNotification(null), 3000);
   }, []);
   const checkRateLimit = useCallback(() => {
-    const now = Date.now();
-    if (now - lastActionTime < 15000) {
-      const secondsLeft = Math.ceil((15000 - (now - lastActionTime)) / 1000);
-      showMsg(`操作過於頻繁，請等待 ${secondsLeft} 秒後再試！`);
-      return false;
-    }
     return true;
-  }, [lastActionTime, showMsg]);
+  }, []);
   useEffect(() => {
     const handleScroll = () => setShowBackToTop(window.scrollY > 300);
     window.addEventListener('scroll', handleScroll, {
@@ -1057,75 +1051,70 @@ function App() {
   };
   const handleCSSubmit = async e => {
     e.preventDefault();
-    if (isSubmittingCS || !checkRateLimit()) return;
-    const name = sanitizeInput(e.target.name.value);
-    const phone = sanitizeInput(e.target.phone.value);
-    const email = sanitizeInput(e.target.email.value);
-    const msg = sanitizeInput(e.target.message.value);
+    if (isSubmittingCS) return;
+    const formData = new FormData(e.target);
+    const name = sanitizeInput(formData.get("name") || "");
+    const phone = sanitizeInput(formData.get("phone") || "");
+    const email = sanitizeInput(formData.get("email") || "");
+    const msg = sanitizeInput(formData.get("message") || "");
+
     if (name.length < 2) return showMsg("請輸入您的稱呼");
-    if (!/^\+?[0-9\-\s]{8,15}$/.test(phone.replace(/[^0-9\+]/g, ''))) return showMsg("請輸入有效的聯絡電話");
-    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) return showMsg("請輸入正確的電子信箱格式");
-    if (msg.length < 5) return showMsg("反映內容請至少輸入5個字");
+    if (!phone || phone.length < 8) return showMsg("請輸入有效的聯絡電話");
+    if (!email || !email.includes("@")) return showMsg("請輸入正確的電子信箱格式");
+    if (msg.length < 2) return showMsg("反映內容請至少輸入2個字");
+
     setIsSubmittingCS(true);
-    setLastActionTime(Date.now());
-    showMsg("訊息傳送中...");
+    const submitId = `CS-${Date.now().toString().slice(-6)}`;
+    const newLog = {
+      id: submitId,
+      msgId: submitId,
+      name: name,
+      userName: name,
+      user: name,
+      phone: phone,
+      tel: phone,
+      email: email,
+      mail: email,
+      content: msg,
+      message: msg,
+      msg: msg,
+      date: new Date().toLocaleString(),
+      status: '未處理',
+      platform: 'Web官網',
+      query: `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`,
+      '留言編號': submitId,
+      '稱呼': name,
+      '姓名': name,
+      '電話': phone,
+      '電子信箱': email,
+      '反映內容': msg,
+      '狀態': '未處理',
+      '時間': new Date().toLocaleString()
+    };
+
+    // 💾 同步存入後台本機客服留言庫
     try {
-      const combinedQuery = `【聯絡電話】${phone}\n【Email信箱】${email}\n─────────────────\n【反映內容】\n${msg}`;
-      const submitId = `CS-${Date.now().toString().slice(-6)}`;
-      const newLog = {
+      const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
+      localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
+    } catch (err) {}
+
+    // 🚀 背景異步發送至 Google 雲端
+    syncWithGAS('NEW_CS_MSG', newLog).catch(err => console.log("CS sync error:", err));
+
+    setSubmittedDetail({
+      type: 'cs',
+      data: {
         id: submitId,
-        msgId: submitId,
-        name: name,
-        userName: name,
-        user: name,
-        phone: phone,
-        tel: phone,
-        email: email,
-        mail: email,
-        content: msg,
+        name,
+        phone,
+        email,
         message: msg,
-        msg: msg,
-        date: new Date().toLocaleString(),
-        status: '未處理',
-        platform: 'Web官網',
-        query: combinedQuery,
-        '留言編號': submitId,
-        '稱呼': name,
-        '姓名': name,
-        '電話': phone,
-        '電子信箱': email,
-        '反映內容': msg,
-        '狀態': '未處理',
-        '時間': new Date().toLocaleString()
-      };
-
-      // 💾 同步存入後台本機客服留言庫
-      try {
-        const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
-        localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
-      } catch (e) {}
-
-      // 🚀 異步背景發送至 Google 雲端
-      syncWithGAS('NEW_CS_MSG', newLog).catch(err => console.log("CS sync error:", err));
-
-      setSubmittedDetail({
-        type: 'cs',
-        data: {
-          id: submitId,
-          name,
-          phone,
-          email,
-          message: msg,
-          date: new Date().toLocaleString()
-        }
-      });
-      setIsContactOpen(false);
-      showMsg("感謝您的反映，客服專員將盡快回覆！");
-    } catch (err) {
-      showMsg("送出失敗，請稍候重試");
-    } finally {
-      setIsSubmittingCS(false);
-    }
+        date: new Date().toLocaleString()
+      }
+    });
+    setIsContactOpen(false);
+    setIsSubmittingCS(false);
+    showMsg("感謝您的反映，客服專員將盡快回覆！");
   };
   const scrollSlider = direction => {
     if (sliderRef.current) {
