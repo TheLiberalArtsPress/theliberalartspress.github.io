@@ -233,6 +233,29 @@ const Icon = memo(({
     LinkIcon: /*#__PURE__*/React.createElement("path", {
       d: "M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71 M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"
     }),
+    Share2: /*#__PURE__*/React.createElement("g", null, /*#__PURE__*/React.createElement("circle", {
+      cx: "18",
+      cy: "5",
+      r: "3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "6",
+      cy: "12",
+      r: "3"
+    }), /*#__PURE__*/React.createElement("circle", {
+      cx: "18",
+      cy: "19",
+      r: "3"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "8.59",
+      y1: "13.51",
+      x2: "15.42",
+      y2: "17.49"
+    }), /*#__PURE__*/React.createElement("line", {
+      x1: "15.41",
+      y1: "6.51",
+      x2: "8.59",
+      y2: "10.49"
+    })),
     Send: /*#__PURE__*/React.createElement("g", null, /*#__PURE__*/React.createElement("line", {
       x1: "22",
       y1: "2",
@@ -634,6 +657,83 @@ function App() {
     });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // 🔍 SEO 與專屬書籍 / 分類直達網址支援 (?book=ID 或 ?category=名稱)
+  useEffect(() => {
+    if (!books || books.length === 0) return;
+    try {
+      const urlParams = new URLSearchParams(window.location.search);
+      const bookParam = urlParams.get('book') || urlParams.get('id');
+      const catParam = urlParams.get('category');
+      if (bookParam) {
+        const found = books.find(b => String(b.id) === String(bookParam) || b.title === bookParam);
+        if (found) setSelectedBookDetail(found);
+      }
+      if (catParam) {
+        setSelectedCategory(catParam);
+        const searchEl = document.getElementById('search-section') || document.querySelector('.search-table-container');
+        if (searchEl) searchEl.scrollIntoView({ behavior: 'smooth' });
+      }
+    } catch(e) {
+      console.warn("URL parse error:", e);
+    }
+  }, [books]);
+
+  // 🏷️ 結構化數據 (Schema.org / JSON-LD) 與動態標題
+  useEffect(() => {
+    if (selectedBookDetail) {
+      const title = `《${selectedBookDetail.title}》${selectedBookDetail.author ? `・${selectedBookDetail.author}` : ''} - 文史哲出版社官方網站`;
+      document.title = title;
+      try {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.set('book', selectedBookDetail.id || selectedBookDetail.title);
+        window.history.replaceState(null, '', currentUrl.toString());
+      } catch(e) {}
+
+      let script = document.getElementById('schema-book-jsonld');
+      if (!script) {
+        script = document.createElement('script');
+        script.id = 'schema-book-jsonld';
+        script.type = 'application/ld+json';
+        document.head.appendChild(script);
+      }
+      const bookSchema = {
+        "@context": "https://schema.org",
+        "@type": "Book",
+        "name": selectedBookDetail.title,
+        "author": {
+          "@type": "Person",
+          "name": selectedBookDetail.author || "文史哲作者"
+        },
+        "publisher": {
+          "@type": "Organization",
+          "name": "文史哲出版社有限公司"
+        },
+        "offers": {
+          "@type": "Offer",
+          "price": selectedBookDetail.price || 0,
+          "priceCurrency": "TWD",
+          "availability": (selectedBookDetail.stock > 0 || selectedBookDetail.stock === undefined) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+          "url": window.location.href
+        },
+        "image": selectedBookDetail.localCover ? `https://theliberalartspress.github.io/${selectedBookDetail.localCover}` : selectedBookDetail.cover,
+        "description": selectedBookDetail.intro || selectedBookDetail.title,
+        "genre": selectedBookDetail.category || "學術文史"
+      };
+      if (selectedBookDetail.isbn) bookSchema.isbn = selectedBookDetail.isbn;
+      script.textContent = JSON.stringify(bookSchema);
+    } else {
+      document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
+      try {
+        const currentUrl = new URL(window.location.href);
+        currentUrl.searchParams.delete('book');
+        currentUrl.searchParams.delete('id');
+        window.history.replaceState(null, '', currentUrl.pathname + (currentUrl.searchParams.toString() ? '?' + currentUrl.searchParams.toString() : ''));
+      } catch(e) {}
+      const script = document.getElementById('schema-book-jsonld');
+      if (script) script.remove();
+    }
+  }, [selectedBookDetail]);
   const syncWithGAS = useCallback(async (action, payloadData = null) => {
     try {
       const currentOrigin = window.location.origin;
@@ -2626,7 +2726,41 @@ function App() {
   }), " \u8B80\u5F8C\u5FC3\u5F97\u8207\u5B78\u8853\u8A55\u6790\uFF1A"), /*#__PURE__*/React.createElement("div", {
     className: `bg-purple-50/90 border border-purple-200 p-3 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-60' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto text-purple-950 italic`
   }, getBookReview(selectedBookDetail) || '目前 Book_ALL 試算表中此書籍尚無填寫「心得」內容。')))), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-3 pt-3"
+    className: "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-color)]/60 text-xs text-stone-500"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-bold text-[var(--dark-color)] flex items-center gap-1.5"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Share2",
+    size: 14,
+    className: "text-[var(--primary-color)]"
+  }), " \u5206\u4EAB\u6B64\u66F8\uFF1A"), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      const shareUrl = `${window.location.origin}${window.location.pathname}?book=${encodeURIComponent(selectedBookDetail.id || selectedBookDetail.title)}`;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(shareUrl).then(() => showMsg('✅ 已複製書籍專屬連結！可直接傳給朋友。')).catch(() => showMsg('書籍連結：' + shareUrl));
+      } else {
+        showMsg('書籍連結：' + shareUrl);
+      }
+    },
+    className: "px-2.5 py-1 bg-stone-100 hover:bg-stone-200 text-stone-700 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    title: "\u8907\u88FD\u5C08\u5C6C\u7DB2\u5740"
+  }, "🔗 \u8907\u88FD\u9023\u7D50"), /*#__PURE__*/React.createElement("a", {
+    href: `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(`${window.location.origin}${window.location.pathname}?book=${selectedBookDetail.id || selectedBookDetail.title}`)}`,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "px-2.5 py-1 bg-[#06C755] hover:bg-[#05b34c] text-white rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    title: "\u5206\u4EAB\u5230 LINE"
+  }, "💬 LINE"), /*#__PURE__*/React.createElement("a", {
+    href: `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(`${window.location.origin}${window.location.pathname}?book=${selectedBookDetail.id || selectedBookDetail.title}`)}`,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "px-2.5 py-1 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    title: "\u5206\u4EAB\u5230 Facebook"
+  }, "📘 FB"))), /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-3 pt-2"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
