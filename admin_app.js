@@ -1637,7 +1637,7 @@ function AdminApp() {
       setRecSearchQuery('');
     },
     className: "w-full py-4 border-2 border-dashed border-purple-300 hover:border-purple-600 bg-purple-50/50 hover:bg-purple-100/60 rounded-2xl text-sm font-bold text-purple-800 transition flex items-center justify-center gap-2 shadow-sm active:scale-98"
-  }, /*#__PURE__*/React.createElement("span", null, "➕ 開啟全新一輪推薦（建立第 ", Math.max(1, Math.ceil(newArrivalsList.length / 8)) + 1, " 輪）"))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("span", null, "➕ 開啟全新一輪推薦（建立第 ", Math.max(1, Math.ceil(newArrivalsList.length / 8)) + 1, " 輪）")))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm p-6 space-y-6"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E8DCCE]"
@@ -2238,7 +2238,7 @@ function AdminApp() {
     type: "button",
     onClick: () => setIsRecModalOpen(false),
     className: "px-5 py-2 bg-[#241D17] hover:bg-black text-white text-xs font-bold rounded-xl transition"
-  }, "完成選取關閉"))))));
+  }, "完成選取關閉")))));
 }
 function mountAdminApp() {
   var rootEl = document.getElementById('admin-root');
