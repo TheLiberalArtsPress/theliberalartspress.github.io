@@ -173,6 +173,7 @@ function AdminApp() {
     return safeGetStorage('lapen_admin_new_arrivals', staticData.newArrivalsList || []);
   });
   const [recSubTab, setRecSubTab] = useState('choices');
+  const [targetRoundForAdd, setTargetRoundForAdd] = useState(1);
   const [isRecModalOpen, setIsRecModalOpen] = useState(false);
   const [recSearchQuery, setRecSearchQuery] = useState('');
   const [settings, setSettings] = useState(() => staticData.settings || {});
@@ -325,15 +326,36 @@ function AdminApp() {
     }
   };
 
-  const handleToggleNewArrival = book => {
+  const handleToggleNewArrival = (book, targetRound = null) => {
     const exists = newArrivalsList.some(nb => String(nb.id) === String(book.id) || (nb.title && nb.title === book.title));
     if (exists) {
       setNewArrivalsList(prev => prev.filter(nb => !(String(nb.id) === String(book.id) || (nb.title && nb.title === book.title))));
       showToast(`已將《${book.title}》從新書上市推薦移除`, 'info');
     } else {
-      setNewArrivalsList(prev => [...prev, { ...book }]);
-      showToast(`已將《${book.title}》加入新書上市推薦！`, 'success');
+      const activeTargetRound = targetRound || targetRoundForAdd || 1;
+      setNewArrivalsList(prev => {
+        const copy = [...prev];
+        const targetStart = (activeTargetRound - 1) * 8;
+        const currentRoundCount = prev.slice(targetStart, targetStart + 8).length;
+        const insertIdx = Math.min(copy.length, targetStart + currentRoundCount);
+        copy.splice(insertIdx, 0, { ...book });
+        return copy;
+      });
+      showToast(`已將《${book.title}》加入新書上市【第 ${activeTargetRound} 輪】！`, 'success');
     }
+  };
+
+  const handleMoveRecBookToRound = (currentIndex, targetRound) => {
+    setNewArrivalsList(prev => {
+      if (currentIndex < 0 || currentIndex >= prev.length) return prev;
+      const copy = [...prev];
+      const [item] = copy.splice(currentIndex, 1);
+      const targetStart = (targetRound - 1) * 8;
+      const insertIdx = Math.min(copy.length, Math.max(0, targetStart));
+      copy.splice(insertIdx, 0, item);
+      return copy;
+    });
+    showToast(`已將該書籍移至【第 ${targetRound} 輪】`, 'success');
   };
 
   const handleMoveRecBook = (index, direction, type = 'choices') => {
@@ -1481,58 +1503,141 @@ function AdminApp() {
       className: "px-2 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded text-xs font-bold transition ml-1"
     }, "下架")))));
   }))) : /*#__PURE__*/React.createElement("div", {
-    className: "space-y-4"
+    className: "space-y-6"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "bg-purple-50/70 p-3 rounded-xl border border-purple-200/80 text-xs text-purple-900 flex flex-wrap items-center justify-between gap-2"
-  }, /*#__PURE__*/React.createElement("span", null, "\u26A1 \u6B64\u8655\u70BA\u524D\u53F0\u9802\u90E8\u300C\u65B0\u66F8\u4E0A\u5E02\u300D\u5F48\u7A97\u6307\u5B9A\u512A\u5148\u63A8\u85A6\u6E05\u55AE\u3002\u6BCF 8 \u672C\u70BA\u4E00\u8F2A\uFF0C\u4F7F\u7528\u8005\u9EDE\u64CA\u300C\u518D\u63DB\u4E00\u6279\u770B\u770B\u300D\u5C07\u4F9D\u5E8F\u8F2A\u64AD\uFF1B\u7576\u6307\u5B9A\u6E05\u55AE\u8F2A\u64AD\u5B8C\u7562\u6216\u672A\u6307\u5B9A\u6642\uFF0C\u81EA\u52D5\u96A8\u6A5F\u63A8\u85A6\u5168\u9928\u5EAB\u5B58\uFF01"), /*#__PURE__*/React.createElement("span", { className: "font-bold" }, "\u5171 ", newArrivalsList.length, " \u672C (", Math.ceil(newArrivalsList.length / 8) || 0, " \u8F2A)")), newArrivalsList.length === 0 ? /*#__PURE__*/React.createElement("div", {
-    className: "p-12 text-center text-gray-400"
-  }, "\u76EE\u524D\u5C1A\u7121\u6307\u5B9A\u65B0\u66F8\u63A8\u85A6\uFF08\u7CFB\u7D71\u9810\u8A2D\u4EE5\u667A\u80FD\u96A8\u6A5F\u63A8\u85A6\uFF09\uFF0C\u53EF\u9EDE\u64CA\u53F3\u4E0A\u89D2\u300C\uFF0B \u5F9E\u5EAB\u5B58\u641C\u5C0B\u66F8\u7C4D\u52A0\u5165\u63A8\u85A6\u300D\u8A2D\u5B9A\u6307\u5B9A\u512A\u5148\u8F2A\u6B21\uFF01") : /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
-  }, newArrivalsList.map((nb, idx) => {
-    const liveBook = books.find(b => String(b.id) === String(nb.id) || b.title === nb.title) || nb;
-    const roundNum = Math.floor(idx / 8) + 1;
+    className: "bg-purple-50/70 p-4 rounded-xl border border-purple-200/80 text-xs text-purple-900 flex flex-wrap items-center justify-between gap-3"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("p", {
+    className: "font-bold text-sm text-purple-950"
+  }, "⚡ 新書上市 - 多輪推薦配置中心"), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-purple-800/80 mt-0.5"
+  }, "每 8 本為一輪展示。讀者在前台點擊「換看下一輪」將依序輪播以下各輪；當所有自訂輪次播放完畢時，前台將自動隨機推薦全館書籍。")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "font-bold bg-purple-200/70 px-3 py-1.5 rounded-xl text-purple-900 font-mono"
+  }, "共 ", newArrivalsList.length, " 本 · ", Math.max(1, Math.ceil(newArrivalsList.length / 8)), " 輪"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setTargetRoundForAdd(Math.max(1, Math.ceil(newArrivalsList.length / 8)) + 1);
+      setIsRecModalOpen(true);
+      setRecSearchQuery('');
+    },
+    className: "px-3.5 py-1.5 bg-purple-700 hover:bg-purple-800 text-white font-bold rounded-xl text-xs shadow-sm transition active:scale-95 flex items-center gap-1"
+  }, "➕ 開啟全新第 ", Math.max(1, Math.ceil(newArrivalsList.length / 8)) + 1, " 輪"))), Array.from({
+    length: Math.max(1, Math.ceil(newArrivalsList.length / 8))
+  }).map((_, rIdx) => {
+    const roundNum = rIdx + 1;
+    const start = rIdx * 8;
+    const end = start + 8;
+    const roundBooks = newArrivalsList.slice(start, end);
+    const isFull = roundBooks.length === 8;
+    const emptyCount = Math.max(0, 8 - roundBooks.length);
     return /*#__PURE__*/React.createElement("div", {
-      key: nb.id || idx,
-      className: "bg-[#FAF8F5] p-4 rounded-xl border border-[#E8DCCE] flex items-center gap-3.5 shadow-sm hover:shadow transition"
+      key: roundNum,
+      className: "bg-[#FAF8F5] p-5 rounded-2xl border-2 border-purple-200/80 shadow-sm space-y-4"
     }, /*#__PURE__*/React.createElement("div", {
-      className: "w-14 h-20 bg-gray-200 rounded-lg overflow-hidden shrink-0 border border-gray-300 relative flex items-center justify-center"
-    }, /*#__PURE__*/React.createElement("img", {
-      src: liveBook.localCover || liveBook.cover || nb.cover || 'assets/covers/fallback.jpg',
-      alt: nb.title,
-      className: "w-full h-full object-cover"
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "absolute top-0 left-0 bg-purple-900/90 text-white text-[10px] px-1.5 py-0.5 rounded-br font-mono"
-    }, "\u7B2C", roundNum, "\u8F2A")), /*#__PURE__*/React.createElement("div", {
-      className: "flex-1 min-w-0 flex flex-col justify-between h-20"
-    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
-      className: "font-bold text-sm text-[#241D17] line-clamp-1",
-      title: nb.title
-    }, nb.title), /*#__PURE__*/React.createElement("p", {
-      className: "text-xs text-gray-500 line-clamp-1 mt-0.5"
-    }, nb.author || '未標作者', " · ", nb.category || '通用')), /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center justify-between pt-1 border-t border-gray-200/80"
+      className: "flex flex-wrap items-center justify-between gap-3 pb-3 border-b border-purple-200"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3 flex-wrap"
     }, /*#__PURE__*/React.createElement("span", {
-      className: "text-xs font-bold text-purple-800"
-    }, "NT$ ", liveBook.price || nb.price || 0), /*#__PURE__*/React.createElement("div", {
-      className: "flex items-center gap-1"
-    }, /*#__PURE__*/React.createElement("button", {
+      className: "px-3.5 py-1.5 bg-purple-800 text-white rounded-xl text-xs font-bold font-mono shadow-sm"
+    }, "📌 第 ", roundNum, " 輪推薦清單"), /*#__PURE__*/React.createElement("span", {
+      className: `text-xs px-2.5 py-1 rounded-full font-bold ${isFull ? 'bg-emerald-100 text-emerald-800 border border-emerald-300' : 'bg-amber-100 text-amber-900 border border-amber-300'}`
+    }, isFull ? '✓ 滿額 8 本（專屬完整推薦）' : `目前 ${roundBooks.length} 本（尚差 ${emptyCount} 本，前台將自動補滿 8 本）`)), /*#__PURE__*/React.createElement("button", {
       type: "button",
-      disabled: idx === 0,
-      onClick: () => handleMoveRecBook(idx, -1, 'newArrivals'),
-      title: "往前移",
-      className: "p-1 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded transition"
-    }, "⬅️"), /*#__PURE__*/React.createElement("button", {
+      onClick: () => {
+        setTargetRoundForAdd(roundNum);
+        setIsRecModalOpen(true);
+        setRecSearchQuery('');
+      },
+      className: "px-3 py-1.5 bg-purple-600 hover:bg-purple-700 text-white text-xs font-bold rounded-xl shadow-sm transition flex items-center gap-1 active:scale-95"
+    }, "➕ 加書到第 ", roundNum, " 輪")), /*#__PURE__*/React.createElement("div", {
+      className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3.5"
+    }, roundBooks.map((nb, localIdx) => {
+      const globalIdx = start + localIdx;
+      const liveBook = books.find(b => String(b.id) === String(nb.id) || b.title === nb.title) || nb;
+      return /*#__PURE__*/React.createElement("div", {
+        key: nb.id || globalIdx,
+        className: "bg-white p-3 rounded-xl border border-purple-200/80 shadow-sm flex flex-col justify-between hover:shadow-md transition space-y-2.5"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-2.5"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "w-12 h-16 bg-gray-200 rounded-lg overflow-hidden shrink-0 border border-gray-300 relative flex items-center justify-center text-xs"
+      }, /*#__PURE__*/React.createElement("img", {
+        src: liveBook.localCover || liveBook.cover || nb.cover || 'assets/covers/fallback.jpg',
+        alt: nb.title,
+        className: "w-full h-full object-cover"
+      }), /*#__PURE__*/React.createElement("div", {
+        className: "absolute top-0 left-0 bg-purple-900 text-white text-[9px] px-1 rounded-br font-mono font-bold"
+      }, "#", localIdx + 1)), /*#__PURE__*/React.createElement("div", {
+        className: "flex-1 min-w-0"
+      }, /*#__PURE__*/React.createElement("h4", {
+        className: "font-bold text-xs text-[#241D17] line-clamp-1",
+        title: nb.title
+      }, nb.title), /*#__PURE__*/React.createElement("p", {
+        className: "text-[11px] text-gray-500 line-clamp-1 mt-0.5"
+      }, nb.author || '未標作者'), /*#__PURE__*/React.createElement("span", {
+        className: "text-xs font-bold text-purple-800"
+      }, "NT$ ", liveBook.price || nb.price || 0))), /*#__PURE__*/React.createElement("div", {
+        className: "pt-2 border-t border-gray-100 flex items-center justify-between gap-1 text-xs"
+      }, /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-0.5"
+      }, /*#__PURE__*/React.createElement("button", {
+        type: "button",
+        disabled: globalIdx === 0,
+        onClick: () => handleMoveRecBook(globalIdx, -1, 'newArrivals'),
+        title: "往前移一位",
+        className: "p-1 bg-gray-50 hover:bg-gray-200 disabled:opacity-20 border border-gray-300 rounded text-[10px]"
+      }, "⬅️"), /*#__PURE__*/React.createElement("button", {
+        type: "button",
+        disabled: globalIdx === newArrivalsList.length - 1,
+        onClick: () => handleMoveRecBook(globalIdx, 1, 'newArrivals'),
+        title: "往後移一位",
+        className: "p-1 bg-gray-50 hover:bg-gray-200 disabled:opacity-20 border border-gray-300 rounded text-[10px]"
+      }, "➡️")), /*#__PURE__*/React.createElement("div", {
+        className: "flex items-center gap-1"
+      }, roundNum > 1 && /*#__PURE__*/React.createElement("button", {
+        type: "button",
+        onClick: () => handleMoveRecBookToRound(globalIdx, roundNum - 1),
+        title: "移至上一輪",
+        className: "px-1.5 py-0.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 border border-indigo-200 rounded text-[10px] font-bold"
+      }, "⏫上輪"), /*#__PURE__*/React.createElement("button", {
+        type: "button",
+        onClick: () => handleMoveRecBookToRound(globalIdx, roundNum + 1),
+        title: "移至下一輪",
+        className: "px-1.5 py-0.5 bg-purple-50 hover:bg-purple-100 text-purple-700 border border-purple-200 rounded text-[10px] font-bold"
+      }, "⏬下輪"), /*#__PURE__*/React.createElement("button", {
+        type: "button",
+        onClick: () => handleRemoveRecBook(nb, 'newArrivals'),
+        title: "從推薦中移除",
+        className: "px-1.5 py-0.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 rounded text-[10px] font-bold"
+      }, "移除"))));
+    }), Array.from({
+      length: emptyCount
+    }).map((_, slotIdx) => /*#__PURE__*/React.createElement("button", {
+      key: slotIdx,
       type: "button",
-      disabled: idx === newArrivalsList.length - 1,
-      onClick: () => handleMoveRecBook(idx, 1, 'newArrivals'),
-      title: "往後移",
-      className: "p-1 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded transition"
-    }, "➡️"), /*#__PURE__*/React.createElement("button", {
-      type: "button",
-      onClick: () => handleRemoveRecBook(nb, 'newArrivals'),
-      className: "px-2 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded text-xs font-bold transition ml-1"
-    }, "移除")))));
-  }))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
+      onClick: () => {
+        setTargetRoundForAdd(roundNum);
+        setIsRecModalOpen(true);
+        setRecSearchQuery('');
+      },
+      className: "border-2 border-dashed border-purple-200 hover:border-purple-500 bg-white/60 hover:bg-purple-50/60 p-3 rounded-xl flex flex-col items-center justify-center text-center transition gap-1 min-h-[85px] group"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-bold text-purple-400 group-hover:text-purple-700"
+    }, "＋ 補滿位置 #", roundBooks.length + slotIdx + 1), /*#__PURE__*/React.createElement("span", {
+      className: "text-[10px] text-gray-400 group-hover:text-purple-600"
+    }, "（加書到第 ", roundNum, " 輪）")))));
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "pt-2"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setTargetRoundForAdd(Math.max(1, Math.ceil(newArrivalsList.length / 8)) + 1);
+      setIsRecModalOpen(true);
+      setRecSearchQuery('');
+    },
+    className: "w-full py-4 border-2 border-dashed border-purple-300 hover:border-purple-600 bg-purple-50/50 hover:bg-purple-100/60 rounded-2xl text-sm font-bold text-purple-800 transition flex items-center justify-center gap-2 shadow-sm active:scale-98"
+  }, /*#__PURE__*/React.createElement("span", null, "➕ 開啟全新一輪推薦（建立第 ", Math.max(1, Math.ceil(newArrivalsList.length / 8)) + 1, " 輪）"))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm p-6 space-y-6"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E8DCCE]"
@@ -2007,28 +2112,28 @@ function AdminApp() {
     type: "text",
     value: carouselFormData.image,
     onChange: e => setCarouselFormData({ ...carouselFormData, image: e.target.value }),
-    placeholder: "https://... \u6216 assets/... (\u652F\u63F4\u7DB2\u5740\u6216\u672C\u6A5F\u5716\u7247\u8DEF\u5F91)",
+    placeholder: "https://... 或 assets/... (支援網址或本機圖片路徑)",
     className: "w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm font-mono bg-white",
     required: true
   }), carouselFormData.image && /*#__PURE__*/React.createElement("div", {
     className: "mt-2 p-2 bg-gray-100 rounded-xl border border-gray-200"
-  }, /*#__PURE__*/React.createElement("p", { className: "text-[11px] text-gray-500 mb-1" }, "\u5716\u7247\u5373\u6642\u9810\u89BD\uFF1A"), /*#__PURE__*/React.createElement("img", {
+  }, /*#__PURE__*/React.createElement("p", { className: "text-[11px] text-gray-500 mb-1" }, "圖片即時預覽："), /*#__PURE__*/React.createElement("img", {
     src: carouselFormData.image,
-    alt: "\u9810\u89BD",
+    alt: "預覽",
     className: "w-full h-32 object-cover rounded-lg bg-white"
   }))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
     className: "block text-xs font-bold text-[#4A3B32] mb-1"
-  }, "\u767C\u4F48\u72C0\u614B"), /*#__PURE__*/React.createElement("select", {
+  }, "發佈狀態"), /*#__PURE__*/React.createElement("select", {
     value: carouselFormData.status,
     onChange: e => setCarouselFormData({ ...carouselFormData, status: e.target.value }),
     className: "w-full px-3 py-2 border border-[#D4C5B9] rounded-xl text-sm bg-white"
-  }, /*#__PURE__*/React.createElement("option", { value: "\u5DF2\u767C\u4F48" }, "\u5DF2\u767C\u4F48 (\u524D\u53F0\u6B63\u5E38\u8F2A\u64AD)"), /*#__PURE__*/React.createElement("option", { value: "\u8349\u7A3F" }, "\u8349\u7A3F (\u66AB\u6642\u96B1\u85CF)"))), /*#__PURE__*/React.createElement("div", {
+  }, /*#__PURE__*/React.createElement("option", { value: "已發佈" }, "已發佈 (前台正常輪播)"), /*#__PURE__*/React.createElement("option", { value: "草稿" }, "草稿 (暫時隱藏)"))), /*#__PURE__*/React.createElement("div", {
     className: "pt-4 border-t border-[#E8DCCE] flex items-center justify-end gap-3"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setEditingCarousel(null),
     className: "px-4 py-2 border border-[#D4C5B9] hover:bg-gray-100 text-gray-700 rounded-xl text-xs font-bold transition"
-  }, "\u53D6\u6D88"), /*#__PURE__*/React.createElement("button", {
+  }, "取消"), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     className: "px-5 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-xl text-xs font-bold shadow transition"
   }, "儲存輪播圖"))))), isRecModalOpen && /*#__PURE__*/React.createElement("div", {
@@ -2039,30 +2144,45 @@ function AdminApp() {
     className: "bg-[#241D17] text-white px-6 py-4 flex items-center justify-between"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-serif font-bold text-lg flex items-center gap-2"
-  }, /*#__PURE__*/React.createElement("span", null, "\u2795 \u641C\u5C0B\u5EAB\u5B58\u66F8\u7C4D\u52A0\u5165\u63A8\u85A6\u6E05\u55AE")), /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement("span", null, "➕ 搜尋庫存書籍加入推薦清單")), /*#__PURE__*/React.createElement("button", {
     onClick: () => setIsRecModalOpen(false),
     className: "text-gray-400 hover:text-white text-xl font-bold"
-  }, "\u2715")), /*#__PURE__*/React.createElement("div", {
+  }, "✕")), /*#__PURE__*/React.createElement("div", {
     className: "p-6 border-b border-[#E8DCCE] bg-white space-y-3"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-3"
+    className: "flex flex-wrap items-center justify-between gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
   }, /*#__PURE__*/React.createElement("span", {
     className: "text-xs font-bold text-gray-700"
-  }, "\u6B32\u52A0\u5165\u76EE\u6A19\uFF1A"), /*#__PURE__*/React.createElement("button", {
+  }, "欲加入目標："), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setRecSubTab('choices'),
     className: `px-3 py-1 text-xs rounded-lg font-bold transition ${recSubTab === 'choices' ? 'bg-amber-600 text-white shadow-sm' : 'bg-gray-100 text-gray-700'}`
-  }, "\uD83C\uDF1F \u9996\u9801\u7CBE\u9078\u66F8\u55AE (\u65B0\u66F8\u63A8\u85A6)"), /*#__PURE__*/React.createElement("button", {
+  }, "🌟 首頁精選書單 (新書推薦)"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setRecSubTab('newArrivals'),
     className: `px-3 py-1 text-xs rounded-lg font-bold transition ${recSubTab === 'newArrivals' ? 'bg-purple-600 text-white shadow-sm' : 'bg-gray-100 text-gray-700'}`
-  }, "\u26A1 \u65B0\u66F8\u4E0A\u5E02\u63A8\u85A6")), /*#__PURE__*/React.createElement("div", {
+  }, "⚡ 新書上市推薦")), recSubTab === 'newArrivals' && /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-1.5 bg-purple-50 px-3 py-1.5 rounded-xl border border-purple-200"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-bold text-purple-900"
+  }, "目標輪次："), /*#__PURE__*/React.createElement("select", {
+    value: targetRoundForAdd,
+    onChange: e => setTargetRoundForAdd(Number(e.target.value)),
+    className: "px-2 py-0.5 bg-white border border-purple-300 rounded text-xs text-purple-900 font-bold focus:outline-none"
+  }, Array.from({
+    length: Math.max(1, Math.ceil(newArrivalsList.length / 8)) + 1
+  }).map((_, rIdx) => /*#__PURE__*/React.createElement("option", {
+    key: rIdx + 1,
+    value: rIdx + 1
+  }, `第 ${rIdx + 1} 輪推薦${rIdx === Math.ceil(newArrivalsList.length / 8) ? ' (新建輪次)' : ''}`))))), /*#__PURE__*/React.createElement("div", {
     className: "relative"
   }, /*#__PURE__*/React.createElement("input", {
     type: "text",
     value: recSearchQuery,
     onChange: e => setRecSearchQuery(e.target.value),
-    placeholder: "\u8F38\u5165\u66F8\u540D\u3001\u66F8\u78BC (ID)\u3001\u4F5C\u8005\u95DC\u9375\u5B57\u641C\u5C0B...",
+    placeholder: "輸入書名、書碼 (ID)、作者關鍵字搜尋...",
     className: "w-full pl-9 pr-4 py-2.5 bg-[#FAF8F5] border border-[#D4C5B9] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
   }), /*#__PURE__*/React.createElement("svg", {
     className: "w-4 h-4 text-gray-400 absolute left-3 top-3.5",
@@ -2101,24 +2221,24 @@ function AdminApp() {
       className: "text-sm font-bold text-[#241D17] line-clamp-1"
     }, b.title), /*#__PURE__*/React.createElement("p", {
       className: "text-xs text-gray-500 line-clamp-1 mt-0.5"
-    }, "\u7DE8\u865F: ", b.id, " · \u4F5C\u8005: ", b.author || '未標', " · \u5B9A\u50F9: NT$ ", b.price))), /*#__PURE__*/React.createElement("div", {
+    }, "編號: ", b.id, " · 作者: ", b.author || '未標', " · 定價: NT$ ", b.price))), /*#__PURE__*/React.createElement("div", {
       className: "shrink-0"
     }, isSelectedForCurrent ? /*#__PURE__*/React.createElement("button", {
       type: "button",
       onClick: () => recSubTab === 'choices' ? handleToggleBookChoice(b) : handleToggleNewArrival(b),
       className: "px-3 py-1.5 bg-gray-200 hover:bg-red-100 hover:text-red-800 text-gray-700 text-xs font-bold rounded-lg transition"
-    }, "\u2713 \u5DF2\u5728\u6E05\u55AE (\u9EDE\u64CA\u79FB\u9664)") : /*#__PURE__*/React.createElement("button", {
+    }, "✓ 已在清單 (點擊移除)") : /*#__PURE__*/React.createElement("button", {
       type: "button",
-      onClick: () => recSubTab === 'choices' ? handleToggleBookChoice(b) : handleToggleNewArrival(b),
+      onClick: () => recSubTab === 'choices' ? handleToggleBookChoice(b) : handleToggleNewArrival(b, targetRoundForAdd),
       className: `px-3 py-1.5 ${recSubTab === 'choices' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-purple-600 hover:bg-purple-700'} text-white text-xs font-bold rounded-lg transition shadow-sm active:scale-95`
-    }, "\uFF0B \u52A0\u5165\u63A8\u85A6")));
+    }, recSubTab === 'choices' ? '＋ 加入精選' : `＋ 加入第 ${targetRoundForAdd} 輪`)));
   })), /*#__PURE__*/React.createElement("div", {
     className: "p-4 border-t border-[#E8DCCE] bg-[#FAF8F5] flex justify-end"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsRecModalOpen(false),
     className: "px-5 py-2 bg-[#241D17] hover:bg-black text-white text-xs font-bold rounded-xl transition"
-  }, "\u5B8C\u6210\u9078\u53D6\u95DC\u9589")))));
+  }, "完成選取關閉"))))));
 }
 function mountAdminApp() {
   var rootEl = document.getElementById('admin-root');

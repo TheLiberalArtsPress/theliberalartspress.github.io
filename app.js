@@ -670,6 +670,7 @@ function App() {
             if (dataToUse && dataToUse.books && dataToUse.books.length > 0) {
                 setBooks(dataToUse.books);
                 if (dataToUse.choices) setChoiceBooks(dataToUse.choices);
+                if (dataToUse.newArrivalsList) setNewArrivalsList(dataToUse.newArrivalsList);
                 if (dataToUse.carousels) setCarousels(dataToUse.carousels);
                 if (dataToUse.settings) setSettings(prev => ({ ...prev, ...dataToUse.settings }));
                 if (dataToUse.ui) setUi(prev => ({ ...prev, ...dataToUse.ui }));
@@ -2104,13 +2105,17 @@ function App() {
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
     className: "glass-dark p-4 flex justify-between items-center border-b-2 border-[var(--primary-color)]"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2.5 flex-wrap"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "text-lg font-serif font-black text-white flex items-center gap-2"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
     size: 20,
     className: "text-[var(--primary-color)]"
-  }), " ", ui.newArrivalsTitle), /*#__PURE__*/React.createElement("button", {
+  }), " ", ui.newArrivalsTitle), /*#__PURE__*/React.createElement("span", {
+    className: "text-[11px] bg-white/20 text-white px-2.5 py-0.5 rounded-full font-sans font-bold border border-white/30"
+  }, (newArrivalsList && newArrivalsList.length > 0) ? (recommendationRound < Math.ceil(newArrivalsList.length / 8) ? `第 ${recommendationRound + 1} 輪推薦 (共 ${Math.ceil(newArrivalsList.length / 8)} 輪)` : `全館精選隨機推薦 (第 ${recommendationRound + 1} 輪)`) : `全館精選推薦 (第 ${recommendationRound + 1} 輪)`)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsRandomBooksOpen(false),
     className: "bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full text-xs font-bold text-white transition flex items-center gap-1.5"
@@ -2162,7 +2167,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
     size: 15
-  }), " ", ui.newArrivalsBtnRefresh))))), isCartOpen && /*#__PURE__*/React.createElement("div", {
+  }), " ", ui.newArrivalsBtnRefresh, ` (換看第 ${recommendationRound + 2} 輪)`))))), isCartOpen && /*#__PURE__*/React.createElement("div", {
     className: "fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-6 overflow-y-auto",
     onClick: () => setIsCartOpen(false)
   }, /*#__PURE__*/React.createElement("div", {
