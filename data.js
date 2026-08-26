@@ -109,7 +109,7 @@ window.STATIC_DATA = {
     "searchTableHeaderCategory": "叢書類別",
     "searchTableHeaderAction": "操作",
     "searchBtnMore": "顯示更多書籍",
-    "newArrivalsTitle": "新書上市 - 隨機推薦",
+    "newArrivalsTitle": "新書上市 - 推薦",
     "newArrivalsBtnRefresh": "再換一批看看",
     "newArrivalsCloseBtn": "關閉",
     "cartTitle": "我的書包",

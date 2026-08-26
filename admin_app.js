@@ -166,6 +166,15 @@ function AdminApp() {
   const [carousels, setCarousels] = useState(() => {
     return safeGetStorage('lapen_admin_carousels', staticData.carousels || []);
   });
+  const [choiceBooks, setChoiceBooks] = useState(() => {
+    return safeGetStorage('lapen_admin_choices', staticData.choices || []);
+  });
+  const [newArrivalsList, setNewArrivalsList] = useState(() => {
+    return safeGetStorage('lapen_admin_new_arrivals', staticData.newArrivalsList || []);
+  });
+  const [recSubTab, setRecSubTab] = useState('choices');
+  const [isRecModalOpen, setIsRecModalOpen] = useState(false);
+  const [recSearchQuery, setRecSearchQuery] = useState('');
   const [settings, setSettings] = useState(() => staticData.settings || {});
 
   // 書籍管理 UI 狀態
@@ -298,6 +307,59 @@ function AdminApp() {
   useEffect(() => {
     safeSetStorage('lapen_admin_carousels', carousels);
   }, [carousels]);
+  useEffect(() => {
+    safeSetStorage('lapen_admin_choices', choiceBooks);
+  }, [choiceBooks]);
+  useEffect(() => {
+    safeSetStorage('lapen_admin_new_arrivals', newArrivalsList);
+  }, [newArrivalsList]);
+
+  const handleToggleBookChoice = book => {
+    const exists = choiceBooks.some(cb => String(cb.id) === String(book.id) || (cb.title && cb.title === book.title));
+    if (exists) {
+      setChoiceBooks(prev => prev.filter(cb => !(String(cb.id) === String(book.id) || (cb.title && cb.title === book.title))));
+      showToast(`已將《${book.title}》從精選書單移除`, 'info');
+    } else {
+      setChoiceBooks(prev => [...prev, { ...book }]);
+      showToast(`已將《${book.title}》加入首頁精選書單！`, 'success');
+    }
+  };
+
+  const handleToggleNewArrival = book => {
+    const exists = newArrivalsList.some(nb => String(nb.id) === String(book.id) || (nb.title && nb.title === book.title));
+    if (exists) {
+      setNewArrivalsList(prev => prev.filter(nb => !(String(nb.id) === String(book.id) || (nb.title && nb.title === book.title))));
+      showToast(`已將《${book.title}》從新書上市推薦移除`, 'info');
+    } else {
+      setNewArrivalsList(prev => [...prev, { ...book }]);
+      showToast(`已將《${book.title}》加入新書上市推薦！`, 'success');
+    }
+  };
+
+  const handleMoveRecBook = (index, direction, type = 'choices') => {
+    const setter = type === 'choices' ? setChoiceBooks : setNewArrivalsList;
+    setter(prev => {
+      const targetIdx = index + direction;
+      if (targetIdx < 0 || targetIdx >= prev.length) return prev;
+      const copy = [...prev];
+      const temp = copy[index];
+      copy[index] = copy[targetIdx];
+      copy[targetIdx] = temp;
+      return copy;
+    });
+    showToast('推薦順序已調整', 'info');
+  };
+
+  const handleRemoveRecBook = (book, type = 'choices') => {
+    if (type === 'choices') {
+      setChoiceBooks(prev => prev.filter(cb => !(String(cb.id) === String(book.id) || (cb.title && cb.title === book.title))));
+      showToast(`已將《${book.title}》移出精選推薦`, 'danger');
+    } else {
+      setNewArrivalsList(prev => prev.filter(nb => !(String(nb.id) === String(book.id) || (nb.title && nb.title === book.title))));
+      showToast(`已將《${book.title}》移出新書上市推薦`, 'danger');
+    }
+  };
+
   const handleLogin = e => {
     e.preventDefault();
     if (passwordInput === savedPassword) {
@@ -436,7 +498,26 @@ function AdminApp() {
     }
   };
   const generateDataJsString = () => {
-    const updatedChoices = (staticData.choices || []).map(c => {
+    const updatedChoices = choiceBooks.map(c => {
+      const matchingBook = books.find(b => String(b.id) === String(c.id) || b.title === c.title);
+      if (matchingBook) {
+        return {
+          ...c,
+          title: matchingBook.title,
+          author: matchingBook.author,
+          year: matchingBook.year,
+          price: matchingBook.price,
+          stock: matchingBook.stock,
+          category: matchingBook.category,
+          cover: matchingBook.cover,
+          localCover: matchingBook.localCover,
+          intro: matchingBook.intro,
+          心得: matchingBook.心得
+        };
+      }
+      return c;
+    });
+    const updatedNewArrivals = newArrivalsList.map(c => {
       const matchingBook = books.find(b => String(b.id) === String(c.id) || b.title === c.title);
       if (matchingBook) {
         return {
@@ -457,9 +538,13 @@ function AdminApp() {
     });
     const fullData = {
       settings: settings,
-      ui: staticData.ui || {},
+      ui: {
+        ...(staticData.ui || {}),
+        newArrivalsTitle: '新書上市 - 推薦'
+      },
       carousels: carousels,
       choices: updatedChoices,
+      newArrivalsList: updatedNewArrivals,
       books: books
     };
     return "window.STATIC_DATA = " + JSON.stringify(fullData, null, 2) + ";\nif (typeof window !== 'undefined') { window.dispatchEvent(new CustomEvent('lapenDataLoaded', { detail: window.STATIC_DATA })); }";
@@ -827,6 +912,23 @@ function AdminApp() {
   })), /*#__PURE__*/React.createElement("span", null, "\u5BA2\u670D\u8207\u5EFA\u8B70")), csMessages.filter(m => m.status === '未處理').length > 0 && /*#__PURE__*/React.createElement("span", {
     className: "text-xs bg-rose-600 px-2 py-0.5 rounded-full text-white font-bold"
   }, csMessages.filter(m => m.status === '未處理').length)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setActiveTab('recommendations'),
+    className: `w-full flex items-center justify-between px-4 py-3 rounded-xl text-sm font-medium transition ${activeTab === 'recommendations' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'}`
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("svg", {
+    className: "w-5 h-5",
+    fill: "none",
+    stroke: "currentColor",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: "2",
+    d: "M11.049 2.927c.3-.921 1.603-.921 1.902 0l1.519 4.674a1 1 0 00.95.69h4.915c.969 0 1.371 1.24.588 1.81l-3.976 2.888a1 1 0 00-.363 1.118l1.518 4.674c.3.922-.755 1.688-1.538 1.118l-3.976-2.888a1 1 0 00-1.176 0l-3.976 2.888c-.783.57-1.838-.197-1.538-1.118l1.518-4.674a1 1 0 00-.363-1.118l-3.976-2.888c-.784-.57-.38-1.81.588-1.81h4.914a1 1 0 00.951-.69l1.519-4.674z"
+  })), /*#__PURE__*/React.createElement("span", null, "\u63A8\u85A6\u66F8\u55AE\u7BA1\u7406")), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs bg-amber-700/80 px-2 py-0.5 rounded-full text-white font-bold"
+  }, choiceBooks.length + newArrivalsList.length)), /*#__PURE__*/React.createElement("button", {
     onClick: () => setActiveTab('carousels'),
     className: `w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium transition ${activeTab === 'carousels' ? 'bg-[#8C5A2B] text-white shadow-md' : 'text-[#D4C5B9] hover:bg-[#32271F]'}`
   }, /*#__PURE__*/React.createElement("svg", {
@@ -894,7 +996,7 @@ function AdminApp() {
     className: "flex items-center gap-3"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "text-xl font-bold font-serif text-[#241D17]"
-  }, activeTab === 'dashboard' && '總覽儀表板', activeTab === 'books' && '書籍庫存與內容管理', activeTab === 'orders' && '顧客訂單管理', activeTab === 'cs' && '客服與建議反映', activeTab === 'carousels' && '首頁輪播圖管理', activeTab === 'settings' && '系統與安全設定')), /*#__PURE__*/React.createElement("div", {
+  }, activeTab === 'dashboard' && '總覽儀表板', activeTab === 'books' && '書籍庫存與內容管理', activeTab === 'orders' && '顧客訂單管理', activeTab === 'cs' && '客服與建議反映', activeTab === 'recommendations' && '推薦與精選書單管理', activeTab === 'carousels' && '首頁輪播圖管理', activeTab === 'settings' && '系統與安全設定')), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-3"
   }, /*#__PURE__*/React.createElement("button", {
     onClick: () => setShowGithubConfirm(true),
@@ -1127,13 +1229,21 @@ function AdminApp() {
   }, /*#__PURE__*/React.createElement("span", {
     className: `text-xs px-2 py-0.5 rounded-full ${Number(book.stock) > 0 ? 'bg-emerald-50 text-emerald-700' : 'bg-red-50 text-red-700'}`
   }, book.stock || '10')), /*#__PURE__*/React.createElement("td", {
-    className: "py-3 px-4 text-center space-x-2"
+    className: "py-3 px-4 text-center space-x-1.5 whitespace-nowrap"
   }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleToggleBookChoice(book),
+    className: `px-2 py-1 rounded-lg text-xs font-bold transition ${choiceBooks.some(cb => String(cb.id) === String(book.id) || (cb.title && cb.title === book.title)) ? 'bg-amber-500 text-white shadow-sm' : 'bg-gray-100 hover:bg-amber-100 text-gray-700'}`,
+    title: "點擊切換首頁精選推薦"
+  }, choiceBooks.some(cb => String(cb.id) === String(book.id) || (cb.title && cb.title === book.title)) ? '⭐ 精選中' : '☆ 設為精選'), /*#__PURE__*/React.createElement("button", {
+    onClick: () => handleToggleNewArrival(book),
+    className: `px-2 py-1 rounded-lg text-xs font-bold transition ${newArrivalsList.some(nb => String(nb.id) === String(book.id) || (nb.title && nb.title === book.title)) ? 'bg-purple-600 text-white shadow-sm' : 'bg-gray-100 hover:bg-purple-100 text-gray-700'}`,
+    title: "點擊切換新書上市推薦"
+  }, newArrivalsList.some(nb => String(nb.id) === String(book.id) || (nb.title && nb.title === book.title)) ? '⚡ 新書中' : '＋ 新書上市'), /*#__PURE__*/React.createElement("button", {
     onClick: () => handleOpenEditBook(book),
-    className: "px-3 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-bold transition"
+    className: "px-2.5 py-1 bg-amber-100 hover:bg-amber-200 text-amber-900 rounded-lg text-xs font-bold transition"
   }, "\u7DE8\u8F2F"), /*#__PURE__*/React.createElement("button", {
     onClick: () => handleDeleteBook(book),
-    className: "px-3 py-1 bg-rose-100 hover:bg-rose-200 text-rose-900 rounded-lg text-xs font-bold transition"
+    className: "px-2.5 py-1 bg-rose-100 hover:bg-rose-200 text-rose-900 rounded-lg text-xs font-bold transition"
   }, "\u522A\u9664"))))))), /*#__PURE__*/React.createElement("div", {
     className: "p-4 border-t border-[#E8DCCE] bg-[#FAF8F5] flex items-center justify-between text-xs text-gray-600"
   }, /*#__PURE__*/React.createElement("div", null, "\u5171 ", /*#__PURE__*/React.createElement("span", {
@@ -1294,7 +1404,135 @@ function AdminApp() {
   }, "\u91CD\u8A2D\u70BA\u672A\u8655\u7406"), /*#__PURE__*/React.createElement("button", {
     onClick: () => handleDeleteCs(msg.id),
     className: "px-3 py-1.5 bg-red-100 hover:bg-red-200 text-red-800 rounded-xl text-xs font-bold transition"
-  }, "\u522A\u9664\u7D00\u9304")))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
+  }, "\u522A\u9664\u7D00\u9304")))))), activeTab === 'recommendations' && /*#__PURE__*/React.createElement("div", {
+    className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm flex flex-col overflow-hidden"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "p-6 border-b border-[#E8DCCE] bg-[#FAF8F5] flex flex-wrap items-center justify-between gap-4"
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    className: "font-serif font-bold text-lg text-[#241D17] flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", null, "\u2B50 \u63A8\u85A6\u66F8\u55AE\u8207\u65B0\u66F8\u4E0A\u5E02\u7BA1\u7406")), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-gray-500 mt-1"
+  }, "\u7BA1\u7406\u9996\u9801\u7CBE\u9078\u65B0\u66F8\u6ED1\u52D5\u63A8\u85A6\u5340\uFF0C\u4EE5\u53CA\u9802\u90E8\u300C\u65B0\u66F8\u4E0A\u5E02\u300D\u591A\u8F2A\u63A8\u85A6\u6E05\u55AE\u8207\u4E0A\u4E0B\u67B6\u6392\u5E8F")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => { setIsRecModalOpen(true); setRecSearchQuery(''); },
+    className: "px-4 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5 active:scale-95"
+  }, /*#__PURE__*/React.createElement("span", null, "\uFF0B \u5F9E\u5EAB\u5B58\u641C\u5C0B\u66F8\u7C4D\u52A0\u5165\u63A8\u85A6"))), /*#__PURE__*/React.createElement("div", {
+    className: "px-6 pt-4 border-b border-[#E8DCCE] bg-white flex gap-3"
+  }, /*#__PURE__*/React.createElement("button", {
+    onClick: () => setRecSubTab('choices'),
+    className: `pb-3 px-3 text-sm font-bold border-b-2 transition flex items-center gap-2 ${recSubTab === 'choices' ? 'border-[#8C5A2B] text-[#8C5A2B]' : 'border-transparent text-gray-500 hover:text-gray-800'}`
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83C\uDF1F \u9996\u9801\u7CBE\u9078\u66F8\u55AE (\u65B0\u66F8\u63A8\u85A6)"), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs bg-amber-100 text-amber-900 px-2 py-0.5 rounded-full"
+  }, choiceBooks.length)), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setRecSubTab('newArrivals'),
+    className: `pb-3 px-3 text-sm font-bold border-b-2 transition flex items-center gap-2 ${recSubTab === 'newArrivals' ? 'border-[#8C5A2B] text-[#8C5A2B]' : 'border-transparent text-gray-500 hover:text-gray-800'}`
+  }, /*#__PURE__*/React.createElement("span", null, "\u26A1 \u65B0\u66F8\u4E0A\u5E02\u63A8\u85A6 (\u5F48\u7A97\u591A\u8F2A\u63A8\u85A6)"), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs bg-purple-100 text-purple-900 px-2 py-0.5 rounded-full"
+  }, newArrivalsList.length, " \u672C (", Math.ceil(newArrivalsList.length / 8) || 0, " \u8F2A)"))), /*#__PURE__*/React.createElement("div", {
+    className: "p-6"
+  }, recSubTab === 'choices' ? /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-amber-50/70 p-3 rounded-xl border border-amber-200/80 text-xs text-amber-900 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("span", null, "\uD83D\uDCA1 \u6B64\u8655\u66F8\u7C4D\u5C07\u76F4\u63A5\u5C55\u793A\u65BC\u5B98\u7DB2\u9996\u9801\u7684\u300C\u7CBE\u9078\u66F8\u55AE / \u65B0\u66F8\u63A8\u85A6\u300D\u6A6B\u5411\u6ED1\u52D5\u8F2A\u64AD\u5340\uFF0C\u53EF\u9EDE\u64CA\u7BAD\u982D\u8ABF\u6574\u5148\u5F8C\u9806\u5E8F\u3002"), /*#__PURE__*/React.createElement("span", { className: "font-bold" }, "\u5171 ", choiceBooks.length, " \u672C")), choiceBooks.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "p-12 text-center text-gray-400"
+  }, "\u76EE\u524D\u5C1A\u7121\u7CBE\u9078\u63A8\u85A6\u66F8\u7C4D\uFF0C\u8ACB\u9EDE\u64CA\u53F3\u4E0A\u89D2\u300C\uFF0B \u5F9E\u5EAB\u5B58\u641C\u5C0B\u66F8\u7C4D\u52A0\u5165\u63A8\u85A6\u300D\u6216\u5728\u3010\u66F8\u7C4D\u5EAB\u5B58\u7BA1\u7406\u3011\u8868\u683C\u9EDE\u64CA\u300C\u2606 \u8A2D\u70BA\u7CBE\u9078\u300D\uFF01") : /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+  }, choiceBooks.map((cb, idx) => {
+    const liveBook = books.find(b => String(b.id) === String(cb.id) || b.title === cb.title) || cb;
+    return /*#__PURE__*/React.createElement("div", {
+      key: cb.id || idx,
+      className: "bg-[#FAF8F5] p-4 rounded-xl border border-[#E8DCCE] flex items-center gap-3.5 shadow-sm hover:shadow transition"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-14 h-20 bg-gray-200 rounded-lg overflow-hidden shrink-0 border border-gray-300 relative flex items-center justify-center"
+    }, /*#__PURE__*/React.createElement("img", {
+      src: liveBook.localCover || liveBook.cover || cb.cover || 'assets/covers/fallback.jpg',
+      alt: cb.title,
+      className: "w-full h-full object-cover"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "absolute top-0 left-0 bg-[#241D17]/80 text-white text-[10px] px-1.5 py-0.5 rounded-br font-mono"
+    }, idx + 1)), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0 flex flex-col justify-between h-20"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
+      className: "font-bold text-sm text-[#241D17] line-clamp-1",
+      title: cb.title
+    }, cb.title), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-gray-500 line-clamp-1 mt-0.5"
+    }, cb.author || '未標作者', " · ", cb.category || '通用')), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between pt-1 border-t border-gray-200/80"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-bold text-[#8C5A2B]"
+    }, "NT$ ", liveBook.price || cb.price || 0), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-1"
+    }, /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      disabled: idx === 0,
+      onClick: () => handleMoveRecBook(idx, -1, 'choices'),
+      title: "往前移",
+      className: "p-1 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded transition"
+    }, "⬅️"), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      disabled: idx === choiceBooks.length - 1,
+      onClick: () => handleMoveRecBook(idx, 1, 'choices'),
+      title: "往後移",
+      className: "p-1 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded transition"
+    }, "➡️"), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => handleRemoveRecBook(cb, 'choices'),
+      className: "px-2 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded text-xs font-bold transition ml-1"
+    }, "下架")))));
+  }))) : /*#__PURE__*/React.createElement("div", {
+    className: "space-y-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-purple-50/70 p-3 rounded-xl border border-purple-200/80 text-xs text-purple-900 flex flex-wrap items-center justify-between gap-2"
+  }, /*#__PURE__*/React.createElement("span", null, "\u26A1 \u6B64\u8655\u70BA\u524D\u53F0\u9802\u90E8\u300C\u65B0\u66F8\u4E0A\u5E02\u300D\u5F48\u7A97\u6307\u5B9A\u512A\u5148\u63A8\u85A6\u6E05\u55AE\u3002\u6BCF 8 \u672C\u70BA\u4E00\u8F2A\uFF0C\u4F7F\u7528\u8005\u9EDE\u64CA\u300C\u518D\u63DB\u4E00\u6279\u770B\u770B\u300D\u5C07\u4F9D\u5E8F\u8F2A\u64AD\uFF1B\u7576\u6307\u5B9A\u6E05\u55AE\u8F2A\u64AD\u5B8C\u7562\u6216\u672A\u6307\u5B9A\u6642\uFF0C\u81EA\u52D5\u96A8\u6A5F\u63A8\u85A6\u5168\u9928\u5EAB\u5B58\uFF01"), /*#__PURE__*/React.createElement("span", { className: "font-bold" }, "\u5171 ", newArrivalsList.length, " \u672C (", Math.ceil(newArrivalsList.length / 8) || 0, " \u8F2A)")), newArrivalsList.length === 0 ? /*#__PURE__*/React.createElement("div", {
+    className: "p-12 text-center text-gray-400"
+  }, "\u76EE\u524D\u5C1A\u7121\u6307\u5B9A\u65B0\u66F8\u63A8\u85A6\uFF08\u7CFB\u7D71\u9810\u8A2D\u4EE5\u667A\u80FD\u96A8\u6A5F\u63A8\u85A6\uFF09\uFF0C\u53EF\u9EDE\u64CA\u53F3\u4E0A\u89D2\u300C\uFF0B \u5F9E\u5EAB\u5B58\u641C\u5C0B\u66F8\u7C4D\u52A0\u5165\u63A8\u85A6\u300D\u8A2D\u5B9A\u6307\u5B9A\u512A\u5148\u8F2A\u6B21\uFF01") : /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"
+  }, newArrivalsList.map((nb, idx) => {
+    const liveBook = books.find(b => String(b.id) === String(nb.id) || b.title === nb.title) || nb;
+    const roundNum = Math.floor(idx / 8) + 1;
+    return /*#__PURE__*/React.createElement("div", {
+      key: nb.id || idx,
+      className: "bg-[#FAF8F5] p-4 rounded-xl border border-[#E8DCCE] flex items-center gap-3.5 shadow-sm hover:shadow transition"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-14 h-20 bg-gray-200 rounded-lg overflow-hidden shrink-0 border border-gray-300 relative flex items-center justify-center"
+    }, /*#__PURE__*/React.createElement("img", {
+      src: liveBook.localCover || liveBook.cover || nb.cover || 'assets/covers/fallback.jpg',
+      alt: nb.title,
+      className: "w-full h-full object-cover"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "absolute top-0 left-0 bg-purple-900/90 text-white text-[10px] px-1.5 py-0.5 rounded-br font-mono"
+    }, "\u7B2C", roundNum, "\u8F2A")), /*#__PURE__*/React.createElement("div", {
+      className: "flex-1 min-w-0 flex flex-col justify-between h-20"
+    }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
+      className: "font-bold text-sm text-[#241D17] line-clamp-1",
+      title: nb.title
+    }, nb.title), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-gray-500 line-clamp-1 mt-0.5"
+    }, nb.author || '未標作者', " · ", nb.category || '通用')), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between pt-1 border-t border-gray-200/80"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "text-xs font-bold text-purple-800"
+    }, "NT$ ", liveBook.price || nb.price || 0), /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-1"
+    }, /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      disabled: idx === 0,
+      onClick: () => handleMoveRecBook(idx, -1, 'newArrivals'),
+      title: "往前移",
+      className: "p-1 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded transition"
+    }, "⬅️"), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      disabled: idx === newArrivalsList.length - 1,
+      onClick: () => handleMoveRecBook(idx, 1, 'newArrivals'),
+      title: "往後移",
+      className: "p-1 bg-white hover:bg-gray-100 disabled:opacity-30 border border-[#D4C5B9] text-xs rounded transition"
+    }, "➡️"), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => handleRemoveRecBook(nb, 'newArrivals'),
+      className: "px-2 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded text-xs font-bold transition ml-1"
+    }, "移除")))));
+  })))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm p-6 space-y-6"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E8DCCE]"
@@ -1793,7 +2031,94 @@ function AdminApp() {
   }, "\u53D6\u6D88"), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     className: "px-5 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-xl text-xs font-bold shadow transition"
-  }, "儲存輪播圖"))))));
+  }, "儲存輪播圖"))))), isRecModalOpen && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 z-50 bg-black/60 backdrop-blur-sm flex items-center justify-center p-4 overflow-y-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#FAF8F5] w-full max-w-2xl rounded-2xl shadow-2xl border border-[#8C5A2B]/40 overflow-hidden my-8 flex flex-col max-h-[85vh]"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "bg-[#241D17] text-white px-6 py-4 flex items-center justify-between"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-serif font-bold text-lg flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", null, "\u2795 \u641C\u5C0B\u5EAB\u5B58\u66F8\u7C4D\u52A0\u5165\u63A8\u85A6\u6E05\u55AE")), /*#__PURE__*/React.createElement("button", {
+    onClick: () => setIsRecModalOpen(false),
+    className: "text-gray-400 hover:text-white text-xl font-bold"
+  }, "\u2715")), /*#__PURE__*/React.createElement("div", {
+    className: "p-6 border-b border-[#E8DCCE] bg-white space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-bold text-gray-700"
+  }, "\u6B32\u52A0\u5165\u76EE\u6A19\uFF1A"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setRecSubTab('choices'),
+    className: `px-3 py-1 text-xs rounded-lg font-bold transition ${recSubTab === 'choices' ? 'bg-amber-600 text-white shadow-sm' : 'bg-gray-100 text-gray-700'}`
+  }, "\uD83C\uDF1F \u9996\u9801\u7CBE\u9078\u66F8\u55AE (\u65B0\u66F8\u63A8\u85A6)"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setRecSubTab('newArrivals'),
+    className: `px-3 py-1 text-xs rounded-lg font-bold transition ${recSubTab === 'newArrivals' ? 'bg-purple-600 text-white shadow-sm' : 'bg-gray-100 text-gray-700'}`
+  }, "\u26A1 \u65B0\u66F8\u4E0A\u5E02\u63A8\u85A6")), /*#__PURE__*/React.createElement("div", {
+    className: "relative"
+  }, /*#__PURE__*/React.createElement("input", {
+    type: "text",
+    value: recSearchQuery,
+    onChange: e => setRecSearchQuery(e.target.value),
+    placeholder: "\u8F38\u5165\u66F8\u540D\u3001\u66F8\u78BC (ID)\u3001\u4F5C\u8005\u95DC\u9375\u5B57\u641C\u5C0B...",
+    className: "w-full pl-9 pr-4 py-2.5 bg-[#FAF8F5] border border-[#D4C5B9] rounded-xl text-sm focus:outline-none focus:ring-2 focus:ring-[#8C5A2B]"
+  }), /*#__PURE__*/React.createElement("svg", {
+    className: "w-4 h-4 text-gray-400 absolute left-3 top-3.5",
+    fill: "none",
+    stroke: "currentColor",
+    viewBox: "0 0 24 24"
+  }, /*#__PURE__*/React.createElement("path", {
+    strokeLinecap: "round",
+    strokeLinejoin: "round",
+    strokeWidth: "2",
+    d: "M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+  })))), /*#__PURE__*/React.createElement("div", {
+    className: "p-6 overflow-y-auto flex-1 divide-y divide-gray-200 custom-scrollbar"
+  }, books.filter(b => {
+    if (!recSearchQuery.trim()) return true;
+    const q = recSearchQuery.trim().toLowerCase();
+    return (b.title && b.title.toLowerCase().includes(q)) || (b.id && String(b.id).includes(q)) || (b.author && b.author.toLowerCase().includes(q)) || (b.category && b.category.toLowerCase().includes(q));
+  }).slice(0, 40).map(b => {
+    const isChoice = choiceBooks.some(cb => String(cb.id) === String(b.id) || (cb.title && cb.title === b.title));
+    const isNewArrival = newArrivalsList.some(nb => String(nb.id) === String(b.id) || (nb.title && nb.title === b.title));
+    const isSelectedForCurrent = recSubTab === 'choices' ? isChoice : isNewArrival;
+    return /*#__PURE__*/React.createElement("div", {
+      key: b.id,
+      className: "py-3 flex items-center justify-between gap-3 hover:bg-white p-2 rounded-xl transition"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center gap-3 min-w-0"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "w-10 h-14 bg-gray-200 rounded overflow-hidden shrink-0 border border-gray-300 flex items-center justify-center text-xs"
+    }, /*#__PURE__*/React.createElement("img", {
+      src: b.localCover || b.cover || 'assets/covers/fallback.jpg',
+      alt: "",
+      className: "w-full h-full object-cover"
+    })), /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0"
+    }, /*#__PURE__*/React.createElement("h5", {
+      className: "text-sm font-bold text-[#241D17] line-clamp-1"
+    }, b.title), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-gray-500 line-clamp-1 mt-0.5"
+    }, "\u7DE8\u865F: ", b.id, " · \u4F5C\u8005: ", b.author || '未標', " · \u5B9A\u50F9: NT$ ", b.price))), /*#__PURE__*/React.createElement("div", {
+      className: "shrink-0"
+    }, isSelectedForCurrent ? /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => recSubTab === 'choices' ? handleToggleBookChoice(b) : handleToggleNewArrival(b),
+      className: "px-3 py-1.5 bg-gray-200 hover:bg-red-100 hover:text-red-800 text-gray-700 text-xs font-bold rounded-lg transition"
+    }, "\u2713 \u5DF2\u5728\u6E05\u55AE (\u9EDE\u64CA\u79FB\u9664)") : /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => recSubTab === 'choices' ? handleToggleBookChoice(b) : handleToggleNewArrival(b),
+      className: `px-3 py-1.5 ${recSubTab === 'choices' ? 'bg-amber-600 hover:bg-amber-700' : 'bg-purple-600 hover:bg-purple-700'} text-white text-xs font-bold rounded-lg transition shadow-sm active:scale-95`
+    }, "\uFF0B \u52A0\u5165\u63A8\u85A6")));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "p-4 border-t border-[#E8DCCE] bg-[#FAF8F5] flex justify-end"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setIsRecModalOpen(false),
+    className: "px-5 py-2 bg-[#241D17] hover:bg-black text-white text-xs font-bold rounded-xl transition"
+  }, "\u5B8C\u6210\u9078\u53D6\u95DC\u9589"))))));
 }
 function mountAdminApp() {
   var rootEl = document.getElementById('admin-root');

@@ -518,8 +518,7 @@ const defaultUI = {
   searchTableHeaderPrice: '定價',
   searchTableHeaderCategory: '叢書類別',
   searchTableHeaderAction: '操作',
-  searchBtnMore: '顯示更多書籍',
-  newArrivalsTitle: '新書上市 - 隨機推薦',
+  newArrivalsTitle: '新書上市 - 推薦',
   newArrivalsBtnRefresh: '再換一批看看',
   newArrivalsCloseBtn: '關閉',
   cartTitle: '我的書包',
@@ -560,6 +559,8 @@ function App() {
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [books, setBooks] = useState(() => (staticData.books && staticData.books.length > 0) ? staticData.books : (initData.initialBooks && initData.initialBooks.length > 0 ? initData.initialBooks : []));
   const [choiceBooks, setChoiceBooks] = useState(() => initData.choices && initData.choices.length > 0 ? initData.choices : []);
+  const [newArrivalsList, setNewArrivalsList] = useState(() => initData.newArrivalsList || []);
+  const [recommendationRound, setRecommendationRound] = useState(0);
   const [cart, setCart] = useState([]);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [isContactOpen, setIsContactOpen] = useState(false);
@@ -857,12 +858,48 @@ function App() {
       showMsg("✨ 已解鎖隱藏 AI 書籍學術分析儀！");
     }
   };
-  const openRandomBooksModal = () => {
-    setIsMobileMenuOpen(false);
+  const getRecommendedBooksForRound = roundIdx => {
+    const designatedRaw = (newArrivalsList && newArrivalsList.length > 0) ? newArrivalsList : (choiceBooks && choiceBooks.length > 0 ? choiceBooks : []);
+    const designatedBooks = designatedRaw.map(cb => {
+      const live = books.find(b => (b.id && cb.id && String(b.id) === String(cb.id)) || (b.title && cb.title && b.title === cb.title));
+      return live ? { ...cb, ...live, cover: live.localCover || live.cover || cb.cover || cb.image } : cb;
+    }).filter(Boolean);
+
+    const pageSize = 8;
+    const totalDesignatedRounds = Math.ceil(designatedBooks.length / pageSize);
+
+    if (roundIdx < totalDesignatedRounds) {
+      const start = roundIdx * pageSize;
+      const slice = designatedBooks.slice(start, start + pageSize);
+      if (slice.length > 0) {
+        if (slice.length < pageSize && books.length > slice.length) {
+          const sliceIds = new Set(slice.map(b => b.id || b.title));
+          const fillers = books.filter(b => !sliceIds.has(b.id || b.title)).sort(() => 0.5 - Math.random()).slice(0, pageSize - slice.length);
+          return [...slice, ...fillers];
+        }
+        return slice;
+      }
+    }
+
     if (books.length > 0) {
       const shuffled = [...books].sort(() => 0.5 - Math.random());
-      setRandomBooks(shuffled.slice(0, 8));
+      return shuffled.slice(0, pageSize);
     }
+    return [];
+  };
+
+  const openRandomBooksModal = (isNextRound = false) => {
+    setIsMobileMenuOpen(false);
+    let nextRound = 0;
+    if (isNextRound === true) {
+      nextRound = recommendationRound + 1;
+      setRecommendationRound(nextRound);
+    } else {
+      setRecommendationRound(0);
+      nextRound = 0;
+    }
+    const resultBooks = getRecommendedBooksForRound(nextRound);
+    setRandomBooks(resultBooks);
     setIsRandomBooksOpen(true);
   };
   const openReviewModalForBook = book => {
@@ -1377,7 +1414,7 @@ function App() {
   }, ui.heroHeading2)), /*#__PURE__*/React.createElement("p", {
     className: "text-[var(--text-dark)] max-w-2xl mx-auto leading-relaxed text-base md:text-lg font-sans font-medium"
   }, ui.heroSubheading)), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "relative w-full max-w-6xl mx-auto h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl mb-14 group border border-white/60"
+    className: "relative w-full max-w-6xl mx-auto h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl mb-14 group border border-white/60 bg-[#1A1412] flex items-center justify-center"
   }, carousels.map((c, idx) => {
     const isFbSlide = c.title?.toLowerCase().includes('fb') || c.title?.includes('臉書') || c.description?.toLowerCase().includes('fb') || c.description?.includes('臉書') || c.image?.includes('61590146114229') || c.id === 'fb1' || idx === 0;
     const slideLink = c.link || c.url || (isFbSlide ? "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" : null);
@@ -1386,27 +1423,33 @@ function App() {
       href: slideLink,
       target: "_blank",
       rel: "noopener noreferrer",
-      className: `absolute inset-0 transition-opacity duration-1000 block cursor-pointer group/slide ${idx === carouselIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`
+      className: `absolute inset-0 transition-opacity duration-1000 flex items-center justify-center cursor-pointer group/slide ${idx === carouselIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`
     } : {
-      className: `absolute inset-0 transition-opacity duration-1000 block ${idx === carouselIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`
+      className: `absolute inset-0 transition-opacity duration-1000 flex items-center justify-center ${idx === carouselIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`
     };
+    const bannerImgSrc = formatImageUrl(c.localImage || c.image, 1200);
     return /*#__PURE__*/React.createElement(SlideContainer, _extends({
-      key: c.id
-    }, slideProps), /*#__PURE__*/React.createElement("div", {
-      className: "absolute inset-0 bg-gradient-to-t from-[var(--dark-color)]/95 via-[var(--dark-color)]/40 to-transparent z-10"
+      key: c.id || idx
+    }, slideProps), /*#__PURE__*/React.createElement("img", {
+      src: bannerImgSrc,
+      alt: "",
+      "aria-hidden": "true",
+      className: "absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-40 brightness-75 pointer-events-none"
+    }), /*#__PURE__*/React.createElement("div", {
+      className: "absolute inset-0 bg-gradient-to-t from-[var(--dark-color)]/90 via-transparent to-black/20 z-10 pointer-events-none"
     }), /*#__PURE__*/React.createElement("img", {
-      src: formatImageUrl(c.image, 1000),
+      src: bannerImgSrc,
       alt: c.title || "Banner",
-      className: "w-full h-full object-cover transform scale-105 group-hover/slide:scale-100 transition duration-[8000ms]",
+      className: "relative z-10 w-full h-full object-contain mx-auto transition-transform duration-700 group-hover/slide:scale-[1.01]",
       onError: e => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')
     }), /*#__PURE__*/React.createElement("div", {
-      className: "absolute bottom-0 left-0 right-0 z-20 p-6 md:p-12 text-white"
-    }, c.title && /*#__PURE__*/React.createElement("h3", {
-      className: "text-2xl md:text-4xl font-black mb-3 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-md"
+      className: "absolute bottom-0 left-0 right-0 z-20 p-6 md:p-10 text-white flex flex-col md:flex-row md:items-end justify-between gap-4"
+    }, /*#__PURE__*/React.createElement("div", null, c.title && /*#__PURE__*/React.createElement("h3", {
+      className: "text-2xl md:text-4xl font-black mb-2 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-md"
     }, c.title), c.description && /*#__PURE__*/React.createElement("p", {
       className: "text-xs md:text-base max-w-3xl text-stone-200 line-clamp-2 drop-shadow font-sans leading-relaxed"
-    }, c.description), isFbSlide && /*#__PURE__*/React.createElement("div", {
-      className: "mt-4 inline-flex items-center gap-2 bg-blue-600/90 hover:bg-blue-600 text-white font-sans font-bold text-xs md:text-sm px-4 py-2.5 rounded-full shadow-lg transition-all hover:scale-105"
+    }, c.description)), isFbSlide && /*#__PURE__*/React.createElement("div", {
+      className: "shrink-0 inline-flex items-center gap-2 bg-blue-600/90 hover:bg-blue-600 text-white font-sans font-bold text-xs md:text-sm px-4 py-2.5 rounded-full shadow-lg transition-all hover:scale-105"
     }, /*#__PURE__*/React.createElement("span", null, "\u9EDE\u64CA\u524D\u5F80\u5B98\u65B9\u81C9\u66F8\u7C89\u7D72\u5C08\u9801 \u2197"))));
   }), carousels.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -2114,7 +2157,7 @@ function App() {
     className: "mt-6 text-center"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
-    onClick: openRandomBooksModal,
+    onClick: () => openRandomBooksModal(true),
     className: "bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-6 py-2.5 rounded-full font-bold shadow transition flex items-center justify-center mx-auto gap-1.5 text-xs active:scale-95"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
