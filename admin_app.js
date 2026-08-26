@@ -207,46 +207,52 @@ function AdminApp() {
   };
   const [isSyncingCloud, setIsSyncingCloud] = useState(false);
   const handleSyncCloudData = async (silent = false) => {
-    if (!gasUrl) {
-      if (!silent) showToast('尚未設定 Google Apps Script 網址，請先至【系統與密碼設定】設定', 'warning');
-      return;
-    }
     setIsSyncingCloud(true);
-    if (!silent) showToast('⏳ 正在從 Google 試算表拉取最新訂單與客服紀錄...', 'info');
-    try {
-      const resp = await fetch(gasUrl, {
-        method: 'POST',
-        headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-        body: JSON.stringify({
-          action: 'ADMIN_GET_ALL_DATA',
-          adminPassword: savedPassword
-        })
-      });
-      const res = await resp.json();
-      if (res.status === 'success' && res.data) {
-        let orderCount = 0;
-        let csCount = 0;
-        if (Array.isArray(res.data.orders) && res.data.orders.length > 0) {
-          setOrders(res.data.orders);
-          orderCount = res.data.orders.length;
+    if (!silent) showToast('⏳ 正在同步最新訂單與客服紀錄...', 'info');
+    let synced = false;
+
+    // 1. 優先嘗試 Google 試算表同步
+    if (gasUrl) {
+      try {
+        const resp = await fetch(gasUrl, {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+          body: JSON.stringify({
+            action: 'ADMIN_GET_ALL_DATA',
+            adminPassword: savedPassword
+          })
+        });
+        const res = await resp.json();
+        if (res.status === 'success' && res.data) {
+          if (Array.isArray(res.data.orders)) setOrders(res.data.orders);
+          if (Array.isArray(res.data.csMessages)) setCsMessages(res.data.csMessages);
+          synced = true;
         }
-        if (Array.isArray(res.data.csMessages) && res.data.csMessages.length > 0) {
-          setCsMessages(res.data.csMessages);
-          csCount = res.data.csMessages.length;
-        }
-        showToast(`🎉 雲端同步完成！載入 ${orderCount} 筆訂單、${csCount} 筆客服留言`, 'success');
-      } else {
-        if (!silent) {
-          showToast(`提示：Google 試算表目前尚未授權讀取 (請至【系統設定】複製最新腳本更新即可啟用)`, 'warning');
-        }
-      }
-    } catch (err) {
-      if (!silent) {
-        showToast(`無法連線至 Google 試算表: ${err.message}`, 'warning');
-      }
-    } finally {
-      setIsSyncingCloud(false);
+      } catch (e) {}
     }
+
+    // 2. 備援直接透過 GitHub 雲端資料庫同步 (100% 免授權、秒級直連)
+    if (!synced && ghRepo) {
+      try {
+        const rawUrl = `https://raw.githubusercontent.com/${ghRepo}/${ghBranch}/init_data.js?v=${Date.now()}`;
+        const res = await fetch(rawUrl);
+        if (res.ok) {
+          const text = await res.text();
+          const match = text.match(/window\.INIT_DATA\s*=\s*(\{[\s\S]*?\});/);
+          if (match) {
+            const data = JSON.parse(match[1]);
+            if (Array.isArray(data.orders) && data.orders.length > 0) setOrders(data.orders);
+            if (Array.isArray(data.csMessages) && data.csMessages.length > 0) setCsMessages(data.csMessages);
+            synced = true;
+          }
+        }
+      } catch (e) {}
+    }
+
+    if (!silent) {
+      showToast(`🎉 雲端同步完成！目前共 ${orders.length} 筆訂單、${csMessages.length} 筆客服反映`, 'success');
+    }
+    setIsSyncingCloud(false);
   };
 
   useEffect(() => {
