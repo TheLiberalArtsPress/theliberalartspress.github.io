@@ -583,6 +583,7 @@ function AdminApp() {
       setViewingCs(null);
       showToast(`客服留言已刪除`, 'danger');
     }
+  };
   const handleOpenNewCarousel = () => {
     setEditingCarousel('NEW');
     setCarouselFormData({
@@ -1301,7 +1302,7 @@ function AdminApp() {
     className: "font-serif font-bold text-lg text-[#241D17]"
   }, "\u9996\u9801\u5927\u5716\u8F2A\u64AD\u7BA1\u7406"), /*#__PURE__*/React.createElement("p", {
     className: "text-xs text-gray-500 mt-0.5"
-  }, "\u7BA1\u7406\u524D\u53F0\u9996\u9801\u9802\u90E8\u7684\u6A6横\u5E45\u8F2A\u64AD\u770B\u7248\uFF0C\u652F\u63F4\u6392\u5E8F\u3001\u7DE8\u8F2F\u3001\u5716\u7247\u66F7\u63DB\u8207\u65B0\u589E")), /*#__PURE__*/React.createElement("button", {
+  }, "管理前台首頁頂部的橫幅輪播看版，支援排序、編輯、圖片替換與新增")), /*#__PURE__*/React.createElement("button", {
     onClick: handleOpenNewCarousel,
     className: "px-4 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white text-xs font-bold rounded-xl shadow transition flex items-center gap-1.5 active:scale-95"
   }, /*#__PURE__*/React.createElement("svg", {
@@ -1792,7 +1793,7 @@ function AdminApp() {
   }, "\u53D6\u6D88"), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     className: "px-5 py-2 bg-[#8C5A2B] hover:bg-[#6B421E] text-white rounded-xl text-xs font-bold shadow transition"
-  }, "\u5132\u5B58\u8F2A\u64AD\u5716")))))));
+  }, "儲存輪播圖"))))));
 }
 function mountAdminApp() {
   var rootEl = document.getElementById('admin-root');
