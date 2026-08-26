@@ -53,16 +53,16 @@
    - **Branch** 選擇：`main` / `/(root)`
    - 點擊 **Save**。
 3. 等待 1 分鐘即可透過專屬網址存取：
-   🌐 `https://theliberalartspress.github.io/`
-   🌐 `https://theliberalartspress.github.io/admin.html` (後台)
+   🌐 `https://theliberalartspress.github.io/`（官方網站）
 
 ---
 
-### 3. 如何在後台更新書籍並發佈？
+### 3. 安全管理方式（僅限桌面版 EXE）
+為保障網站安全，本專案已**全面撤除線上公開後台網頁**，所有管理操作均透過本機專用的 `文史哲後台管理系統.exe` 進行。
 
-1. 開啟 `admin.html` 並登入。
-2. 進行書籍的新增、編輯或刪除。
-3. 點擊右上角 **「📥 一鍵導出 data.js」** 下載新檔案。
+1. 雙擊執行 `文史哲後台管理系統.exe` 登入。
+2. 進行書籍、輪播圖或推薦書單的調整。
+3. 點擊右上角 **「🚀 一鍵同步更新至 GitHub」**，系統將自動透過加密 API 發佈更新！
 4. 將下載的 `data.js` 覆蓋至本專案目錄。
 5. 在終端機執行推送到 GitHub：
    ```bash

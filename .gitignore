@@ -1,0 +1,12 @@
+# 敏感後台管理原始碼（只保留於本機 EXE 桌面版，不公開至 GitHub 網站）
+admin.html
+admin_app.js
+admin_desktop.py
+build/
+dist/
+*.spec
+__pycache__/
+*.log
+check.js
+find_tabs.js
+tab_depth.js
