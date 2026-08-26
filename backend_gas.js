@@ -31,7 +31,9 @@ const SHEET_NAMES = {
   CS: "客服留言",
   CAROUSELS: "首頁輪播",
   CHOICES: "精選推薦",
-  SETTINGS: "網站設定"
+  SETTINGS: "網站設定",
+  NOTES: "備忘記事本",
+  LOGS: "系統修改紀錄"
 };
 
 /**
@@ -154,6 +156,14 @@ function doPost(e) {
 
       case "ADMIN_SAVE_SETTINGS":
         return saveSettings(payload);
+
+      case "ADMIN_SAVE_NOTES":
+      case "SAVE_NOTES":
+        return saveNotes(requestData.notes || payload.notes || payload);
+
+      case "ADMIN_SAVE_LOGS":
+      case "SAVE_LOGS":
+        return saveLogs(requestData.logs || payload.logs || payload);
 
       case "ADMIN_CHANGE_PASSWORD":
         return changeAdminPassword(payload);
@@ -605,6 +615,52 @@ function saveSettings(settings) {
 }
 
 /**
+ * 儲存備忘記事本
+ */
+function saveNotes(notes) {
+  if (!Array.isArray(notes)) return jsonResponse({ status: "error", msg: "格式不符" });
+  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.NOTES);
+  sheet.clearContents();
+  sheet.appendRow(["記事ID", "標題", "內容", "標籤", "優先等級", "是否置頂", "是否完成", "更新時間"]);
+  notes.forEach((n) => {
+    const tagsStr = Array.isArray(n.tags) ? n.tags.join(", ") : (n.tags || "");
+    sheet.appendRow([
+      n.id || "",
+      n.title || "",
+      n.content || "",
+      tagsStr,
+      n.priority || "normal",
+      n.isPinned ? "是" : "否",
+      n.isDone ? "是" : "否",
+      n.updatedAt || ""
+    ]);
+  });
+  return jsonResponse({ status: "success", msg: "備忘記事本已成功寫入 Google 試算表！" });
+}
+
+/**
+ * 儲存系統修改紀錄
+ */
+function saveLogs(logs) {
+  if (!Array.isArray(logs)) return jsonResponse({ status: "error", msg: "格式不符" });
+  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.LOGS);
+  sheet.clearContents();
+  sheet.appendRow(["紀錄ID", "時間", "分類", "動作", "詳細說明", "操作者", "同步狀態"]);
+  logs.forEach((l) => {
+    sheet.appendRow([
+      l.id || "",
+      l.timestamp || "",
+      l.category || "",
+      l.action || "",
+      l.details || "",
+      l.operator || "管理員",
+      l.syncStatus || "已保存"
+    ]);
+  });
+  return jsonResponse({ status: "success", msg: "系統修改紀錄已同步至試算表！" });
+}
+
+/**
  * 初始化工作表結構
  */
 function ensureSheetsInitialized() {
@@ -650,6 +706,20 @@ function ensureSheetsInitialized() {
   if (!sSheet) {
     sSheet = ss.insertSheet(SHEET_NAMES.SETTINGS);
     sSheet.appendRow(["設定鍵 (Key)", "設定值 (Value)"]);
+  }
+
+  // 備忘記事本表
+  let nSheet = ss.getSheetByName(SHEET_NAMES.NOTES);
+  if (!nSheet) {
+    nSheet = ss.insertSheet(SHEET_NAMES.NOTES);
+    nSheet.appendRow(["記事ID", "標題", "內容", "標籤", "優先等級", "是否置頂", "是否完成", "更新時間"]);
+  }
+
+  // 系統修改紀錄表
+  let lSheet = ss.getSheetByName(SHEET_NAMES.LOGS);
+  if (!lSheet) {
+    lSheet = ss.insertSheet(SHEET_NAMES.LOGS);
+    lSheet.appendRow(["紀錄ID", "時間", "分類", "動作", "詳細說明", "操作者", "同步狀態"]);
   }
 }
 
