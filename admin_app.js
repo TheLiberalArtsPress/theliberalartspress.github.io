@@ -6,7 +6,7 @@ const {
 } = React;
 const DEFAULT_PASS = "lapen1971";
 const DEFAULT_GAS_URL = "https://script.google.com/macros/s/AKfycbzfD3v4jWMQVOMIPeoqnZ24XEHoCMFz1h4Tapw4sjPlTAtBa4Ow8TTTNaK8ktssR9F9dg/exec";
-const DEFAULT_REPO = "maplestorycandy/theliberalartspress";
+const DEFAULT_REPO = "TheLiberalArtsPress/theliberalartspress.github.io";
 const DEFAULT_BRANCH = "main";
 const DEFAULT_TOKEN = ['ghp', '56k2ZqkO05L7o1T03L3pyyF92uZxfL3PMcDd'].join('_');
 const SVG_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100' height='140' viewBox='0 0 100 140'%3E%3Crect width='100%25' height='100%25' fill='%23EDE5DC'/%3E%3Ctext x='50%25' y='50%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='11' fill='%238C5A2B'%3E封面暫缺%3C/text%3E%3C/svg%3E";
@@ -984,7 +984,7 @@ function AdminApp() {
   })), /*#__PURE__*/React.createElement("span", null, "\u7CFB\u7D71\u8207\u5BC6\u78BC\u8A2D\u5B9A"))), /*#__PURE__*/React.createElement("div", {
     className: "p-4 border-t border-[#3D3126] space-y-2"
   }, /*#__PURE__*/React.createElement("a", {
-    href: "https://maplestorycandy.github.io/theliberalartspress/",
+    href: "https://theliberalartspress.github.io/",
     target: "_blank",
     className: "w-full flex items-center justify-center gap-2 py-2.5 bg-[#3D3126] hover:bg-[#4E3E31] text-xs text-[#E8DCCE] rounded-xl transition font-medium"
   }, /*#__PURE__*/React.createElement("svg", {
@@ -1755,7 +1755,7 @@ function AdminApp() {
     type: "text",
     name: "ghRepo",
     defaultValue: ghRepo,
-    placeholder: "maplestorycandy/theliberalartspress",
+    placeholder: "TheLiberalArtsPress/theliberalartspress.github.io",
     className: "w-full px-4 py-2 border border-[#D4C5B9] rounded-xl text-sm font-mono bg-gray-50"
   }))), /*#__PURE__*/React.createElement("div", {
     className: "bg-[#FAF8F5] p-3.5 rounded-xl border border-[#E8DCCE] text-xs text-gray-600 space-y-1"

@@ -17,7 +17,7 @@ if %errorlevel% equ 0 (
     echo.
     echo ========================================================
     echo   🎉 發佈成功！官方網站已同步更新！
-    echo   🌐 官網網址：https://maplestorycandy.github.io/theliberalartspress/
+    echo   🌐 官網網址：https://theliberalartspress.github.io/
     echo ========================================================
 ) else (
     echo.

@@ -45,7 +45,7 @@
 ### 2. 在 GitHub 免費發佈為公開網站 (GitHub Pages)
 
 本專案已同步至您的 GitHub 倉庫：
-🔗 **https://github.com/maplestorycandy/theliberalartspress**
+🔗 **https://github.com/TheLiberalArtsPress/theliberalartspress.github.io**
 
 1. 前往 GitHub 倉庫的 **Settings** -> **Pages**。
 2. 在 **Build and deployment** 下：
@@ -53,8 +53,8 @@
    - **Branch** 選擇：`main` / `/(root)`
    - 點擊 **Save**。
 3. 等待 1 分鐘即可透過專屬網址存取：
-   🌐 `https://maplestorycandy.github.io/theliberalartspress/`
-   🌐 `https://maplestorycandy.github.io/theliberalartspress/admin.html` (後台)
+   🌐 `https://theliberalartspress.github.io/`
+   🌐 `https://theliberalartspress.github.io/admin.html` (後台)
 
 ---
 
