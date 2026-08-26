@@ -167,6 +167,13 @@ window.STATIC_DATA = {
       "image": "https://drive.google.com/thumbnail?id=1djqxc8fJe8XkoZUEcnlqD1WXGv1Blp_c&sz=w1000",
       "status": "已發佈",
       "localImage": "assets/covers/carousel_2.jpg"
+    },
+    {
+      "id": "CAR-506658",
+      "title": "測試",
+      "description": "看看",
+      "image": "https://drive.google.com/file/d/1VPtsgmZv1Y2cujLwTT0tJssUrIvdpysG/view?usp=sharing",
+      "status": "已發佈"
     }
   ],
   "choices": [
@@ -405,6 +412,21 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
+    {
+      "id": "99999",
+      "title": "XD",
+      "author": "AAS",
+      "year": "115年",
+      "price": 9999,
+      "isbn": "453453783",
+      "stock": "10",
+      "category": "XDD",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1VPtsgmZv1Y2cujLwTT0tJssUrIvdpysG/view?usp=sharing",
+      "intro": "XD",
+      "心得": "XFD"
+    },
     {
       "id": "00001",
       "title": "中國圖書史略",
