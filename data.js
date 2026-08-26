@@ -189,8 +189,9 @@ window.STATIC_DATA = {
       "isbn": "",
       "stock": "20",
       "category": "史料",
-      "cover": "",
-      "intro": "暫無內容介紹。",
+      "cover": "https://drive.google.com/thumbnail?id=1hWwaGEg104YtkXrxHGqpUG_0XF8w4mdk&sz=w1000",
+      "localCover": "assets/covers/65174.jpg",
+      "intro": "《滿文原檔》是研究清朝入關前政治、軍事、外交與社會文化最原始、最珍貴的第一手史料。清太宗皇太極時期更是滿洲崛起、制度轉型與關外局勢劇變的關鍵年代。\n莊吉發老師憑藉深厚的滿文與清史功底，進行嚴謹的譯釋與註解，將看似艱澀的滿文原檔化為可精確對照、深入研究的權威工具。\n👉延續權威：接續第九、十冊的精準譯注，呈現更完整的太宗朝歷史全貌",
       "心得": ""
     },
     {
@@ -30830,8 +30831,9 @@ window.STATIC_DATA = {
       "category": "史料",
       "isNew": false,
       "isLast": false,
-      "cover": "",
-      "intro": "暫無內容介紹。",
+      "cover": "https://drive.google.com/thumbnail?id=1hWwaGEg104YtkXrxHGqpUG_0XF8w4mdk&sz=w1000",
+      "localCover": "assets/covers/65174.jpg",
+      "intro": "《滿文原檔》是研究清朝入關前政治、軍事、外交與社會文化最原始、最珍貴的第一手史料。清太宗皇太極時期更是滿洲崛起、制度轉型與關外局勢劇變的關鍵年代。\n莊吉發老師憑藉深厚的滿文與清史功底，進行嚴謹的譯釋與註解，將看似艱澀的滿文原檔化為可精確對照、深入研究的權威工具。\n👉延續權威：接續第九、十冊的精準譯注，呈現更完整的太宗朝歷史全貌",
       "心得": ""
     },
     {
