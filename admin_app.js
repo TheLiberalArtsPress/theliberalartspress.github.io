@@ -224,18 +224,26 @@ function AdminApp() {
       });
       const res = await resp.json();
       if (res.status === 'success' && res.data) {
-        if (Array.isArray(res.data.orders)) {
+        let orderCount = 0;
+        let csCount = 0;
+        if (Array.isArray(res.data.orders) && res.data.orders.length > 0) {
           setOrders(res.data.orders);
+          orderCount = res.data.orders.length;
         }
-        if (Array.isArray(res.data.csMessages)) {
+        if (Array.isArray(res.data.csMessages) && res.data.csMessages.length > 0) {
           setCsMessages(res.data.csMessages);
+          csCount = res.data.csMessages.length;
         }
-        if (!silent) showToast(`🎉 雲端同步完成！共載入 ${res.data.orders?.length || 0} 筆訂單、${res.data.csMessages?.length || 0} 筆客服留言`, 'success');
+        showToast(`🎉 雲端同步完成！載入 ${orderCount} 筆訂單、${csCount} 筆客服留言`, 'success');
       } else {
-        if (!silent) showToast(`同步提示: ${res.msg || 'Google 試算表未回傳資料'}`, 'warning');
+        if (!silent) {
+          showToast(`提示：Google 試算表目前尚未授權讀取 (請至【系統設定】複製最新腳本更新即可啟用)`, 'warning');
+        }
       }
     } catch (err) {
-      if (!silent) showToast(`無法連線至 Google 試算表: ${err.message}`, 'warning');
+      if (!silent) {
+        showToast(`無法連線至 Google 試算表: ${err.message}`, 'warning');
+      }
     } finally {
       setIsSyncingCloud(false);
     }
@@ -249,6 +257,15 @@ function AdminApp() {
     });
     // 啟動時自動拉取雲端最新訂單與客服
     handleSyncCloudData(true);
+
+    // 啟動通知提醒
+    setTimeout(() => {
+      const pOrders = orders.filter(o => o.status === '待處理').length;
+      const pCs = csMessages.filter(m => m.status === '未處理').length;
+      if (pOrders > 0 || pCs > 0) {
+        showToast(`🔔 您好！目前系統有 ${pOrders} 筆待處理訂單、${pCs} 筆未回覆客服`, 'info');
+      }
+    }, 800);
   }, []);
   useEffect(() => {
     if (books && books.length > 0) {
