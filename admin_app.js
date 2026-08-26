@@ -1532,7 +1532,7 @@ function AdminApp() {
       onClick: () => handleRemoveRecBook(nb, 'newArrivals'),
       className: "px-2 py-0.5 bg-rose-100 hover:bg-rose-200 text-rose-800 rounded text-xs font-bold transition ml-1"
     }, "移除")))));
-  })))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
+  }))))), activeTab === 'carousels' && /*#__PURE__*/React.createElement("div", {
     className: "bg-white rounded-2xl border border-[#E8DCCE] shadow-sm p-6 space-y-6"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center justify-between gap-4 pb-4 border-b border-[#E8DCCE]"
@@ -2118,7 +2118,7 @@ function AdminApp() {
     type: "button",
     onClick: () => setIsRecModalOpen(false),
     className: "px-5 py-2 bg-[#241D17] hover:bg-black text-white text-xs font-bold rounded-xl transition"
-  }, "\u5B8C\u6210\u9078\u53D6\u95DC\u9589"))))));
+  }, "\u5B8C\u6210\u9078\u53D6\u95DC\u9589")))));
 }
 function mountAdminApp() {
   var rootEl = document.getElementById('admin-root');
