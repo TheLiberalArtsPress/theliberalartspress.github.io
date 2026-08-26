@@ -1725,56 +1725,32 @@ function App() {
   }), " ", /*#__PURE__*/React.createElement("span", null, ui.footerTransfer)))), /*#__PURE__*/React.createElement("div", {
     className: "md:col-span-3"
   }, /*#__PURE__*/React.createElement("h4", {
-    className: "text-base font-bold text-white mb-4 border-b border-white/10 pb-2.5 flex items-center gap-2"
+    className: "text-base font-bold font-serif text-white mb-4 border-b border-white/10 pb-2.5 flex items-center gap-2"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "LinkIcon",
     size: 16,
-    className: "text-[var(--primary-color)]"
-  }), " ", ui.footerLinksTitle), /*#__PURE__*/React.createElement("ul", {
+    className: "text-amber-500"
+  }), " ", ui.footerLinksTitle || '推薦好站'), /*#__PURE__*/React.createElement("ul", {
     className: "space-y-2 text-xs md:text-sm"
-  }, /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
-    href: ui.footerFacebookUrl,
+  }, [
+    { text: ui.footerFacebookLinkText || '文史哲出版社臉書(FB)', url: ui.footerFacebookUrl || 'https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW' },
+    { text: ui.footerWikiLinkText || '文史哲出版社（維基百科）', url: ui.footerWikiUrl || 'https://zh.wikipedia.org/wiki/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE' },
+    { text: ui.footerSeriesLinkText || '文史哲學集成（維基百科）', url: ui.footerSeriesUrl || 'https://zh.wikipedia.org/wiki/%E6%96%87%E5%8F%B2%E5%93%B2%E5%AD%B8%E9%9B%86%E6%88%90' },
+    { text: ui.footerJournalLinkText || '文史哲學術叢刊（維基百科）', url: ui.footerJournalUrl || 'https://zh.wikipedia.org/wiki/%E6%96%87%E5%8F%B2%E5%93%B2%E5%AD%B8%E8%A1%93%E5%8F%A2%E5%88%8A' },
+    { text: ui.footerNclLinkText || '國家圖書館', url: ui.footerNclUrl || 'https://www.ncl.edu.tw/' },
+    { text: ui.footerBookLinkText || '全國新書資訊網(ISBN 書目查詢)', url: ui.footerBookUrl || 'https://isbn.ncl.edu.tw/NEW_ISBNNet/index.php' }
+  ].map((item, idx) => /*#__PURE__*/React.createElement("li", {
+    key: idx
+  }, /*#__PURE__*/React.createElement("a", {
+    href: item.url,
     target: "_blank",
     rel: "noreferrer",
-    className: "hover:text-white hover:translate-x-1 transition-all flex items-center gap-2.5 bg-white/5 p-2 rounded-lg"
+    className: "hover:text-white hover:translate-x-1 transition-all flex items-center gap-3 bg-[#241D17]/80 hover:bg-[#3D3126] border border-white/10 hover:border-amber-500/40 p-2.5 rounded-xl shadow-sm text-stone-200 group"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"
-  }), " ", ui.footerFacebookLinkText)), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
-    href: ui.footerWikiUrl,
-    target: "_blank",
-    rel: "noreferrer",
-    className: "hover:text-white hover:translate-x-1 transition-all flex items-center gap-2.5 bg-white/5 p-2 rounded-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"
-  }), " ", ui.footerWikiLinkText)), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
-    href: ui.footerSeriesUrl,
-    target: "_blank",
-    rel: "noreferrer",
-    className: "hover:text-white hover:translate-x-1 transition-all flex items-center gap-2.5 bg-white/5 p-2 rounded-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"
-  }), " ", ui.footerSeriesLinkText)), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
-    href: ui.footerJournalUrl,
-    target: "_blank",
-    rel: "noreferrer",
-    className: "hover:text-white hover:translate-x-1 transition-all flex items-center gap-2.5 bg-white/5 p-2 rounded-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"
-  }), " ", ui.footerJournalLinkText)), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
-    href: ui.footerNclUrl,
-    target: "_blank",
-    rel: "noreferrer",
-    className: "hover:text-white hover:translate-x-1 transition-all flex items-center gap-2.5 bg-white/5 p-2 rounded-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"
-  }), " ", ui.footerNclLinkText)), /*#__PURE__*/React.createElement("li", null, /*#__PURE__*/React.createElement("a", {
-    href: ui.footerBookUrl,
-    target: "_blank",
-    rel: "noreferrer",
-    className: "hover:text-white hover:translate-x-1 transition-all flex items-center gap-2.5 bg-white/5 p-2 rounded-lg"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "w-1.5 h-1.5 rounded-full bg-[var(--primary-color)]"
-  }), " ", ui.footerBookLinkText))))), /*#__PURE__*/React.createElement("div", {
+    className: "w-2 h-2 rounded-full bg-amber-600 shrink-0 group-hover:scale-125 transition-transform"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "font-serif tracking-wide text-xs sm:text-sm font-medium"
+  }, item.text))))))), /*#__PURE__*/React.createElement("div", {
     className: "mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-stone-400 font-bold"
   }, /*#__PURE__*/React.createElement("p", null, "\xA9 ", new Date().getFullYear(), " ", ui.frontendName || settings.systemName, " ", ui.systemSubName || settings.systemSubName, "."), /*#__PURE__*/React.createElement("p", {
     className: "mt-2 md:mt-0 flex items-center gap-2 cursor-pointer select-none",
