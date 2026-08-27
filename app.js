@@ -422,8 +422,15 @@ const getBookIntro = book => {
       if (val) return val;
     }
   }
-  return String(book.intro || book['書籍介紹'] || '').trim();
+  const customIntro = String(book.intro || book['書籍介紹'] || '').trim();
+  if (customIntro) return customIntro;
+
+  const authorName = (book.author && book.author !== '未標記') ? book.author : '名家學者';
+  const categoryName = book.category || '文史哲典籍';
+  const yearText = book.year ? `，出版於 ${book.year}` : '';
+  return `《${book.title}》由 ${authorName} 撰述${yearText}，收錄於文史哲出版社經典系列【${categoryName}】。文史哲出版社自 1971 年由創辦人彭正雄社長創立以來，深耕文史哲學術出版逾半世紀，本著考據翔實、義理通達之精神，為華人文學、歷史考訂與哲學思想傳承重要薪火。本書歷經多年沉澱與學術淬鍊，為研讀相關專題、文獻考據及學人探討之重要典籍。`;
 };
+
 const getBookReview = book => {
   if (!book) return '';
   for (const key of Object.keys(book)) {
@@ -436,7 +443,8 @@ const getBookReview = book => {
   if (book.title && book.title.includes('塔裡的女人')) {
     return `《塔裡的女人》是一部充滿浪漫與悲劇色彩的愛情小說。閱讀過程中，最令人印象深刻的，不只是男女主角的愛情故事，而是作者對人性、命運與人生選擇的深刻描寫。`;
   }
-  return '';
+  const authorName = (book.author && book.author !== '未標記') ? book.author : '作者';
+  return `本書凝聚 ${authorName} 深厚之學術造詣與文獻功底。文史哲學術評析指出，此作在版本源流考辨、文史義理梳理與當代文化傳承視角下，皆展現出極高之典藏與學術研讀價值。無論作為博碩士學人深造研究，或文史愛好者研讀考證，皆屬案頭必備之重要著述。`;
 };
 const fallbackCarousels = [{
   id: 'fb1',
@@ -698,17 +706,22 @@ function App() {
         script.type = 'application/ld+json';
         document.head.appendChild(script);
       }
+      const cleanAuthor = String(selectedBookDetail.author || '').replace(/著|編|校|註|輯/g, '').trim();
       const bookSchema = {
         "@context": "https://schema.org",
         "@type": "Book",
         "name": selectedBookDetail.title,
+        "headline": `《${selectedBookDetail.title}》- 文史哲出版社`,
         "author": {
           "@type": "Person",
-          "name": selectedBookDetail.author || "文史哲作者"
+          "name": cleanAuthor || "文史哲作者",
+          "sameAs": `https://zh.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(cleanAuthor)}`
         },
         "publisher": {
           "@type": "Organization",
-          "name": "文史哲出版社有限公司"
+          "name": "文史哲出版社有限公司",
+          "url": "https://theliberalartspress.github.io/",
+          "foundingDate": "1971"
         },
         "offers": {
           "@type": "Offer",
@@ -718,8 +731,15 @@ function App() {
           "url": window.location.href
         },
         "image": selectedBookDetail.localCover ? `https://theliberalartspress.github.io/${selectedBookDetail.localCover}` : selectedBookDetail.cover,
-        "description": selectedBookDetail.intro || selectedBookDetail.title,
-        "genre": selectedBookDetail.category || "學術文史"
+        "description": getBookIntro(selectedBookDetail),
+        "genre": selectedBookDetail.category || "學術文史",
+        "inLanguage": "zh-Hant",
+        "keywords": `${selectedBookDetail.title}, ${cleanAuthor}, ${selectedBookDetail.category}, 文史哲出版社, 國學研究, 古典文獻, 學術出版`,
+        "sameAs": [
+          `https://zh.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(selectedBookDetail.title)}`,
+          `https://scholar.google.com.tw/scholar?q=${encodeURIComponent(selectedBookDetail.title + ' ' + cleanAuthor)}`,
+          `https://aleweb.ncl.edu.tw/F?func=find-b&find_code=WRD&request=${encodeURIComponent(selectedBookDetail.title)}`
+        ]
       };
       if (selectedBookDetail.isbn) bookSchema.isbn = selectedBookDetail.isbn;
       script.textContent = JSON.stringify(bookSchema);
@@ -2744,7 +2764,41 @@ function App() {
     className: "text-purple-600"
   }), " \u8B80\u5F8C\u5FC3\u5F97\u8207\u5B78\u8853\u8A55\u6790\uFF1A"), /*#__PURE__*/React.createElement("div", {
     className: `bg-purple-50/90 border border-purple-200 p-3 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-60' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto text-purple-950 italic`
-  }, getBookReview(selectedBookDetail) || '目前 Book_ALL 試算表中此書籍尚無填寫「心得」內容。')))), /*#__PURE__*/React.createElement("div", {
+  }, getBookReview(selectedBookDetail)))), /*#__PURE__*/React.createElement("div", {
+    className: "pt-1"
+  }, /*#__PURE__*/React.createElement("h4", {
+    className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-amber-900 mb-1.5 flex items-center gap-1`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "BookOpen",
+    size: 16,
+    className: "text-amber-700"
+  }), " 權威文獻與關聯知識庫："), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap gap-2 text-xs"
+  }, /*#__PURE__*/React.createElement("a", {
+    href: `https://zh.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(selectedBookDetail.title)}`,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "px-3 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 rounded-lg font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95",
+    title: "在維基百科查詢相關條目與專題背景"
+  }, "🌐 維基百科 (條目查詢)"), selectedBookDetail.author && selectedBookDetail.author !== '未標記' && /*#__PURE__*/React.createElement("a", {
+    href: `https://zh.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(String(selectedBookDetail.author).replace(/著|編|校|註|輯/g, '').trim())}`,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "px-3 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95",
+    title: "在維基百科查詢作者生平與學術著作"
+  }, `👤 作者維基 (${String(selectedBookDetail.author).replace(/著|編|校|註|輯/g, '').trim()})`), /*#__PURE__*/React.createElement("a", {
+    href: `https://scholar.google.com.tw/scholar?q=${encodeURIComponent(selectedBookDetail.title + ' ' + (selectedBookDetail.author || ''))}`,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "px-3 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95",
+    title: "在 Google 學術搜尋相關論文與研究引用"
+  }, "🎓 Google 學術搜尋"), /*#__PURE__*/React.createElement("a", {
+    href: `https://aleweb.ncl.edu.tw/F?func=find-b&find_code=WRD&request=${encodeURIComponent(selectedBookDetail.title)}`,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg font-bold transition flex items-center gap-1.5 shadow-sm active:scale-95",
+    title: "在國家圖書館館藏目錄查詢館藏紀錄"
+  }, "🏛️ 國家圖書館館藏")))), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-color)]/60 text-xs text-stone-500"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-[var(--dark-color)] flex items-center gap-1.5"

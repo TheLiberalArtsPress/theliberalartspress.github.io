@@ -42,7 +42,7 @@ for (const cat of categories) {
     xml += '  </url>\n';
 }
 
-// 3. All 2,633 Books
+// 3. All 2,631 Books
 for (const b of books) {
     if (!b.id) continue;
     xml += '  <url>\n';
@@ -66,3 +66,11 @@ xml += '</urlset>\n';
 
 fs.writeFileSync('sitemap.xml', xml, 'utf8');
 console.log('Successfully generated sitemap.xml with', books.length + categories.length + 1, 'URLs!');
+
+const robotsTxt = `User-agent: *
+Allow: /
+
+Sitemap: https://theliberalartspress.github.io/sitemap.xml
+`;
+fs.writeFileSync('robots.txt', robotsTxt, 'utf8');
+console.log('Successfully generated robots.txt!');
