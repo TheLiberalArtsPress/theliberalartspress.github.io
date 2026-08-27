@@ -2690,13 +2690,13 @@ function App() {
   }, "NT$ ", parseInt(ord.total || ord['總金額'] || 0).toLocaleString())))) : /*#__PURE__*/React.createElement("div", {
     className: "py-10 text-center text-gray-400 text-xs font-bold"
   }, "\u8ACB\u65BC\u4E0A\u65B9\u8F38\u5165\u641C\u5C0B\u689D\u4EF6\u9032\u884C\u7CBE\u78BA\u6AA2\u7D22\u3002"))))), selectedBookDetail && /*#__PURE__*/React.createElement("div", {
-    className: `fixed inset-0 bg-black/65 backdrop-blur-md z-[220] flex justify-center items-center ${isBookDetailFullscreen ? 'p-0' : 'p-4 md:p-8'} overflow-y-auto animate-in`,
+    className: `fixed inset-0 bg-black/65 backdrop-blur-md z-[220] flex justify-center items-center ${isBookDetailFullscreen ? 'p-0' : 'p-3 md:p-6'} overflow-hidden animate-in`,
     onClick: () => setSelectedBookDetail(null)
   }, /*#__PURE__*/React.createElement("div", {
-    className: `glass-modal w-full ${isBookDetailFullscreen ? 'h-full max-w-none max-h-none rounded-none border-0' : 'max-w-3xl rounded-3xl border border-white/80'} shadow-2xl flex flex-col overflow-hidden transition-all duration-300`,
+    className: `glass-modal w-full ${isBookDetailFullscreen ? 'h-full max-w-none max-h-none rounded-none border-0' : 'max-w-3xl max-h-[90vh] rounded-3xl border border-white/80'} shadow-2xl flex flex-col overflow-hidden transition-all duration-300`,
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
-    className: "p-4 border-b border-[var(--border-color)] flex justify-between items-center bg-white/80"
+    className: "p-3.5 md:p-4 border-b border-[var(--border-color)] flex justify-between items-center bg-white/95 backdrop-blur-md shrink-0 z-10"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "text-base md:text-lg font-serif font-black text-[var(--dark-color)] flex items-center gap-2"
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -2724,22 +2724,22 @@ function App() {
     name: "X",
     size: 18
   })))), /*#__PURE__*/React.createElement("div", {
-    className: `p-5 md:p-7 font-sans overflow-y-auto flex-1 space-y-5 ${isBookDetailFullscreen ? 'max-w-5xl mx-auto w-full' : ''}`
+    className: `p-4 md:p-6 font-sans overflow-y-auto flex-1 space-y-4 ${isBookDetailFullscreen ? 'max-w-5xl mx-auto w-full' : ''}`
   }, /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col sm:flex-row gap-6 items-start"
+    className: "flex flex-col sm:flex-row gap-5 items-start"
   }, /*#__PURE__*/React.createElement("div", {
-    className: `w-full ${isBookDetailFullscreen ? 'sm:w-64 h-88' : 'sm:w-48 h-68'} shrink-0 bg-[var(--bg-light)] rounded-2xl overflow-hidden p-3 border flex justify-center items-center shadow-inner transition-all`
+    className: `w-full ${isBookDetailFullscreen ? 'sm:w-60 h-80' : 'sm:w-44 h-60'} shrink-0 bg-[var(--bg-light)] rounded-2xl overflow-hidden p-2.5 border flex justify-center items-center shadow-inner transition-all`
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(selectedBookDetail.cover, 1000),
     alt: selectedBookDetail.title,
     className: "h-full w-auto object-contain rounded-lg book-spine-shadow",
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
-    className: "flex-1 space-y-3.5 text-left w-full min-w-0"
+    className: "flex-1 space-y-3 text-left w-full min-w-0"
   }, /*#__PURE__*/React.createElement("h3", {
-    className: `${isBookDetailFullscreen ? 'text-2xl md:text-3xl' : 'text-xl md:text-2xl'} font-black text-[var(--dark-color)] font-serif leading-snug`
+    className: `${isBookDetailFullscreen ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl'} font-black text-[var(--dark-color)] font-serif leading-snug`
   }, selectedBookDetail.title), /*#__PURE__*/React.createElement("div", {
-    className: `grid grid-cols-2 gap-y-2 gap-x-4 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs md:text-sm'} text-[var(--text-dark)] border-y border-[var(--border-color)]/70 py-3`
+    className: `grid grid-cols-2 gap-y-2 gap-x-4 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} text-[var(--text-dark)] border-y border-[var(--border-color)]/70 py-2.5`
   }, /*#__PURE__*/React.createElement("div", null, "作者：", /*#__PURE__*/React.createElement("strong", {
     className: "font-semibold"
   }, selectedBookDetail.author || '未標記')), /*#__PURE__*/React.createElement("div", null, "年份：", /*#__PURE__*/React.createElement("strong", {
@@ -2751,12 +2751,12 @@ function App() {
   }, selectedBookDetail.id || '無')), /*#__PURE__*/React.createElement("div", {
     className: "col-span-2 pt-0.5"
   }, "定價：", /*#__PURE__*/React.createElement("strong", {
-    className: `${isBookDetailFullscreen ? 'text-2xl' : 'text-lg md:text-xl'} font-black text-[var(--primary-color)] font-sans`
+    className: `${isBookDetailFullscreen ? 'text-2xl' : 'text-lg'} font-black text-[var(--primary-color)] font-sans`
   }, "NT$ ", selectedBookDetail.price))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
     className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-[var(--dark-color)] mb-1 flex items-center gap-1`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "FileText",
-    size: 15,
+    size: 14,
     className: "text-[var(--primary-color)]"
   }), " 書籍簡介："), /*#__PURE__*/React.createElement("div", {
     className: `bg-white/90 border border-[var(--border-color)]/70 p-3 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-56' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto whitespace-pre-wrap text-stone-700 shadow-sm`
@@ -2764,7 +2764,7 @@ function App() {
     className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-purple-900 mb-1 flex items-center gap-1`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Sparkles",
-    size: 15,
+    size: 14,
     className: "text-purple-600"
   }), " 讀後心得與學術評析："), /*#__PURE__*/React.createElement("div", {
     className: `bg-purple-50/90 border border-purple-200 p-3 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-56' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto text-purple-950 italic shadow-sm`
@@ -2774,7 +2774,7 @@ function App() {
     className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-amber-900 mb-1.5 flex items-center gap-1`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "BookOpen",
-    size: 15,
+    size: 14,
     className: "text-amber-700"
   }), " 權威文獻與關聯知識庫："), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap gap-2 text-xs"
@@ -2782,28 +2782,28 @@ function App() {
     href: `https://zh.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(selectedBookDetail.title)}`,
     target: "_blank",
     rel: "noreferrer",
-    className: "px-2.5 py-1.5 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    className: "px-2.5 py-1 bg-sky-50 hover:bg-sky-100 text-sky-800 border border-sky-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "在維基百科查詢相關條目與專題背景"
   }, "🌐 維基百科 (條目)"), selectedBookDetail.author && selectedBookDetail.author !== '未標記' && /*#__PURE__*/React.createElement("a", {
     href: `https://zh.wikipedia.org/wiki/Special:Search?search=${encodeURIComponent(String(selectedBookDetail.author).replace(/著|編|校|註|輯/g, '').trim())}`,
     target: "_blank",
     rel: "noreferrer",
-    className: "px-2.5 py-1.5 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    className: "px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "在維基百科查詢作者生平與學術著作"
   }, `👤 作者維基 (${String(selectedBookDetail.author).replace(/著|編|校|註|輯/g, '').trim()})`), /*#__PURE__*/React.createElement("a", {
     href: `https://scholar.google.com.tw/scholar?q=${encodeURIComponent(selectedBookDetail.title + ' ' + (selectedBookDetail.author || ''))}`,
     target: "_blank",
     rel: "noreferrer",
-    className: "px-2.5 py-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    className: "px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "在 Google 學術搜尋相關論文與研究引用"
   }, "🎓 Google 學術搜尋"), /*#__PURE__*/React.createElement("a", {
     href: `https://aleweb.ncl.edu.tw/F?func=find-b&find_code=WRD&request=${encodeURIComponent(selectedBookDetail.title)}`,
     target: "_blank",
     rel: "noreferrer",
-    className: "px-2.5 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    className: "px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "在國家圖書館館藏目錄查詢館藏紀錄"
   }, "🏛️ 國家圖書館館藏"))))), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-wrap items-center justify-between gap-2 pt-2.5 border-t border-[var(--border-color)]/60 text-xs text-stone-500"
+    className: "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-color)]/60 text-xs text-stone-500"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-[var(--dark-color)] flex items-center gap-1.5"
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -2836,8 +2836,8 @@ function App() {
     rel: "noreferrer",
     className: "px-2.5 py-1 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "分享到 Facebook"
-  }, "📘 FB"))), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-3 pt-1"
+  }, "📘 FB")))), /*#__PURE__*/React.createElement("div", {
+    className: "p-3.5 md:p-4 border-t border-[var(--border-color)]/70 bg-white/95 backdrop-blur-md shrink-0 flex gap-3 z-10"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
@@ -2845,7 +2845,7 @@ function App() {
       setSelectedBookDetail(null);
       openReviewModalForBook(b);
     },
-    className: `flex-1 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white py-3 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow active:scale-95 transition`
+    className: `flex-1 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow active:scale-95 transition`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "MessageSquare",
     size: 16
@@ -2853,11 +2853,11 @@ function App() {
     type: "button",
     onClick: () => addToCart(selectedBookDetail),
     disabled: selectedBookDetail.stock <= 0,
-    className: `flex-1 bg-[var(--primary-color)] text-white py-3 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`
+    className: `flex-1 bg-[var(--primary-color)] text-white py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
-    size: 18
-  }), " \u52A0\u5165\u66F8\u5305"))))), isReviewModalOpen && reviewBook && /*#__PURE__*/React.createElement("div", {
+    size: 16
+  }), " ", selectedBookDetail.stock <= 0 ? ui.msgOutOfStock : ui.btnAddToCart)))), isReviewModalOpen && reviewBook && /*#__PURE__*/React.createElement("div", {
     className: "fixed inset-0 bg-black/70 backdrop-blur-md z-[240] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in",
     onClick: () => setIsReviewModalOpen(false)
   }, /*#__PURE__*/React.createElement("div", {
