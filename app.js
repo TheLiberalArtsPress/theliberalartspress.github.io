@@ -1704,7 +1704,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-full relative book-spine-shadow group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden"
   }, /*#__PURE__*/React.createElement("img", {
-    src: formatImageUrl(book.cover, 400),
+    src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
     decoding: "async",
     className: "h-full w-auto object-contain rounded",
@@ -1770,7 +1770,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-full relative book-spine-shadow group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden"
   }, /*#__PURE__*/React.createElement("img", {
-    src: formatImageUrl(book.cover, 400),
+    src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
     decoding: "async",
     className: "h-full w-auto object-contain rounded",
@@ -2229,7 +2229,7 @@ function App() {
   }, book.id || '-'), /*#__PURE__*/React.createElement("td", {
     className: "p-3 font-bold flex items-center gap-2.5"
   }, /*#__PURE__*/React.createElement("img", {
-    src: formatImageUrl(book.cover, 200),
+    src: formatImageUrl(book.localCover || book.cover, 200),
     loading: "lazy",
     decoding: "async",
     className: "w-8 h-10 object-cover rounded shadow-sm border bg-white",
@@ -2289,7 +2289,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-48 bg-[var(--bg-light)]/50 relative overflow-hidden p-3 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("img", {
-    src: formatImageUrl(book.cover, 400),
+    src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
     decoding: "async",
     className: "h-full w-auto object-contain rounded book-spine-shadow",
@@ -2377,7 +2377,7 @@ function App() {
     key: i.id,
     className: "flex gap-3 items-center glass-card p-3 rounded-xl relative"
   }, /*#__PURE__*/React.createElement("img", {
-    src: formatImageUrl(i.cover, 200),
+    src: formatImageUrl(i.localCover || i.cover, 200),
     alt: i.title,
     className: "w-14 h-20 object-cover rounded border",
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
@@ -2771,7 +2771,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: `w-full ${isBookDetailFullscreen ? 'sm:w-60 h-80' : 'sm:w-44 h-60'} shrink-0 bg-[var(--bg-light)] rounded-2xl overflow-hidden p-2.5 border flex justify-center items-center shadow-inner transition-all`
   }, /*#__PURE__*/React.createElement("img", {
-    src: formatImageUrl(selectedBookDetail.cover, 1000),
+    src: formatImageUrl(selectedBookDetail.localCover || selectedBookDetail.cover, 1000),
     alt: selectedBookDetail.title,
     className: "h-full w-auto object-contain rounded-lg book-spine-shadow",
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
