@@ -323,6 +323,13 @@ function getBookSheet() {
 /**
  * 讀取所有書籍 (支援 Book_ALL 與 書籍清單)
  */
+function parseCleanNum(val, defaultVal) {
+  if (typeof val === "number") return isNaN(val) ? (defaultVal || 0) : val;
+  const str = String(val || "").replace(/[^0-9.]/g, "");
+  const num = parseFloat(str);
+  return isNaN(num) ? (defaultVal || 0) : num;
+}
+
 function getBooks() {
   const sheet = getBookSheet();
   const data = sheet.getDataRange().getValues();
@@ -339,9 +346,9 @@ function getBooks() {
       title: String(row[1] || "").trim(),
       author: String(row[2] || "").trim(),
       year: String(row[3] || "").trim(),
-      price: Number(row[4] || 0),
+      price: parseCleanNum(row[4], 0),
       isbn: String(row[5] || "").trim(),
-      stock: String(row[6] || "10").trim(),
+      stock: String(parseCleanNum(row[6], 10)),
       category: String(row[7] || "未分類").trim(),
       isNew: row[8] === true || String(row[8]).toLowerCase() === "true" || String(row[8]) === "是",
       isLast: row[9] === true || String(row[9]).toLowerCase() === "true" || String(row[9]) === "是",
