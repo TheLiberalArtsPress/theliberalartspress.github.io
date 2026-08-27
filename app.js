@@ -1565,7 +1565,7 @@ function App() {
     } : {
       className: `absolute inset-0 transition-opacity duration-1000 flex items-center justify-center ${idx === carouselIndex ? 'opacity-100 z-10' : 'opacity-0 z-0'}`
     };
-    const bannerImgSrc = formatImageUrl(c.localImage || c.image, 1200);
+    const bannerImgSrc = formatImageUrl(c.image || c.localImage, 1200);
     return /*#__PURE__*/React.createElement(SlideContainer, _extends({
       key: c.id || idx
     }, slideProps), /*#__PURE__*/React.createElement("img", {
