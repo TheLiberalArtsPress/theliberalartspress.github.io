@@ -605,6 +605,7 @@ function App() {
   const [isAboutOpen, setIsAboutOpen] = useState(false);
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isRandomBooksOpen, setIsRandomBooksOpen] = useState(false);
+  const randomBooksScrollRef = useRef(null);
   const [searchForm, setSearchForm] = useState({
     code: '',
     title: '',
@@ -1007,6 +1008,17 @@ function App() {
     const resultBooks = getRecommendedBooksForRound(nextRound);
     setRandomBooks(resultBooks);
     setIsRandomBooksOpen(true);
+    if (isNextRound) {
+      setTimeout(() => {
+        if (randomBooksScrollRef.current) {
+          randomBooksScrollRef.current.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+        const scrollEl = document.getElementById('random-books-scroll-container');
+        if (scrollEl) {
+          scrollEl.scrollTo({ top: 0, behavior: 'smooth' });
+        }
+      }, 50);
+    }
   };
   const openReviewModalForBook = book => {
     setReviewBook(book);
@@ -2204,7 +2216,9 @@ function App() {
     name: "X",
     size: 14
   }), " ", ui.newArrivalsCloseBtn)), /*#__PURE__*/React.createElement("div", {
-    className: "flex-1 overflow-y-auto p-5 md:p-6 font-sans"
+    id: "random-books-scroll-container",
+    ref: randomBooksScrollRef,
+    className: "flex-1 overflow-y-auto p-5 md:p-6 font-sans scroll-smooth"
   }, /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4"
   }, randomBooks.map(book => /*#__PURE__*/React.createElement("div", {
