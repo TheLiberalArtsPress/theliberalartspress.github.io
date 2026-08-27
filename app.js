@@ -872,8 +872,13 @@ function App() {
     return [...new Set(cats)].sort();
   }, [books]);
   const filteredBooks = useMemo(() => {
-    if (selectedCategory === '全部') return books;
-    return books.filter(b => b.category === selectedCategory);
+    const list = selectedCategory === '全部' ? books : books.filter(b => b.category === selectedCategory);
+    const shuffled = [...list];
+    for (let i = shuffled.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
+    }
+    return shuffled;
   }, [books, selectedCategory]);
   const visibleBooks = useMemo(() => filteredBooks.slice(0, visibleCount), [filteredBooks, visibleCount]);
   const displayChoiceBooks = useMemo(() => {
