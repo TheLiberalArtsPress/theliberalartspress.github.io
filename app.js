@@ -707,9 +707,12 @@ function App() {
         document.head.appendChild(script);
       }
       const cleanAuthor = String(selectedBookDetail.author || '').replace(/著|編|校|註|輯/g, '').trim();
+      const currentBookUrl = `${window.location.origin}${window.location.pathname}?book=${encodeURIComponent(selectedBookDetail.id || selectedBookDetail.title)}`;
+      const currentCatUrl = `${window.location.origin}${window.location.pathname}?category=${encodeURIComponent(selectedBookDetail.category || '')}`;
+      
       const bookSchema = {
-        "@context": "https://schema.org",
         "@type": "Book",
+        "@id": `${currentBookUrl}#book`,
         "name": selectedBookDetail.title,
         "headline": `《${selectedBookDetail.title}》- 文史哲出版社`,
         "author": {
@@ -728,11 +731,16 @@ function App() {
           "price": selectedBookDetail.price || 0,
           "priceCurrency": "TWD",
           "availability": (selectedBookDetail.stock > 0 || selectedBookDetail.stock === undefined) ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
-          "url": window.location.href
+          "url": currentBookUrl
         },
         "image": selectedBookDetail.localCover ? `https://theliberalartspress.github.io/${selectedBookDetail.localCover}` : selectedBookDetail.cover,
         "description": getBookIntro(selectedBookDetail),
         "genre": selectedBookDetail.category || "學術文史",
+        "isPartOf": {
+          "@type": "BookSeries",
+          "name": selectedBookDetail.category || "文史哲學術著作"
+        },
+        "bookFormat": selectedBookDetail.year && selectedBookDetail.year.includes("精") ? "https://schema.org/Hardcover" : "https://schema.org/Paperback",
         "inLanguage": "zh-Hant",
         "keywords": `${selectedBookDetail.title}, ${cleanAuthor}, ${selectedBookDetail.category}, 文史哲出版社, 國學研究, 古典文獻, 學術出版`,
         "sameAs": [
@@ -742,7 +750,38 @@ function App() {
         ]
       };
       if (selectedBookDetail.isbn) bookSchema.isbn = selectedBookDetail.isbn;
-      script.textContent = JSON.stringify(bookSchema);
+
+      const breadcrumbSchema = {
+        "@type": "BreadcrumbList",
+        "@id": `${currentBookUrl}#breadcrumb`,
+        "itemListElement": [
+          {
+            "@type": "ListItem",
+            "position": 1,
+            "name": "文史哲首頁",
+            "item": "https://theliberalartspress.github.io/"
+          },
+          {
+            "@type": "ListItem",
+            "position": 2,
+            "name": selectedBookDetail.category || "學術典籍",
+            "item": currentCatUrl
+          },
+          {
+            "@type": "ListItem",
+            "position": 3,
+            "name": selectedBookDetail.title,
+            "item": currentBookUrl
+          }
+        ]
+      };
+
+      const fullGraph = {
+        "@context": "https://schema.org",
+        "@graph": [bookSchema, breadcrumbSchema]
+      };
+
+      script.textContent = JSON.stringify(fullGraph);
     } else {
       document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
       try {

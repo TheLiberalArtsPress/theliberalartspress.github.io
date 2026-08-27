@@ -14,8 +14,17 @@
       "@id": "https://theliberalartspress.github.io/#website",
       "url": "https://theliberalartspress.github.io/",
       "name": "文史哲出版社官方網站",
-      "description": "創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學之學術論著出版。",
-      "publisher": { "@id": "https://theliberalartspress.github.io/#organization" }
+      "description": "創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學之學術論著出版。全館典藏超過2,600種專業學術圖書。",
+      "publisher": { "@id": "https://theliberalartspress.github.io/#organization" },
+      "inLanguage": "zh-Hant",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://theliberalartspress.github.io/?search={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
     },
     {
       "@type": ["Organization", "Publisher"],
@@ -32,6 +41,11 @@
       "foundingDate": "1971-08-01",
       "founder": { "@type": "Person", "name": "彭正雄", "jobTitle": "創辦人暨社長" },
       "publishingPrinciples": "以出版文史圖書及學術專業圖書為核心宗旨，致力保存與推廣中華文化、國學研究及華文學術成果。",
+      "sameAs": [
+        "https://www.facebook.com/lapen1971",
+        "https://theliberalartspress.github.io/",
+        "https://isbn.ncl.edu.tw/"
+      ],
       "address": {
         "@type": "PostalAddress",
         "streetAddress": "羅斯福路一段七十二巷四號",
@@ -217,7 +231,34 @@
 </style>
 </head>
 <body class="bg-[var(--bg-color)] selection:bg-[var(--primary-color)] selection:text-white">
-<div id="root"></div>
+<div id="root">
+  <!-- ⚡ 骨架屏：首屏瞬間渲染 (0.001s 框架秒出) -->
+  <div class="min-h-screen bg-[#FDFBF7] flex flex-col font-sans text-stone-800">
+    <header class="sticky top-0 z-50 bg-[#FDFBF7]/95 backdrop-blur border-b border-[#E8DCCE]/80 shadow-sm">
+      <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between gap-4">
+        <div class="flex items-center gap-3">
+          <div class="w-10 h-10 rounded-full bg-[#8B261E]/10 flex items-center justify-center font-serif font-black text-[#8B261E] text-xl">文</div>
+          <div>
+            <div class="font-serif font-bold text-lg text-[#241D17] leading-none">文史哲出版社</div>
+            <div class="text-[10px] tracking-widest text-stone-500 font-sans mt-0.5">THE LIBERAL ARTS PRESS</div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3">
+          <div class="w-24 h-8 bg-stone-200/60 rounded-full animate-pulse hidden md:block"></div>
+          <div class="w-24 h-8 bg-[#8B261E]/80 text-white text-xs font-bold rounded-full flex items-center justify-center shadow-sm">典籍載入中...</div>
+        </div>
+      </div>
+    </header>
+    <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
+      <div class="w-full h-64 md:h-80 bg-gradient-to-r from-stone-200/70 via-stone-100/50 to-stone-200/70 rounded-3xl animate-pulse flex items-center justify-center border border-stone-200/60">
+        <div class="text-center space-y-2">
+          <div class="font-serif text-xl font-bold text-stone-400">正在極速為您載入全館 2,632 本學術典籍...</div>
+          <div class="text-xs text-stone-400">1971年創立・文學歷史哲學專業出版</div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div>
 
 <noscript>
   <div style="padding: 2rem; font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: auto;">
