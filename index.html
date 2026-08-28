@@ -85,7 +85,9 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://drive.google.com">
-<link rel="preconnect" href="https://script.google.com">
+
+<!-- ⚡ 純靜態極速編譯 CSS (僅約 39KB，徹底移除 tailwindcss.js，0秒直接渲染，省下 400ms) -->
+<link rel="stylesheet" href="styles.css">
 
 <!-- ⚡ 非同步無阻塞載入 Google 中文字體 (首屏文字0秒瞬間呈現，不卡白屏) -->
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
@@ -93,26 +95,6 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 </noscript>
 
-<script>
-    window.tailwind = {
-        config: {
-            theme: {
-                extend: {
-                    fontFamily: {
-                        sans: ['"Noto Sans TC"', '-apple-system', 'BlinkMacSystemFont', '"PingFang TC"', '"Microsoft JhengHei"', 'sans-serif'],
-                        serif: ['"Noto Serif TC"', '"Songti TC"', '"STSong"', '"PMingLiU"', '"MingLiU"', 'serif'],
-                    },
-                    boxShadow: {
-                        'luxury': '0 20px 40px -15px rgba(44, 36, 27, 0.08), 0 0 0 1px rgba(140, 90, 43, 0.05)',
-                        'glow': '0 0 25px rgba(140, 90, 43, 0.15)',
-                    }
-                }
-            }
-        }
-    };
-</script>
-
-<script src="assets/vendor/tailwindcss.js"></script>
 <script src="assets/vendor/react.min.js"></script>
 <script src="assets/vendor/react-dom.min.js"></script>
 <script>window.react = window.React;</script>

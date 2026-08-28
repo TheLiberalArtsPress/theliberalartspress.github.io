@@ -1793,18 +1793,21 @@ function App() {
       alt: "",
       "aria-hidden": "true",
       loading: idx === 0 ? "eager" : "lazy",
+      fetchPriority: idx === 0 ? "high" : "auto",
       decoding: "async",
       className: "absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-40 brightness-75 pointer-events-none"
     }), /*#__PURE__*/React.createElement("img", {
       src: bannerImgSrc,
       alt: c.title || "Banner",
       loading: idx === 0 ? "eager" : "lazy",
+      fetchPriority: idx === 0 ? "high" : "auto",
       decoding: "async",
       className: "relative z-10 w-full h-full object-contain mx-auto transition-transform duration-700 group-hover/slide:scale-[1.01]",
       onError: e => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')
     }));
   }), carousels.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     type: "button",
+    "aria-label": "上一張輪播",
     onClick: () => setCarouselIndex(prev => (prev - 1 + carousels.length) % carousels.length),
     className: "absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-[var(--dark-color)] text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 border border-white/20"
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -1812,6 +1815,7 @@ function App() {
     size: 20
   })), /*#__PURE__*/React.createElement("button", {
     type: "button",
+    "aria-label": "下一張輪播",
     onClick: () => setCarouselIndex(prev => (prev + 1) % carousels.length),
     className: "absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-[var(--dark-color)] text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 border border-white/20"
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -2037,7 +2041,7 @@ function App() {
   }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
     className: "text-xl font-sans font-black text-white tracking-[0.12em]"
   }, ui.frontendName || settings.systemName), /*#__PURE__*/React.createElement("span", {
-    className: "text-[9px] font-bold tracking-[0.2em] text-[var(--primary-color)] uppercase"
+    className: "text-[9px] font-bold tracking-[0.2em] text-[#E8DCCE] uppercase"
   }, ui.systemSubName || settings.systemSubName))), /*#__PURE__*/React.createElement("p", {
     className: "text-xs md:text-sm leading-relaxed mb-5 text-justify text-stone-300"
   }, ui.footerBrandDesc), /*#__PURE__*/React.createElement("button", {
@@ -2187,6 +2191,7 @@ function App() {
     className: "flex flex-col gap-2.5"
   }, showBackToTop && /*#__PURE__*/React.createElement("button", {
     type: "button",
+    "aria-label": "回到頁面頂端",
     onClick: () => window.scrollTo({
       top: 0,
       behavior: 'smooth'
@@ -2197,6 +2202,7 @@ function App() {
     size: 20
   })), /*#__PURE__*/React.createElement("button", {
     type: "button",
+    "aria-label": isContactOpen ? "關閉客服留言" : "開啟客服留言",
     onClick: () => setIsContactOpen(!isContactOpen),
     className: "bg-[var(--primary-color)] text-white hover:bg-[var(--dark-color)] w-12 h-12 rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-all border-2 border-white"
   }, /*#__PURE__*/React.createElement(Icon, {
