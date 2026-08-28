@@ -1622,17 +1622,17 @@ function App() {
       className: "relative z-10 w-full h-full object-contain mx-auto transition-transform duration-700 group-hover/slide:scale-[1.01]",
       onError: e => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')
     }), /*#__PURE__*/React.createElement("div", {
-      className: "absolute bottom-0 left-0 right-0 z-20 p-3 md:p-6 flex justify-center"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "carousel-glass-caption rounded-2xl p-4 md:p-6 text-white flex flex-col md:flex-row md:items-end justify-between gap-4 w-full max-w-5xl shadow-2xl"
+      className: "absolute bottom-2.5 md:bottom-4 left-3 right-3 md:left-6 md:right-6 z-20 flex justify-center pointer-events-none"
+    }, (c.title || c.description || isFbSlide) && /*#__PURE__*/React.createElement("div", {
+      className: "carousel-glass-caption rounded-xl py-2 px-3.5 md:py-2.5 md:px-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 md:gap-4 w-full max-w-4xl shadow-lg pointer-events-auto transition-all"
     }, /*#__PURE__*/React.createElement("div", {
       className: "min-w-0 flex-1"
     }, c.title && /*#__PURE__*/React.createElement("h3", {
-      className: "text-xl md:text-3xl font-black mb-2 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-md"
+      className: "text-sm md:text-base font-bold font-serif tracking-wider text-[var(--bg-light)] drop-shadow line-clamp-1"
     }, c.title), c.description && /*#__PURE__*/React.createElement("p", {
-      className: "text-xs md:text-sm text-stone-200 line-clamp-2 drop-shadow font-sans leading-relaxed"
+      className: "text-[11px] md:text-xs text-stone-200 line-clamp-1 font-sans opacity-90 leading-tight"
     }, c.description)), isFbSlide && /*#__PURE__*/React.createElement("div", {
-      className: "shrink-0 inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-sans font-bold text-xs md:text-sm px-4 py-2.5 rounded-full shadow-lg transition-all hover:scale-105 border border-white/30"
+      className: "shrink-0 inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white font-sans font-bold text-xs px-3.5 py-1.5 rounded-full shadow-md transition-all hover:scale-105 border border-white/30"
     }, /*#__PURE__*/React.createElement("span", null, "\u9EDE\u64CA\u524D\u5F80\u5B98\u65B9\u81C9\u66F8\u7C89\u7D72\u5C08\u9801 \u2197")))));
   }), carousels.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     type: "button",
