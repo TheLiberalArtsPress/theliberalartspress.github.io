@@ -487,10 +487,24 @@ const getCategoryBadgeClass = cat => {
   if (c.includes('字') || c.includes('文字') || c.includes('聲韻') || c.includes('訓詁') || c.includes('目錄') || c.includes('版本') || c.includes('金石') || c.includes('藝術') || c.includes('印') || c.includes('小學')) {
     return 'siku-tag-zi'; // 子部／文獻目錄：竹青 (#3D5A45)
   }
-  if (c.includes('文') || c.includes('詩') || c.includes('詞') || c.includes('現代') || c.includes('小說') || c.includes('散文') || c.includes('曲') || c.includes('戲曲') || c.includes('叢刊')) {
-    return 'siku-tag-ji'; // 集部／詩詞現代文學：絳紫／殷紅 (#7B241C)
-  }
   return 'siku-tag-default';
+};
+
+const getInkAnimationClass = cat => {
+  const c = String(cat || '').trim();
+  if (c.includes('經') || c.includes('哲學') || c.includes('諸子') || c.includes('易') || c.includes('儒') || c.includes('佛') || c.includes('道教') || c.includes('思想')) {
+    return 'ink-enter-jing';
+  }
+  if (c.includes('史') || c.includes('滿') || c.includes('八旗') || c.includes('臺') || c.includes('台') || c.includes('檔案') || c.includes('方志') || c.includes('清代') || c.includes('歷代')) {
+    return 'ink-enter-shi';
+  }
+  if (c.includes('字') || c.includes('文字') || c.includes('聲韻') || c.includes('訓詁') || c.includes('目錄') || c.includes('版本') || c.includes('金石') || c.includes('藝術') || c.includes('印') || c.includes('小學')) {
+    return 'ink-enter-zi';
+  }
+  if (c.includes('文') || c.includes('詩') || c.includes('詞') || c.includes('現代') || c.includes('小說') || c.includes('散文') || c.includes('曲') || c.includes('戲曲') || c.includes('叢刊')) {
+    return 'ink-enter-ji';
+  }
+  return 'ink-enter-default';
 };
 const fallbackCarousels = [{
   id: 'fb1',
@@ -1167,9 +1181,70 @@ function App() {
       return matchCode && matchTitle && matchAuthor && matchPage && matchCat;
     });
   }, [books, appliedSearch]);
-  const visibleSearchBooks = useMemo(() => indexSearchBooks.slice(0, searchVisibleCount), [indexSearchBooks, searchVisibleCount]);
-  const addToCart = book => {
+  const triggerCartFlyAnimation = e => {
+    try {
+      const cartBtn = document.querySelector('#main-cart-btn') || document.querySelector('.badge-seal-red') || document.querySelector('#nav-cart-btn');
+      if (!cartBtn) return;
+      let startX = window.innerWidth / 2;
+      let startY = window.innerHeight / 2;
+      if (e && e.clientX && e.clientY && e.clientX > 0) {
+        startX = e.clientX;
+        startY = e.clientY;
+      } else if (e && e.currentTarget) {
+        const rect = e.currentTarget.getBoundingClientRect();
+        startX = rect.left + rect.width / 2;
+        startY = rect.top + rect.height / 2;
+      }
+      const cartRect = cartBtn.getBoundingClientRect();
+      const endX = cartRect.left + cartRect.width / 2;
+      const endY = cartRect.top + cartRect.height / 2;
+
+      const bead = document.createElement('div');
+      bead.style.position = 'fixed';
+      bead.style.left = `${startX}px`;
+      bead.style.top = `${startY}px`;
+      bead.style.width = '14px';
+      bead.style.height = '14px';
+      bead.style.borderRadius = '50%';
+      bead.style.backgroundColor = '#B83B26';
+      bead.style.boxShadow = '0 0 14px rgba(184, 59, 38, 0.9), inset 0 0 4px #FFF';
+      bead.style.pointerEvents = 'none';
+      bead.style.zIndex = '9999';
+      bead.style.transform = 'translate(-50%, -50%)';
+      document.body.appendChild(bead);
+
+      const startTime = performance.now();
+      const duration = 520;
+      const animateFly = now => {
+        const elapsed = now - startTime;
+        const p = Math.min(elapsed / duration, 1);
+        const easeP = p * (2 - p);
+        const currentX = startX + (endX - startX) * easeP;
+        const arc = -Math.sin(p * Math.PI) * 70;
+        const currentY = startY + (endY - startY) * easeP + arc;
+        const scale = 1 + Math.sin(p * Math.PI) * 0.45 - p * 0.35;
+        bead.style.left = `${currentX}px`;
+        bead.style.top = `${currentY}px`;
+        bead.style.transform = `translate(-50%, -50%) scale(${scale})`;
+        if (p < 1) {
+          requestAnimationFrame(animateFly);
+        } else {
+          bead.remove();
+          cartBtn.classList.remove('cart-bounce');
+          void cartBtn.offsetWidth;
+          cartBtn.classList.add('cart-bounce');
+          setTimeout(() => cartBtn.classList.remove('cart-bounce'), 600);
+        }
+      };
+      requestAnimationFrame(animateFly);
+    } catch (err) {
+      console.warn('Fly anim err:', err);
+    }
+  };
+
+  const addToCart = (book, e = null) => {
     if (book.stock <= 0) return showMsg("抱歉，目前缺貨中！");
+    if (e) triggerCartFlyAnimation(e);
     setCart(prev => {
       const existing = prev.find(i => i.id === book.id);
       if (existing) return prev.map(i => i.id === book.id ? {
@@ -1181,7 +1256,7 @@ function App() {
         qty: 1
       }];
     });
-    showMsg(`已加入書包: ${book.title}`);
+    showMsg(`已加入書包: 《${book.title}》`);
   };
   const removeFromCart = id => setCart(prev => prev.filter(i => i.id !== id));
   const updateCartQty = (id, delta) => {
@@ -1511,8 +1586,9 @@ function App() {
     className: "flex items-center space-x-2 xl:space-x-3 border-l pl-2 xl:pl-4 border-[var(--border-color)] shrink-0"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
+    id: "main-cart-btn",
     onClick: () => setIsCartOpen(true),
-    className: "relative bg-white/80 border border-[var(--accent-color)]/70 text-[var(--dark-color)] px-3.5 xl:px-5 py-2 rounded-full flex items-center gap-2 hover:bg-[var(--primary-color)] hover:text-white hover:border-[var(--primary-color)] transition-all shadow-sm font-sans font-bold group"
+    className: "relative shimmer-btn bg-white/80 border border-[var(--accent-color)]/70 text-[var(--dark-color)] px-3.5 xl:px-5 py-2 rounded-full flex items-center gap-2 hover:bg-[var(--primary-color)] hover:text-white hover:border-[var(--primary-color)] transition-all shadow-sm font-sans font-bold group"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 17,
@@ -1621,16 +1697,32 @@ function App() {
   }), " ", ui.menuAdmin))), /*#__PURE__*/React.createElement("main", {
     className: "flex-1 max-w-7xl mx-auto w-full p-4 md:p-8"
   }, /*#__PURE__*/React.createElement("section", {
-    className: "text-center mb-6 py-8 animate-in"
+    className: "mb-8 py-6 md:py-10 animate-in relative"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-center gap-6 xl:gap-14 max-w-5xl mx-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "hidden md:flex flex-col items-center justify-center p-3 opacity-85 select-none shrink-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "writing-vertical text-xs font-serif tracking-[0.35em] text-[var(--text-dark)] border-l-2 border-[var(--primary-color)]/50 pl-2.5 mb-3 font-bold"
+  }, "薪火傳承・考鏡源流"), /*#__PURE__*/React.createElement("div", {
+    className: "w-8 h-8 rounded-lg border border-[#B83B26] bg-[#B83B26]/10 flex items-center justify-center text-[#B83B26] font-serif font-black text-[10px] shadow-sm tracking-tighter"
+  }, "文史哲")), /*#__PURE__*/React.createElement("div", {
+    className: "text-center flex-1 min-w-0"
   }, /*#__PURE__*/React.createElement("span", {
-    className: "inline-block text-[11px] font-sans font-bold tracking-[0.3em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-3.5 py-1 rounded-full mb-3"
+    className: "inline-block text-[11px] font-sans font-bold tracking-[0.3em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-3.5 py-1 rounded-full mb-3 shadow-sm border border-[var(--primary-color)]/20"
   }, "Est. 1971 \u30FB \u5C08\u696D\u4EBA\u6587\u5B78\u8853\u8AD6\u8457\u51FA\u7248"), /*#__PURE__*/React.createElement("h2", {
-    className: "text-3xl md:text-5xl font-black mb-4 text-[var(--dark-color)] leading-tight font-serif tracking-widest"
+    className: "text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--dark-color)] leading-tight font-serif tracking-widest"
   }, ui.heroHeading1, " ", /*#__PURE__*/React.createElement("span", {
     className: "text-[var(--primary-color)]"
   }, ui.heroHeading2)), /*#__PURE__*/React.createElement("p", {
-    className: "text-[var(--text-dark)] max-w-2xl mx-auto leading-relaxed text-base md:text-lg font-sans font-medium"
-  }, ui.heroSubheading)), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
+    className: "text-[var(--text-dark)] max-w-2xl mx-auto leading-relaxed text-sm sm:text-base md:text-lg font-sans font-medium"
+  }, ui.heroSubheading)), /*#__PURE__*/React.createElement("div", {
+    className: "hidden md:flex flex-col items-center justify-center p-3 opacity-85 select-none shrink-0"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "writing-vertical text-xs font-serif tracking-[0.35em] text-[var(--text-dark)] border-r-2 border-[var(--primary-color)]/50 pr-2.5 mb-3 font-bold"
+  }, "經史子集・萬卷藏真"), /*#__PURE__*/React.createElement("div", {
+    className: "w-8 h-8 rounded-lg border border-[#B83B26] bg-[#B83B26]/10 flex items-center justify-center text-[#B83B26] font-serif font-black text-[10px] shadow-sm tracking-tighter"
+  }, "學術印")))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "w-full max-w-6xl mx-auto mb-14"
   }, /*#__PURE__*/React.createElement("div", {
     className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-white/60 bg-[#1A1412] flex items-center justify-center"
@@ -1779,9 +1871,9 @@ function App() {
     type: "button",
     onClick: e => {
       e.stopPropagation();
-      addToCart(book);
+      addToCart(book, e);
     },
-    className: "w-full bg-white border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-1.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1.5 shadow-sm active:scale-95"
+    className: "w-full bg-white shimmer-btn border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-1.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1.5 shadow-sm active:scale-95"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 13
@@ -1815,14 +1907,15 @@ function App() {
     className: "h-5 w-3/4 rounded skeleton-shimmer"
   }), /*#__PURE__*/React.createElement("div", {
     className: "h-4 w-1/3 rounded skeleton-shimmer"
-  }))) : visibleBooks.map(book => /*#__PURE__*/React.createElement("div", {
+  }))) : visibleBooks.map((book, bookIdx) => /*#__PURE__*/React.createElement("div", {
     key: book.id,
-    className: "group glass-card book-tilt-card rounded-2xl overflow-hidden flex flex-col cursor-pointer",
+    style: { animationDelay: `${(bookIdx % 8) * 45}ms` },
+    className: `group glass-card book-tilt-card rounded-2xl overflow-hidden flex flex-col cursor-pointer ${getInkAnimationClass(book.category)}`,
     onClick: () => setSelectedBookDetail(book)
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-full relative book-spine-effect group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-lg"
+    className: "h-full relative book-spine-effect book-page-rim group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-lg"
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
@@ -1845,9 +1938,9 @@ function App() {
     type: "button",
     onClick: e => {
       e.stopPropagation();
-      addToCart(book);
+      addToCart(book, e);
     },
-    className: "w-full bg-white border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-2 font-sans shadow-sm active:scale-95 text-sm"
+    className: "w-full bg-white shimmer-btn border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-2 font-sans shadow-sm active:scale-95 text-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 16
@@ -2356,7 +2449,7 @@ function App() {
     type: "button",
     onClick: e => {
       e.stopPropagation();
-      addToCart(book);
+      addToCart(book, e);
     },
     className: "w-full bg-white border border-[var(--accent-color)] text-[var(--text-dark)] py-1.5 rounded-lg font-bold hover:bg-[var(--primary-color)] hover:text-white transition text-xs flex items-center justify-center gap-1"
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -2782,7 +2875,7 @@ function App() {
     className: `fixed inset-0 bg-black/65 backdrop-blur-md z-[220] flex justify-center items-center ${isBookDetailFullscreen ? 'p-0' : 'p-3 md:p-6'} overflow-hidden animate-in`,
     onClick: () => setSelectedBookDetail(null)
   }, /*#__PURE__*/React.createElement("div", {
-    className: `glass-modal w-full ${isBookDetailFullscreen ? 'h-full max-w-none max-h-none rounded-none border-0' : 'max-w-3xl max-h-[90vh] rounded-3xl border border-white/80'} shadow-2xl flex flex-col overflow-hidden transition-all duration-300`,
+    className: `glass-modal modal-book-flip w-full ${isBookDetailFullscreen ? 'h-full max-w-none max-h-none rounded-none border-0' : 'max-w-3xl max-h-[90vh] rounded-3xl border border-white/80'} shadow-2xl flex flex-col overflow-hidden transition-all duration-300`,
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
     className: "p-3.5 md:p-4 border-b border-[var(--border-color)] flex justify-between items-center bg-white/95 backdrop-blur-md shrink-0 z-10"
@@ -2946,9 +3039,9 @@ function App() {
     size: 16
   }), " 讀後心得交流"), /*#__PURE__*/React.createElement("button", {
     type: "button",
-    onClick: () => addToCart(selectedBookDetail),
+    onClick: e => addToCart(selectedBookDetail, e),
     disabled: selectedBookDetail.stock <= 0,
-    className: `flex-1 bg-[var(--primary-color)] text-white py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`
+    className: `flex-1 bg-[var(--primary-color)] shimmer-btn text-white py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 16

@@ -152,6 +152,12 @@
         font-family: var(--body-font), sans-serif; 
     }
 
+    .writing-vertical {
+        writing-mode: vertical-rl;
+        text-orientation: upright;
+        letter-spacing: 0.25em;
+    }
+
     .glass-nav {
         background: rgba(250, 248, 245, 0.88) !important;
         backdrop-filter: blur(20px) saturate(180%);
@@ -311,6 +317,96 @@
     @keyframes shimmer {
         0% { background-position: 200% 0; }
         100% { background-position: -200% 0; }
+    }
+
+    /* 📖 實體書立體 3D 翻開動畫 (3D Book Flip Modal) */
+    @keyframes bookFlipOpen {
+        0% {
+            opacity: 0;
+            transform: perspective(1200px) rotateY(-18deg) scale(0.92) translateY(24px);
+            filter: blur(4px);
+        }
+        100% {
+            opacity: 1;
+            transform: perspective(1200px) rotateY(0deg) scale(1) translateY(0);
+            filter: blur(0);
+        }
+    }
+    .modal-book-flip {
+        animation: bookFlipOpen 0.45s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+        transform-origin: left center;
+    }
+
+    /* 🛍️ 購物車飛入回饋微彈跳 (Cart Bounce) */
+    @keyframes cartBounceAnim {
+        0%, 100% { transform: scale(1); }
+        30% { transform: scale(1.32) rotate(-8deg); }
+        60% { transform: scale(0.92) rotate(4deg); }
+    }
+    .cart-bounce {
+        animation: cartBounceAnim 0.55s cubic-bezier(0.175, 0.885, 0.32, 1.275) !important;
+    }
+
+    /* 🌊 四大學術色譜水墨交錯進場 (Ink-Wash Staggered Entry) */
+    @keyframes inkFadeJing {
+        0% { opacity: 0; transform: translateY(22px) scale(0.96); filter: blur(4px); }
+        100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    @keyframes inkFadeShi {
+        0% { opacity: 0; transform: translateY(24px) rotate(-1deg); filter: blur(4px); }
+        100% { opacity: 1; transform: translateY(0) rotate(0); filter: blur(0); }
+    }
+    @keyframes inkFadeZi {
+        0% { opacity: 0; transform: translateY(20px) scale(0.97); filter: blur(3px); }
+        100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+    }
+    @keyframes inkFadeJi {
+        0% { opacity: 0; transform: translateY(24px) rotate(1deg); filter: blur(4px); }
+        100% { opacity: 1; transform: translateY(0) rotate(0); filter: blur(0); }
+    }
+
+    .ink-enter-jing { animation: inkFadeJing 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .ink-enter-shi { animation: inkFadeShi 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .ink-enter-zi { animation: inkFadeZi 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .ink-enter-ji { animation: inkFadeJi 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+    .ink-enter-default { animation: inkFadeJing 0.6s cubic-bezier(0.16, 1, 0.3, 1) both; }
+
+    /* ✨ 典雅金屬流光微掃 (Button & Card Shimmer Sweep) */
+    .shimmer-btn {
+        position: relative;
+        overflow: hidden;
+    }
+    .shimmer-btn::after {
+        content: '';
+        position: absolute;
+        top: -60%;
+        left: -80%;
+        width: 50%;
+        height: 220%;
+        background: linear-gradient(
+            to right,
+            rgba(255, 255, 255, 0) 0%,
+            rgba(255, 255, 255, 0.38) 50%,
+            rgba(255, 255, 255, 0) 100%
+        );
+        transform: rotate(30deg);
+        pointer-events: none;
+        transition: none;
+    }
+    .shimmer-btn:hover::after {
+        left: 150%;
+        transition: left 0.75s ease-in-out;
+    }
+
+    /* 📚 實體精裝書側邊多層紙張厚度光影 (Book Page Rim) */
+    .book-page-rim {
+        box-shadow: 
+            -2px 0 5px -1px rgba(0, 0, 0, 0.22),
+            5px 8px 22px -4px rgba(44, 36, 27, 0.22),
+            inset 3px 0 4px rgba(255, 255, 255, 0.3),
+            inset -2px 0 0 #D5C7B6,
+            inset -4px 0 0 #F4EFEA,
+            inset -5px 0 0 #D5C7B6;
     }
 
     .animate-in { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
