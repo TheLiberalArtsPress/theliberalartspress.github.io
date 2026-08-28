@@ -1620,7 +1620,9 @@ function App() {
   }, ui.heroHeading2)), /*#__PURE__*/React.createElement("p", {
     className: "text-[var(--text-dark)] max-w-2xl mx-auto leading-relaxed text-base md:text-lg font-sans font-medium"
   }, ui.heroSubheading)), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
-    className: "relative w-full max-w-6xl mx-auto h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl mb-14 group border border-white/60 bg-[#1A1412] flex items-center justify-center"
+    className: "w-full max-w-6xl mx-auto mb-14"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-white/60 bg-[#1A1412] flex items-center justify-center"
   }, carousels.map((c, idx) => {
     const isFbSlide = c.title?.toLowerCase().includes('fb') || c.title?.includes('臉書') || c.description?.toLowerCase().includes('fb') || c.description?.includes('臉書') || c.image?.includes('61590146114229') || c.id === 'fb1' || idx === 0;
     const slideLink = c.link || c.url || (isFbSlide ? "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" : null);
@@ -1643,26 +1645,12 @@ function App() {
       alt: "",
       "aria-hidden": "true",
       className: "absolute inset-0 w-full h-full object-cover blur-2xl scale-125 opacity-40 brightness-75 pointer-events-none"
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "absolute inset-0 bg-gradient-to-t from-[var(--dark-color)]/90 via-transparent to-black/20 z-10 pointer-events-none"
     }), /*#__PURE__*/React.createElement("img", {
       src: bannerImgSrc,
       alt: c.title || "Banner",
       className: "relative z-10 w-full h-full object-contain mx-auto transition-transform duration-700 group-hover/slide:scale-[1.01]",
       onError: e => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')
-    }), /*#__PURE__*/React.createElement("div", {
-      className: "absolute bottom-2.5 md:bottom-4 left-3 right-3 md:left-6 md:right-6 z-20 flex justify-center pointer-events-none"
-    }, (c.title || c.description || isFbSlide) && /*#__PURE__*/React.createElement("div", {
-      className: "carousel-glass-caption rounded-xl py-2 px-3.5 md:py-2.5 md:px-5 text-white flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 md:gap-4 w-full max-w-4xl shadow-lg pointer-events-auto transition-all"
-    }, /*#__PURE__*/React.createElement("div", {
-      className: "min-w-0 flex-1"
-    }, c.title && /*#__PURE__*/React.createElement("h3", {
-      className: "text-sm md:text-base font-bold font-serif tracking-wider text-[var(--bg-light)] drop-shadow line-clamp-1"
-    }, c.title), c.description && /*#__PURE__*/React.createElement("p", {
-      className: "text-[11px] md:text-xs text-stone-200 line-clamp-1 font-sans opacity-90 leading-tight"
-    }, c.description)), isFbSlide && /*#__PURE__*/React.createElement("div", {
-      className: "shrink-0 inline-flex items-center gap-1.5 bg-blue-600 hover:bg-blue-500 text-white font-sans font-bold text-xs px-3.5 py-1.5 rounded-full shadow-md transition-all hover:scale-105 border border-white/30"
-    }, /*#__PURE__*/React.createElement("span", null, "\u9EDE\u64CA\u524D\u5F80\u5B98\u65B9\u81C9\u66F8\u7C89\u7D72\u5C08\u9801 \u2197")))));
+    }));
   }), carousels.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setCarouselIndex(prev => (prev - 1 + carousels.length) % carousels.length),
@@ -1677,7 +1665,29 @@ function App() {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronRight",
     size: 20
-  })))), /*#__PURE__*/React.createElement("section", {
+  })))), carousels[carouselIndex] && (carousels[carouselIndex].title || carousels[carouselIndex].description || (carousels[carouselIndex].title?.toLowerCase().includes('fb') || carousels[carouselIndex].id === 'fb1' || carouselIndex === 0)) && /*#__PURE__*/React.createElement("div", {
+    className: "mt-3.5 glass-card rounded-2xl px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md border border-[var(--border-color)]/70 bg-white/90"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "min-w-0 flex-1 text-left"
+  }, carousels[carouselIndex].title && /*#__PURE__*/React.createElement("h3", {
+    className: "text-base md:text-lg font-black font-serif tracking-wider text-[var(--dark-color)] mb-0.5 line-clamp-1"
+  }, carousels[carouselIndex].title), carousels[carouselIndex].description && /*#__PURE__*/React.createElement("p", {
+    className: "text-xs md:text-sm text-[var(--text-dark)] line-clamp-1 font-sans font-medium"
+  }, carousels[carouselIndex].description)), /*#__PURE__*/React.createElement("div", {
+    className: "shrink-0 flex items-center gap-3"
+  }, (carousels[carouselIndex].title?.toLowerCase().includes('fb') || carousels[carouselIndex].description?.toLowerCase().includes('fb') || carousels[carouselIndex].id === 'fb1' || carouselIndex === 0) && /*#__PURE__*/React.createElement("a", {
+    href: "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW",
+    target: "_blank",
+    rel: "noopener noreferrer",
+    className: "inline-flex items-center gap-1.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-sans font-bold text-xs px-4 py-2 rounded-full shadow transition-all hover:scale-105"
+  }, /*#__PURE__*/React.createElement("span", null, "\u9EDE\u64CA\u524D\u5F80\u5B98\u65B9\u81C9\u66F8\u7C89\u7D72\u5C08\u9801 \u2197")), carousels.length > 1 && /*#__PURE__*/React.createElement("div", {
+    className: "flex gap-1.5 ml-1"
+  }, carousels.map((_, dotIdx) => /*#__PURE__*/React.createElement("button", {
+    key: dotIdx,
+    type: "button",
+    onClick: () => setCarouselIndex(dotIdx),
+    className: `w-2.5 h-2.5 rounded-full transition-all ${dotIdx === carouselIndex ? 'bg-[var(--primary-color)] w-6' : 'bg-stone-300 hover:bg-stone-400'}`
+  })))))), /*#__PURE__*/React.createElement("section", {
     id: "new-books",
     className: "mb-16 scroll-mt-24"
   }, /*#__PURE__*/React.createElement("div", {
