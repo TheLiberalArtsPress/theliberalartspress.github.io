@@ -1531,14 +1531,15 @@ function App() {
   }))), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center space-x-2 xl:space-x-5"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "hidden lg:flex space-x-1 xl:space-x-3 text-xs xl:text-[14px] font-sans font-bold text-[var(--text-dark)] items-center whitespace-nowrap"
+    className: "hidden lg:flex space-x-1.5 xl:space-x-2.5 text-xs xl:text-[13.5px] font-sans font-bold items-center whitespace-nowrap"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsAboutOpen(true),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/60 transition-all flex items-center gap-1.5 px-3 py-2 rounded-full"
+    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Compass",
-    size: 16
+    size: 15,
+    className: "text-[var(--primary-color)]"
   }), " ", ui.menuAbout), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIframeModal({
@@ -1546,10 +1547,11 @@ function App() {
       url: ui.urlAboutPresident,
       title: ui.menuPresident
     }),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/60 transition-all flex items-center gap-1.5 px-3 py-2 rounded-full"
+    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "User",
-    size: 16
+    size: 15,
+    className: "text-[var(--primary-color)]"
   }), " ", ui.menuPresident), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIframeModal({
@@ -1557,28 +1559,31 @@ function App() {
       url: ui.urlContactUs,
       title: ui.menuContact
     }),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/60 transition-all flex items-center gap-1.5 px-3 py-2 rounded-full"
+    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "MessageCircle",
-    size: 16
+    size: 15,
+    className: "text-[var(--primary-color)]"
   }), " ", ui.menuContact), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: openRandomBooksModal,
-    className: "hover:text-[var(--primary-color)] hover:bg-white/60 transition-all flex items-center gap-1.5 px-3 py-2 rounded-full"
+    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
-    size: 16
+    size: 15,
+    className: "text-amber-600"
   }), " ", ui.menuNewArrivals), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsSearchModalOpen(true),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/60 transition-all flex items-center gap-1.5 px-3 py-2 rounded-full"
+    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Search",
-    size: 16
+    size: 15,
+    className: "text-[var(--primary-color)]"
   }), " ", ui.menuSearch), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsOrderQueryOpen(true),
-    className: "text-white bg-[var(--primary-color)] hover:bg-[var(--dark-color)] transition-all flex items-center gap-1.5 px-4 py-2 rounded-full shadow-sm hover:shadow active:scale-95"
+    className: "glass-nav-pill-active text-white flex items-center gap-1.5 px-4 py-1.5 rounded-full shadow-md active:scale-95"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "FileText",
     size: 15
@@ -1588,19 +1593,19 @@ function App() {
     type: "button",
     id: "main-cart-btn",
     onClick: () => setIsCartOpen(true),
-    className: "relative shimmer-btn bg-white/80 border border-[var(--accent-color)]/70 text-[var(--dark-color)] px-3.5 xl:px-5 py-2 rounded-full flex items-center gap-2 hover:bg-[var(--primary-color)] hover:text-white hover:border-[var(--primary-color)] transition-all shadow-sm font-sans font-bold group"
+    className: "relative glass-nav-pill text-[var(--dark-color)] px-4 xl:px-5 py-1.5 rounded-full flex items-center gap-2 font-sans font-bold group cursor-pointer overflow-visible shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 17,
-    className: "group-hover:scale-110 transition-transform"
+    className: "text-[var(--primary-color)] group-hover:scale-110 transition-transform"
   }), /*#__PURE__*/React.createElement("span", {
-    className: "hidden sm:inline"
+    className: "hidden sm:inline font-bold"
   }, ui.menuCart), cart.length > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "absolute -top-1.5 -right-1.5 badge-seal-red text-white text-[11px] min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center font-bold shadow-md border-2 border-white animate-bounce"
+    className: "absolute -top-2 -right-2 badge-seal-red text-white text-[11px] min-w-[22px] h-[22px] px-1 rounded-full flex items-center justify-center font-black shadow-lg border-2 border-white animate-bounce z-30 pointer-events-none"
   }, cart.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => window.open('https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW', '_blank'),
-    className: "hidden sm:flex bg-[#1877F2] text-white px-4 py-2 rounded-full text-xs xl:text-sm font-sans items-center gap-1.5 hover:bg-[#145CB8] transition-all shadow-sm font-bold active:scale-95"
+    className: "hidden sm:flex glass-nav-pill-fb text-white px-4 py-1.5 rounded-full text-xs xl:text-sm font-sans items-center gap-1.5 font-bold active:scale-95 shadow-md"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "LayoutDashboard",
     size: 16
@@ -1697,32 +1702,30 @@ function App() {
   }), " ", ui.menuAdmin))), /*#__PURE__*/React.createElement("main", {
     className: "flex-1 max-w-7xl mx-auto w-full p-4 md:p-8"
   }, /*#__PURE__*/React.createElement("section", {
-    className: "mb-8 py-6 md:py-10 animate-in relative"
+    className: "mb-10 py-6 md:py-10 animate-in relative"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center justify-center gap-6 xl:gap-14 max-w-5xl mx-auto"
+    className: "glass-card p-6 sm:p-10 md:p-12 rounded-3xl border border-white/90 shadow-md text-center max-w-5xl mx-auto relative overflow-hidden bg-gradient-to-b from-white/95 via-[#FAF8F5]/85 to-white/95"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "hidden md:flex flex-col items-center justify-center p-3 opacity-85 select-none shrink-0"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "writing-vertical text-xs font-serif tracking-[0.35em] text-[var(--text-dark)] border-l-2 border-[var(--primary-color)]/50 pl-2.5 mb-3 font-bold"
-  }, "薪火傳承・考鏡源流"), /*#__PURE__*/React.createElement("div", {
-    className: "w-8 h-8 rounded-lg border border-[#B83B26] bg-[#B83B26]/10 flex items-center justify-center text-[#B83B26] font-serif font-black text-[10px] shadow-sm tracking-tighter"
-  }, "文史哲")), /*#__PURE__*/React.createElement("div", {
-    className: "text-center flex-1 min-w-0"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "inline-block text-[11px] font-sans font-bold tracking-[0.3em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-3.5 py-1 rounded-full mb-3 shadow-sm border border-[var(--primary-color)]/20"
-  }, "Est. 1971 \u30FB \u5C08\u696D\u4EBA\u6587\u5B78\u8853\u8AD6\u8457\u51FA\u7248"), /*#__PURE__*/React.createElement("h2", {
-    className: "text-3xl sm:text-4xl md:text-5xl font-black mb-4 text-[var(--dark-color)] leading-tight font-serif tracking-widest"
+    className: "inline-flex items-center gap-2 text-[11px] md:text-xs font-sans font-bold tracking-[0.25em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-4 py-1.5 rounded-full mb-4 shadow-sm border border-[var(--primary-color)]/25"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Sparkles",
+    size: 13,
+    className: "text-[var(--primary-color)]"
+  }), "Est. 1971 \u30FB \u5C08\u696D\u4EBA\u6587\u5B78\u8853\u8AD6\u8457\u51FA\u7248"), /*#__PURE__*/React.createElement("h2", {
+    className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 text-[var(--dark-color)] leading-tight font-serif tracking-widest"
   }, ui.heroHeading1, " ", /*#__PURE__*/React.createElement("span", {
     className: "text-[var(--primary-color)]"
-  }, ui.heroHeading2)), /*#__PURE__*/React.createElement("p", {
-    className: "text-[var(--text-dark)] max-w-2xl mx-auto leading-relaxed text-sm sm:text-base md:text-lg font-sans font-medium"
-  }, ui.heroSubheading)), /*#__PURE__*/React.createElement("div", {
-    className: "hidden md:flex flex-col items-center justify-center p-3 opacity-85 select-none shrink-0"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "writing-vertical text-xs font-serif tracking-[0.35em] text-[var(--text-dark)] border-r-2 border-[var(--primary-color)]/50 pr-2.5 mb-3 font-bold"
-  }, "經史子集・萬卷藏真"), /*#__PURE__*/React.createElement("div", {
-    className: "w-8 h-8 rounded-lg border border-[#B83B26] bg-[#B83B26]/10 flex items-center justify-center text-[#B83B26] font-serif font-black text-[10px] shadow-sm tracking-tighter"
-  }, "學術印")))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, ui.heroHeading2)), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-center gap-3 my-4 opacity-40 text-[var(--primary-color)]"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "h-[1px] w-12 sm:w-20 bg-current"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-serif tracking-widest"
+  }, "❖ ◈ ❖"), /*#__PURE__*/React.createElement("span", {
+    className: "h-[1px] w-12 sm:w-20 bg-current"
+  })), /*#__PURE__*/React.createElement("p", {
+    className: "text-stone-700 max-w-3xl mx-auto leading-relaxed text-sm sm:text-base md:text-lg font-sans font-medium"
+  }, ui.heroSubheading))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "w-full max-w-6xl mx-auto mb-14"
   }, /*#__PURE__*/React.createElement("div", {
     className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-white/60 bg-[#1A1412] flex items-center justify-center"
