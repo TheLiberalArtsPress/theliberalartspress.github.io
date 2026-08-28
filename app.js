@@ -1193,6 +1193,9 @@ function App() {
       return matchCode && matchTitle && matchAuthor && matchPage && matchCat;
     });
   }, [books, appliedSearch]);
+  const visibleSearchBooks = useMemo(() => {
+    return indexSearchBooks.slice(0, searchVisibleCount);
+  }, [indexSearchBooks, searchVisibleCount]);
   const triggerCartFlyAnimation = e => {
     try {
       const cartBtn = document.querySelector('#main-cart-btn') || document.querySelector('.badge-seal-red') || document.querySelector('#nav-cart-btn');
