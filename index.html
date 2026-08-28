@@ -135,35 +135,99 @@
         -webkit-font-smoothing: antialiased;
     }
 
-    .font-serif, h1, h2, h3, .font-serif * { font-family: var(--title-font), serif !important; }
-    .font-sans, p, span, button, input, select, textarea { font-family: var(--body-font), sans-serif; }
+    .font-serif, h1, h2, h3, h4, .font-serif * { 
+        font-family: var(--title-font), serif !important; 
+        letter-spacing: 0.05em;
+    }
+    .font-sans, p, span, button, input, select, textarea { 
+        font-family: var(--body-font), sans-serif; 
+    }
 
     .glass-nav {
-        background: rgba(250, 248, 245, 0.85) !important;
+        background: rgba(250, 248, 245, 0.88) !important;
         backdrop-filter: blur(20px) saturate(180%);
         -webkit-backdrop-filter: blur(20px) saturate(180%);
-        border-bottom: 1px solid rgba(232, 220, 206, 0.7);
+        border-bottom: 1px solid rgba(232, 220, 206, 0.8);
     }
 
     .glass-modal {
-        background: rgba(255, 254, 252, 0.92) !important;
+        background: rgba(255, 254, 252, 0.94) !important;
         backdrop-filter: blur(24px) saturate(180%);
         -webkit-backdrop-filter: blur(24px) saturate(180%);
-        border: 1px solid rgba(255, 255, 255, 0.8);
+        border: 1px solid rgba(255, 255, 255, 0.85);
         box-shadow: 0 25px 60px -15px rgba(36, 29, 23, 0.25);
     }
 
     .glass-card {
-        background: rgba(255, 255, 255, 0.8) !important;
+        background: rgba(255, 255, 255, 0.85) !important;
         backdrop-filter: blur(16px);
         -webkit-backdrop-filter: blur(16px);
-        border: 1px solid rgba(255, 255, 255, 0.9);
+        border: 1px solid rgba(255, 255, 255, 0.95);
         box-shadow: 0 10px 30px -10px rgba(44, 36, 27, 0.05);
         transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
     }
     .glass-card:hover {
-        transform: translateY(-4px);
-        box-shadow: 0 20px 40px -12px rgba(140, 90, 43, 0.12), 0 0 0 1px rgba(140, 90, 43, 0.15);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px -12px rgba(140, 90, 43, 0.18), 0 0 0 1px rgba(140, 90, 43, 0.2);
+    }
+
+    /* 📖 實體書立體書脊摺痕與光影 (Book Spine Shadow & Crease) */
+    .book-spine-effect {
+        position: relative;
+        overflow: hidden;
+        border-radius: 4px 10px 10px 4px;
+        box-shadow: -2px 0 5px -1px rgba(0, 0, 0, 0.25),
+                    5px 8px 22px -4px rgba(44, 36, 27, 0.22),
+                    inset 3px 0 4px rgba(255, 255, 255, 0.3),
+                    inset -1px 0 2px rgba(0, 0, 0, 0.15);
+    }
+    .book-spine-effect::before {
+        content: '';
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        left: 0;
+        width: 14px;
+        background: linear-gradient(to right, 
+            rgba(0, 0, 0, 0.25) 0%, 
+            rgba(255, 255, 255, 0.4) 22%, 
+            rgba(0, 0, 0, 0.15) 45%, 
+            rgba(0, 0, 0, 0.03) 75%, 
+            transparent 100%);
+        pointer-events: none;
+        z-index: 10;
+        border-right: 0.5px solid rgba(0, 0, 0, 0.08);
+    }
+    .book-spine-effect::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 55%);
+        pointer-events: none;
+        z-index: 9;
+    }
+
+    /* 🌟 微幅 3D 浮起與光澤傾斜動效 (Tilt Effect) */
+    .book-tilt-card {
+        transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+        transform-origin: center bottom;
+        perspective: 1000px;
+    }
+    .book-tilt-card:hover {
+        transform: translateY(-8px) rotateY(-4deg) scale(1.025);
+        box-shadow: -10px 18px 30px -8px rgba(140, 90, 43, 0.22), 0 4px 12px rgba(36, 29, 23, 0.08);
+    }
+
+    /* 🎭 輪播圖文字古典毛玻璃與半透明水墨漸層襯底 */
+    .carousel-glass-caption {
+        background: linear-gradient(135deg, rgba(22, 18, 16, 0.88) 0%, rgba(36, 29, 23, 0.8) 50%, rgba(58, 44, 33, 0.72) 100%) !important;
+        backdrop-filter: blur(16px) saturate(160%);
+        -webkit-backdrop-filter: blur(16px) saturate(160%);
+        border: 1px solid rgba(232, 220, 206, 0.25);
+        box-shadow: 0 16px 36px -8px rgba(0, 0, 0, 0.5), inset 0 1px 0 rgba(255, 255, 255, 0.15);
     }
 
     .glass-dark {

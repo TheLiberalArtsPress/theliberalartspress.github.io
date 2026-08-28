@@ -1,7 +1,10 @@
 # 敏感後台管理原始碼與桌面 EXE（只保留於本機使用，不公開至 GitHub 網站）
 admin.html
+admin_test.html
 admin_app.js
+admin_test_app.js
 admin_desktop.py
+admin_test_desktop.py
 build/
 dist/
 *.spec

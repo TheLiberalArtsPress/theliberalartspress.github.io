@@ -840,8 +840,8 @@ function App() {
             return false;
         };
 
-        // 1. 若已經在記憶體中，立即套用
-        if (applyLoadedData()) return;
+        // 1. 若已經在記憶體中，立即套用初始資料，但持續監聽最新 data.js 更新廣播
+        applyLoadedData();
 
         // 2. 監聽 data.js 載入完成的自訂廣播事件
         const onDataLoaded = (e) => {
@@ -1622,14 +1622,18 @@ function App() {
       className: "relative z-10 w-full h-full object-contain mx-auto transition-transform duration-700 group-hover/slide:scale-[1.01]",
       onError: e => handleImgError(e, 'https://images.unsplash.com/photo-1481627834876-b7833e8f5570?q=80&w=1200')
     }), /*#__PURE__*/React.createElement("div", {
-      className: "absolute bottom-0 left-0 right-0 z-20 p-6 md:p-10 text-white flex flex-col md:flex-row md:items-end justify-between gap-4"
-    }, /*#__PURE__*/React.createElement("div", null, c.title && /*#__PURE__*/React.createElement("h3", {
-      className: "text-2xl md:text-4xl font-black mb-2 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-md"
+      className: "absolute bottom-0 left-0 right-0 z-20 p-3 md:p-6 flex justify-center"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "carousel-glass-caption rounded-2xl p-4 md:p-6 text-white flex flex-col md:flex-row md:items-end justify-between gap-4 w-full max-w-5xl shadow-2xl"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "min-w-0 flex-1"
+    }, c.title && /*#__PURE__*/React.createElement("h3", {
+      className: "text-xl md:text-3xl font-black mb-2 font-serif tracking-widest text-[var(--bg-light)] drop-shadow-md"
     }, c.title), c.description && /*#__PURE__*/React.createElement("p", {
-      className: "text-xs md:text-base max-w-3xl text-stone-200 line-clamp-2 drop-shadow font-sans leading-relaxed"
+      className: "text-xs md:text-sm text-stone-200 line-clamp-2 drop-shadow font-sans leading-relaxed"
     }, c.description)), isFbSlide && /*#__PURE__*/React.createElement("div", {
-      className: "shrink-0 inline-flex items-center gap-2 bg-blue-600/90 hover:bg-blue-600 text-white font-sans font-bold text-xs md:text-sm px-4 py-2.5 rounded-full shadow-lg transition-all hover:scale-105"
-    }, /*#__PURE__*/React.createElement("span", null, "\u9EDE\u64CA\u524D\u5F80\u5B98\u65B9\u81C9\u66F8\u7C89\u7D72\u5C08\u9801 \u2197"))));
+      className: "shrink-0 inline-flex items-center gap-2 bg-blue-600 hover:bg-blue-500 text-white font-sans font-bold text-xs md:text-sm px-4 py-2.5 rounded-full shadow-lg transition-all hover:scale-105 border border-white/30"
+    }, /*#__PURE__*/React.createElement("span", null, "\u9EDE\u64CA\u524D\u5F80\u5B98\u65B9\u81C9\u66F8\u7C89\u7D72\u5C08\u9801 \u2197")))));
   }), carousels.length > 1 && /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setCarouselIndex(prev => (prev - 1 + carousels.length) % carousels.length),
@@ -1697,12 +1701,12 @@ function App() {
     className: "flex overflow-x-auto gap-5 snap-x snap-mandatory hide-scrollbar pb-4 px-1 pt-1"
   }, displayChoiceBooks.map(book => /*#__PURE__*/React.createElement("div", {
     key: `rec-${book.id}`,
-    className: "min-w-[240px] w-[240px] snap-start shrink-0 glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group/card",
+    className: "min-w-[240px] w-[240px] snap-start shrink-0 glass-card book-tilt-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group/card",
     onClick: () => setSelectedBookDetail(book)
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-52 bg-[var(--bg-light)]/60 relative overflow-hidden p-3.5 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-full relative book-spine-shadow group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden"
+    className: "h-full relative book-spine-effect group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-lg"
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
@@ -1717,7 +1721,7 @@ function App() {
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
     className: "p-4 flex flex-col flex-1 bg-white/70 border-t border-[var(--border-color)]/40"
   }, /*#__PURE__*/React.createElement("h3", {
-    className: "font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 group-hover/card:text-[var(--primary-color)] transition-colors",
+    className: "font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 group-hover/card:text-[var(--primary-color)] transition-colors font-serif",
     title: book.title
   }, book.title), /*#__PURE__*/React.createElement("p", {
     className: "text-[var(--primary-color)] font-black text-base font-sans mt-auto mb-2.5"
@@ -1763,12 +1767,12 @@ function App() {
     className: "h-4 w-1/3 rounded skeleton-shimmer"
   }))) : visibleBooks.map(book => /*#__PURE__*/React.createElement("div", {
     key: book.id,
-    className: "group glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer",
+    className: "group glass-card book-tilt-card rounded-2xl overflow-hidden flex flex-col cursor-pointer",
     onClick: () => setSelectedBookDetail(book)
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-full relative book-spine-shadow group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden"
+    className: "h-full relative book-spine-effect group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-lg"
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
@@ -2773,7 +2777,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(selectedBookDetail.localCover || selectedBookDetail.cover, 1000),
     alt: selectedBookDetail.title,
-    className: "h-full w-auto object-contain rounded-lg book-spine-shadow",
+    className: "h-full w-auto object-contain rounded-lg book-spine-effect shadow-xl",
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
     className: "flex-1 space-y-3 text-left w-full min-w-0"
