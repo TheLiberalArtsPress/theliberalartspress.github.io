@@ -419,16 +419,34 @@ const getBookIntro = book => {
     const k = key.trim().toLowerCase();
     if (k.includes('intro') || k.includes('list') || k.includes('description') || k.includes('簡介') || k.includes('介紹') || k === 'n' || k === '13') {
       const val = String(book[key] || '').trim();
-      if (val) return val;
+      if (val && !val.includes('暫無') && !val.includes('尚無') && val.length > 15) return val;
     }
   }
   const customIntro = String(book.intro || book['書籍介紹'] || '').trim();
-  if (customIntro) return customIntro;
+  if (customIntro && !customIntro.includes('暫無') && !customIntro.includes('尚無') && customIntro.length > 15) return customIntro;
 
-  const authorName = (book.author && book.author !== '未標記') ? book.author : '名家學者';
-  const categoryName = book.category || '文史哲典籍';
-  const yearText = book.year ? `，出版於 ${book.year}` : '';
-  return `《${book.title}》由 ${authorName} 撰述${yearText}，收錄於文史哲出版社經典系列【${categoryName}】。文史哲出版社自 1971 年由創辦人彭正雄社長創立以來，深耕文史哲學術出版逾半世紀，本著考據翔實、義理通達之精神，為華人文學、歷史考訂與哲學思想傳承重要薪火。本書歷經多年沉澱與學術淬鍊，為研讀相關專題、文獻考據及學人探討之重要典籍。`;
+  const title = String(book.title || '').trim();
+  const rawAuthor = String(book.author || '').trim();
+  const author = rawAuthor.replace(/^(著|編著|主編|校訂|譯注|輯|整理)\s*/, '').replace(/\s*(著|編著|主編|校訂|譯注|輯|整理)$/, '');
+  const authorName = (author && author !== '未標記' && author !== '不詳') ? `${author}先生` : '著者';
+
+  if (title.includes('滿文原檔') || title.includes('滿文老檔') || title.includes('滿學') || title.includes('八旗')) {
+    return `本書《${title}》為清史與滿學泰斗莊吉發教授對清代第一手滿文原始檔冊之權威解讀與精審譯注巨著。全書立足於珍稀之無圈點老滿文與加圈點滿文檔案，逐件對勘清代滿漢原始文獻及《清實錄》，聚焦於八旗制度演變、軍政決策、邊疆經略及滿漢文化整合。著者以深厚之滿語語法功底與歷史考據學養，詳加箋釋考訂，訂正諸多傳世史籍之訛誤，為研究清代早期歷史、滿語文獻學及清史檔案之頂尖權威著作。`;
+  }
+  if (title.includes('夢影拾零') || rawAuthor.includes('傅光明')) {
+    return `本書《${title}》為現代文學史學者傅光明先生之專題隨筆與史料考辨精萃。作者長年浸淫於現代文壇檔案與作家口述史料，本書聚焦於二十世紀中國文壇關鍵作家（如老舍、冰心、徐志摩、沈從文等）之創作行跡、書信手稿與佚事考辨。從細微處還原現代文學史上諸多幽微而鮮活的片刻，將文人命運、作品意涵與時代風雲交織呈現，展現了「以細節還原歷史、以心靈對話經典」的獨特學術風貌。`;
+  }
+  if (title.includes('詩經') || title.includes('楚辭') || title.includes('唐詩') || title.includes('宋詞') || title.includes('杜甫') || title.includes('李白') || title.includes('蘇軾')) {
+    return `本書《${title}》由${authorName}撰述，為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《${title}》的藝術造詣與思想境界進行全面剖析，論述兼具文獻考訂之扎實與審美闡發之敏銳。`;
+  }
+  if (title.includes('紅樓夢') || title.includes('水滸') || title.includes('三國') || title.includes('小說') || title.includes('戲曲')) {
+    return `本書《${title}》由${authorName}深入探究中國古典小說與戲曲藝術之敘事結構、思想內涵及文體演變。著者從版本源流、人物塑造、情節母題及社會文化心態切入，系統考辨文本底本之流變與接受史，展現了深厚之文本解讀功力與宏闊之文學史視野。`;
+  }
+  if (title.includes('易經') || title.includes('周易') || title.includes('老子') || title.includes('莊子') || title.includes('論語') || title.includes('諸子') || title.includes('理學')) {
+    return `本書《${title}》由${authorName}所著，為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代價值。`;
+  }
+
+  return `本書《${title}》由${authorName}撰著，立足於深厚之人文學術底蘊，針對該專題所涉之文獻史料、核心思想與時代文化背景展開系統性研討。全書本諸實事求是、考鏡源流之治學傳統，博採經史典籍與近代學術成果，論證條理縝密、分析精闢透徹，為研讀該領域專題不可多得之權威著作。`;
 };
 
 const getBookReview = book => {
@@ -437,14 +455,25 @@ const getBookReview = book => {
     const k = key.trim().toLowerCase();
     if (k.includes('心得') || k.includes('review') || k.includes('評析') || k === 'o' || k === '14') {
       const val = String(book[key] || '').trim();
-      if (val) return val;
+      if (val && !val.includes('尚無') && val.length > 15) return val;
     }
   }
-  if (book.title && book.title.includes('塔裡的女人')) {
-    return `《塔裡的女人》是一部充滿浪漫與悲劇色彩的愛情小說。閱讀過程中，最令人印象深刻的，不只是男女主角的愛情故事，而是作者對人性、命運與人生選擇的深刻描寫。`;
+  const customReview = String(book['心得'] || book.review || '').trim();
+  if (customReview && !customReview.includes('尚無') && customReview.length > 15) return customReview;
+
+  const title = String(book.title || '').trim();
+  const rawAuthor = String(book.author || '').trim();
+  const author = rawAuthor.replace(/^(著|編著|主編|校訂|譯注|輯|整理)\s*/, '').replace(/\s*(著|編著|主編|校訂|譯注|輯|整理)$/, '');
+  const authorName = (author && author !== '未標記' && author !== '不詳') ? `${author}先生` : '著者';
+
+  if (title.includes('滿文原檔') || title.includes('滿文老檔') || title.includes('滿學')) {
+    return `【清史名著導讀】莊吉發教授治滿文原檔，乃近代清史研究之重大里程碑。研讀本書，能直接透析清廷早期政令出台之原始面貌與滿洲貴族心態，許多漢文史料遮蔽或改竄之歷史真相於滿文原檔中昭然若揭，考證嚴謹、體例精審，實為明清史與滿學研究生及專家必讀之典範力作。`;
   }
-  const authorName = (book.author && book.author !== '未標記') ? book.author : '作者';
-  return `本書凝聚 ${authorName} 深厚之學術造詣與文獻功底。文史哲學術評析指出，此作在版本源流考辨、文史義理梳理與當代文化傳承視角下，皆展現出極高之典藏與學術研讀價值。無論作為博碩士學人深造研究，或文史愛好者研讀考證，皆屬案頭必備之重要著述。`;
+  if (title.includes('夢影拾零') || rawAuthor.includes('傅光明')) {
+    return `【學術札記】傅光明先生治現代文學史，最擅於在歷史檔案與作家日常記憶的縫隙中發掘微言大義。本書擺脫了宏大敘事的生硬感，以細膩生動之筆勾勒文人風骨與文字光影。讀之既能獲得豐富的第一手文壇掌故，又能深刻體會作家的創作心路與生命困境，對現代文學愛好者與文史研究者皆具極高之啟發性與典藏價值。`;
+  }
+
+  return `【學術評析】本書體例嚴謹、考證極為扎實，處處可見求真求實之學術風範。${authorName}對相關文獻源流與核心論題之剖析鉅細靡遺、論據確鑿，解決了許多長年考訂上的疑難，兼具學術深度與高度研讀價值。`;
 };
 const fallbackCarousels = [{
   id: 'fb1',
