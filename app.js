@@ -674,6 +674,18 @@ function App() {
   const [isSearchModalOpen, setIsSearchModalOpen] = useState(false);
   const [isRandomBooksOpen, setIsRandomBooksOpen] = useState(false);
   const randomBooksScrollRef = useRef(null);
+  const [heroMouse, setHeroMouse] = useState({ x: 0, y: 0, nx: 0, ny: 0, active: false });
+  const handleHeroMouseMove = (e) => {
+    const rect = e.currentTarget.getBoundingClientRect();
+    const x = e.clientX - rect.left;
+    const y = e.clientY - rect.top;
+    const nx = ((x / rect.width) - 0.5) * 2;
+    const ny = ((y / rect.height) - 0.5) * 2;
+    setHeroMouse({ x, y, nx, ny, active: true });
+  };
+  const handleHeroMouseLeave = () => {
+    setHeroMouse(prev => ({ ...prev, active: false, nx: 0, ny: 0 }));
+  };
   const [searchForm, setSearchForm] = useState({
     code: '',
     title: '',
@@ -1531,72 +1543,87 @@ function App() {
   }))), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center space-x-2 xl:space-x-5"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "hidden lg:flex space-x-1 xl:space-x-2 text-xs xl:text-[14px] font-sans font-bold text-[var(--text-dark)] items-center whitespace-nowrap"
+    className: "hidden lg:flex items-center space-x-2 xl:space-x-3 whitespace-nowrap"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "nav-segmented-group"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsAboutOpen(true),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
+    className: "nav-segmented-item"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Compass",
-    size: 16
-  }), " ", ui.menuAbout), /*#__PURE__*/React.createElement("button", {
+    size: 15,
+    className: "text-[var(--primary-color)]"
+  }), " ", ui.menuAbout), /*#__PURE__*/React.createElement("div", {
+    className: "nav-segmented-divider"
+  }), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIframeModal({
       isOpen: true,
       url: ui.urlAboutPresident,
       title: ui.menuPresident
     }),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
+    className: "nav-segmented-item"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "User",
-    size: 16
-  }), " ", ui.menuPresident), /*#__PURE__*/React.createElement("button", {
+    size: 15,
+    className: "text-[var(--primary-color)]"
+  }), " ", ui.menuPresident), /*#__PURE__*/React.createElement("div", {
+    className: "nav-segmented-divider"
+  }), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIframeModal({
       isOpen: true,
       url: ui.urlContactUs,
       title: ui.menuContact
     }),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
+    className: "nav-segmented-item"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "MessageCircle",
-    size: 16
-  }), " ", ui.menuContact), /*#__PURE__*/React.createElement("button", {
+    size: 15,
+    className: "text-[var(--primary-color)]"
+  }), " ", ui.menuContact), /*#__PURE__*/React.createElement("div", {
+    className: "nav-segmented-divider"
+  }), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: openRandomBooksModal,
-    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
+    className: "nav-segmented-item"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
-    size: 16
-  }), " ", ui.menuNewArrivals), /*#__PURE__*/React.createElement("button", {
+    size: 15,
+    className: "text-amber-600"
+  }), " ", ui.menuNewArrivals), /*#__PURE__*/React.createElement("div", {
+    className: "nav-segmented-divider"
+  }), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsSearchModalOpen(true),
-    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
+    className: "nav-segmented-item"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Search",
-    size: 16
-  }), " ", ui.menuSearch), /*#__PURE__*/React.createElement("button", {
+    size: 15,
+    className: "text-[var(--primary-color)]"
+  }), " ", ui.menuSearch)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsOrderQueryOpen(true),
-    className: "text-white bg-[var(--primary-color)] hover:bg-[var(--dark-color)] transition-all flex items-center gap-1.5 px-4 py-2 rounded-full shadow-sm hover:shadow active:scale-95"
+    className: "text-white bg-[var(--primary-color)] hover:bg-[var(--dark-color)] transition-all flex items-center gap-1.5 px-4 py-2 rounded-full shadow-sm hover:shadow active:scale-95 font-sans font-bold text-xs xl:text-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "FileText",
     size: 15
-  }), " \u8A02\u55AE\u67E5\u8A62")), /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center space-x-2 xl:space-x-3 border-l pl-2 xl:pl-4 border-[var(--border-color)] shrink-0"
+  }), " 訂單查詢")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center space-x-2 xl:space-x-3 border-l pl-2 xl:pl-4 border-[var(--border-color)] shrink-0 overflow-visible"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     id: "main-cart-btn",
     onClick: () => setIsCartOpen(true),
-    className: "bg-white/90 border border-[var(--accent-color)]/70 text-[var(--dark-color)] px-4 py-2 rounded-full flex items-center gap-2 hover:bg-[var(--primary-color)] hover:text-white hover:border-[var(--primary-color)] transition-all shadow-sm font-sans font-bold group"
+    className: "relative bg-white/95 border border-[#DFD5C6] text-[var(--dark-color)] px-4 xl:px-5 py-2 rounded-full flex items-center gap-2 hover:bg-[var(--primary-color)] hover:text-white hover:border-[var(--primary-color)] transition-all shadow-sm font-sans font-bold group cursor-pointer overflow-visible"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 17,
-    className: "group-hover:scale-110 transition-transform"
+    className: "text-[var(--primary-color)] group-hover:scale-110 group-hover:text-white transition-transform"
   }), /*#__PURE__*/React.createElement("span", {
     className: "hidden sm:inline font-bold"
   }, ui.menuCart), cart.length > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "ml-1 px-2 py-0.5 bg-[#B83B26] text-white text-[11px] font-black rounded-full shadow-sm leading-none flex items-center justify-center min-w-[20px] h-[20px]"
+    className: "cart-floating-badge"
   }, cart.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => window.open('https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW', '_blank'),
@@ -1697,17 +1724,41 @@ function App() {
   }), " ", ui.menuAdmin))), /*#__PURE__*/React.createElement("main", {
     className: "flex-1 max-w-7xl mx-auto w-full p-4 md:p-8"
   }, /*#__PURE__*/React.createElement("section", {
-    className: "text-center mb-8 py-6 md:py-10 animate-in relative"
+    className: "text-center mb-8 py-6 md:py-10 animate-in relative hero-container select-none overflow-hidden rounded-3xl",
+    onMouseMove: handleHeroMouseMove,
+    onMouseLeave: handleHeroMouseLeave
   }, /*#__PURE__*/React.createElement("div", {
-    className: "max-w-4xl mx-auto px-4"
+    className: "hero-spotlight",
+    style: {
+      '--mouse-x': `${heroMouse.x}px`,
+      '--mouse-y': `${heroMouse.y}px`,
+      opacity: heroMouse.active ? 1 : 0
+    }
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "max-w-4xl mx-auto px-4 relative z-10 hero-magnetic-wrap",
+    style: {
+      transform: heroMouse.active
+        ? `perspective(1000px) rotateX(${-heroMouse.ny * 7}deg) rotateY(${heroMouse.nx * 9}deg) translateY(-2px)`
+        : 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateY(0px)'
+    }
   }, /*#__PURE__*/React.createElement("span", {
-    className: "inline-block text-[11px] font-sans font-bold tracking-[0.3em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-3.5 py-1 rounded-full mb-3 shadow-sm border border-[var(--primary-color)]/20"
+    className: "inline-block text-[11px] font-sans font-bold tracking-[0.3em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-3.5 py-1 rounded-full mb-3 shadow-sm border border-[var(--primary-color)]/20 transition-transform duration-300",
+    style: {
+      transform: heroMouse.active ? `translateX(${heroMouse.nx * 6}px) translateY(${heroMouse.ny * 4}px)` : 'none'
+    }
   }, "EST. 1971 \u30FB \u5C08\u696D\u4EBA\u6587\u5B78\u8853\u8AD6\u8457\u51FA\u7248"), /*#__PURE__*/React.createElement("h2", {
-    className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 text-[var(--dark-color)] leading-tight font-serif tracking-widest"
+    className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 text-[var(--dark-color)] leading-tight font-serif tracking-widest hero-title-shimmer drop-shadow-sm transition-transform duration-200",
+    style: {
+      backgroundPosition: heroMouse.active ? `${(heroMouse.nx + 1) * 50}% ${(heroMouse.ny + 1) * 50}%` : '50% 50%',
+      transform: heroMouse.active ? `translateX(${heroMouse.nx * 10}px) translateY(${heroMouse.ny * 6}px)` : 'none'
+    }
   }, ui.heroHeading1, " ", /*#__PURE__*/React.createElement("span", {
     className: "text-[var(--primary-color)]"
   }, ui.heroHeading2)), /*#__PURE__*/React.createElement("p", {
-    className: "text-stone-700 max-w-3xl mx-auto leading-relaxed text-sm sm:text-base md:text-lg font-sans font-medium"
+    className: "text-stone-700 max-w-3xl mx-auto leading-relaxed text-sm sm:text-base md:text-lg font-sans font-medium transition-transform duration-300",
+    style: {
+      transform: heroMouse.active ? `translateX(${heroMouse.nx * -5}px) translateY(${heroMouse.ny * -3}px)` : 'none'
+    }
   }, "致力於出版高品質文學、歷史、哲學著作，讓深厚底蘊更貼近當代讀者；跨越時空的底蘊，化為當代心靈的迴響。"))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "w-full max-w-6xl mx-auto mb-14"
   }, /*#__PURE__*/React.createElement("div", {

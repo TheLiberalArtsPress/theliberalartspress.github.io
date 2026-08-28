@@ -165,82 +165,101 @@
         border-bottom: 1px solid rgba(232, 220, 206, 0.8);
     }
 
-    /* 🏷️ 頂部導覽一致膠囊樣式 (同「我的書包」風格) */
-    .nav-pill-btn {
-        background-color: #FFFFFF !important;
-        border: 1px solid #DFD5C6 !important;
-        color: #2D241E !important;
-        border-radius: 9999px !important;
-        padding: 7px 16px !important;
-        font-size: 13px !important;
-        font-weight: 700 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        box-shadow: 0 1px 3px rgba(44, 36, 27, 0.06) !important;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        cursor: pointer !important;
-        text-decoration: none !important;
-        white-space: nowrap !important;
-    }
-    .nav-pill-btn:hover {
-        background-color: #FFFFFF !important;
-        border-color: #8C5A2B !important;
-        color: #8C5A2B !important;
-        box-shadow: 0 4px 12px rgba(140, 90, 43, 0.15) !important;
-        transform: translateY(-1px) !important;
-    }
-    .nav-pill-btn:active {
-        transform: translateY(0) !important;
-    }
-
-    /* 🛍️ 我的書包按鈕膠囊 */
-    .nav-pill-cart {
-        background-color: #FFFFFF !important;
-        border: 1px solid #DFD5C6 !important;
-        color: #2D241E !important;
-        border-radius: 9999px !important;
-        padding: 7px 18px !important;
-        font-size: 13px !important;
-        font-weight: 700 !important;
-        display: inline-flex !important;
-        align-items: center !important;
-        gap: 6px !important;
-        box-shadow: 0 1px 3px rgba(44, 36, 27, 0.06) !important;
-        position: relative !important;
-        overflow: visible !important;
-        cursor: pointer !important;
-        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
-        white-space: nowrap !important;
-    }
-    .nav-pill-cart:hover {
-        border-color: #8C5A2B !important;
-        color: #8C5A2B !important;
-        box-shadow: 0 4px 12px rgba(140, 90, 43, 0.15) !important;
-        transform: translateY(-1px) !important;
-    }
-
-    /* 🔴 購物車紅點計數徽章：100% 完整圓形、立體白邊、正紅背景、超清晰數字 */
-    .cart-badge-count {
+    /* 🔴 購物車右上角跳動紅點徽章 (100% 完整、立體白邊、靈動跳躍) */
+    .cart-floating-badge {
         position: absolute !important;
         top: -7px !important;
         right: -7px !important;
-        background-color: #C23924 !important;
+        background-color: #B83B26 !important;
         color: #FFFFFF !important;
-        font-size: 11px !important;
+        font-family: 'Noto Serif TC', serif !important;
         font-weight: 900 !important;
+        font-size: 11px !important;
         line-height: 1 !important;
         min-width: 22px !important;
         height: 22px !important;
-        padding: 0 5px !important;
+        padding: 0 4px !important;
         border-radius: 9999px !important;
         display: flex !important;
         align-items: center !important;
         justify-content: center !important;
         border: 2px solid #FFFFFF !important;
-        box-shadow: 0 2px 8px rgba(194, 57, 36, 0.5) !important;
-        z-index: 100 !important;
+        box-shadow: 0 2px 8px rgba(184, 59, 38, 0.45) !important;
+        z-index: 50 !important;
         pointer-events: none !important;
+        animation: cartBadgeBounce 1.4s infinite ease-in-out !important;
+    }
+    @keyframes cartBadgeBounce {
+        0%, 100% { transform: translateY(0) scale(1); }
+        50% { transform: translateY(-4px) scale(1.1); }
+    }
+
+    /* 🧊 頂部五個選單整合式毛玻璃邊框膠囊群 (帶細緻分隔線與追隨光效) */
+    .nav-segmented-group {
+        background: rgba(255, 255, 255, 0.75) !important;
+        backdrop-filter: blur(14px) saturate(160%);
+        -webkit-backdrop-filter: blur(14px) saturate(160%);
+        border: 1px solid rgba(223, 213, 198, 0.95) !important;
+        border-radius: 9999px !important;
+        padding: 3px 5px !important;
+        box-shadow: 0 2px 10px -2px rgba(44, 36, 27, 0.07) !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        position: relative !important;
+    }
+    .nav-segmented-item {
+        padding: 6px 14px !important;
+        border-radius: 9999px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        color: #2D241E !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        cursor: pointer !important;
+        position: relative !important;
+        z-index: 2 !important;
+        text-decoration: none !important;
+        white-space: nowrap !important;
+    }
+    .nav-segmented-item:hover {
+        background-color: #FFFFFF !important;
+        color: #8C5A2B !important;
+        box-shadow: 0 2px 8px rgba(140, 90, 43, 0.18) !important;
+        transform: translateY(-1px) !important;
+    }
+    .nav-segmented-divider {
+        width: 1px !important;
+        height: 14px !important;
+        background-color: rgba(223, 213, 198, 0.85) !important;
+        margin: 0 1px !important;
+    }
+
+    /* 🌟 首頁標題滑鼠追隨光澤與立體景深 */
+    .hero-magnetic-wrap {
+        perspective: 1000px;
+        transition: transform 0.18s cubic-bezier(0.16, 1, 0.3, 1);
+        will-change: transform;
+    }
+    .hero-title-shimmer {
+        background: linear-gradient(135deg, #1A1412 0%, #3D2B1F 35%, #8C5A2B 50%, #3D2B1F 65%, #1A1412 100%);
+        background-size: 200% auto;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        transition: background-position 0.2s ease-out;
+    }
+    .hero-spotlight {
+        pointer-events: none;
+        position: absolute;
+        inset: -20px;
+        border-radius: 40px;
+        background: radial-gradient(circle 320px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(140, 90, 43, 0.12), transparent 70%);
+        opacity: 0;
+        transition: opacity 0.3s ease;
+    }
+    .hero-container:hover .hero-spotlight {
+        opacity: 1;
     }
 
     .glass-nav-pill-active {
