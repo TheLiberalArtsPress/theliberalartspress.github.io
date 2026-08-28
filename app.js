@@ -1531,15 +1531,14 @@ function App() {
   }))), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center space-x-2 xl:space-x-5"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "hidden lg:flex space-x-1.5 xl:space-x-2.5 text-xs xl:text-[13.5px] font-sans font-bold items-center whitespace-nowrap"
+    className: "hidden lg:flex space-x-1 xl:space-x-2 text-xs xl:text-[14px] font-sans font-bold text-[var(--text-dark)] items-center whitespace-nowrap"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsAboutOpen(true),
-    className: "nav-pill-btn"
+    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Compass",
-    size: 15,
-    className: "text-[var(--primary-color)]"
+    size: 16
   }), " ", ui.menuAbout), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIframeModal({
@@ -1547,11 +1546,10 @@ function App() {
       url: ui.urlAboutPresident,
       title: ui.menuPresident
     }),
-    className: "nav-pill-btn"
+    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "User",
-    size: 15,
-    className: "text-[var(--primary-color)]"
+    size: 16
   }), " ", ui.menuPresident), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIframeModal({
@@ -1559,31 +1557,28 @@ function App() {
       url: ui.urlContactUs,
       title: ui.menuContact
     }),
-    className: "nav-pill-btn"
+    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "MessageCircle",
-    size: 15,
-    className: "text-[var(--primary-color)]"
+    size: 16
   }), " ", ui.menuContact), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: openRandomBooksModal,
-    className: "nav-pill-btn"
+    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
-    size: 15,
-    className: "text-amber-600"
+    size: 16
   }), " ", ui.menuNewArrivals), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsSearchModalOpen(true),
-    className: "nav-pill-btn"
+    className: "hover:text-[var(--primary-color)] hover:bg-white/70 hover:backdrop-blur transition-all flex items-center gap-1.5 px-3.5 py-2 rounded-full"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Search",
-    size: 15,
-    className: "text-[var(--primary-color)]"
+    size: 16
   }), " ", ui.menuSearch), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsOrderQueryOpen(true),
-    className: "glass-nav-pill-active text-white flex items-center gap-1.5 px-4 py-1.5 rounded-full shadow-md active:scale-95"
+    className: "text-white bg-[var(--primary-color)] hover:bg-[var(--dark-color)] transition-all flex items-center gap-1.5 px-4 py-2 rounded-full shadow-sm hover:shadow active:scale-95"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "FileText",
     size: 15
@@ -1593,19 +1588,19 @@ function App() {
     type: "button",
     id: "main-cart-btn",
     onClick: () => setIsCartOpen(true),
-    className: "nav-pill-cart"
+    className: "bg-white/90 border border-[var(--accent-color)]/70 text-[var(--dark-color)] px-4 py-2 rounded-full flex items-center gap-2 hover:bg-[var(--primary-color)] hover:text-white hover:border-[var(--primary-color)] transition-all shadow-sm font-sans font-bold group"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 17,
-    className: "text-[var(--primary-color)] group-hover:scale-110 transition-transform"
+    className: "group-hover:scale-110 transition-transform"
   }), /*#__PURE__*/React.createElement("span", {
     className: "hidden sm:inline font-bold"
   }, ui.menuCart), cart.length > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "cart-badge-count"
+    className: "ml-1 px-2 py-0.5 bg-[#B83B26] text-white text-[11px] font-black rounded-full shadow-sm leading-none flex items-center justify-center min-w-[20px] h-[20px]"
   }, cart.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => window.open('https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW', '_blank'),
-    className: "hidden sm:flex glass-nav-pill-fb text-white px-4 py-1.5 rounded-full text-xs xl:text-sm font-sans items-center gap-1.5 font-bold active:scale-95 shadow-md"
+    className: "hidden sm:flex bg-[#1877F2] text-white px-4 py-2 rounded-full text-xs xl:text-sm font-sans items-center gap-1.5 hover:bg-[#145CB8] transition-all shadow-sm font-bold active:scale-95"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "LayoutDashboard",
     size: 16
@@ -1702,30 +1697,18 @@ function App() {
   }), " ", ui.menuAdmin))), /*#__PURE__*/React.createElement("main", {
     className: "flex-1 max-w-7xl mx-auto w-full p-4 md:p-8"
   }, /*#__PURE__*/React.createElement("section", {
-    className: "mb-10 py-6 md:py-10 animate-in relative"
+    className: "text-center mb-8 py-6 md:py-10 animate-in relative"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "glass-card p-6 sm:p-10 md:p-12 rounded-3xl border border-white/90 shadow-md text-center max-w-5xl mx-auto relative overflow-hidden bg-gradient-to-b from-white/95 via-[#FAF8F5]/85 to-white/95"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "inline-flex items-center gap-2 text-[11px] md:text-xs font-sans font-bold tracking-[0.25em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-4 py-1.5 rounded-full mb-4 shadow-sm border border-[var(--primary-color)]/25"
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "Sparkles",
-    size: 13,
-    className: "text-[var(--primary-color)]"
-  }), "Est. 1971 \u30FB \u5C08\u696D\u4EBA\u6587\u5B78\u8853\u8AD6\u8457\u51FA\u7248"), /*#__PURE__*/React.createElement("h2", {
+    className: "max-w-4xl mx-auto px-4"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "inline-block text-[11px] font-sans font-bold tracking-[0.3em] uppercase text-[var(--primary-color)] bg-[var(--primary-color)]/10 px-3.5 py-1 rounded-full mb-3 shadow-sm border border-[var(--primary-color)]/20"
+  }, "EST. 1971 \u30FB \u5C08\u696D\u4EBA\u6587\u5B78\u8853\u8AD6\u8457\u51FA\u7248"), /*#__PURE__*/React.createElement("h2", {
     className: "text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 text-[var(--dark-color)] leading-tight font-serif tracking-widest"
   }, ui.heroHeading1, " ", /*#__PURE__*/React.createElement("span", {
     className: "text-[var(--primary-color)]"
-  }, ui.heroHeading2)), /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center justify-center gap-3 my-4 opacity-40 text-[var(--primary-color)]"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "h-[1px] w-12 sm:w-20 bg-current"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "text-xs font-serif tracking-widest"
-  }, "❖ ◈ ❖"), /*#__PURE__*/React.createElement("span", {
-    className: "h-[1px] w-12 sm:w-20 bg-current"
-  })), /*#__PURE__*/React.createElement("p", {
+  }, ui.heroHeading2)), /*#__PURE__*/React.createElement("p", {
     className: "text-stone-700 max-w-3xl mx-auto leading-relaxed text-sm sm:text-base md:text-lg font-sans font-medium"
-  }, ui.heroSubheading))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
+  }, "致力於出版高品質文學、歷史、哲學著作，讓深厚底蘊更貼近當代讀者；跨越時空的底蘊，化為當代心靈的迴響。"))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "w-full max-w-6xl mx-auto mb-14"
   }, /*#__PURE__*/React.createElement("div", {
     className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-white/60 bg-[#1A1412] flex items-center justify-center"
