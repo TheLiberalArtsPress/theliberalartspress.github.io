@@ -2871,12 +2871,18 @@ function App() {
     className: "px-2.5 py-1 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "在 Google 學術搜尋相關論文與研究引用"
   }, "🎓 Google 學術搜尋"), /*#__PURE__*/React.createElement("a", {
-    href: `https://aleweb.ncl.edu.tw/F?func=find-b&find_code=WRD&request=${encodeURIComponent(selectedBookDetail.title)}`,
+    href: `https://www.google.com.tw/search?q=${encodeURIComponent('國家圖書館 ' + selectedBookDetail.title + ' ' + (selectedBookDetail.author || ''))}`,
     target: "_blank",
     rel: "noreferrer",
     className: "px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-800 border border-amber-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
-    title: "在國家圖書館館藏目錄查詢館藏紀錄"
-  }, "🏛️ 國家圖書館館藏"))))), /*#__PURE__*/React.createElement("div", {
+    title: "在國家圖書館與書目系統查詢館藏紀錄"
+  }, "🏛️ 國家圖書館館藏"), /*#__PURE__*/React.createElement("a", {
+    href: `https://www.google.com.tw/search?tbm=bks&q=${encodeURIComponent(selectedBookDetail.title + ' ' + (selectedBookDetail.author || ''))}`,
+    target: "_blank",
+    rel: "noreferrer",
+    className: "px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    title: "在 Google 圖書查詢書籍預覽與出版資訊"
+  }, "📚 Google 圖書"))))), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-color)]/60 text-xs text-stone-500"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-[var(--dark-color)] flex items-center gap-1.5"
