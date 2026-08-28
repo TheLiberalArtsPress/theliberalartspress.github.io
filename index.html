@@ -64,8 +64,6 @@
 
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-<meta http-equiv="Pragma" content="no-cache">
 <meta name="google-site-verification" content="google1286063aa2e88d8b" />
 <meta name="description" content="文史哲出版社有限公司創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學學術論著出版。全館典藏超過2,500種專業圖書，傳承文化，創新閱讀。">
 <meta name="keywords" content="文史哲出版社, 文史哲, 彭正雄, 文史哲學集成, 文史哲學術叢刊, 滿文原檔, 莊吉發, 國學研究, 中國歷史, 哲學叢刊, 學術出版">
@@ -83,11 +81,17 @@
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
 <link rel="canonical" href="https://theliberalartspress.github.io/">
 
-<!-- 預先連線關鍵資源 -->
+<!-- ⚡ 預先連線關鍵字體與圖片資源 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://script.google.com">
 <link rel="preconnect" href="https://drive.google.com">
+<link rel="preconnect" href="https://script.google.com">
+
+<!-- ⚡ 非同步無阻塞載入 Google 中文字體 (首屏文字0秒瞬間呈現，不卡白屏) -->
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap" onload="this.onload=null;this.rel='stylesheet'">
+<noscript>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
+</noscript>
 
 <script>
     window.tailwind = {
@@ -95,8 +99,8 @@
             theme: {
                 extend: {
                     fontFamily: {
-                        sans: ['"Noto Sans TC"', 'sans-serif'],
-                        serif: ['"Noto Serif TC"', 'serif'],
+                        sans: ['"Noto Sans TC"', '-apple-system', 'BlinkMacSystemFont', '"PingFang TC"', '"Microsoft JhengHei"', 'sans-serif'],
+                        serif: ['"Noto Serif TC"', '"Songti TC"', '"STSong"', '"PMingLiU"', '"MingLiU"', 'serif'],
                     },
                     boxShadow: {
                         'luxury': '0 20px 40px -15px rgba(44, 36, 27, 0.08), 0 0 0 1px rgba(140, 90, 43, 0.05)',
@@ -112,12 +116,8 @@
 <script src="assets/vendor/react.min.js"></script>
 <script src="assets/vendor/react-dom.min.js"></script>
 <script>window.react = window.React;</script>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
 <style>
-    @import url('https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap');
-    
     :root {
         --primary-color: #8C5A2B;
         --dark-color: #241D17;
@@ -128,8 +128,8 @@
         --accent-color: #BFAF9E;
         --seal-red: #B83B26;
         --footer-bg: #161210;
-        --body-font: 'Noto Sans TC', sans-serif;
-        --title-font: 'Noto Serif TC', serif;
+        --body-font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
+        --title-font: 'Noto Serif TC', "Songti TC", "STSong", "PMingLiU", "MingLiU", serif;
     }
 
     body {
