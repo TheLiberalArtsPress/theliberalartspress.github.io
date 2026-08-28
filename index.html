@@ -621,24 +621,9 @@
   </div>
 </noscript>
 
-<!-- ⚡ 動態防快取載入核心數據與應用程序，保證任何更新瞬間同步 -->
-<script>
-    (function() {
-        const v = Date.now();
-        function loadScript(src, next) {
-            const s = document.createElement('script');
-            s.src = src + '?v=' + v;
-            s.async = false;
-            s.onload = function() { if (next) next(); };
-            s.onerror = function() { if (next) next(); };
-            document.body.appendChild(s);
-        }
-        loadScript('init_data.js', function() {
-            loadScript('data.js', function() {
-                loadScript('app.js');
-            });
-        });
-    })();
-</script>
+<!-- ⚡ 核心數據與應用程序載入（init_data 首屏秒開 + data.js 背景遞延 + app.js 即刻渲染） -->
+<script src="init_data.js"></script>
+<script src="data.js" defer></script>
+<script src="app.js"></script>
 </body>
 </html>
