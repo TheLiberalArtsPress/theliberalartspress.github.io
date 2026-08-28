@@ -1535,7 +1535,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsAboutOpen(true),
-    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
+    className: "nav-pill-btn"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Compass",
     size: 15,
@@ -1547,7 +1547,7 @@ function App() {
       url: ui.urlAboutPresident,
       title: ui.menuPresident
     }),
-    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
+    className: "nav-pill-btn"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "User",
     size: 15,
@@ -1559,7 +1559,7 @@ function App() {
       url: ui.urlContactUs,
       title: ui.menuContact
     }),
-    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
+    className: "nav-pill-btn"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "MessageCircle",
     size: 15,
@@ -1567,7 +1567,7 @@ function App() {
   }), " ", ui.menuContact), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: openRandomBooksModal,
-    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
+    className: "nav-pill-btn"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
     size: 15,
@@ -1575,7 +1575,7 @@ function App() {
   }), " ", ui.menuNewArrivals), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsSearchModalOpen(true),
-    className: "glass-nav-pill text-[var(--text-dark)] flex items-center gap-1.5 px-3.5 py-1.5 rounded-full shadow-sm"
+    className: "nav-pill-btn"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Search",
     size: 15,
@@ -1593,7 +1593,7 @@ function App() {
     type: "button",
     id: "main-cart-btn",
     onClick: () => setIsCartOpen(true),
-    className: "relative glass-nav-pill text-[var(--dark-color)] px-4 xl:px-5 py-1.5 rounded-full flex items-center gap-2 font-sans font-bold group cursor-pointer overflow-visible shadow-sm"
+    className: "nav-pill-cart"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 17,
@@ -1601,7 +1601,7 @@ function App() {
   }), /*#__PURE__*/React.createElement("span", {
     className: "hidden sm:inline font-bold"
   }, ui.menuCart), cart.length > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "absolute -top-2 -right-2 badge-seal-red text-white text-[11px] min-w-[22px] h-[22px] px-1 rounded-full flex items-center justify-center font-black shadow-lg border-2 border-white animate-bounce z-30 pointer-events-none"
+    className: "cart-badge-count"
   }, cart.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => window.open('https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW', '_blank'),

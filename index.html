@@ -165,45 +165,123 @@
         border-bottom: 1px solid rgba(232, 220, 206, 0.8);
     }
 
-    /* 🧊 精緻毛玻璃導覽按鈕 (Frosted Glass Nav Pill) */
-    .glass-nav-pill {
-        background: rgba(255, 255, 255, 0.72) !important;
-        backdrop-filter: blur(14px) saturate(160%);
-        -webkit-backdrop-filter: blur(14px) saturate(160%);
-        border: 1px solid rgba(232, 220, 206, 0.9) !important;
-        box-shadow: 0 2px 8px -2px rgba(44, 36, 27, 0.06);
-        transition: all 0.28s cubic-bezier(0.16, 1, 0.3, 1);
+    /* 🏷️ 頂部導覽一致膠囊樣式 (同「我的書包」風格) */
+    .nav-pill-btn {
+        background-color: #FFFFFF !important;
+        border: 1px solid #DFD5C6 !important;
+        color: #2D241E !important;
+        border-radius: 9999px !important;
+        padding: 7px 16px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        box-shadow: 0 1px 3px rgba(44, 36, 27, 0.06) !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        cursor: pointer !important;
+        text-decoration: none !important;
+        white-space: nowrap !important;
     }
-    .glass-nav-pill:hover {
-        background: rgba(255, 255, 255, 0.96) !important;
-        border-color: var(--primary-color) !important;
-        color: var(--primary-color) !important;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 16px -3px rgba(140, 90, 43, 0.18);
+    .nav-pill-btn:hover {
+        background-color: #FFFFFF !important;
+        border-color: #8C5A2B !important;
+        color: #8C5A2B !important;
+        box-shadow: 0 4px 12px rgba(140, 90, 43, 0.15) !important;
+        transform: translateY(-1px) !important;
     }
+    .nav-pill-btn:active {
+        transform: translateY(0) !important;
+    }
+
+    /* 🛍️ 我的書包按鈕膠囊 */
+    .nav-pill-cart {
+        background-color: #FFFFFF !important;
+        border: 1px solid #DFD5C6 !important;
+        color: #2D241E !important;
+        border-radius: 9999px !important;
+        padding: 7px 18px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        box-shadow: 0 1px 3px rgba(44, 36, 27, 0.06) !important;
+        position: relative !important;
+        overflow: visible !important;
+        cursor: pointer !important;
+        transition: all 0.2s cubic-bezier(0.16, 1, 0.3, 1) !important;
+        white-space: nowrap !important;
+    }
+    .nav-pill-cart:hover {
+        border-color: #8C5A2B !important;
+        color: #8C5A2B !important;
+        box-shadow: 0 4px 12px rgba(140, 90, 43, 0.15) !important;
+        transform: translateY(-1px) !important;
+    }
+
+    /* 🔴 購物車紅點計數徽章：100% 完整圓形、立體白邊、正紅背景、超清晰數字 */
+    .cart-badge-count {
+        position: absolute !important;
+        top: -7px !important;
+        right: -7px !important;
+        background-color: #C23924 !important;
+        color: #FFFFFF !important;
+        font-size: 11px !important;
+        font-weight: 900 !important;
+        line-height: 1 !important;
+        min-width: 22px !important;
+        height: 22px !important;
+        padding: 0 5px !important;
+        border-radius: 9999px !important;
+        display: flex !important;
+        align-items: center !important;
+        justify-content: center !important;
+        border: 2px solid #FFFFFF !important;
+        box-shadow: 0 2px 8px rgba(194, 57, 36, 0.5) !important;
+        z-index: 100 !important;
+        pointer-events: none !important;
+    }
+
     .glass-nav-pill-active {
         background: linear-gradient(135deg, #8C5A2B 0%, #6E441F 100%) !important;
         color: #FFFFFF !important;
         border: 1px solid rgba(255, 255, 255, 0.35) !important;
-        box-shadow: 0 4px 14px -2px rgba(140, 90, 43, 0.35);
+        padding: 7px 18px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        border-radius: 9999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        box-shadow: 0 4px 14px -2px rgba(140, 90, 43, 0.35) !important;
+        transition: all 0.2s ease !important;
     }
     .glass-nav-pill-active:hover {
         background: linear-gradient(135deg, #744820 0%, #583515 100%) !important;
         color: #FFFFFF !important;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px -2px rgba(140, 90, 43, 0.45);
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 18px -2px rgba(140, 90, 43, 0.45) !important;
     }
     .glass-nav-pill-fb {
         background: linear-gradient(135deg, #1877F2 0%, #0E65D9 100%) !important;
         color: #FFFFFF !important;
         border: 1px solid rgba(255, 255, 255, 0.3) !important;
-        box-shadow: 0 4px 14px -2px rgba(24, 119, 242, 0.35);
+        padding: 7px 18px !important;
+        font-size: 13px !important;
+        font-weight: 700 !important;
+        border-radius: 9999px !important;
+        display: inline-flex !important;
+        align-items: center !important;
+        gap: 6px !important;
+        box-shadow: 0 4px 14px -2px rgba(24, 119, 242, 0.35) !important;
+        transition: all 0.2s ease !important;
     }
     .glass-nav-pill-fb:hover {
         background: linear-gradient(135deg, #156AD8 0%, #0B52B3 100%) !important;
         color: #FFFFFF !important;
-        transform: translateY(-2px);
-        box-shadow: 0 6px 18px -2px rgba(24, 119, 242, 0.45);
+        transform: translateY(-1px) !important;
+        box-shadow: 0 6px 18px -2px rgba(24, 119, 242, 0.45) !important;
     }
 
     .glass-modal {
@@ -527,16 +605,20 @@
 <!-- ⚡ 動態防快取載入核心數據與應用程序，保證任何更新瞬間同步 -->
 <script>
     (function() {
-        const timestamp = Date.now();
-        function loadScript(src, isDefer) {
+        const v = Date.now();
+        function loadScript(src, next) {
             const s = document.createElement('script');
-            s.src = src + '?v=' + timestamp;
-            if (isDefer) s.defer = true;
+            s.src = src + '?v=' + v;
+            s.async = false;
+            s.onload = function() { if (next) next(); };
+            s.onerror = function() { if (next) next(); };
             document.body.appendChild(s);
         }
-        loadScript('init_data.js', false);
-        loadScript('data.js', true);
-        loadScript('app.js', false);
+        loadScript('init_data.js', function() {
+            loadScript('data.js', function() {
+                loadScript('app.js');
+            });
+        });
     })();
 </script>
 </body>
