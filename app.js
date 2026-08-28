@@ -475,6 +475,23 @@ const getBookReview = book => {
 
   return `【學術評析】本書體例嚴謹、考證極為扎實，處處可見求真求實之學術風範。${authorName}對相關文獻源流與核心論題之剖析鉅細靡遺、論據確鑿，解決了許多長年考訂上的疑難，兼具學術深度與高度研讀價值。`;
 };
+
+const getCategoryBadgeClass = cat => {
+  const c = String(cat || '').trim();
+  if (c.includes('經') || c.includes('哲學') || c.includes('諸子') || c.includes('易') || c.includes('儒') || c.includes('佛') || c.includes('道教') || c.includes('思想')) {
+    return 'siku-tag-jing'; // 經部／哲學：黛藍 (#2C3E50)
+  }
+  if (c.includes('史') || c.includes('滿') || c.includes('八旗') || c.includes('臺') || c.includes('台') || c.includes('檔案') || c.includes('方志') || c.includes('清代') || c.includes('歷代')) {
+    return 'siku-tag-shi'; // 史部／清史滿學：赭石 (#8C5A2B)
+  }
+  if (c.includes('字') || c.includes('文字') || c.includes('聲韻') || c.includes('訓詁') || c.includes('目錄') || c.includes('版本') || c.includes('金石') || c.includes('藝術') || c.includes('印') || c.includes('小學')) {
+    return 'siku-tag-zi'; // 子部／文獻目錄：竹青 (#3D5A45)
+  }
+  if (c.includes('文') || c.includes('詩') || c.includes('詞') || c.includes('現代') || c.includes('小說') || c.includes('散文') || c.includes('曲') || c.includes('戲曲') || c.includes('叢刊')) {
+    return 'siku-tag-ji'; // 集部／詩詞現代文學：絳紫／殷紅 (#7B241C)
+  }
+  return 'siku-tag-default';
+};
 const fallbackCarousels = [{
   id: 'fb1',
   title: '傳承千年智慧',
@@ -673,12 +690,6 @@ function App() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [reviewBook, setReviewBook] = useState(null);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
-  const [isAiModalOpen, setIsAiModalOpen] = useState(false);
-  const [aiSelectedBookId, setAiSelectedBookId] = useState('');
-  const [aiAnalysisResult, setAiAnalysisResult] = useState('');
-  const [isAiAnalyzing, setIsAiAnalyzing] = useState(false);
-  const [aiCustomQuestion, setAiCustomQuestion] = useState('');
-  const [logoClickCount, setLogoClickCount] = useState(0);
   const sliderRef = useRef(null);
   const hasFetchedRef = useRef(false);
   const showMsg = useCallback(text => {
@@ -1509,7 +1520,7 @@ function App() {
   }), /*#__PURE__*/React.createElement("span", {
     className: "hidden sm:inline"
   }, ui.menuCart), cart.length > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "absolute -top-1.5 -right-1.5 bg-red-600 text-white text-[11px] min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center font-bold shadow-md border-2 border-white animate-bounce"
+    className: "absolute -top-1.5 -right-1.5 badge-seal-red text-white text-[11px] min-w-[20px] h-5 px-1 rounded-full flex items-center justify-center font-bold shadow-md border-2 border-white animate-bounce"
   }, cart.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => window.open('https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW', '_blank'),
@@ -1754,7 +1765,7 @@ function App() {
     alt: book.title,
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
-    className: "absolute top-2.5 left-2.5 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[11px] px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10"
+    className: `absolute top-2.5 left-2.5 ${getCategoryBadgeClass(book.category)} text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow z-10`
   }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
@@ -1763,7 +1774,7 @@ function App() {
     className: "font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 group-hover/card:text-[var(--primary-color)] transition-colors font-serif",
     title: book.title
   }, book.title), /*#__PURE__*/React.createElement("p", {
-    className: "text-[var(--primary-color)] font-black text-base font-sans mt-auto mb-2.5"
+    className: "text-[#B83B26] font-black text-base font-sans mt-auto mb-2.5"
   }, "NT$ ", book.price), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: e => {
@@ -1783,7 +1794,7 @@ function App() {
       setSelectedCategory(cat);
       setVisibleCount(8);
     },
-    className: `px-5 py-2 rounded-full text-sm font-bold transition-all border ${selectedCategory === cat ? 'bg-[var(--dark-color)] text-white border-[var(--dark-color)] shadow-md scale-105' : 'bg-white/80 border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:bg-white'}`
+    className: `px-5 py-2 rounded-full text-sm font-bold transition-all border ${selectedCategory === cat ? `${getCategoryBadgeClass(cat)} shadow-md scale-105` : 'bg-white/85 border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:bg-white'}`
   }, cat)), dynamicCategories.length > 5 && /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsAllCategoriesExpanded(!isAllCategoriesExpanded),
@@ -1820,7 +1831,7 @@ function App() {
     alt: book.title,
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
-    className: "absolute top-3 left-3 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10"
+    className: `absolute top-3 left-3 ${getCategoryBadgeClass(book.category)} text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow z-10`
   }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
@@ -1829,7 +1840,7 @@ function App() {
     className: "font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors",
     title: book.title
   }, book.title), /*#__PURE__*/React.createElement("p", {
-    className: "text-[var(--primary-color)] font-black mb-4 text-xl font-sans mt-auto"
+    className: "text-[#B83B26] font-black mb-4 text-xl font-sans mt-auto"
   }, "NT$ ", book.price), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: e => {
@@ -1974,18 +1985,12 @@ function App() {
   }, item.text))))))), /*#__PURE__*/React.createElement("div", {
     className: "mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-stone-400 font-bold"
   }, /*#__PURE__*/React.createElement("p", null, "\xA9 ", new Date().getFullYear(), " ", ui.frontendName || settings.systemName, " ", ui.systemSubName || settings.systemSubName, "."), /*#__PURE__*/React.createElement("p", {
-    className: "mt-2 md:mt-0 flex items-center gap-2 cursor-pointer select-none",
-    onClick: handleLogoSecretClick,
-    title: "\u9EDE\u64CA\u4E09\u6B21\u89E3\u9396\u96B1\u85CF AI \u5206\u6790"
+    className: "mt-2 md:mt-0 flex items-center gap-2 select-none"
   }, /*#__PURE__*/React.createElement(ModernLogo, {
-    className: "w-3.5 h-3.5 opacity-40 hover:opacity-100 transition-opacity",
+    className: "w-3.5 h-3.5 opacity-40",
     color1: "#FFF",
     color2: "#FFF"
-  }), /*#__PURE__*/React.createElement("span", null, ui.footerCopyright), /*#__PURE__*/React.createElement(Icon, {
-    name: "Sparkles",
-    size: 11,
-    className: "text-amber-400 opacity-60"
-  }))))), /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("span", null, ui.footerCopyright))))), /*#__PURE__*/React.createElement("div", {
     className: "fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
   }, isContactOpen && /*#__PURE__*/React.createElement("div", {
     className: "glass-modal w-80 shadow-2xl rounded-2xl border border-[var(--border-color)] overflow-hidden animate-in"
@@ -2142,7 +2147,7 @@ function App() {
     name: "ShoppingCart",
     size: 15
   }), /*#__PURE__*/React.createElement("span", null, ui.menuCart), cart.length > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "bg-red-600 text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold"
+    className: "badge-seal-red text-white text-[10px] w-4 h-4 rounded-full flex items-center justify-center font-bold"
   }, cart.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsSearchModalOpen(false),
@@ -2828,14 +2833,14 @@ function App() {
     className: "font-semibold"
   }, selectedBookDetail.author || '未標記')), /*#__PURE__*/React.createElement("div", null, "年份：", /*#__PURE__*/React.createElement("strong", {
     className: "font-semibold"
-  }, selectedBookDetail.year || '未標記')), /*#__PURE__*/React.createElement("div", null, "分類：", /*#__PURE__*/React.createElement("strong", {
-    className: "text-[var(--primary-color)] font-bold"
+  }, selectedBookDetail.year || '未標記')), /*#__PURE__*/React.createElement("div", null, "分類：", /*#__PURE__*/React.createElement("span", {
+    className: `${getCategoryBadgeClass(selectedBookDetail.category)} px-2 py-0.5 rounded text-[11px] font-bold shadow-sm inline-block`
   }, selectedBookDetail.category || '未分類')), /*#__PURE__*/React.createElement("div", null, "書碼：", /*#__PURE__*/React.createElement("strong", {
     className: "font-mono font-bold"
   }, selectedBookDetail.id || '無')), /*#__PURE__*/React.createElement("div", {
     className: "col-span-2 pt-0.5"
   }, "定價：", /*#__PURE__*/React.createElement("strong", {
-    className: `${isBookDetailFullscreen ? 'text-2xl' : 'text-lg'} font-black text-[var(--primary-color)] font-sans`
+    className: `${isBookDetailFullscreen ? 'text-2xl' : 'text-lg'} font-black text-[#B83B26] font-sans`
   }, "NT$ ", selectedBookDetail.price))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
     className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-[var(--dark-color)] mb-1 flex items-center gap-1`
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -3013,91 +3018,7 @@ function App() {
   }) : /*#__PURE__*/React.createElement(Icon, {
     name: "Send",
     size: 14
-  }), /*#__PURE__*/React.createElement("span", null, isSubmittingReview ? "傳送中..." : "送出心得反映")))))), isAiModalOpen && /*#__PURE__*/React.createElement("div", {
-    className: "fixed inset-0 bg-black/75 backdrop-blur-lg z-[260] flex justify-center items-center p-4 md:p-8 overflow-y-auto animate-in",
-    onClick: () => setIsAiModalOpen(false)
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "glass-modal w-full max-w-3xl max-h-[88vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden border border-indigo-400/40 bg-slate-950 text-white",
-    onClick: e => e.stopPropagation()
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "p-4 border-b border-indigo-500/30 flex justify-between items-center bg-indigo-950/50"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-2.5"
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "Brain",
-    size: 22,
-    className: "text-amber-300 animate-pulse"
-  }), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h2", {
-    className: "text-base font-black font-serif text-amber-100 flex items-center gap-2"
-  }, "\u6587\u53F2\u54F2 AI \u570B\u5B78\u8207\u5B78\u8853\u5206\u6790\u5100", /*#__PURE__*/React.createElement("span", {
-    className: "text-[9px] font-sans font-bold bg-indigo-500/30 border border-indigo-400/30 text-indigo-200 px-2 py-0.5 rounded-full"
-  }, "Gemini 3 Flash")))), /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    onClick: () => setIsAiModalOpen(false),
-    className: "p-1 rounded-full text-stone-400 hover:text-white"
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "X",
-    size: 18
-  }))), /*#__PURE__*/React.createElement("div", {
-    className: "p-5 font-sans overflow-y-auto flex-1 space-y-4 text-xs"
-  }, /*#__PURE__*/React.createElement("div", {
-    className: "bg-slate-900 border border-slate-700 p-3.5 rounded-2xl space-y-2.5"
-  }, /*#__PURE__*/React.createElement("select", {
-    value: aiSelectedBookId,
-    onChange: e => {
-      const bId = e.target.value;
-      setAiSelectedBookId(bId);
-      const target = books.find(b => b.id && b.id.toString() === bId || b.title === bId);
-      if (target) analyzeBookWithGemini(target, aiCustomQuestion);
-    },
-    className: "w-full bg-slate-950 border border-slate-700 rounded-xl p-2 font-bold text-amber-200 outline-none"
-  }, books.map((b, idx) => /*#__PURE__*/React.createElement("option", {
-    key: idx,
-    value: b.id || b.title
-  }, "[", b.category || '未分類', "] ", b.title, " (", b.author || '無作者', ")"))), /*#__PURE__*/React.createElement("div", {
-    className: "flex gap-2"
-  }, /*#__PURE__*/React.createElement("input", {
-    type: "text",
-    value: aiCustomQuestion,
-    onChange: e => setAiCustomQuestion(e.target.value),
-    placeholder: "\u53EF\u8F38\u5165\u5C0D\u672C\u66F8\u7684\u7279\u5225\u63D0\u554F\uFF08\u4F8B\uFF1A\u672C\u66F8\u5728\u5B8B\u4EE3\u7406\u5B78\u4E4B\u5730\u4F4D\uFF1F\uFF09",
-    className: "flex-1 bg-slate-950 border border-slate-700 rounded-xl p-2 text-slate-200 outline-none",
-    onKeyDown: e => {
-      if (e.key === 'Enter') {
-        const target = books.find(b => b.id && b.id.toString() === aiSelectedBookId || b.title === aiSelectedBookId) || books[0];
-        analyzeBookWithGemini(target, aiCustomQuestion);
-      }
-    }
-  }), /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    disabled: isAiAnalyzing,
-    onClick: () => {
-      const target = books.find(b => b.id && b.id.toString() === aiSelectedBookId || b.title === aiSelectedBookId) || books[0];
-      analyzeBookWithGemini(target, aiCustomQuestion);
-    },
-    className: "bg-indigo-600 hover:bg-indigo-500 text-white px-4 py-2 rounded-xl font-bold transition flex items-center gap-1 text-xs shrink-0 active:scale-95 disabled:opacity-50"
-  }, isAiAnalyzing ? /*#__PURE__*/React.createElement(Icon, {
-    name: "RefreshCw",
-    size: 13,
-    className: "animate-spin"
-  }) : /*#__PURE__*/React.createElement(Icon, {
-    name: "Sparkles",
-    size: 13
-  }), /*#__PURE__*/React.createElement("span", null, isAiAnalyzing ? "分析中..." : "重新分析")))), /*#__PURE__*/React.createElement("div", {
-    className: "min-h-[200px] bg-slate-900 border border-indigo-500/20 rounded-2xl p-5 font-serif leading-relaxed text-slate-200 text-xs"
-  }, isAiAnalyzing ? /*#__PURE__*/React.createElement("div", {
-    className: "py-16 flex flex-col justify-center items-center gap-2 text-indigo-300 font-sans"
-  }, /*#__PURE__*/React.createElement(Icon, {
-    name: "Cpu",
-    size: 32,
-    className: "animate-bounce text-amber-300"
-  }), /*#__PURE__*/React.createElement("span", {
-    className: "font-bold"
-  }, "Gemini 3 Flash \u6B63\u5728\u7CBE\u8B80\u5178\u7C4D\u4E26\u69CB\u5EFA\u5B78\u8853\u5C0E\u8B80...")) : aiAnalysisResult ? /*#__PURE__*/React.createElement("div", {
-    className: "whitespace-pre-wrap space-y-3"
-  }, aiAnalysisResult) : /*#__PURE__*/React.createElement("div", {
-    className: "py-12 text-center text-slate-500 font-sans"
-  }, "\u8ACB\u9078\u64C7\u66F8\u7C4D\u4E26\u9EDE\u64CA\u300C\u91CD\u65B0\u5206\u6790\u300D\u555F\u52D5 AI \u5B78\u8853\u89E3\u8B80\u3002"))))), notification && /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("span", null, isSubmittingReview ? "傳送中..." : "送出心得反映")))))), notification && /*#__PURE__*/React.createElement("div", {
     className: "fixed bottom-20 md:bottom-8 left-1/2 -translate-x-1/2 glass-dark text-white px-5 py-3 rounded-2xl shadow-2xl animate-in font-bold text-xs md:text-sm z-[300] flex items-center gap-2 border-l-4 border-[var(--primary-color)] whitespace-nowrap"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "CheckCircle",
