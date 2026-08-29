@@ -759,25 +759,53 @@ function saveNotes(notes) {
 }
 
 /**
- * 儲存系統修改紀錄
+ * 儲存系統修改紀錄 (自動去重並高效寫入)
  */
 function saveLogs(logs) {
-  if (!Array.isArray(logs)) return jsonResponse({ status: "error", msg: "格式不符" });
-  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.LOGS);
-  sheet.clearContents();
-  sheet.appendRow(["紀錄ID", "時間", "分類", "動作", "詳細說明", "操作者", "同步狀態"]);
-  logs.forEach((l) => {
-    sheet.appendRow([
-      l.id || "",
-      l.timestamp || "",
-      l.category || "",
-      l.action || "",
-      l.details || "",
-      l.operator || "管理員",
-      l.syncStatus || "已保存"
-    ]);
-  });
-  return jsonResponse({ status: "success", msg: "系統修改紀錄已同步至試算表！" });
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+  } catch (e) {}
+
+  try {
+    if (!Array.isArray(logs)) return jsonResponse({ status: "error", msg: "格式不符" });
+    const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.LOGS);
+    if (!sheet) return jsonResponse({ status: "error", msg: "找不到系統修改紀錄工作表" });
+
+    const uniqueMap = new Map();
+    logs.forEach((l) => {
+      if (l && l.id) {
+        const idKey = String(l.id).trim();
+        if (!uniqueMap.has(idKey)) {
+          uniqueMap.set(idKey, l);
+        }
+      }
+    });
+    const uniqueLogs = Array.from(uniqueMap.values());
+
+    const header = ["紀錄ID", "時間", "分類", "動作", "詳細說明", "操作者", "同步狀態"];
+    const rows = [header];
+
+    uniqueLogs.forEach((l) => {
+      rows.push([
+        l.id || "",
+        l.timestamp || "",
+        l.category || "",
+        l.action || "",
+        l.details || "",
+        l.operator || "管理員",
+        l.syncStatus || "已保存"
+      ]);
+    });
+
+    sheet.clear();
+    sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
+    SpreadsheetApp.flush();
+
+    return jsonResponse({ status: "success", msg: "系統修改紀錄已同步至試算表（共 " + uniqueLogs.length + " 筆）！" });
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
+  }
 }
 
 /**
