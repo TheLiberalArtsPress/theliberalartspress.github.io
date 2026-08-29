@@ -708,42 +708,54 @@ function getNotes() {
  * 儲存備忘記事本 (自動去重並整齊寫入)
  */
 function saveNotes(notes) {
-  if (!Array.isArray(notes)) return jsonResponse({ status: "error", msg: "格式不符" });
-  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.NOTES);
-  if (!sheet) return jsonResponse({ status: "error", msg: "找不到備忘記事本工作表" });
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+  } catch (e) {}
 
-  // 依記事ID自動去重，確保絕對不會產生重複行
-  const uniqueMap = new Map();
-  notes.forEach((n) => {
-    if (n && n.id) {
-      const idKey = String(n.id).trim();
-      if (!uniqueMap.has(idKey)) {
-        uniqueMap.set(idKey, n);
+  try {
+    if (!Array.isArray(notes)) return jsonResponse({ status: "error", msg: "格式不符" });
+    const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.NOTES);
+    if (!sheet) return jsonResponse({ status: "error", msg: "找不到備忘記事本工作表" });
+
+    // 依記事ID自動去重，確保絕對不會產生重複行
+    const uniqueMap = new Map();
+    notes.forEach((n) => {
+      if (n && n.id) {
+        const idKey = String(n.id).trim();
+        if (!uniqueMap.has(idKey)) {
+          uniqueMap.set(idKey, n);
+        }
       }
-    }
-  });
-  const uniqueNotes = Array.from(uniqueMap.values());
+    });
+    const uniqueNotes = Array.from(uniqueMap.values());
 
-  const header = ["記事ID", "標題", "內容", "標籤", "優先等級", "是否置頂", "是否完成", "更新時間"];
-  const rows = [header];
+    const header = ["記事ID", "標題", "內容", "標籤", "優先等級", "是否置頂", "是否完成", "更新時間"];
+    const rows = [header];
 
-  uniqueNotes.forEach((n) => {
-    const tagsStr = Array.isArray(n.tags) ? n.tags.join(", ") : (n.tags || "");
-    rows.push([
-      n.id || "",
-      n.title || "",
-      n.content || "",
-      tagsStr,
-      n.priority || "normal",
-      n.isPinned ? "是" : "否",
-      n.isDone ? "是" : "否",
-      n.updatedAt || ""
-    ]);
-  });
+    uniqueNotes.forEach((n) => {
+      const tagsStr = Array.isArray(n.tags) ? n.tags.join(", ") : (n.tags || "");
+      rows.push([
+        n.id || "",
+        n.title || "",
+        n.content || "",
+        tagsStr,
+        n.priority || "normal",
+        n.isPinned ? "是" : "否",
+        n.isDone ? "是" : "否",
+        n.updatedAt || ""
+      ]);
+    });
 
-  sheet.clearContents();
-  sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
-  return jsonResponse({ status: "success", msg: "備忘記事本已成功寫入 Google 試算表（共 " + uniqueNotes.length + " 則）！" });
+    // 徹底清空整張工作表的所有殘留列與格式，重新寫入單一矩陣
+    sheet.clear();
+    sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
+    SpreadsheetApp.flush();
+
+    return jsonResponse({ status: "success", msg: "備忘記事本已成功寫入 Google 試算表（共 " + uniqueNotes.length + " 則）！" });
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
+  }
 }
 
 /**
