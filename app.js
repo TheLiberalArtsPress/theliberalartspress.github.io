@@ -526,6 +526,32 @@ const fallbackBooks = [{
   cover: SVG_COVER_FALLBACK,
   心得: ''
 }];
+
+const parseDateToTimestamp = (dateStr, fallbackId = '') => {
+  if (!dateStr) return 0;
+  if (typeof dateStr === 'number') return dateStr;
+  const str = String(dateStr).trim();
+  const parsed = Date.parse(str);
+  if (!isNaN(parsed)) return parsed;
+  const m = str.match(/(\d{4})[/-](\d{1,2})[/-](\d{1,2})(?:\s+(\d{1,2}):(\d{1,2})(?::(\d{1,2}))?)?/);
+  if (m) {
+    return new Date(parseInt(m[1], 10), parseInt(m[2], 10) - 1, parseInt(m[3], 10), parseInt(m[4] || 0, 10), parseInt(m[5] || 0, 10), parseInt(m[6] || 0, 10)).getTime();
+  }
+  const idMatch = String(fallbackId || str).match(/(\d{8,})/);
+  if (idMatch) return parseInt(idMatch[1], 10);
+  return 0;
+};
+
+const sortNewestFirst = (list, dateKey = 'date', idKey = 'orderId') => {
+  if (!Array.isArray(list)) return [];
+  return [...list].sort((a, b) => {
+    const timeA = parseDateToTimestamp(a[dateKey], a[idKey] || a.id || a.orderId);
+    const timeB = parseDateToTimestamp(b[dateKey], b[idKey] || b.id || b.orderId);
+    if (timeB !== timeA) return timeB - timeA;
+    return String(b[idKey] || b.orderId || b.id || '').localeCompare(String(a[idKey] || a.orderId || a.id || ''));
+  });
+};
+
 const defaultUI = {
   themeColor: '#8C5A2B',
   darkThemeColor: '#241D17',
@@ -961,16 +987,16 @@ function App() {
       if (res && res.status === 'success' && Array.isArray(res.data) && res.data.length > 0) {
         const combined = [...localMatches, ...res.data];
         const uniqueOrders = Array.from(new Map(combined.map(item => [item.orderId || item.id, item])).values());
-        setQueryResults(uniqueOrders);
+        setQueryResults(sortNewestFirst(uniqueOrders, 'date', 'orderId'));
       } else if (localMatches.length > 0) {
-        setQueryResults(localMatches);
+        setQueryResults(sortNewestFirst(localMatches, 'date', 'orderId'));
       } else {
         setQueryResults([]);
         showMsg("未找到符合的訂單記錄");
       }
     } catch (error) {
       if (localMatches.length > 0) {
-        setQueryResults(localMatches);
+        setQueryResults(sortNewestFirst(localMatches, 'date', 'orderId'));
       } else {
         showMsg("查詢出錯，請稍候重試");
       }
