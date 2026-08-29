@@ -132,7 +132,8 @@ function doPost(e) {
             csMessages: getCsMessages(),
             carousels: getCarousels(),
             choices: getChoices(),
-            settings: getSettings()
+            settings: getSettings(),
+            notes: getNotes()
           }
         });
 
@@ -558,6 +559,47 @@ function deleteBook(payload) {
 }
 
 /**
+ * 批次儲存 / 回同步全館書籍資料庫至 Google 試算表
+ */
+function batchSaveBooks(payload) {
+  const books = Array.isArray(payload) ? payload : (payload.books || []);
+  if (!Array.isArray(books) || books.length === 0) {
+    return jsonResponse({ status: "error", msg: "書籍資料為空或格式不符" });
+  }
+
+  const sheet = getBookSheet();
+  const header = ["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "是否新書", "是否最後庫存", "封面圖片", "書籍簡介", "讀後心得與學術評析"];
+  const rows = [header];
+
+  for (let i = 0; i < books.length; i++) {
+    const b = books[i];
+    const coverUrl = (b.cover && !String(b.cover).startsWith("data:image")) ? b.cover : (b.localCover || "");
+    rows.push([
+      String(b.id || "").trim(),
+      String(b.title || "").trim(),
+      String(b.author || "").trim(),
+      String(b.year || "").trim(),
+      Number(b.price || 0),
+      String(b.isbn || "").trim(),
+      String(b.stock || "10").trim(),
+      String(b.category || "文史哲學集成").trim(),
+      b.isNew === true ? "是" : "否",
+      b.isLast === true ? "是" : "否",
+      coverUrl,
+      String(b.intro || "").trim(),
+      String(b.心得 || b.review || "").trim()
+    ]);
+  }
+
+  sheet.clearContents();
+  sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
+  return jsonResponse({
+    status: "success",
+    msg: "🎉 成功將 " + books.length + " 本書籍（含簡介與心得）全數寫入 Google 試算表！"
+  });
+}
+
+/**
  * 更新訂單狀態
  */
 function updateOrderStatus(payload) {
@@ -631,6 +673,35 @@ function saveSettings(settings) {
     sheet.appendRow([k, val]);
   }
   return jsonResponse({ status: "success", msg: "網站設定已成功儲存！" });
+}
+
+/**
+ * 讀取備忘記事本
+ */
+function getNotes() {
+  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.NOTES);
+  if (!sheet) return [];
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+
+  const notes = [];
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (!row[0] && !row[1]) continue;
+    const tagsRaw = String(row[3] || "");
+    const tags = tagsRaw.includes(",") ? tagsRaw.split(",").map(t => t.trim()).filter(Boolean) : (tagsRaw ? [tagsRaw.trim()] : []);
+    notes.push({
+      id: String(row[0] || ""),
+      title: String(row[1] || ""),
+      content: String(row[2] || ""),
+      tags: tags,
+      priority: String(row[4] || "normal"),
+      isPinned: String(row[5] || "").includes("是") || row[5] === true,
+      isDone: String(row[6] || "").includes("是") || row[6] === true,
+      updatedAt: String(row[7] || "")
+    });
+  }
+  return notes;
 }
 
 /**
@@ -748,4 +819,67 @@ function ensureSheetsInitialized() {
 function jsonResponse(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj))
     .setMimeType(ContentService.MimeType.JSON);
+}
+
+/**
+ * ⚡【一鍵將官網 / GitHub 最新完整書籍資料庫（含簡介與心得）同步寫入試算表】
+ * 
+ * 【使用方式】：
+ * 1. 打開 Google 試算表的「擴充功能」 -> 「Apps Script」。
+ * 2. 上方執行函式下拉選單選擇「SYNC_ALL_FROM_GITHUB」。
+ * 3. 點擊「▶ 執行」，幾秒內試算表即會全自動更新為 2,632 本最新書目與簡介！
+ */
+function SYNC_ALL_FROM_GITHUB() {
+  const url = "https://raw.githubusercontent.com/TheLiberalArtsPress/theliberalartspress.github.io/main/init_data.js?v=" + new Date().getTime();
+  const response = UrlFetchApp.fetch(url, { muteHttpExceptions: true });
+  if (response.getResponseCode() !== 200) {
+    throw new Error("無法從 GitHub 下載最新數據，HTTP 狀態碼: " + response.getResponseCode());
+  }
+
+  const text = response.getContentText();
+  const match = text.match(/window\.INIT_DATA\s*=\s*(\{[\s\S]*?\});/);
+  if (!match) {
+    throw new Error("解析 init_data.js 失敗");
+  }
+
+  const initData = JSON.parse(match[1]);
+  const books = initData.books || [];
+  if (books.length === 0) {
+    throw new Error("書籍清單為空");
+  }
+
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  let sheet = ss.getSheetByName("Book_ALL") || ss.getSheetByName("書籍清單");
+  if (!sheet) {
+    sheet = ss.insertSheet("書籍清單");
+  }
+
+  const header = ["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "是否新書", "是否最後庫存", "封面圖片", "書籍簡介", "讀後心得與學術評析"];
+  const rows = [header];
+
+  for (let i = 0; i < books.length; i++) {
+    const b = books[i];
+    const coverUrl = (b.cover && !b.cover.startsWith("data:image")) ? b.cover : (b.localCover || "");
+    rows.push([
+      String(b.id || "").trim(),
+      String(b.title || "").trim(),
+      String(b.author || "").trim(),
+      String(b.year || "").trim(),
+      Number(b.price || 0),
+      String(b.isbn || "").trim(),
+      String(b.stock || "10").trim(),
+      String(b.category || "文史哲學集成").trim(),
+      b.isNew === true ? "是" : "否",
+      b.isLast === true ? "是" : "否",
+      coverUrl,
+      String(b.intro || "").trim(),
+      String(b.心得 || b.review || "").trim()
+    ]);
+  }
+
+  sheet.clearContents();
+  sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
+  
+  Logger.log("🎉 成功同步 " + books.length + " 本最新書籍（含簡介與心得）至 Google 試算表！");
+  return "🎉 成功同步 " + books.length + " 本最新書籍至試算表！";
 }
