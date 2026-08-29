@@ -410,20 +410,18 @@ const getCarouselImgSrc = (car) => {
   const img = car.image ? String(car.image).trim() : '';
   const local = car.localImage ? String(car.localImage).trim() : '';
 
-  if (img.startsWith('data:image')) return img;
-  if (local.startsWith('data:image')) return local;
-
-  if (img && (img.startsWith('http') || img.includes('drive.google.com') || (!img.includes('/') && img.length > 15))) {
-    return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
-  }
-
-  if (local) {
+  // 1. 優先使用本地高清圖檔（避免被低解析度/壓縮的 base64 縮圖覆蓋造成模糊）
+  if (local && !local.startsWith('data:image')) {
     return typeof formatImageUrl === 'function' ? formatImageUrl(local, 1200) : local;
   }
-
-  if (img) {
+  if (img && !img.startsWith('data:image')) {
     return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
   }
+
+  // 2. 次選 base64 格式
+  if (local.startsWith('data:image')) return local;
+  if (img.startsWith('data:image')) return img;
+
   return typeof SVG_FALLBACK !== 'undefined' ? SVG_FALLBACK : (typeof SVG_COVER_FALLBACK !== 'undefined' ? SVG_COVER_FALLBACK : '');
 };
 const safeGetStorage = key => {
@@ -1820,7 +1818,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-white/60 bg-[#1A1412] flex items-center justify-center"
   }, carousels.map((c, idx) => {
-    const isFbSlide = c.title?.toLowerCase().includes('fb') || c.title?.includes('臉書') || c.description?.toLowerCase().includes('fb') || c.description?.includes('臉書') || c.image?.includes('61590146114229') || c.id === 'fb1' || idx === 0;
+    const isFbSlide = c.title?.toLowerCase().includes('fb') || c.title?.toLowerCase().includes('facebook') || c.title?.includes('臉書') || c.title?.includes('粉絲') || c.description?.toLowerCase().includes('fb') || c.description?.toLowerCase().includes('facebook') || c.description?.includes('臉書') || c.description?.includes('粉絲') || c.image?.includes('61590146114229') || c.id === 'fb1' || idx === 0;
     const slideLink = c.link || c.url || (isFbSlide ? "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" : null);
     const SlideContainer = slideLink ? 'a' : 'div';
     const slideProps = slideLink ? {
@@ -1867,7 +1865,7 @@ function App() {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronRight",
     size: 20
-  })))), carousels[carouselIndex] && (carousels[carouselIndex].title || carousels[carouselIndex].description || (carousels[carouselIndex].title?.toLowerCase().includes('fb') || carousels[carouselIndex].id === 'fb1' || carouselIndex === 0)) && /*#__PURE__*/React.createElement("div", {
+  })))), carousels[carouselIndex] && (carousels[carouselIndex].title || carousels[carouselIndex].description || carousels[carouselIndex].link || carousels[carouselIndex].url || carousels[carouselIndex].id === 'fb1' || carouselIndex === 0) && /*#__PURE__*/React.createElement("div", {
     className: "mt-3.5 glass-card rounded-2xl px-5 py-3.5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 shadow-md border border-[var(--border-color)]/70 bg-white/90"
   }, /*#__PURE__*/React.createElement("div", {
     className: "min-w-0 flex-1 text-left"
@@ -1877,16 +1875,25 @@ function App() {
     className: "text-xs md:text-sm text-[var(--text-dark)] line-clamp-1 font-sans font-medium"
   }, carousels[carouselIndex].description)), /*#__PURE__*/React.createElement("div", {
     className: "shrink-0 flex items-center gap-3"
-  }, (carousels[carouselIndex].title?.toLowerCase().includes('fb') || carousels[carouselIndex].description?.toLowerCase().includes('fb') || carousels[carouselIndex].id === 'fb1' || carouselIndex === 0) && /*#__PURE__*/React.createElement("a", {
-    href: "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW",
-    target: "_blank",
-    rel: "noopener noreferrer",
-    className: "inline-flex items-center gap-1.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-sans font-bold text-xs px-4 py-2 rounded-full shadow transition-all hover:scale-105"
-  }, /*#__PURE__*/React.createElement("span", null, "\u9EDE\u64CA\u524D\u5F80\u5B98\u65B9\u81C9\u66F8\u7C89\u7D72\u5C08\u9801 \u2197")), carousels.length > 1 && /*#__PURE__*/React.createElement("div", {
+  }, (() => {
+    const cur = carousels[carouselIndex];
+    if (!cur) return null;
+    const isFb = cur.title?.toLowerCase().includes('fb') || cur.title?.toLowerCase().includes('facebook') || cur.title?.includes('臉書') || cur.title?.includes('粉絲') || cur.description?.toLowerCase().includes('fb') || cur.description?.toLowerCase().includes('facebook') || cur.description?.includes('臉書') || cur.description?.includes('粉絲') || cur.id === 'fb1' || cur.image?.includes('61590146114229') || carouselIndex === 0;
+    const targetUrl = cur.link || cur.url || (isFb ? "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" : null);
+    if (!targetUrl) return null;
+    const isFbLink = targetUrl.includes('facebook.com') || isFb;
+    return /*#__PURE__*/React.createElement("a", {
+      href: targetUrl,
+      target: "_blank",
+      rel: "noopener noreferrer",
+      className: "inline-flex items-center gap-1.5 bg-[#1877F2] hover:bg-[#166fe5] text-white font-sans font-bold text-xs px-4 py-2 rounded-full shadow transition-all hover:scale-105"
+    }, /*#__PURE__*/React.createElement("span", null, isFbLink ? "點擊前往官方臉書粉絲專頁 ↗" : "點擊前往查看 ↗"));
+  })(), carousels.length > 1 && /*#__PURE__*/React.createElement("div", {
     className: "flex gap-1.5 ml-1"
   }, carousels.map((_, dotIdx) => /*#__PURE__*/React.createElement("button", {
     key: dotIdx,
     type: "button",
+    "aria-label": `切換至第 ${dotIdx + 1} 張輪播`,
     onClick: () => setCarouselIndex(dotIdx),
     className: `w-2.5 h-2.5 rounded-full transition-all ${dotIdx === carouselIndex ? 'bg-[var(--primary-color)] w-6' : 'bg-stone-300 hover:bg-stone-400'}`
   })))))), /*#__PURE__*/React.createElement("section", {
