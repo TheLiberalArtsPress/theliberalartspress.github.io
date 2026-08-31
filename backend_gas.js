@@ -160,7 +160,8 @@ function doPost(e) {
         return updateCsStatus(payload);
 
       case "ADMIN_SAVE_CAROUSELS":
-        return saveCarousels(payload);
+      case "SAVE_CAROUSELS":
+        return saveCarousels(requestData.payload || requestData, requestData);
 
       case "ADMIN_SAVE_CHOICES":
       case "SAVE_CHOICES":
@@ -844,21 +845,39 @@ function updateCsStatus(payload) {
 /**
  * 儲存輪播圖
  */
-function saveCarousels(carousels) {
-  if (!Array.isArray(carousels)) return jsonResponse({ status: "error", msg: "格式不符" });
-  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.CAROUSELS);
-  sheet.clearContents();
-  sheet.appendRow(["輪播ID", "標題", "描述說明", "圖片網址", "發佈狀態"]);
-  carousels.forEach((c, idx) => {
-    sheet.appendRow([
+function saveCarousels(payload, reqData) {
+  const requestData = reqData || {};
+  let list = [];
+  if (Array.isArray(payload)) {
+    list = payload;
+  } else if (payload && typeof payload === 'object') {
+    list = Array.isArray(payload.carousels) ? payload.carousels : (Array.isArray(requestData.carousels) ? requestData.carousels : []);
+  }
+
+  // 🛡️ 安全防護：若傳入為空，絕不執行清空試算表動作！
+  if (list.length === 0) {
+    return jsonResponse({ status: "error", msg: "接收到的輪播圖資料為空，已攔截防護以避免清空試算表！" });
+  }
+
+  const ss = getSpreadsheet();
+  let sheet = ss.getSheetByName("首頁輪播") || ss.getSheetByName(SHEET_NAMES.CAROUSELS);
+  if (!sheet) sheet = ss.insertSheet("首頁輪播");
+
+  const header = ["輪播ID", "標題", "描述說明", "圖片網址", "發佈狀態"];
+  const rows = [header];
+  list.forEach((c, idx) => {
+    rows.push([
       c.id || "C" + (idx + 1),
       c.title || "",
       c.description || "",
-      c.image || "",
+      c.image || c.localImage || "",
       c.status || "已發佈"
     ]);
   });
-  return jsonResponse({ status: "success", msg: "首頁輪播圖已儲存！" });
+  sheet.clear();
+  sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
+  SpreadsheetApp.flush();
+  return jsonResponse({ status: "success", msg: "首頁輪播圖已成功儲存至 Google 試算表（共 " + list.length + " 張）！" });
 }
 
 /**
