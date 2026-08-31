@@ -30,7 +30,7 @@ const SHEET_NAMES = {
   ORDERS: "顧客訂單",
   CS: "客服留言",
   CAROUSELS: "首頁輪播",
-  CHOICES: "精選推薦",
+  CHOICES: "推薦書單",
   SETTINGS: "網站設定",
   NOTES: "備忘記事本",
   LOGS: "系統修改紀錄"
@@ -124,6 +124,7 @@ function doPost(e) {
 
     switch (action) {
       case "ADMIN_GET_ALL_DATA":
+        const recData = getChoicesData();
         return jsonResponse({
           status: "success",
           data: {
@@ -131,11 +132,17 @@ function doPost(e) {
             orders: getOrders(),
             csMessages: getCsMessages(),
             carousels: getCarousels(),
-            choices: getChoices(),
+            choices: recData.choices,
+            newArrivalsList: recData.newArrivalsList,
             settings: getSettings(),
-            notes: getNotes()
+            notes: getNotes(),
+            logs: getLogs()
           }
         });
+
+      case "ADMIN_FETCH_LOGS":
+      case "FETCH_LOGS":
+        return jsonResponse({ status: "success", data: getLogs() });
 
       case "ADMIN_SAVE_BOOK":
         return saveBook(payload);
@@ -154,6 +161,10 @@ function doPost(e) {
 
       case "ADMIN_SAVE_CAROUSELS":
         return saveCarousels(payload);
+
+      case "ADMIN_SAVE_CHOICES":
+      case "SAVE_CHOICES":
+        return saveChoices(payload || requestData);
 
       case "ADMIN_SAVE_SETTINGS":
         return saveSettings(payload);
@@ -259,25 +270,30 @@ function createOrder(payload) {
 }
 
 /**
- * 建立客服與建議訊息
+ * 建立客服與讀後心得留言訊息
  */
 function createCsMessage(payload) {
   const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.CS);
   const now = new Date();
-  const msgId = "CS" + Utilities.formatDate(now, "Asia/Taipei", "yyyyMMddHHmmss");
+  const msgId = payload.id || payload.msgId || ("CS" + Utilities.formatDate(now, "Asia/Taipei", "yyyyMMddHHmmss"));
+
+  const name = payload.name || payload.userName || payload.user || payload["讀者稱呼"] || payload["稱呼"] || payload["姓名"] || "訪客";
+  const phone = payload.phone || payload.tel || payload["聯絡電話"] || payload["電話"] || "";
+  const email = payload.email || payload.mail || payload["電子信箱"] || "";
+  const content = payload.content || payload.message || payload.msg || payload.query || payload.reviewContent || payload["反映內容"] || payload["心得內容"] || "";
 
   sheet.appendRow([
     msgId,
     Utilities.formatDate(now, "Asia/Taipei", "yyyy/MM/dd HH:mm:ss"),
-    payload.name || "訪客",
-    payload.phone || "",
-    payload.email || "",
-    payload.content || payload.message || payload.msg || "",
+    name,
+    phone,
+    email,
+    content,
     "未處理", // 處理狀態
     ""        // 回覆紀錄
   ]);
 
-  return jsonResponse({ status: "success", msg: "感謝您的寶貴建議，我們將盡快回覆！", id: msgId });
+  return jsonResponse({ status: "success", msg: "感謝您的寶貴建議與心得，我們將盡快回覆！", id: msgId });
 }
 
 /**
@@ -441,18 +457,35 @@ function getCarousels() {
 }
 
 /**
- * 讀取精選推薦
+ * 取得或建立「推薦書單」工作表
  */
-function getChoices() {
-  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.CHOICES);
+function getChoicesSheet() {
+  const ss = getSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_NAMES.CHOICES) || ss.getSheetByName("推薦書單") || ss.getSheetByName("精選推薦");
+  if (!sheet) {
+    sheet = ss.insertSheet(SHEET_NAMES.CHOICES);
+    sheet.appendRow(["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析", "推薦類型", "輪次"]);
+  }
+  return sheet;
+}
+
+/**
+ * 讀取推薦書單（精選書單與暢銷書推薦）
+ */
+function getChoicesData() {
+  const sheet = getChoicesSheet();
   const data = sheet.getDataRange().getValues();
-  if (data.length <= 1) return [];
+  if (data.length <= 1) return { choices: [], newArrivalsList: [] };
 
   const choices = [];
+  const newArrivalsList = [];
+
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
     if (!row[0] && !row[1]) continue;
-    choices.push({
+    const recType = String(row[11] || "精選書單").trim();
+    const round = Number(row[12] || 1);
+    const book = {
       id: String(row[0] || ""),
       title: String(row[1] || ""),
       author: String(row[2] || ""),
@@ -463,10 +496,104 @@ function getChoices() {
       category: String(row[7] || "精選推薦"),
       cover: String(row[8] || ""),
       intro: String(row[9] || ""),
-      心得: String(row[10] || "")
-    });
+      心得: String(row[10] || ""),
+      recType: recType,
+      round: round
+    };
+
+    if (recType.includes("新書") || recType.includes("暢銷") || recType === "new_arrivals") {
+      newArrivalsList.push(book);
+    } else {
+      choices.push(book);
+    }
   }
-  return choices;
+  return { choices, newArrivalsList };
+}
+
+/**
+ * 讀取精選推薦列表
+ */
+function getChoices() {
+  const rec = getChoicesData();
+  return rec.choices;
+}
+
+/**
+ * 儲存推薦書單（精選書單與暢銷推薦，儲存至「推薦書單」工作表）
+ */
+function saveChoices(payload) {
+  const lock = LockService.getScriptLock();
+  try {
+    lock.waitLock(10000);
+  } catch (e) {}
+
+  try {
+    const sheet = getChoicesSheet();
+    let choices = [];
+    let newArrivalsList = [];
+
+    if (Array.isArray(payload)) {
+      choices = payload;
+    } else if (payload && typeof payload === 'object') {
+      choices = Array.isArray(payload.choices) ? payload.choices : [];
+      newArrivalsList = Array.isArray(payload.newArrivalsList) ? payload.newArrivalsList : (Array.isArray(payload.newArrivals) ? payload.newArrivals : []);
+    }
+
+    const header = ["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析", "推薦類型", "輪次"];
+    const rows = [header];
+
+    choices.forEach(b => {
+      if (b && (b.id || b.title)) {
+        rows.push([
+          b.id || "",
+          b.title || "",
+          b.author || "",
+          b.year || "",
+          b.price || 0,
+          b.isbn || "",
+          b.stock || "10",
+          b.category || "精選推薦",
+          b.cover || "",
+          b.intro || "",
+          b.心得 || "",
+          "精選書單",
+          1
+        ]);
+      }
+    });
+
+    newArrivalsList.forEach((b, idx) => {
+      if (b && (b.id || b.title)) {
+        const round = b.round || Math.floor(idx / 8) + 1;
+        rows.push([
+          b.id || "",
+          b.title || "",
+          b.author || "",
+          b.year || "",
+          b.price || 0,
+          b.isbn || "",
+          b.stock || "10",
+          b.category || "暢銷推薦",
+          b.cover || "",
+          b.intro || "",
+          b.心得 || "",
+          "暢銷推薦",
+          round
+        ]);
+      }
+    });
+
+    sheet.clear();
+    sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
+    SpreadsheetApp.flush();
+
+    return jsonResponse({
+      status: "success",
+      msg: "推薦書單已成功儲存至 Google 試算表（精選 " + choices.length + " 本、暢銷推薦 " + newArrivalsList.length + " 本）！"
+    });
+  } finally {
+    try { lock.releaseLock(); } catch (e) {}
+  }
 }
 
 /**
@@ -759,7 +886,33 @@ function saveNotes(notes) {
 }
 
 /**
- * 儲存系統修改紀錄 (自動去重並高效寫入)
+ * 讀取系統修改紀錄 (Audit Logs)
+ */
+function getLogs() {
+  const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.LOGS);
+  if (!sheet) return [];
+  const data = sheet.getDataRange().getValues();
+  if (data.length <= 1) return [];
+
+  const logs = [];
+  for (let i = 1; i < data.length; i++) {
+    const row = data[i];
+    if (!row[0] && !row[1]) continue;
+    logs.push({
+      id: String(row[0] || ""),
+      timestamp: String(row[1] || ""),
+      category: String(row[2] || "系統設定"),
+      action: String(row[3] || "紀錄"),
+      details: String(row[4] || ""),
+      operator: String(row[5] || "管理員"),
+      syncStatus: String(row[6] || "已保存")
+    });
+  }
+  return logs;
+}
+
+/**
+ * 儲存系統修改紀錄 (自動讀取既有紀錄合併去重，永久保留歷史，絕不覆蓋抹除)
  */
 function saveLogs(logs) {
   const lock = LockService.getScriptLock();
@@ -768,25 +921,43 @@ function saveLogs(logs) {
   } catch (e) {}
 
   try {
-    if (!Array.isArray(logs)) return jsonResponse({ status: "error", msg: "格式不符" });
     const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.LOGS);
     if (!sheet) return jsonResponse({ status: "error", msg: "找不到系統修改紀錄工作表" });
 
+    // 1. 讀取試算表中現有全部歷史紀錄
+    const existingLogs = getLogs();
     const uniqueMap = new Map();
-    logs.forEach((l) => {
-      if (l && l.id) {
-        const idKey = String(l.id).trim();
-        if (!uniqueMap.has(idKey)) {
-          uniqueMap.set(idKey, l);
-        }
+
+    // 2. 先將試算表既有紀錄放入 Map (以 ID 或 timestamp+details 去重)
+    existingLogs.forEach((l) => {
+      if (l) {
+        const idKey = String(l.id || (l.timestamp + '_' + l.details)).trim();
+        if (idKey) uniqueMap.set(idKey, l);
       }
     });
-    const uniqueLogs = Array.from(uniqueMap.values());
+
+    // 3. 將傳入之新紀錄合併加入
+    const incomingList = Array.isArray(logs) ? logs : (logs ? [logs] : []);
+    incomingList.forEach((l) => {
+      if (l) {
+        const idKey = String(l.id || (l.timestamp + '_' + l.details)).trim();
+        if (idKey) uniqueMap.set(idKey, l);
+      }
+    });
+
+    const mergedLogs = Array.from(uniqueMap.values());
+    // 4. 按時間排序 (最新在最上方)
+    mergedLogs.sort((a, b) => {
+      const tA = new Date(a.timestamp).getTime() || 0;
+      const tB = new Date(b.timestamp).getTime() || 0;
+      return tB - tA;
+    });
 
     const header = ["紀錄ID", "時間", "分類", "動作", "詳細說明", "操作者", "同步狀態"];
     const rows = [header];
 
-    uniqueLogs.forEach((l) => {
+    // 最多保留最新 2000 筆紀錄
+    mergedLogs.slice(0, 2000).forEach((l) => {
       rows.push([
         l.id || "",
         l.timestamp || "",
@@ -802,7 +973,11 @@ function saveLogs(logs) {
     sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
     SpreadsheetApp.flush();
 
-    return jsonResponse({ status: "success", msg: "系統修改紀錄已同步至試算表（共 " + uniqueLogs.length + " 筆）！" });
+    return jsonResponse({
+      status: "success",
+      msg: "系統修改紀錄已合併同步至試算表（共 " + (rows.length - 1) + " 筆）！",
+      data: mergedLogs
+    });
   } finally {
     try { lock.releaseLock(); } catch (e) {}
   }
@@ -843,10 +1018,10 @@ function ensureSheetsInitialized() {
   }
 
   // 推薦表
-  let choSheet = ss.getSheetByName(SHEET_NAMES.CHOICES);
+  let choSheet = ss.getSheetByName(SHEET_NAMES.CHOICES) || ss.getSheetByName("推薦書單") || ss.getSheetByName("精選推薦");
   if (!choSheet) {
     choSheet = ss.insertSheet(SHEET_NAMES.CHOICES);
-    choSheet.appendRow(["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析"]);
+    choSheet.appendRow(["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析", "推薦類型", "輪次"]);
   }
 
   // 設定表

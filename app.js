@@ -588,7 +588,7 @@ const defaultUI = {
   menuAbout: '關於我們',
   menuPresident: '關於社長',
   menuContact: '聯繫我們',
-  menuNewArrivals: '新書上市',
+  menuNewArrivals: '暢銷書',
   menuSearch: '書籍檢索',
   menuCart: '我的書包',
   menuAdmin: '臉書(FB)入口',
@@ -658,7 +658,7 @@ const defaultUI = {
   searchTableHeaderPrice: '定價',
   searchTableHeaderCategory: '叢書類別',
   searchTableHeaderAction: '操作',
-  newArrivalsTitle: '新書上市 - 推薦',
+  newArrivalsTitle: '暢銷書 - 推薦',
   newArrivalsBtnRefresh: '再換一批看看',
   newArrivalsCloseBtn: '關閉',
   cartTitle: '我的書包',
@@ -1201,22 +1201,74 @@ function App() {
   const handleReviewSubmit = async e => {
     e.preventDefault();
     if (isSubmittingReview || !checkRateLimit()) return;
-    const name = sanitizeInput(e.target.name.value);
-    const contact = sanitizeInput(e.target.contact.value);
-    const content = sanitizeInput(e.target.content.value);
-    if (name.length < 2) return showMsg("請輸入您的稱呼");
-    if (content.length < 5) return showMsg("讀後感言請至少輸入 5 個字");
+    const name = sanitizeInput(e.target.name ? e.target.name.value : "");
+    const phone = sanitizeInput(e.target.phone ? e.target.phone.value : "");
+    const email = sanitizeInput(e.target.email ? e.target.email.value : "");
+    const contact = sanitizeInput(e.target.contact ? e.target.contact.value : "");
+    const content = sanitizeInput(e.target.content ? e.target.content.value : "");
+
+    const finalPhone = phone || (contact && !contact.includes("@") ? contact : "");
+    const finalEmail = email || (contact && contact.includes("@") ? contact : "");
+
+    if (!name || name.trim().length < 2) return showMsg("請輸入您的稱呼（至少 2 個字）");
+    if (!finalPhone.trim() && !finalEmail.trim()) {
+      return showMsg("請提供「聯絡電話」或「電子信箱（Email）」至少一項！");
+    }
+    if (finalEmail && (!finalEmail.includes("@") || !finalEmail.includes("."))) {
+      return showMsg("請輸入正確的電子信箱格式");
+    }
+    if (finalPhone && finalPhone.replace(/[^0-9]/g, "").length < 7) {
+      return showMsg("請輸入有效的聯絡電話號碼");
+    }
+    if (!content || content.trim().length < 5) return showMsg("讀後感言請至少輸入 5 個字");
+
     setIsSubmittingReview(true);
     setLastActionTime(Date.now());
     showMsg("心得傳送中...");
-    const combinedQuery = `【書籍名稱】《${reviewBook ? reviewBook.title : '未知'}》\n【聯絡資訊】${contact || '未提供'}\n─────────────────\n【讀後心得感言】\n${content}`;
+
+    const bookTitle = reviewBook ? reviewBook.title : '未知書籍';
+    const bookId = reviewBook && reviewBook.id ? reviewBook.id : '';
+
+    const combinedQuery = `【互動項目】讀後心得交流\n【書籍名稱】《${bookTitle}》${bookId ? `（書碼：${bookId}）` : ''}\n【讀者稱呼】${name}\n【聯絡電話】${finalPhone || '未提供'}\n【電子信箱】${finalEmail || '未提供'}\n─────────────────\n【讀後心得感言】\n${content}`;
+
     const submitId = `REV-${Date.now().toString().slice(-6)}`;
     const newLog = {
       id: submitId,
+      msgId: submitId,
       platform: 'Web讀後心得交流',
+      name: name,
+      userName: name,
       user: name,
-      query: combinedQuery
+      phone: finalPhone,
+      tel: finalPhone,
+      email: finalEmail,
+      mail: finalEmail,
+      content: combinedQuery,
+      message: combinedQuery,
+      msg: combinedQuery,
+      query: combinedQuery,
+      bookTitle: bookTitle,
+      bookId: bookId,
+      reviewContent: content,
+      status: '未處理',
+      date: new Date().toLocaleString(),
+      '留言編號': submitId,
+      '稱呼': name,
+      '姓名': name,
+      '電話': finalPhone,
+      '電子信箱': finalEmail,
+      '反映內容': combinedQuery,
+      '書籍名稱': bookTitle,
+      '心得內容': content,
+      '狀態': '未處理',
+      '時間': new Date().toLocaleString()
     };
+
+    try {
+      const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
+      localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
+    } catch (err) {}
+
     const res = await syncWithGAS('NEW_CS_MSG', newLog);
     setIsSubmittingReview(false);
     if (res && res.status === 'success') {
@@ -3191,29 +3243,40 @@ function App() {
   }, getBookReview(reviewBook) || "目前尚無填寫心得，歡迎於下方發表您的感言！")), /*#__PURE__*/React.createElement("form", {
     onSubmit: handleReviewSubmit,
     className: "bg-white p-4 rounded-xl border space-y-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex justify-between items-center"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-gray-800 flex items-center gap-1.5"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Send",
     size: 14,
     className: "text-purple-500"
-  }), " \u767C\u8868\u8B80\u5F8C\u611F\u8A00\uFF1A"), /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-cols-1 sm:grid-cols-2 gap-2.5"
+  }), " \u767C\u8868\u8B80\u5F8C\u611F\u8A00\uFF1A"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[11px] text-purple-700 bg-purple-50 px-2 py-0.5 rounded font-medium"
+  }, "\u203B \u96FB\u8A71\u6216 Email \u6477\u4E00\u5FC5\u586B")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-2.5"
   }, /*#__PURE__*/React.createElement("input", {
     name: "name",
     required: true,
-    placeholder: "\u60A8\u7684\u7A31\u547C",
-    className: "w-full glass-input p-2 rounded-lg outline-none"
+    placeholder: "\u60A8\u7684\u7A31\u547C\uFF08\u5FC5\u586B\uFF09",
+    className: "w-full glass-input p-2 rounded-lg outline-none text-xs"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-1 sm:grid-cols-2 gap-2.5"
+  }, /*#__PURE__*/React.createElement("input", {
+    name: "phone",
+    placeholder: "\u806F\u7D61\u96FB\u8A71\uFF08\u96FB\u8A71/Email \u6477\u4E00\u5FC5\u586B\uFF09",
+    className: "w-full glass-input p-2 rounded-lg outline-none text-xs"
   }), /*#__PURE__*/React.createElement("input", {
-    name: "contact",
-    placeholder: "\u806F\u7D61\u96FB\u8A71\u6216 Email (\u9078\u586B)",
-    className: "w-full glass-input p-2 rounded-lg outline-none"
-  })), /*#__PURE__*/React.createElement("textarea", {
+    name: "email",
+    type: "email",
+    placeholder: "\u96FB\u5B50\u4FE1\u7BB1 Email\uFF08\u96FB\u8A71/Email \u6477\u4E00\u5FC5\u586B\uFF09",
+    className: "w-full glass-input p-2 rounded-lg outline-none text-xs"
+  }))), /*#__PURE__*/React.createElement("textarea", {
     name: "content",
     required: true,
     rows: "3",
-    placeholder: `請輸入您對《${reviewBook.title}》的研讀心得或提問...`,
-    className: "w-full glass-input p-2.5 rounded-lg outline-none resize-none leading-relaxed"
+    placeholder: `請輸入您對《${reviewBook.title}》的研讀心得或提問...（必填）`,
+    className: "w-full glass-input p-2.5 rounded-lg outline-none resize-none leading-relaxed text-xs"
   }), /*#__PURE__*/React.createElement("button", {
     type: "submit",
     disabled: isSubmittingReview,
