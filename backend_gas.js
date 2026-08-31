@@ -164,7 +164,7 @@ function doPost(e) {
 
       case "ADMIN_SAVE_CHOICES":
       case "SAVE_CHOICES":
-        return saveChoices(payload || requestData);
+        return saveChoices(requestData.payload || requestData, requestData);
 
       case "ADMIN_SAVE_SETTINGS":
         return saveSettings(payload);
@@ -572,7 +572,8 @@ function getChoices() {
 /**
  * 儲存推薦書單（同時寫入「精選推薦」與「暢銷書」獨立分頁）
  */
-function saveChoices(payload) {
+function saveChoices(payload, reqData) {
+  const requestData = reqData || {};
   const lock = LockService.getScriptLock();
   try {
     lock.waitLock(10000);
@@ -586,8 +587,13 @@ function saveChoices(payload) {
     if (Array.isArray(payload)) {
       choices = payload;
     } else if (payload && typeof payload === 'object') {
-      choices = Array.isArray(payload.choices) ? payload.choices : [];
-      newArrivalsList = Array.isArray(payload.newArrivalsList) ? payload.newArrivalsList : (Array.isArray(payload.newArrivals) ? payload.newArrivals : []);
+      choices = Array.isArray(payload.choices) ? payload.choices : (Array.isArray(requestData.choices) ? requestData.choices : (Array.isArray(payload.choiceBooks) ? payload.choiceBooks : []));
+      newArrivalsList = Array.isArray(payload.newArrivalsList) ? payload.newArrivalsList : (Array.isArray(requestData.newArrivalsList) ? requestData.newArrivalsList : (Array.isArray(payload.newArrivals) ? payload.newArrivals : []));
+    }
+
+    // 🛡️ 安全防護：若傳入為空，絕不執行清空試算表動作！
+    if (choices.length === 0 && newArrivalsList.length === 0) {
+      return jsonResponse({ status: "error", msg: "接收到的推薦書單為空，已攔截防護以避免清空試算表！" });
     }
 
     // 1. 寫入「精選推薦」獨立分頁
