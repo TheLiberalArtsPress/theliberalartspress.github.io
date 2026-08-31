@@ -461,10 +461,10 @@ function getCarousels() {
  */
 function getChoicesSheet() {
   const ss = getSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAMES.CHOICES) || ss.getSheetByName("推薦書單") || ss.getSheetByName("精選推薦");
+  let sheet = ss.getSheetByName("精選推薦") || ss.getSheetByName("精選書單") || ss.getSheetByName(SHEET_NAMES.CHOICES);
   if (!sheet) {
-    sheet = ss.insertSheet(SHEET_NAMES.CHOICES);
-    sheet.appendRow(["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析", "推薦類型", "輪次"]);
+    sheet = ss.insertSheet("精選推薦");
+    sheet.appendRow(["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析"]);
   }
   return sheet;
 }
@@ -474,53 +474,90 @@ function getChoicesSheet() {
  */
 function getChoicesData() {
   const ss = getSpreadsheet();
-  let sheet = ss.getSheetByName(SHEET_NAMES.CHOICES) || ss.getSheetByName("推薦書單");
-  let data = sheet ? sheet.getDataRange().getValues() : [];
+  const choices = [];
+  const newArrivalsList = [];
 
-  // 若「推薦書單」不存在或只有標題列，自動備援讀取「精選推薦」工作表
-  if (data.length <= 1) {
-    const oldSheet = ss.getSheetByName("精選推薦");
-    if (oldSheet) {
-      const oldData = oldSheet.getDataRange().getValues();
-      if (oldData.length > 1) {
-        sheet = oldSheet;
-        data = oldData;
+  // 1. 優先從獨立「精選推薦」分頁讀取
+  const choSheet = ss.getSheetByName("精選推薦") || ss.getSheetByName("精選書單");
+  if (choSheet) {
+    const data = choSheet.getDataRange().getValues();
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      if (!row[0] && !row[1]) continue;
+      choices.push({
+        id: String(row[0] || ""),
+        title: String(row[1] || ""),
+        author: String(row[2] || ""),
+        year: String(row[3] || ""),
+        price: Number(row[4] || 0),
+        isbn: String(row[5] || ""),
+        stock: String(row[6] || "10"),
+        category: String(row[7] || "精選推薦"),
+        cover: String(row[8] || ""),
+        intro: String(row[9] || ""),
+        心得: String(row[10] || "")
+      });
+    }
+  }
+
+  // 2. 優先從獨立「暢銷書」分頁讀取
+  const bestSheet = ss.getSheetByName("暢銷書") || ss.getSheetByName("暢銷推薦");
+  if (bestSheet) {
+    const data = bestSheet.getDataRange().getValues();
+    for (let i = 1; i < data.length; i++) {
+      const row = data[i];
+      if (!row[1] && !row[2]) continue;
+      newArrivalsList.push({
+        round: Number(row[0] || 1),
+        id: String(row[1] || ""),
+        title: String(row[2] || ""),
+        author: String(row[3] || ""),
+        year: String(row[4] || ""),
+        price: Number(row[5] || 0),
+        isbn: String(row[6] || ""),
+        stock: String(row[7] || "10"),
+        category: String(row[8] || "暢銷推薦"),
+        cover: String(row[9] || ""),
+        intro: String(row[10] || ""),
+        心得: String(row[11] || "")
+      });
+    }
+  }
+
+  // 3. 備援相容：若分頁為空，嘗試讀取整合的「推薦書單」分頁
+  if (choices.length === 0 && newArrivalsList.length === 0) {
+    const recSheet = ss.getSheetByName("推薦書單");
+    if (recSheet) {
+      const data = recSheet.getDataRange().getValues();
+      for (let i = 1; i < data.length; i++) {
+        const row = data[i];
+        if (!row[0] && !row[1]) continue;
+        const recType = String(row[11] || "精選書單").trim();
+        const round = Number(row[12] || 1);
+        const book = {
+          id: String(row[0] || ""),
+          title: String(row[1] || ""),
+          author: String(row[2] || ""),
+          year: String(row[3] || ""),
+          price: Number(row[4] || 0),
+          isbn: String(row[5] || ""),
+          stock: String(row[6] || "10"),
+          category: String(row[7] || "精選推薦"),
+          cover: String(row[8] || ""),
+          intro: String(row[9] || ""),
+          心得: String(row[10] || ""),
+          recType: recType,
+          round: round
+        };
+        if (recType.includes("新書") || recType.includes("暢銷") || recType === "new_arrivals") {
+          newArrivalsList.push(book);
+        } else {
+          choices.push(book);
+        }
       }
     }
   }
 
-  if (data.length <= 1) return { choices: [], newArrivalsList: [] };
-
-  const choices = [];
-  const newArrivalsList = [];
-
-  for (let i = 1; i < data.length; i++) {
-    const row = data[i];
-    if (!row[0] && !row[1]) continue;
-    const recType = String(row[11] || "精選書單").trim();
-    const round = Number(row[12] || 1);
-    const book = {
-      id: String(row[0] || ""),
-      title: String(row[1] || ""),
-      author: String(row[2] || ""),
-      year: String(row[3] || ""),
-      price: Number(row[4] || 0),
-      isbn: String(row[5] || ""),
-      stock: String(row[6] || "10"),
-      category: String(row[7] || "精選推薦"),
-      cover: String(row[8] || ""),
-      intro: String(row[9] || ""),
-      心得: String(row[10] || ""),
-      recType: recType,
-      round: round
-    };
-
-    if (recType.includes("新書") || recType.includes("暢銷") || recType === "new_arrivals") {
-      newArrivalsList.push(book);
-    } else {
-      choices.push(book);
-    }
-  }
   return { choices, newArrivalsList };
 }
 
@@ -533,7 +570,7 @@ function getChoices() {
 }
 
 /**
- * 儲存推薦書單（精選書單與暢銷推薦，儲存至「推薦書單」工作表）
+ * 儲存推薦書單（同時寫入「精選推薦」與「暢銷書」獨立分頁）
  */
 function saveChoices(payload) {
   const lock = LockService.getScriptLock();
@@ -542,7 +579,7 @@ function saveChoices(payload) {
   } catch (e) {}
 
   try {
-    const sheet = getChoicesSheet();
+    const ss = getSpreadsheet();
     let choices = [];
     let newArrivalsList = [];
 
@@ -553,12 +590,19 @@ function saveChoices(payload) {
       newArrivalsList = Array.isArray(payload.newArrivalsList) ? payload.newArrivalsList : (Array.isArray(payload.newArrivals) ? payload.newArrivals : []);
     }
 
-    const header = ["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析", "推薦類型", "輪次"];
-    const rows = [header];
+    // 1. 寫入「精選推薦」獨立分頁
+    let choSheet = ss.getSheetByName("精選推薦") || ss.getSheetByName("精選書單");
+    if (!choSheet) choSheet = ss.insertSheet("精選推薦");
 
+    const choHeader = ["書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析"];
+    const choRows = [choHeader];
     choices.forEach(b => {
       if (b && (b.id || b.title)) {
-        rows.push([
+        let cover = String(b.cover || "").trim();
+        if (cover.startsWith("data:image/")) {
+          cover = String(b.localCover || (b.id ? ("assets/covers/" + b.id + ".jpg") : "")).trim();
+        }
+        choRows.push([
           b.id || "",
           b.title || "",
           b.author || "",
@@ -567,19 +611,30 @@ function saveChoices(payload) {
           b.isbn || "",
           b.stock || "10",
           b.category || "精選推薦",
-          b.cover || "",
-          b.intro || "",
-          b.心得 || "",
-          "精選書單",
-          1
+          cover.slice(0, 5000),
+          String(b.intro || "").slice(0, 5000),
+          String(b.心得 || b.review || "").slice(0, 5000)
         ]);
       }
     });
+    choSheet.clear();
+    choSheet.getRange(1, 1, choRows.length, choHeader.length).setValues(choRows);
 
+    // 2. 寫入「暢銷書」獨立分頁
+    let bestSheet = ss.getSheetByName("暢銷書") || ss.getSheetByName("暢銷推薦");
+    if (!bestSheet) bestSheet = ss.insertSheet("暢銷書");
+
+    const bestHeader = ["輪次", "書碼", "書名", "作者", "出版年份", "定價", "ISBN", "庫存數量", "叢書類別", "封面圖片網址", "書籍簡介", "讀後心得與學術評析"];
+    const bestRows = [bestHeader];
     newArrivalsList.forEach((b, idx) => {
       if (b && (b.id || b.title)) {
         const round = b.round || Math.floor(idx / 8) + 1;
-        rows.push([
+        let cover = String(b.cover || "").trim();
+        if (cover.startsWith("data:image/")) {
+          cover = String(b.localCover || (b.id ? ("assets/covers/" + b.id + ".jpg") : "")).trim();
+        }
+        bestRows.push([
+          round,
           b.id || "",
           b.title || "",
           b.author || "",
@@ -588,22 +643,20 @@ function saveChoices(payload) {
           b.isbn || "",
           b.stock || "10",
           b.category || "暢銷推薦",
-          b.cover || "",
-          b.intro || "",
-          b.心得 || "",
-          "暢銷推薦",
-          round
+          cover.slice(0, 5000),
+          String(b.intro || "").slice(0, 5000),
+          String(b.心得 || b.review || "").slice(0, 5000)
         ]);
       }
     });
+    bestSheet.clear();
+    bestSheet.getRange(1, 1, bestRows.length, bestHeader.length).setValues(bestRows);
 
-    sheet.clear();
-    sheet.getRange(1, 1, rows.length, header.length).setValues(rows);
     SpreadsheetApp.flush();
 
     return jsonResponse({
       status: "success",
-      msg: "推薦書單已成功儲存至 Google 試算表（精選 " + choices.length + " 本、暢銷推薦 " + newArrivalsList.length + " 本）！"
+      msg: "推薦書單已成功儲存至 Google 試算表（「精選推薦」" + choices.length + " 本、「暢銷書」" + newArrivalsList.length + " 本）！"
     });
   } finally {
     try { lock.releaseLock(); } catch (e) {}
