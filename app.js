@@ -386,21 +386,25 @@ const ModernLogo = ({
 const GAS_URL = "https://script.google.com/macros/s/AKfycbzfD3v4jWMQVOMIPeoqnZ24XEHoCMFz1h4Tapw4sjPlTAtBa4Ow8TTTNaK8ktssR9F9dg/exec";
 
 // 🟢 【效能優化】：支援動態圖片尺寸與 WebP 極速高壓縮 (節省 70% 流量，手機載入快 3 倍)
-const formatImageUrl = (url, width = 400) => {
-  if (!url) return SVG_COVER_FALLBACK;
+const formatImageUrl = (url, width = 800) => {
+  if (!url) return typeof SVG_FALLBACK !== 'undefined' ? SVG_FALLBACK : (typeof SVG_COVER_FALLBACK !== 'undefined' ? SVG_COVER_FALLBACK : '');
   let strUrl = String(url).trim();
-  if (!strUrl) return SVG_COVER_FALLBACK;
+  if (!strUrl) return typeof SVG_FALLBACK !== 'undefined' ? SVG_FALLBACK : (typeof SVG_COVER_FALLBACK !== 'undefined' ? SVG_COVER_FALLBACK : '');
   if (strUrl.startsWith('data:image') || strUrl.startsWith('assets/')) return strUrl;
+
   let driveId = null;
-  if (strUrl.includes('drive.google.com')) {
-    const match = strUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) || strUrl.match(/id=([a-zA-Z0-9_-]+)/);
+  if (strUrl.includes('drive.google.com') || strUrl.includes('googleusercontent.com')) {
+    const match = strUrl.match(/\/d\/([a-zA-Z0-9_-]+)/) ||
+                  strUrl.match(/id=([a-zA-Z0-9_-]+)/) ||
+                  strUrl.match(/\/file\/d\/([a-zA-Z0-9_-]+)/) ||
+                  strUrl.match(/open\?id=([a-zA-Z0-9_-]+)/);
     if (match) driveId = match[1];
-  } else if (/^[a-zA-Z0-9_-]{20,}$/.test(strUrl) && !strUrl.includes("/")) {
+  } else if (/^[a-zA-Z0-9_-]{25,}$/.test(strUrl) && !strUrl.includes("/")) {
     driveId = strUrl;
   }
-  if (driveId) return `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}-rw`;
-  if (strUrl.includes('images.unsplash.com')) {
-    return strUrl.includes('auto=format') ? strUrl : `${strUrl}&auto=format&fm=webp&q=75`;
+
+  if (driveId) {
+    return `https://drive.google.com/thumbnail?id=${driveId}&sz=w${width}`;
   }
   return strUrl;
 };
