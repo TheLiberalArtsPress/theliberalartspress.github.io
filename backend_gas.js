@@ -473,8 +473,22 @@ function getChoicesSheet() {
  * 讀取推薦書單（精選書單與暢銷書推薦）
  */
 function getChoicesData() {
-  const sheet = getChoicesSheet();
-  const data = sheet.getDataRange().getValues();
+  const ss = getSpreadsheet();
+  let sheet = ss.getSheetByName(SHEET_NAMES.CHOICES) || ss.getSheetByName("推薦書單");
+  let data = sheet ? sheet.getDataRange().getValues() : [];
+
+  // 若「推薦書單」不存在或只有標題列，自動備援讀取「精選推薦」工作表
+  if (data.length <= 1) {
+    const oldSheet = ss.getSheetByName("精選推薦");
+    if (oldSheet) {
+      const oldData = oldSheet.getDataRange().getValues();
+      if (oldData.length > 1) {
+        sheet = oldSheet;
+        data = oldData;
+      }
+    }
+  }
+
   if (data.length <= 1) return { choices: [], newArrivalsList: [] };
 
   const choices = [];
