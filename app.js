@@ -414,18 +414,24 @@ const getCarouselImgSrc = (car) => {
   const img = car.image ? String(car.image).trim() : '';
   const local = car.localImage ? String(car.localImage).trim() : '';
 
-  // 1. 優先使用本地高清圖檔（避免被低解析度/壓縮的 base64 縮圖覆蓋造成模糊）
-  if (local && !local.startsWith('data:image')) {
-    return typeof formatImageUrl === 'function' ? formatImageUrl(local, 1200) : local;
-  }
-  if (img && !img.startsWith('data:image')) {
+  // 1. Base64 is self-contained and always works
+  if (img.startsWith('data:image')) return img;
+  if (local.startsWith('data:image')) return local;
+
+  // 2. Online URLs or Google Drive links/IDs (優先使用最新設定的圖片網址)
+  if (img && (img.startsWith('http') || img.includes('drive.google.com') || (!img.includes('/') && img.length > 15))) {
     return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
   }
 
-  // 2. 次選 base64 格式
-  if (local.startsWith('data:image')) return local;
-  if (img.startsWith('data:image')) return img;
+  // 3. Local asset image if provided
+  if (local) {
+    return typeof formatImageUrl === 'function' ? formatImageUrl(local, 1200) : local;
+  }
 
+  // 4. Fallback image
+  if (img) {
+    return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
+  }
   return typeof SVG_FALLBACK !== 'undefined' ? SVG_FALLBACK : (typeof SVG_COVER_FALLBACK !== 'undefined' ? SVG_COVER_FALLBACK : '');
 };
 const safeGetStorage = key => {
@@ -699,7 +705,11 @@ function App() {
     systemName: '文史哲出版社',
     systemSubName: 'The Liberal Arts Press'
   });
-  const [carousels, setCarousels] = useState(() => initData.carousels && initData.carousels.length > 0 ? initData.carousels : fallbackCarousels);
+  const [carousels, setCarousels] = useState(() => {
+    const raw = initData.carousels && initData.carousels.length > 0 ? initData.carousels : fallbackCarousels;
+    const filtered = (raw || []).filter(c => c && c.status !== '草稿' && c.status !== 'draft');
+    return filtered.length > 0 ? filtered : fallbackCarousels;
+  });
   const [carouselIndex, setCarouselIndex] = useState(0);
   const [books, setBooks] = useState(() => (staticData.books && staticData.books.length > 0) ? staticData.books : (initData.initialBooks && initData.initialBooks.length > 0 ? initData.initialBooks : []));
   const [choiceBooks, setChoiceBooks] = useState(() => initData.choices && initData.choices.length > 0 ? initData.choices : []);
@@ -950,7 +960,10 @@ function App() {
                 setBooks(dataToUse.books);
                 if (dataToUse.choices) setChoiceBooks(dataToUse.choices);
                 if (dataToUse.newArrivalsList) setNewArrivalsList(dataToUse.newArrivalsList);
-                if (dataToUse.carousels) setCarousels(dataToUse.carousels);
+                if (dataToUse.carousels) {
+                  const filtered = (dataToUse.carousels || []).filter(c => c && c.status !== '草稿' && c.status !== 'draft');
+                  setCarousels(filtered.length > 0 ? filtered : fallbackCarousels);
+                }
                 if (dataToUse.settings) setSettings(prev => ({ ...prev, ...dataToUse.settings }));
                 if (dataToUse.ui) setUi(prev => ({ ...prev, ...dataToUse.ui }));
                 setIsBooksLoading(false);

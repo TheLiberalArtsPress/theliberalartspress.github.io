@@ -69,7 +69,7 @@ function doPost(e) {
       const data = {
         settings: getSettings(),
         ui: getSettings().ui || {},
-        carousels: getCarousels(),
+        carousels: getCarousels(true),
         choices: getChoices(),
         books: getBooks()
       };
@@ -85,7 +85,7 @@ function doPost(e) {
     }
 
     if (action === "FETCH_CAROUSELS") {
-      return jsonResponse({ status: "success", data: getCarousels() });
+      return jsonResponse({ status: "success", data: getCarousels(true) });
     }
 
     if (action === "FETCH_SETTINGS") {
@@ -437,7 +437,7 @@ function getCsMessages() {
 /**
  * 讀取輪播圖
  */
-function getCarousels() {
+function getCarousels(onlyPublished = false) {
   const sheet = getSpreadsheet().getSheetByName(SHEET_NAMES.CAROUSELS);
   const data = sheet.getDataRange().getValues();
   if (data.length <= 1) return [];
@@ -446,12 +446,14 @@ function getCarousels() {
   for (let i = 1; i < data.length; i++) {
     const row = data[i];
     if (!row[0] && !row[1]) continue;
+    const status = String(row[4] || "已發佈");
+    if (onlyPublished && (status === "草稿" || status === "draft")) continue;
     carousels.push({
       id: String(row[0] || ""),
       title: String(row[1] || ""),
       description: String(row[2] || ""),
       image: String(row[3] || ""),
-      status: String(row[4] || "已發佈")
+      status: status
     });
   }
   return carousels;

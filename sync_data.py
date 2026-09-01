@@ -65,11 +65,11 @@ def main():
 
     books = data.get('FETCH_BOOKS', [])
     choices = data.get('FETCH_CHOICES', [])
-    carousels = data.get('FETCH_CAROUSELS', [])
+    carousels = [c for c in data.get('FETCH_CAROUSELS', []) if c.get('status') not in ['草稿', 'draft']]
     settings = data.get('FETCH_SETTINGS', {})
     ui = data.get('FETCH_UI', {})
 
-    print(f"共取得 {len(books)} 本書籍、{len(choices)} 本推薦、{len(carousels)} 張輪播圖。")
+    print(f"共取得 {len(books)} 本書籍、{len(choices)} 本推薦、{len(carousels)} 張已發佈輪播圖。")
 
     # 下載 Google Drive 封面圖
     drive_urls = {}
