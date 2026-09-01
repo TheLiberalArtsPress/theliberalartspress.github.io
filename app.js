@@ -414,24 +414,23 @@ const getCarouselImgSrc = (car) => {
   const img = car.image ? String(car.image).trim() : '';
   const local = car.localImage ? String(car.localImage).trim() : '';
 
-  // 1. Base64 is self-contained and always works
+  // 1. 若設定了外部網址或 Google Drive 雲端圖檔，優先使用最新網址
+  if (img && (img.startsWith('http://') || img.startsWith('https://') || img.includes('drive.google.com') || (!img.includes('/') && img.length > 15 && !img.startsWith('data:')))) {
+    return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
+  }
+
+  // 2. 若有本地高畫質圖檔 (assets/covers/...)，優先使用高清實體檔案（防止被壓縮過小的 Base64 縮圖模糊化）
+  if (local && !local.startsWith('data:image')) {
+    return typeof formatImageUrl === 'function' ? formatImageUrl(local, 1200) : local;
+  }
+  if (img && !img.startsWith('data:image')) {
+    return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
+  }
+
+  // 3. 次選 Base64 格式
   if (img.startsWith('data:image')) return img;
   if (local.startsWith('data:image')) return local;
 
-  // 2. Online URLs or Google Drive links/IDs (優先使用最新設定的圖片網址)
-  if (img && (img.startsWith('http') || img.includes('drive.google.com') || (!img.includes('/') && img.length > 15))) {
-    return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
-  }
-
-  // 3. Local asset image if provided
-  if (local) {
-    return typeof formatImageUrl === 'function' ? formatImageUrl(local, 1200) : local;
-  }
-
-  // 4. Fallback image
-  if (img) {
-    return typeof formatImageUrl === 'function' ? formatImageUrl(img, 1200) : img;
-  }
   return typeof SVG_FALLBACK !== 'undefined' ? SVG_FALLBACK : (typeof SVG_COVER_FALLBACK !== 'undefined' ? SVG_COVER_FALLBACK : '');
 };
 const safeGetStorage = key => {
