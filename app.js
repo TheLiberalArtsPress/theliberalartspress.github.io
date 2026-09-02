@@ -2008,7 +2008,7 @@ function App() {
     className: "min-w-[240px] w-[240px] snap-start shrink-0 glass-card book-tilt-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group/card",
     onClick: () => setSelectedBookDetail(book)
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-52 bg-[var(--bg-light)]/60 relative overflow-hidden p-3.5 flex justify-center items-center"
+    className: "h-52 relative overflow-hidden p-3.5 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-full relative group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-md"
   }, /*#__PURE__*/React.createElement("img", {
@@ -2023,7 +2023,7 @@ function App() {
   }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
-    className: "p-4 flex flex-col flex-1 bg-white/70"
+    className: "p-4 flex flex-col flex-1"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 group-hover/card:text-[var(--primary-color)] transition-colors font-serif",
     title: book.title
@@ -2075,7 +2075,7 @@ function App() {
     className: `group glass-card book-tilt-card rounded-2xl overflow-hidden flex flex-col cursor-pointer ${getInkAnimationClass(book.category)}`,
     onClick: () => setSelectedBookDetail(book)
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center"
+    className: "h-64 relative overflow-hidden p-4 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-full relative group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-md"
   }, /*#__PURE__*/React.createElement("img", {
@@ -2090,7 +2090,7 @@ function App() {
   }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
-    className: "p-5 flex flex-col flex-1 bg-white/80"
+    className: "p-5 flex flex-col flex-1"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors",
     title: book.title
@@ -2594,7 +2594,7 @@ function App() {
     className: "glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer",
     onClick: () => setSelectedBookDetail(book)
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-48 bg-[var(--bg-light)]/50 relative overflow-hidden p-3 flex justify-center items-center"
+    className: "h-48 relative overflow-hidden p-3 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
@@ -2605,7 +2605,7 @@ function App() {
   }), /*#__PURE__*/React.createElement("div", {
     className: "absolute top-2 left-2 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-md border border-white/30 z-10"
   }, book.category)), /*#__PURE__*/React.createElement("div", {
-    className: "p-3.5 flex flex-col flex-1 bg-white/70"
+    className: "p-3.5 flex flex-col flex-1"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-sm mb-1 line-clamp-2",
     title: book.title

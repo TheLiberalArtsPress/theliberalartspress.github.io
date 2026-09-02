@@ -1172,14 +1172,14 @@ function App() {
                             <div ref={sliderRef} className="flex overflow-x-auto gap-5 snap-x snap-mandatory hide-scrollbar pb-4 px-1 pt-1">
                                 {displayChoiceBooks.map(book => (
                                     <div key={`rec-${book.id}`} className="min-w-[240px] w-[240px] snap-start shrink-0 glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group/card" onClick={() => setSelectedBookDetail(book)}>
-                                        <div className="h-52 bg-[var(--bg-light)]/60 relative overflow-hidden p-3.5 flex justify-center items-center">
+                                        <div className="h-52 relative overflow-hidden p-3.5 flex justify-center items-center">
                                             <div className="h-full relative group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                                 <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             </div>
                                             <div className="absolute top-2.5 left-2.5 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[11px] px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                             {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm">{ui.msgOutOfStock}</div>}
                                         </div>
-                                        <div className="p-4 flex flex-col flex-1 bg-white/70">
+                                        <div className="p-4 flex flex-col flex-1">
                                             <h3 className="font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 group-hover/card:text-[var(--primary-color)] transition-colors" title={book.title}>{book.title}</h3>
                                             <p className="text-[var(--primary-color)] font-black text-base font-sans mt-auto mb-2.5">NT$ {book.price}</p>
                                             <button type="button" onClick={(e) => { e.stopPropagation(); addToCart(book); }} className="w-full bg-white border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-1.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1.5 shadow-sm active:scale-95">
@@ -1231,14 +1231,14 @@ function App() {
                         ) : (
                             visibleBooks.map(book => (
                                 <div key={book.id} className="group glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
-                                    <div className="h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
+                                    <div className="h-64 relative overflow-hidden p-4 flex justify-center items-center">
                                         <div className="h-full relative group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                             <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                         </div>
                                         <div className="absolute top-3 left-3 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl">{ui.msgOutOfStock}</div>}
                                     </div>
-                                    <div className="p-5 flex flex-col flex-1 bg-white/80">
+                                    <div className="p-5 flex flex-col flex-1">
                                         <h3 className="font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors" title={book.title}>{book.title}</h3>
                                         <p className="text-[var(--primary-color)] font-black mb-4 text-xl font-sans mt-auto">NT$ {book.price}</p>
                                         <button type="button" onClick={(e) => { e.stopPropagation(); addToCart(book); }} className="w-full bg-white border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-2 font-sans shadow-sm active:scale-95 text-sm">
@@ -1511,11 +1511,11 @@ function App() {
                             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
                                 {randomBooks.map(book => (
                                     <div key={book.id} className="glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
-                                        <div className="h-48 bg-[var(--bg-light)]/50 relative overflow-hidden p-3 flex justify-center items-center">
+                                        <div className="h-48 relative overflow-hidden p-3 flex justify-center items-center">
                                             <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             <div className="absolute top-2 left-2 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         </div>
-                                        <div className="p-3.5 flex flex-col flex-1 bg-white/70">
+                                        <div className="p-3.5 flex flex-col flex-1">
                                             <h3 className="font-bold text-sm mb-1 line-clamp-2" title={book.title}>{book.title}</h3>
                                             <p className="text-[var(--primary-color)] font-black text-base font-sans mt-auto mb-2">NT$ {book.price}</p>
                                             <button type="button" onClick={(e) => { e.stopPropagation(); addToCart(book); }} className="w-full bg-white border border-[var(--accent-color)] text-[var(--text-dark)] py-1.5 rounded-lg font-bold hover:bg-[var(--primary-color)] hover:text-white transition text-xs flex items-center justify-center gap-1">
