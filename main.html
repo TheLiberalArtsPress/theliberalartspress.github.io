@@ -165,12 +165,7 @@
         box-shadow: 0 0 0 4px rgba(140, 90, 43, 0.12);
     }
 
-    .book-spine-shadow {
-        box-shadow: 
-            -3px 0 6px -2px rgba(0,0,0,0.2),
-            5px 5px 20px rgba(36, 29, 23, 0.15),
-            inset -2px 0 4px rgba(0,0,0,0.06);
-    }
+
 
     .skeleton-shimmer {
         background: linear-gradient(90deg, #F0EAE1 25%, #FAF7F2 50%, #F0EAE1 75%);
@@ -1178,7 +1173,7 @@ function App() {
                                 {displayChoiceBooks.map(book => (
                                     <div key={`rec-${book.id}`} className="min-w-[240px] w-[240px] snap-start shrink-0 glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer group/card" onClick={() => setSelectedBookDetail(book)}>
                                         <div className="h-52 bg-[var(--bg-light)]/60 relative overflow-hidden p-3.5 flex justify-center items-center">
-                                            <div className="h-full relative book-spine-shadow group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden">
+                                            <div className="h-full relative group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                                 <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             </div>
                                             <div className="absolute top-2.5 left-2.5 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[11px] px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
@@ -1237,7 +1232,7 @@ function App() {
                             visibleBooks.map(book => (
                                 <div key={book.id} className="group glass-card rounded-2xl overflow-hidden flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                     <div className="h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center">
-                                        <div className="h-full relative book-spine-shadow group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
+                                        <div className="h-full relative group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden">
                                             <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                         </div>
                                         <div className="absolute top-3 left-3 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
@@ -1517,7 +1512,7 @@ function App() {
                                 {randomBooks.map(book => (
                                     <div key={book.id} className="glass-card rounded-xl overflow-hidden flex flex-col cursor-pointer" onClick={() => setSelectedBookDetail(book)}>
                                         <div className="h-48 bg-[var(--bg-light)]/50 relative overflow-hidden p-3 flex justify-center items-center">
-                                            <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded book-spine-shadow" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                            <img src={formatImageUrl(book.cover, 400)} loading="lazy" decoding="async" className="h-full w-auto object-contain rounded" alt={book.title} onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                             <div className="absolute top-2 left-2 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         </div>
                                         <div className="p-3.5 flex flex-col flex-1 bg-white/70">
@@ -1807,7 +1802,7 @@ function App() {
                         <div className={`p-5 md:p-8 font-sans overflow-y-auto flex-1 space-y-5 ${isBookDetailFullscreen ? 'max-w-5xl mx-auto w-full' : ''}`}>
                             <div className="flex flex-col sm:flex-row gap-6 items-start">
                                 <div className={`w-full ${isBookDetailFullscreen ? 'sm:w-60 h-80' : 'sm:w-44 h-56'} shrink-0 bg-[var(--bg-light)] rounded-xl overflow-hidden p-2 border flex justify-center items-center transition-all`}>
-                                    <img src={formatImageUrl(selectedBookDetail.cover, 1000)} alt={selectedBookDetail.title} className="h-full w-auto object-contain rounded book-spine-shadow" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
+                                    <img src={formatImageUrl(selectedBookDetail.cover, 1000)} alt={selectedBookDetail.title} className="h-full w-auto object-contain rounded" onError={(e) => handleImgError(e, SVG_COVER_FALLBACK)} />
                                 </div>
                                 <div className="flex-1 space-y-3 text-left">
                                     <h3 className={`${isBookDetailFullscreen ? 'text-2xl md:text-3xl' : 'text-xl'} font-black text-[var(--dark-color)] font-serif`}>{selectedBookDetail.title}</h3>

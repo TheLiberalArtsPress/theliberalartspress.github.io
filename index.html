@@ -307,43 +307,11 @@
         box-shadow: 0 20px 40px -12px rgba(140, 90, 43, 0.18), 0 0 0 1px rgba(140, 90, 43, 0.2);
     }
 
-    /* 📖 實體書立體書脊摺痕與光影 (Book Spine Shadow & Crease) */
+    /* 📖 書籍封面效果 */
     .book-spine-effect {
         position: relative;
         overflow: hidden;
-        border-radius: 4px 10px 10px 4px;
-        box-shadow: -2px 0 5px -1px rgba(0, 0, 0, 0.25),
-                    5px 8px 22px -4px rgba(44, 36, 27, 0.22),
-                    inset 3px 0 4px rgba(255, 255, 255, 0.3),
-                    inset -1px 0 2px rgba(0, 0, 0, 0.15);
-    }
-    .book-spine-effect::before {
-        content: '';
-        position: absolute;
-        top: 0;
-        bottom: 0;
-        left: 0;
-        width: 14px;
-        background: linear-gradient(to right, 
-            rgba(0, 0, 0, 0.25) 0%, 
-            rgba(255, 255, 255, 0.4) 22%, 
-            rgba(0, 0, 0, 0.15) 45%, 
-            rgba(0, 0, 0, 0.03) 75%, 
-            transparent 100%);
-        pointer-events: none;
-        z-index: 10;
-        border-right: 0.5px solid rgba(0, 0, 0, 0.08);
-    }
-    .book-spine-effect::after {
-        content: '';
-        position: absolute;
-        top: 0;
-        left: 0;
-        right: 0;
-        bottom: 0;
-        background: linear-gradient(135deg, rgba(255, 255, 255, 0.2) 0%, transparent 55%);
-        pointer-events: none;
-        z-index: 9;
+        border-radius: 4px;
     }
 
     /* 🌟 微幅 3D 浮起與光澤傾斜動效 (Tilt Effect) */
@@ -423,12 +391,7 @@
         box-shadow: 0 0 0 4px rgba(140, 90, 43, 0.12);
     }
 
-    .book-spine-shadow {
-        box-shadow: 
-            -3px 0 6px -2px rgba(0,0,0,0.2),
-            5px 5px 20px rgba(36, 29, 23, 0.15),
-            inset -2px 0 4px rgba(0,0,0,0.06);
-    }
+
 
     .skeleton-shimmer {
         background: linear-gradient(90deg, #F0EAE1 25%, #FAF7F2 50%, #F0EAE1 75%);
@@ -519,16 +482,7 @@
         transition: left 0.75s ease-in-out;
     }
 
-    /* 📚 實體精裝書側邊多層紙張厚度光影 (Book Page Rim) */
-    .book-page-rim {
-        box-shadow: 
-            -2px 0 5px -1px rgba(0, 0, 0, 0.22),
-            5px 8px 22px -4px rgba(44, 36, 27, 0.22),
-            inset 3px 0 4px rgba(255, 255, 255, 0.3),
-            inset -2px 0 0 #D5C7B6,
-            inset -4px 0 0 #F4EFEA,
-            inset -5px 0 0 #D5C7B6;
-    }
+
 
     .animate-in { animation: fadeIn 0.35s cubic-bezier(0.16, 1, 0.3, 1) forwards; }
     @keyframes fadeIn { 
@@ -607,6 +561,6 @@
 <!-- ⚡ 核心數據與應用程序載入（init_data 首屏秒開 + data.js 背景遞延 + app.js 即刻渲染） -->
 <script src="init_data.js?v=20260831_05"></script>
 <script src="data.js?v=20260831_05" defer></script>
-<script src="app.js?v=20260902_03"></script>
+<script src="app.js?v=20260902_04"></script>
 </body>
 </html>

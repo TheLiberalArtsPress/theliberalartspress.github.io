@@ -2010,7 +2010,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-52 bg-[var(--bg-light)]/60 relative overflow-hidden p-3.5 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-full relative book-spine-effect group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-lg"
+    className: "h-full relative group-hover/card:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-md"
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
@@ -2077,7 +2077,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("div", {
     className: "h-64 bg-[var(--bg-light)]/50 relative overflow-hidden p-4 flex justify-center items-center"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "h-full relative book-spine-effect book-page-rim group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-lg"
+    className: "h-full relative group-hover:scale-105 transition-transform duration-500 rounded overflow-hidden shadow-md"
   }, /*#__PURE__*/React.createElement("img", {
     src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
@@ -2599,7 +2599,7 @@ function App() {
     src: formatImageUrl(book.localCover || book.cover, 400),
     loading: "lazy",
     decoding: "async",
-    className: "h-full w-auto object-contain rounded book-spine-shadow",
+    className: "h-full w-auto object-contain rounded",
     alt: book.title,
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   }), /*#__PURE__*/React.createElement("div", {
@@ -3084,7 +3084,7 @@ function App() {
     alt: selectedBookDetail.title,
     loading: "lazy",
     decoding: "async",
-    className: "h-full w-auto object-contain rounded-lg book-spine-effect shadow-xl",
+    className: "h-full w-auto object-contain rounded-lg shadow-xl",
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
     className: "flex-1 space-y-3 text-left w-full min-w-0"
