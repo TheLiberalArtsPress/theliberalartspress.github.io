@@ -931,17 +931,14 @@ function App() {
         payload: payloadData,
         origin: safeOrigin
       };
-      const controller = new AbortController();
-      const timeoutId = setTimeout(() => controller.abort(), 4000);
       const response = await fetch(GAS_URL, {
         method: "POST",
         headers: {
           "Content-Type": "text/plain;charset=utf-8"
         },
         body: JSON.stringify(payloadObj),
-        signal: controller.signal
+        keepalive: true
       });
-      clearTimeout(timeoutId);
       return await response.json();
     } catch (e) {
       return {
@@ -1218,34 +1215,24 @@ function App() {
     e.preventDefault();
     if (isSubmittingReview || !checkRateLimit()) return;
     const name = sanitizeInput(e.target.name ? e.target.name.value : "");
-    const phone = sanitizeInput(e.target.phone ? e.target.phone.value : "");
-    const email = sanitizeInput(e.target.email ? e.target.email.value : "");
-    const contact = sanitizeInput(e.target.contact ? e.target.contact.value : "");
+    const contact = sanitizeInput(e.target.contact ? e.target.contact.value : (e.target.phone ? e.target.phone.value : (e.target.email ? e.target.email.value : "")));
     const content = sanitizeInput(e.target.content ? e.target.content.value : "");
 
-    const finalPhone = phone || (contact && !contact.includes("@") ? contact : "");
-    const finalEmail = email || (contact && contact.includes("@") ? contact : "");
-
-    if (!name || name.trim().length < 2) return showMsg("請輸入您的稱呼（至少 2 個字）");
-    if (!finalPhone.trim() && !finalEmail.trim()) {
-      return showMsg("請提供「聯絡電話」或「電子信箱（Email）」至少一項！");
-    }
-    if (finalEmail && (!finalEmail.includes("@") || !finalEmail.includes("."))) {
-      return showMsg("請輸入正確的電子信箱格式");
-    }
-    if (finalPhone && finalPhone.replace(/[^0-9]/g, "").length < 7) {
-      return showMsg("請輸入有效的聯絡電話號碼");
-    }
-    if (!content || content.trim().length < 5) return showMsg("讀後感言請至少輸入 5 個字");
+    if (!name || name.trim().length < 1) return showMsg("請輸入您的稱呼（必填）");
+    if (!contact || contact.trim().length < 2) return showMsg("請輸入聯絡電話或電子信箱（必填）");
+    if (!content || content.trim().length < 2) return showMsg("請輸入讀後心得或提問（必填）");
 
     setIsSubmittingReview(true);
     setLastActionTime(Date.now());
-    showMsg("心得傳送中...");
+
+    const isEmail = contact.includes("@");
+    const phone = isEmail ? "" : contact;
+    const email = isEmail ? contact : "";
 
     const bookTitle = reviewBook ? reviewBook.title : '未知書籍';
     const bookId = reviewBook && reviewBook.id ? reviewBook.id : '';
 
-    const combinedQuery = `【互動項目】讀後心得交流\n【書籍名稱】《${bookTitle}》${bookId ? `（書碼：${bookId}）` : ''}\n【讀者稱呼】${name}\n【聯絡電話】${finalPhone || '未提供'}\n【電子信箱】${finalEmail || '未提供'}\n─────────────────\n【讀後心得感言】\n${content}`;
+    const combinedQuery = `【互動項目】讀後心得交流\n【書籍名稱】《${bookTitle}》${bookId ? `（書碼：${bookId}）` : ''}\n【讀者稱呼】${name}\n【聯絡方式】${contact}\n─────────────────\n【讀後心得感言】\n${content}`;
 
     const submitId = `REV-${Date.now().toString().slice(-6)}`;
     const newLog = {
@@ -1255,10 +1242,11 @@ function App() {
       name: name,
       userName: name,
       user: name,
-      phone: finalPhone,
-      tel: finalPhone,
-      email: finalEmail,
-      mail: finalEmail,
+      phone: phone || contact,
+      tel: phone || contact,
+      email: email || contact,
+      mail: email || contact,
+      contact: contact,
       content: combinedQuery,
       message: combinedQuery,
       msg: combinedQuery,
@@ -1271,8 +1259,9 @@ function App() {
       '留言編號': submitId,
       '稱呼': name,
       '姓名': name,
-      '電話': finalPhone,
-      '電子信箱': finalEmail,
+      '聯絡方式': contact,
+      '電話': phone || contact,
+      '電子信箱': email || (isEmail ? contact : ''),
       '反映內容': combinedQuery,
       '書籍名稱': bookTitle,
       '心得內容': content,
@@ -1280,20 +1269,19 @@ function App() {
       '時間': new Date().toLocaleString()
     };
 
+    // 💾 同步存入後台本機客服留言庫
     try {
       const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
       localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
     } catch (err) {}
 
-    const res = await syncWithGAS('NEW_CS_MSG', newLog);
+    // 🚀 背景異步發送至 Google 雲端
+    syncWithGAS('NEW_CS_MSG', newLog).catch(err => console.log("Review sync error:", err));
+
+    e.target.reset();
+    setIsReviewModalOpen(false);
     setIsSubmittingReview(false);
-    if (res && res.status === 'success') {
-      e.target.reset();
-      setIsReviewModalOpen(false);
-      showMsg("感謝您的寶貴心得，已成功送出與編輯部交流！");
-    } else {
-      showMsg(`傳送失敗：${res ? res.msg : '伺服器無回應'}`);
-    }
+    showMsg("感謝您的寶貴心得，已成功送出與編輯部交流！");
   };
   const handleSearchSubmit = e => {
     e.preventDefault();
@@ -2035,7 +2023,7 @@ function App() {
   }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
-    className: "p-4 flex flex-col flex-1 bg-white/70 border-t border-[var(--border-color)]/40"
+    className: "p-4 flex flex-col flex-1 bg-white/70"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 group-hover/card:text-[var(--primary-color)] transition-colors font-serif",
     title: book.title
@@ -2102,7 +2090,7 @@ function App() {
   }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
-    className: "p-5 flex flex-col flex-1 bg-white/80 border-t border-[var(--border-color)]/40"
+    className: "p-5 flex flex-col flex-1 bg-white/80"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors",
     title: book.title
@@ -3269,23 +3257,17 @@ function App() {
     className: "text-purple-500"
   }), " \u767C\u8868\u8B80\u5F8C\u611F\u8A00\uFF1A"), /*#__PURE__*/React.createElement("span", {
     className: "text-[11px] text-purple-700 bg-purple-50 px-2 py-0.5 rounded font-medium"
-  }, "\u203B \u96FB\u8A71\u6216 Email \u6477\u4E00\u5FC5\u586B")), /*#__PURE__*/React.createElement("div", {
+  }, "※ 必填")), /*#__PURE__*/React.createElement("div", {
     className: "space-y-2.5"
   }, /*#__PURE__*/React.createElement("input", {
     name: "name",
     required: true,
-    placeholder: "\u60A8\u7684\u7A31\u547C\uFF08\u5FC5\u586B\uFF09",
-    className: "w-full glass-input p-2 rounded-lg outline-none text-xs"
-  }), /*#__PURE__*/React.createElement("div", {
-    className: "grid grid-cols-1 sm:grid-cols-2 gap-2.5"
-  }, /*#__PURE__*/React.createElement("input", {
-    name: "phone",
-    placeholder: "\u806F\u7D61\u96FB\u8A71\uFF08\u96FB\u8A71/Email \u6477\u4E00\u5FC5\u586B\uFF09",
+    placeholder: "您的稱呼（必填）",
     className: "w-full glass-input p-2 rounded-lg outline-none text-xs"
   }), /*#__PURE__*/React.createElement("input", {
-    name: "email",
-    type: "email",
-    placeholder: "\u96FB\u5B50\u4FE1\u7BB1 Email\uFF08\u96FB\u8A71/Email \u6477\u4E00\u5FC5\u586B\uFF09",
+    name: "contact",
+    required: true,
+    placeholder: "聯絡電話或電子信箱 Email（必填）",
     className: "w-full glass-input p-2 rounded-lg outline-none text-xs"
   }))), /*#__PURE__*/React.createElement("textarea", {
     name: "content",

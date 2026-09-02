@@ -788,34 +788,24 @@ function App() {
         if (isSubmittingReview || !checkRateLimit()) return;
 
         const name = sanitizeInput(e.target.name ? e.target.name.value : "");
-        const phone = sanitizeInput(e.target.phone ? e.target.phone.value : "");
-        const email = sanitizeInput(e.target.email ? e.target.email.value : "");
-        const contact = sanitizeInput(e.target.contact ? e.target.contact.value : "");
+        const contact = sanitizeInput(e.target.contact ? e.target.contact.value : (e.target.phone ? e.target.phone.value : (e.target.email ? e.target.email.value : "")));
         const content = sanitizeInput(e.target.content ? e.target.content.value : "");
 
-        const finalPhone = phone || (contact && !contact.includes("@") ? contact : "");
-        const finalEmail = email || (contact && contact.includes("@") ? contact : "");
-
-        if (!name || name.trim().length < 2) return showMsg("請輸入您的稱呼（至少 2 個字）");
-        if (!finalPhone.trim() && !finalEmail.trim()) {
-            return showMsg("請提供「聯絡電話」或「電子信箱（Email）」至少一項！");
-        }
-        if (finalEmail && (!finalEmail.includes("@") || !finalEmail.includes("."))) {
-            return showMsg("請輸入正確的電子信箱格式");
-        }
-        if (finalPhone && finalPhone.replace(/[^0-9]/g, "").length < 7) {
-            return showMsg("請輸入有效的聯絡電話號碼");
-        }
-        if (!content || content.trim().length < 5) return showMsg("讀後感言請至少輸入 5 個字");
+        if (!name || name.trim().length < 1) return showMsg("請輸入您的稱呼（必填）");
+        if (!contact || contact.trim().length < 2) return showMsg("請輸入聯絡電話或電子信箱（必填）");
+        if (!content || content.trim().length < 2) return showMsg("請輸入讀後心得或提問（必填）");
 
         setIsSubmittingReview(true);
         setLastActionTime(Date.now());
-        showMsg("心得傳送中...");
+
+        const isEmail = contact.includes("@");
+        const phone = isEmail ? "" : contact;
+        const email = isEmail ? contact : "";
 
         const bookTitle = reviewBook ? reviewBook.title : '未知書籍';
         const bookId = reviewBook && reviewBook.id ? reviewBook.id : '';
 
-        const combinedQuery = `【互動項目】讀後心得交流\n【書籍名稱】《${bookTitle}》${bookId ? `（書碼：${bookId}）` : ''}\n【讀者稱呼】${name}\n【聯絡電話】${finalPhone || '未提供'}\n【電子信箱】${finalEmail || '未提供'}\n─────────────────\n【讀後心得感言】\n${content}`;
+        const combinedQuery = `【互動項目】讀後心得交流\n【書籍名稱】《${bookTitle}》${bookId ? `（書碼：${bookId}）` : ''}\n【讀者稱呼】${name}\n【聯絡方式】${contact}\n─────────────────\n【讀後心得感言】\n${content}`;
 
         const submitId = `REV-${Date.now().toString().slice(-6)}`;
         const newLog = {
@@ -825,10 +815,11 @@ function App() {
             name: name,
             userName: name,
             user: name,
-            phone: finalPhone,
-            tel: finalPhone,
-            email: finalEmail,
-            mail: finalEmail,
+            phone: phone || contact,
+            tel: phone || contact,
+            email: email || contact,
+            mail: email || contact,
+            contact: contact,
             content: combinedQuery,
             message: combinedQuery,
             msg: combinedQuery,
@@ -841,8 +832,9 @@ function App() {
             '留言編號': submitId,
             '稱呼': name,
             '姓名': name,
-            '電話': finalPhone,
-            '電子信箱': finalEmail,
+            '聯絡方式': contact,
+            '電話': phone || contact,
+            '電子信箱': email || (isEmail ? contact : ''),
             '反映內容': combinedQuery,
             '書籍名稱': bookTitle,
             '心得內容': content,
@@ -850,21 +842,19 @@ function App() {
             '時間': new Date().toLocaleString()
         };
 
+        // 💾 同步存入後台本機客服留言庫
         try {
             const existingCS = JSON.parse(localStorage.getItem('lapen_admin_cs') || '[]');
             localStorage.setItem('lapen_admin_cs', JSON.stringify([newLog, ...existingCS]));
         } catch (err) {}
 
-        const res = await syncWithGAS('NEW_CS_MSG', newLog);
+        // 🚀 背景異步發送至 Google 雲端
+        syncWithGAS('NEW_CS_MSG', newLog).catch(err => console.log("Review sync error:", err));
 
+        e.target.reset();
+        setIsReviewModalOpen(false);
         setIsSubmittingReview(false);
-        if (res && res.status === 'success') {
-            e.target.reset();
-            setIsReviewModalOpen(false);
-            showMsg("感謝您的寶貴心得，已成功送出與編輯部交流！");
-        } else {
-            showMsg(`傳送失敗：${res ? res.msg : '伺服器無回應'}`);
-        }
+        showMsg("感謝您的寶貴心得，已成功送出與編輯部交流！");
     };
 
     const handleSearchSubmit = (e) => {
@@ -1194,7 +1184,7 @@ function App() {
                                             <div className="absolute top-2.5 left-2.5 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[11px] px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                             {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm">{ui.msgOutOfStock}</div>}
                                         </div>
-                                        <div className="p-4 flex flex-col flex-1 bg-white/70 border-t border-[var(--border-color)]/40">
+                                        <div className="p-4 flex flex-col flex-1 bg-white/70">
                                             <h3 className="font-bold text-base mb-1 text-[var(--dark-color)] line-clamp-1 group-hover/card:text-[var(--primary-color)] transition-colors" title={book.title}>{book.title}</h3>
                                             <p className="text-[var(--primary-color)] font-black text-base font-sans mt-auto mb-2.5">NT$ {book.price}</p>
                                             <button type="button" onClick={(e) => { e.stopPropagation(); addToCart(book); }} className="w-full bg-white border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-1.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1.5 shadow-sm active:scale-95">
@@ -1253,7 +1243,7 @@ function App() {
                                         <div className="absolute top-3 left-3 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow-md border border-white/30 z-10">{book.category}</div>
                                         {book.stock <= 0 && <div className="absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl">{ui.msgOutOfStock}</div>}
                                     </div>
-                                    <div className="p-5 flex flex-col flex-1 bg-white/80 border-t border-[var(--border-color)]/40">
+                                    <div className="p-5 flex flex-col flex-1 bg-white/80">
                                         <h3 className="font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors" title={book.title}>{book.title}</h3>
                                         <p className="text-[var(--primary-color)] font-black mb-4 text-xl font-sans mt-auto">NT$ {book.price}</p>
                                         <button type="button" onClick={(e) => { e.stopPropagation(); addToCart(book); }} className="w-full bg-white border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-2 font-sans shadow-sm active:scale-95 text-sm">
@@ -1870,14 +1860,11 @@ function App() {
                             <form onSubmit={handleReviewSubmit} className="bg-white p-4 rounded-xl border space-y-3">
                                 <div className="flex justify-between items-center">
                                     <h3 className="font-bold text-gray-800 flex items-center gap-1.5"><Icon name="Send" size={14} className="text-purple-500" /> 發表讀後感言：</h3>
-                                    <span className="text-[11px] text-purple-700 bg-purple-50 px-2 py-0.5 rounded font-medium">※ 電話或 Email 擇一必填</span>
+                                    <span className="text-[11px] text-purple-700 bg-purple-50 px-2 py-0.5 rounded font-medium">※ 必填</span>
                                 </div>
                                 <div className="space-y-2.5">
                                     <input name="name" required placeholder="您的稱呼（必填）" className="w-full glass-input p-2 rounded-lg outline-none text-xs" />
-                                    <div className="grid grid-cols-1 sm:grid-cols-2 gap-2.5">
-                                        <input name="phone" placeholder="聯絡電話（電話/Email 擇一必填）" className="w-full glass-input p-2 rounded-lg outline-none text-xs" />
-                                        <input name="email" type="email" placeholder="電子信箱 Email（電話/Email 擇一必填）" className="w-full glass-input p-2 rounded-lg outline-none text-xs" />
-                                    </div>
+                                    <input name="contact" required placeholder="聯絡電話或電子信箱 Email（必填）" className="w-full glass-input p-2 rounded-lg outline-none text-xs" />
                                 </div>
                                 <textarea name="content" required rows="3" placeholder={`請輸入您對《${reviewBook.title}》的研讀心得或提問...（必填）`} className="w-full glass-input p-2.5 rounded-lg outline-none resize-none leading-relaxed text-xs" />
                                 <button type="submit" disabled={isSubmittingReview} className={`w-full bg-purple-600 hover:bg-purple-700 text-white py-2.5 rounded-xl font-bold shadow transition flex justify-center items-center gap-1.5 text-xs ${isSubmittingReview ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`}>
