@@ -3269,7 +3269,7 @@ function App() {
     required: true,
     placeholder: "聯絡電話或電子信箱 Email（必填）",
     className: "w-full glass-input p-2 rounded-lg outline-none text-xs"
-  }))), /*#__PURE__*/React.createElement("textarea", {
+  })), /*#__PURE__*/React.createElement("textarea", {
     name: "content",
     required: true,
     rows: "3",
