@@ -209,8 +209,15 @@ function doGet(e) {
 // 核心業務邏輯與資料庫存取函式
 // =================================================================
 
+// 試算表 ID（綁定之 Google 試算表 ID）
+const SPREADSHEET_ID = "1gBwGS8QSRbRUsPHo_hkO503G26Clx0b3TqtNesiPrkQ";
+
 function getSpreadsheet() {
-  return SpreadsheetApp.getActiveSpreadsheet();
+  try {
+    const active = SpreadsheetApp.getActiveSpreadsheet();
+    if (active) return active;
+  } catch (e) {}
+  return SpreadsheetApp.openById(SPREADSHEET_ID);
 }
 
 /**
@@ -1175,7 +1182,7 @@ function SYNC_ALL_FROM_GITHUB() {
     throw new Error("書籍清單為空");
   }
 
-  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const ss = getSpreadsheet();
   let sheet = ss.getSheetByName("Book_ALL") || ss.getSheetByName("書籍清單");
   if (!sheet) {
     sheet = ss.insertSheet("書籍清單");
