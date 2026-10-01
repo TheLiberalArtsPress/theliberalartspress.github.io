@@ -697,6 +697,24 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1790857971735-3zvu",
+      "timestamp": "2026/10/01 20:32:51",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2621 本，變更價格 0 本、庫存 0 本、新增 0 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790857955686-3uqz",
+      "timestamp": "2026/10/01 20:32:35",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2621 本，變更價格 0 本、庫存 0 本、新增 0 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1790856160574-uxgk",
       "timestamp": "2026/10/01 20:02:40",
       "category": "書籍庫存",
