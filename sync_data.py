@@ -14,7 +14,7 @@ import concurrent.futures
 if hasattr(sys.stdout, 'reconfigure'):
     sys.stdout.reconfigure(encoding='utf-8')
 
-GAS_URL = "https://script.google.com/macros/s/AKfycbzfD3v4jWMQVOMIPeoqnZ24XEHoCMFz1h4Tapw4sjPlTAtBa4Ow8TTTNaK8ktssR9F9dg/exec"
+GAS_URL = "https://script.google.com/macros/s/AKfycbydej_cIu-CJgDe5ix7o6reteAIwj7irL3c6XQZaDRfO2pRF_NBngd7xhQc8D5UjgE0pw/exec"
 ACTIONS = ['FETCH_SETTINGS', 'FETCH_UI', 'FETCH_CAROUSELS', 'FETCH_CHOICES', 'FETCH_BOOKS']
 
 def fetch_gas_data():

@@ -383,7 +383,7 @@ const ModernLogo = ({
   points: "22,30 32,10 27,8 17,28",
   fill: color2
 }));
-const GAS_URL = "https://script.google.com/macros/s/AKfycbzfD3v4jWMQVOMIPeoqnZ24XEHoCMFz1h4Tapw4sjPlTAtBa4Ow8TTTNaK8ktssR9F9dg/exec";
+const GAS_URL = "https://script.google.com/macros/s/AKfycbydej_cIu-CJgDe5ix7o6reteAIwj7irL3c6XQZaDRfO2pRF_NBngd7xhQc8D5UjgE0pw/exec";
 
 // 🟢 【效能優化】：支援動態圖片尺寸與 WebP 極速高壓縮 (節省 70% 流量，手機載入快 3 倍)
 const formatImageUrl = (url, width = 800) => {
