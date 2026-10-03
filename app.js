@@ -1156,23 +1156,23 @@ function App() {
     const designatedRaw = (newArrivalsList && newArrivalsList.length > 0) ? newArrivalsList : (choiceBooks && choiceBooks.length > 0 ? choiceBooks : []);
     const designatedBooks = designatedRaw.map(cb => {
       const live = books.find(b => (b.id && cb.id && String(b.id) === String(cb.id)) || (b.title && cb.title && b.title === cb.title));
-      return live ? { ...cb, ...live, cover: live.localCover || live.cover || cb.cover || cb.image } : cb;
+      return live ? { ...cb, ...live, round: cb.round || live.round || 1, cover: live.localCover || live.cover || cb.cover || cb.image } : { ...cb, round: cb.round || 1 };
     }).filter(Boolean);
 
     const pageSize = 8;
-    const totalDesignatedRounds = Math.ceil(designatedBooks.length / pageSize);
+    const targetRoundNum = roundIdx + 1;
+    const roundBooks = designatedBooks.filter(b => Number(b.round || 1) === targetRoundNum);
 
-    if (roundIdx < totalDesignatedRounds) {
-      const start = roundIdx * pageSize;
-      const slice = designatedBooks.slice(start, start + pageSize);
-      if (slice.length > 0) {
-        if (slice.length < pageSize && books.length > slice.length) {
-          const sliceIds = new Set(slice.map(b => b.id || b.title));
-          const fillers = books.filter(b => !sliceIds.has(b.id || b.title)).sort(() => 0.5 - Math.random()).slice(0, pageSize - slice.length);
-          return [...slice, ...fillers];
-        }
-        return slice;
+    if (roundBooks.length > 0) {
+      if (roundBooks.length < pageSize && books.length > roundBooks.length) {
+        const designatedIds = new Set(designatedBooks.map(b => String(b.id || b.title)));
+        const fillers = books
+          .filter(b => !designatedIds.has(String(b.id || b.title)))
+          .sort(() => 0.5 - Math.random())
+          .slice(0, pageSize - roundBooks.length);
+        return [...roundBooks, ...fillers];
       }
+      return roundBooks.slice(0, pageSize);
     }
 
     if (books.length > 0) {
@@ -1184,9 +1184,17 @@ function App() {
 
   const openRandomBooksModal = (isNextRound = false) => {
     setIsMobileMenuOpen(false);
+    const designatedRaw = (newArrivalsList && newArrivalsList.length > 0) ? newArrivalsList : (choiceBooks && choiceBooks.length > 0 ? choiceBooks : []);
+    const configuredRounds = Array.from(new Set(designatedRaw.map(b => Number(b.round || 1)))).filter(r => r > 0);
+    const maxConfiguredRound = configuredRounds.length > 0 ? Math.max(...configuredRounds) : 1;
+
     let nextRound = 0;
     if (isNextRound === true) {
-      nextRound = recommendationRound + 1;
+      if (maxConfiguredRound > 1) {
+        nextRound = (recommendationRound + 1) % maxConfiguredRound;
+      } else {
+        nextRound = recommendationRound + 1;
+      }
       setRecommendationRound(nextRound);
     } else {
       setRecommendationRound(0);
@@ -2576,7 +2584,15 @@ function App() {
     className: "text-[var(--primary-color)]"
   }), " ", ui.newArrivalsTitle), /*#__PURE__*/React.createElement("span", {
     className: "text-[11px] bg-white/20 text-white px-2.5 py-0.5 rounded-full font-sans font-bold border border-white/30"
-  }, (newArrivalsList && newArrivalsList.length > 0) ? (recommendationRound < Math.ceil(newArrivalsList.length / 8) ? `第 ${recommendationRound + 1} 輪推薦 (共 ${Math.ceil(newArrivalsList.length / 8)} 輪)` : `全館精選隨機推薦 (第 ${recommendationRound + 1} 輪)`) : `全館精選推薦 (第 ${recommendationRound + 1} 輪)`)), /*#__PURE__*/React.createElement("button", {
+  }, (() => {
+    const designatedForHeader = (newArrivalsList && newArrivalsList.length > 0) ? newArrivalsList : (choiceBooks && choiceBooks.length > 0 ? choiceBooks : []);
+    const configuredRoundsList = Array.from(new Set(designatedForHeader.map(b => Number(b.round || 1)))).filter(r => r > 0);
+    const maxRounds = configuredRoundsList.length > 0 ? Math.max(...configuredRoundsList) : 1;
+    if (newArrivalsList && newArrivalsList.length > 0) {
+      return recommendationRound < maxRounds ? `第 ${recommendationRound + 1} 輪推薦 (共 ${maxRounds} 輪)` : `全館精選隨機推薦 (第 ${recommendationRound + 1} 輪)`;
+    }
+    return `全館精選推薦 (第 ${recommendationRound + 1} 輪)`;
+  })())), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsRandomBooksOpen(false),
     className: "bg-white/10 hover:bg-white/20 px-3 py-1.5 rounded-full text-xs font-bold text-white transition flex items-center gap-1.5"
@@ -2630,7 +2646,13 @@ function App() {
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Zap",
     size: 15
-  }), " ", ui.newArrivalsBtnRefresh, ` (換看第 ${recommendationRound + 2} 輪)`))))), isCartOpen && /*#__PURE__*/React.createElement("div", {
+  }), " ", ui.newArrivalsBtnRefresh, (() => {
+    const designatedForBtn = (newArrivalsList && newArrivalsList.length > 0) ? newArrivalsList : (choiceBooks && choiceBooks.length > 0 ? choiceBooks : []);
+    const configuredRoundsList = Array.from(new Set(designatedForBtn.map(b => Number(b.round || 1)))).filter(r => r > 0);
+    const maxRounds = configuredRoundsList.length > 0 ? Math.max(...configuredRoundsList) : 1;
+    const nextRoundDisplay = (maxRounds > 1) ? (((recommendationRound + 1) % maxRounds) + 1) : (recommendationRound + 2);
+    return ` (換看第 ${nextRoundDisplay} 輪)`;
+  })()))))), isCartOpen && /*#__PURE__*/React.createElement("div", {
     className: "fixed inset-0 bg-black/60 backdrop-blur-md z-[200] flex justify-center items-start md:items-center p-0 md:p-6 overflow-y-auto",
     onClick: () => setIsCartOpen(false)
   }, /*#__PURE__*/React.createElement("div", {
