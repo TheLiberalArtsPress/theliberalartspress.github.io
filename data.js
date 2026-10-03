@@ -757,17 +757,143 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
-      "id": "LOG-1790911771870-gho6",
-      "timestamp": "2026/10/02 11:29:31",
-      "category": "書籍庫存",
-      "action": "編輯",
-      "details": "修改書籍《十五－十六世紀的回回文與中國伊斯蘭教文化研究（BOD）》(書碼: 00548) 定價 NT$ 400、庫存 20",
+      "id": "LOG-1790949499123-2dfj",
+      "timestamp": "2026/10/02 21:58:19",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 17 本、暢銷 17 本）",
       "operator": "管理員 (Admin)",
       "syncStatus": "已保存"
     },
     {
-      "id": "LOG-1790911764569-k3ap",
-      "timestamp": "2026/10/02 11:29:24",
+      "id": "LOG-1790949483007-w6kz",
+      "timestamp": "2026/10/02 21:58:03",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《詞林正韻》加入暢銷推薦【第 1 輪】",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949459508-x2el",
+      "timestamp": "2026/10/02 21:57:39",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 17 本、暢銷 16 本）",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949449115-i5wz",
+      "timestamp": "2026/10/02 21:57:29",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《南宋高宗偏安江左原因之探討》加入暢銷推薦【第 1 輪】",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949431197-1e00",
+      "timestamp": "2026/10/02 21:57:11",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《馬王堆帛書易經斠理》加入暢銷推薦【第 1 輪】",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949414172-w5sk",
+      "timestamp": "2026/10/02 21:56:54",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《文學概論》加入暢銷推薦【第 1 輪】",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949399666-uh99",
+      "timestamp": "2026/10/02 21:56:39",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《廣韻作業》加入暢銷推薦【第 1 輪】",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949398590-d865",
+      "timestamp": "2026/10/02 21:56:38",
+      "category": "推薦書單",
+      "action": "刪除",
+      "details": "將《廣韻作業》從暢銷推薦移除",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949386127-zyuk",
+      "timestamp": "2026/10/02 21:56:26",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 17 本、暢銷 13 本）",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949383150-2vbu",
+      "timestamp": "2026/10/02 21:56:23",
+      "category": "推薦書單",
+      "action": "刪除",
+      "details": "將《廣韻作業》移出精選推薦",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949381874-uoi8",
+      "timestamp": "2026/10/02 21:56:21",
+      "category": "推薦書單",
+      "action": "刪除",
+      "details": "將《文學概論》移出精選推薦",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949366739-02u9",
+      "timestamp": "2026/10/02 21:56:06",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 19 本、暢銷 13 本）",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949360643-rzd6",
+      "timestamp": "2026/10/02 21:56:00",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《文學概論》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949347559-2t9u",
+      "timestamp": "2026/10/02 21:55:47",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《廣韻作業》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949289664-pym1",
+      "timestamp": "2026/10/02 21:54:49",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2621 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1790949274276-ft8h",
+      "timestamp": "2026/10/02 21:54:34",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2621 本，變更價格 0 本、庫存 0 本、新增 0 本",
@@ -11991,16 +12117,16 @@ window.STATIC_DATA = {
       "title": "十五－十六世紀的回回文與中國伊斯蘭教文化研究（BOD）",
       "author": "駱愛麗著",
       "year": "97年 平一",
-      "price": 400,
+      "price": 380,
       "isbn": "978-957-549-790-3",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00548.jpg",
-      "localCover": "assets/covers/00548.jpg",
       "intro": "本書《十五－十六世紀的回回文與中國伊斯蘭教文化研究（BOD）》由學者駱愛麗所撰著，深入研析《十五－十六世紀的回回文與中國伊斯蘭教文化研究》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《十五－十六世紀的回回文與中國伊斯蘭教文化研究（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《十五－十六世紀的回回文與中國伊斯蘭教文化研究（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00548.jpg"
     },
     {
       "id": "00549",
