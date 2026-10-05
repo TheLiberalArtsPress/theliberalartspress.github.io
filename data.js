@@ -789,6 +789,24 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1791171723547-tjam",
+      "timestamp": "2026/10/05 11:42:03",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791171717978-0qp4",
+      "timestamp": "2026/10/05 11:41:57",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2623 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1791171672789-6ce9",
       "timestamp": "2026/10/05 11:41:12",
       "category": "書籍庫存",
