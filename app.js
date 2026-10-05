@@ -445,6 +445,87 @@ const safeSetStorage = (key, val) => {
     localStorage.setItem(key, val);
   } catch (e) {}
 };
+
+// 🌐 【全球鏡像節點配置・多線路互相引流與加速】
+const MIRROR_LINES = [
+  {
+    id: 'cloudflare',
+    name: 'Cloudflare 節點',
+    host: 'theliberalartspress.pages.dev',
+    url: 'https://theliberalartspress.pages.dev/',
+    badge: '大陸直連優選',
+    badgeColor: 'bg-emerald-600 text-white',
+    desc: 'Anycast 全球 CDN・智慧路由抗阻斷・推薦大陸讀者首選',
+    tag: '⚡ 推薦大陸訪問',
+    isChinaRecommended: true
+  },
+  {
+    id: 'vercel',
+    name: 'Vercel 邊緣節點',
+    host: 'theliberalartspress.vercel.app',
+    url: 'https://theliberalartspress.vercel.app/',
+    badge: '全球極速邊緣',
+    badgeColor: 'bg-blue-600 text-white',
+    desc: '全球邊緣網絡・港澳台及歐美高響應',
+    tag: '🚀 全球高速'
+  },
+  {
+    id: 'github',
+    name: 'GitHub 官方主站',
+    host: 'theliberalartspress.github.io',
+    url: 'https://theliberalartspress.github.io/',
+    badge: '官方主站',
+    badgeColor: 'bg-stone-800 text-white',
+    desc: '官方發行首選・源代碼同步發布站',
+    tag: '🛡️ 官方主源'
+  },
+  {
+    id: 'netlify',
+    name: 'Netlify 高可用節點',
+    host: 'theliberalartspress.netlify.app',
+    url: 'https://theliberalartspress.netlify.app/',
+    badge: '備用分流',
+    badgeColor: 'bg-teal-700 text-white',
+    desc: '全球高可用備用節點・全天候分流',
+    tag: '🌐 備用線路'
+  },
+  {
+    id: 'render',
+    name: 'Render 雲端節點',
+    host: 'theliberalartspress.onrender.com',
+    url: 'https://theliberalartspress.onrender.com/',
+    badge: '彈性備援',
+    badgeColor: 'bg-purple-700 text-white',
+    desc: '雲端備份節點・多雲容災備援',
+    tag: '☁️ 備援線路'
+  }
+];
+
+// 判斷是否為大陸時區或簡體環境
+const checkIsChinaVisitor = () => {
+  try {
+    const tz = Intl.DateTimeFormat().resolvedOptions().timeZone || '';
+    const lang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    const chinaTimezones = ['Asia/Shanghai', 'Asia/Chongqing', 'Asia/Harbin', 'Asia/Urumqi', 'Asia/Kashgar'];
+    return chinaTimezones.includes(tz) || lang === 'zh-cn' || lang.startsWith('zh-cn');
+  } catch (e) {
+    return false;
+  }
+};
+
+// 保留當前網址參數與路徑進行鏡像平滑跳轉
+const switchMirror = (targetUrl) => {
+  try {
+    const currentSearch = window.location.search || '';
+    const currentHash = window.location.hash || '';
+    const target = new URL(targetUrl);
+    target.search = currentSearch;
+    target.hash = currentHash;
+    window.location.href = target.toString();
+  } catch (e) {
+    window.location.href = targetUrl;
+  }
+};
 const getBookIntro = book => {
   if (!book) return '';
   for (const key of Object.keys(book)) {
@@ -778,6 +859,48 @@ function App() {
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [reviewBook, setReviewBook] = useState(null);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
+  const [isMirrorModalOpen, setIsMirrorModalOpen] = useState(false);
+  const [mirrorLatencies, setMirrorLatencies] = useState({});
+  const [isTestingLatencies, setIsTestingLatencies] = useState(false);
+  const [showChinaBanner, setShowChinaBanner] = useState(() => {
+    try {
+      if (typeof window === 'undefined') return false;
+      const dismissed = safeGetStorage('hide_china_mirror_banner') === 'true';
+      if (dismissed) return false;
+      if (window.location.hostname.includes('pages.dev')) return false;
+      return checkIsChinaVisitor();
+    } catch (e) {
+      return false;
+    }
+  });
+
+  const measureMirrorLatencies = useCallback(async () => {
+    setIsTestingLatencies(true);
+    const results = {};
+    for (const mirror of MIRROR_LINES) {
+      const startTime = Date.now();
+      try {
+        const controller = new AbortController();
+        const timeoutId = setTimeout(() => controller.abort(), 2800);
+        await fetch(`${mirror.url}favicon.png?_t=${Date.now()}`, {
+          method: 'HEAD',
+          mode: 'no-cors',
+          signal: controller.signal
+        });
+        clearTimeout(timeoutId);
+        results[mirror.id] = Date.now() - startTime;
+      } catch (e) {
+        results[mirror.id] = -1;
+      }
+    }
+    setMirrorLatencies(results);
+    setIsTestingLatencies(false);
+  }, []);
+
+  const openMirrorModal = useCallback(() => {
+    setIsMirrorModalOpen(true);
+    measureMirrorLatencies();
+  }, [measureMirrorLatencies]);
   const sliderRef = useRef(null);
   const hasFetchedRef = useRef(false);
   const showMsg = useCallback(text => {
@@ -1624,7 +1747,37 @@ function App() {
   return /*#__PURE__*/React.createElement("div", {
     style: rootStyle,
     className: "min-h-screen font-serif transition-all duration-300 relative pb-10 flex flex-col"
-  }, /*#__PURE__*/React.createElement("nav", {
+  }, showChinaBanner && /*#__PURE__*/React.createElement("div", {
+    className: "bg-gradient-to-r from-amber-900 via-amber-800 to-stone-900 text-white px-4 py-2 text-xs md:text-sm font-sans flex items-center justify-between shadow-md relative z-50 transition-all border-b border-amber-600/50"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "max-w-7xl mx-auto w-full flex flex-wrap items-center justify-between gap-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "bg-emerald-600 text-white text-[10px] font-black px-2 py-0.5 rounded-full uppercase tracking-wider shrink-0"
+  }, "⚡ 大陸訪問加速"), /*#__PURE__*/React.createElement("span", {
+    className: "font-medium text-amber-100 text-xs sm:text-sm"
+  }, "檢測到您位於大陸地區或簡體中文環境，建議切換至「大陸直連優選線路 (Cloudflare Pages)」以獲得極速與抗阻斷體驗！")), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 shrink-0"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => switchMirror('https://theliberalartspress.pages.dev/'),
+    className: "bg-amber-400 hover:bg-amber-300 text-stone-950 font-black px-3.5 py-1 rounded-full text-xs transition shadow-sm active:scale-95 flex items-center gap-1 cursor-pointer"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Zap",
+    size: 13
+  }), "立即切換"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setShowChinaBanner(false);
+      safeSetStorage('hide_china_mirror_banner', 'true');
+    },
+    className: "hover:bg-white/20 p-1 rounded-full transition text-white/80 hover:text-white cursor-pointer",
+    title: "不再提示"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "X",
+    size: 14
+  }))))), /*#__PURE__*/React.createElement("nav", {
     className: "p-3.5 md:px-8 flex justify-between items-center glass-nav sticky top-0 z-40 transition-all"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center space-x-2.5 sm:space-x-3 select-none shrink-0 group"
@@ -1722,6 +1875,17 @@ function App() {
     className: "text-[var(--primary-color)]"
   }), " ", ui.menuSearch)), /*#__PURE__*/React.createElement("button", {
     type: "button",
+    onClick: openMirrorModal,
+    className: "text-[var(--dark-color)] bg-stone-100 hover:bg-stone-200 border border-stone-300 transition-all flex items-center gap-1.5 px-3 py-2 rounded-full shadow-sm hover:shadow active:scale-95 font-sans font-bold text-xs xl:text-sm cursor-pointer",
+    title: "切換全球鏡像站點 / 大陸直連加速"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "w-2 h-2 rounded-full bg-emerald-500 animate-pulse"
+  }), /*#__PURE__*/React.createElement(Icon, {
+    name: "Globe",
+    size: 15,
+    className: "text-[var(--primary-color)]"
+  }), " 全球線路"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
     onClick: () => setIsOrderQueryOpen(true),
     className: "text-white bg-[var(--primary-color)] hover:bg-[var(--dark-color)] transition-all flex items-center gap-1.5 px-4 py-2 rounded-full shadow-sm hover:shadow active:scale-95 font-sans font-bold text-xs xl:text-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -1817,6 +1981,21 @@ function App() {
     size: 18,
     className: "text-[var(--primary-color)]"
   }), " ", ui.menuSearch), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setIsMobileMenuOpen(false);
+      openMirrorModal();
+    },
+    className: "text-left font-bold text-amber-950 bg-amber-50 hover:bg-amber-100 p-3 rounded-xl flex items-center justify-between transition border border-amber-200 shadow-sm"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Globe",
+    size: 18,
+    className: "text-amber-800"
+  }), " 全球鏡像・線路切換"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] bg-emerald-700 text-white font-bold px-2 py-0.5 rounded-full"
+  }, "大陸直連/測速")), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
       setIsMobileMenuOpen(false);
@@ -2229,7 +2408,21 @@ function App() {
     className: "text-amber-500"
   }), " ", ui.footerLinksTitle || '推薦好站'), /*#__PURE__*/React.createElement("ul", {
     className: "space-y-2 text-xs md:text-sm"
-  }, [
+  }, /*#__PURE__*/React.createElement("li", {
+    key: "mirror-line-item"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: openMirrorModal,
+    className: "w-full text-left hover:text-white hover:translate-x-1 transition-all flex items-center justify-between bg-amber-950/70 hover:bg-amber-900/90 border border-amber-500/70 hover:border-amber-400 p-2.5 rounded-xl shadow-sm text-amber-200 group cursor-pointer"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2.5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-2 h-2 rounded-full bg-emerald-400 shrink-0 group-hover:scale-125 transition-transform animate-pulse"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "font-serif tracking-wide text-xs sm:text-sm font-bold text-amber-100"
+  }, "🌐 全球鏡像線路 (大陸直連)")), /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] bg-amber-600/90 text-white px-2 py-0.5 rounded font-sans font-bold"
+  }, "測速切換"))), [
     { text: ui.footerFacebookLinkText || '文史哲出版社臉書(FB)', url: ui.footerFacebookUrl || 'https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW' },
     { text: ui.footerWikiLinkText || '文史哲出版社（維基百科）', url: ui.footerWikiUrl || 'https://zh.wikipedia.org/wiki/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE' },
     { text: ui.footerSeriesLinkText || '文史哲學集成（維基百科）', url: ui.footerSeriesUrl || 'https://zh.wikipedia.org/wiki/%E6%96%87%E5%8F%B2%E5%93%B2%E5%AD%B8%E9%9B%86%E6%88%90' },
@@ -2248,6 +2441,46 @@ function App() {
   }), /*#__PURE__*/React.createElement("span", {
     className: "font-serif tracking-wide text-xs sm:text-sm font-medium"
   }, item.text))))))), /*#__PURE__*/React.createElement("div", {
+    className: "mt-10 pt-6 border-t border-white/10"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-4"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Globe",
+    size: 16,
+    className: "text-amber-500"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-sm font-bold text-stone-200 font-serif"
+  }, "文史哲官方多節點全球鏡像（互相引流 ‧ 大陸與海外加速）"), /*#__PURE__*/React.createElement("span", {
+    className: "text-[11px] text-stone-400 hidden md:inline"
+  }, "如遇特定地區網路卡頓或防火牆阻斷，可直接點擊切換")), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: openMirrorModal,
+    className: "text-xs text-amber-400 hover:text-amber-300 flex items-center gap-1 font-bold underline underline-offset-4 self-start sm:self-auto cursor-pointer"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Zap",
+    size: 13
+  }), " 展開全線路即時測速")), /*#__PURE__*/React.createElement("div", {
+    className: "grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-2.5 text-xs"
+  }, MIRROR_LINES.map(m => {
+    const isCurrent = typeof window !== 'undefined' && window.location.hostname.includes(m.host);
+    return /*#__PURE__*/React.createElement("a", {
+      key: m.id,
+      href: m.url,
+      className: `p-2.5 rounded-xl border transition-all flex flex-col justify-between ${isCurrent ? 'bg-amber-900/50 border-amber-500 text-white shadow-md' : 'bg-black/30 hover:bg-black/60 border-white/10 text-stone-300 hover:text-white'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-center justify-between mb-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "font-bold text-xs"
+    }, m.name), isCurrent ? /*#__PURE__*/React.createElement("span", {
+      className: "text-[9px] bg-emerald-500 text-black font-black px-1.5 py-0.2 rounded"
+    }, "當前") : /*#__PURE__*/React.createElement("span", {
+      className: `text-[9px] px-1.5 py-0.2 rounded font-medium ${m.id === 'cloudflare' ? 'bg-emerald-800 text-emerald-100' : 'bg-white/10 text-stone-300'}`
+    }, m.badge)), /*#__PURE__*/React.createElement("span", {
+      className: "text-[10px] text-stone-400 truncate"
+    }, m.desc.split('・')[0]));
+  }))), /*#__PURE__*/React.createElement("div", {
     className: "mt-12 pt-6 border-t border-white/10 flex flex-col md:flex-row justify-between items-center text-xs text-stone-400 font-bold"
   }, /*#__PURE__*/React.createElement("p", null, "\xA9 ", new Date().getFullYear(), " ", ui.frontendName || settings.systemName, " ", ui.systemSubName || settings.systemSubName, "."), /*#__PURE__*/React.createElement("p", {
     className: "mt-2 md:mt-0 flex items-center gap-2 select-none"
@@ -3308,7 +3541,134 @@ function App() {
   }) : /*#__PURE__*/React.createElement(Icon, {
     name: "Send",
     size: 14
-  }), /*#__PURE__*/React.createElement("span", null, isSubmittingReview ? "傳送中..." : "送出心得反映")))))), notification && /*#__PURE__*/React.createElement("div", {
+  }), /*#__PURE__*/React.createElement("span", null, isSubmittingReview ? "傳送中..." : "送出心得反映")))))), isMirrorModalOpen && /*#__PURE__*/React.createElement("div", {
+    className: "fixed inset-0 bg-black/60 backdrop-blur-sm z-[250] flex justify-center items-center p-3 sm:p-5 overflow-y-auto animate-in",
+    onClick: () => setIsMirrorModalOpen(false)
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "glass-modal w-full max-w-2xl rounded-3xl border border-white/80 shadow-2xl overflow-hidden font-sans my-auto",
+    onClick: e => e.stopPropagation()
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "p-4 sm:p-5 border-b border-stone-200 bg-gradient-to-r from-stone-900 via-stone-800 to-stone-900 text-white flex justify-between items-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2.5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-9 h-9 rounded-full bg-amber-500/20 border border-amber-400/40 flex items-center justify-center text-amber-400 shrink-0"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Globe",
+    size: 20
+  })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h3", {
+    className: "text-base sm:text-lg font-bold font-serif flex items-center gap-2"
+  }, "全球節點鏡像 ‧ 線路切換與引流", /*#__PURE__*/React.createElement("span", {
+    className: "text-[10px] bg-emerald-500 text-black font-black px-2 py-0.5 rounded-full"
+  }, "五大雲端節點")), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-stone-300 mt-0.5"
+  }, "文史哲出版社全球多雲 CDN 網絡・推薦大陸讀者首選 Cloudflare 節點"))), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setIsMirrorModalOpen(false),
+    className: "p-1.5 rounded-full hover:bg-white/20 text-stone-300 hover:text-white transition cursor-pointer"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "X",
+    size: 18
+  }))), /*#__PURE__*/React.createElement("div", {
+    className: "p-4 sm:p-6 space-y-4 max-h-[75vh] overflow-y-auto"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between bg-amber-50/90 border border-amber-200 p-3 rounded-2xl text-xs text-amber-900 gap-2"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 min-w-0"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Info",
+    size: 16,
+    className: "text-amber-700 shrink-0"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "truncate sm:whitespace-normal"
+  }, "若您身在中國大陸或海外特定地區遇連線卡頓，可隨時點擊下方「立即切換」選用最佳節點。")), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: measureMirrorLatencies,
+    disabled: isTestingLatencies,
+    className: `shrink-0 bg-white hover:bg-amber-100 text-amber-900 border border-amber-300 px-3 py-1.5 rounded-xl font-bold flex items-center gap-1.5 transition text-xs shadow-sm cursor-pointer ${isTestingLatencies ? 'opacity-60 cursor-not-allowed' : 'active:scale-95'}`
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "RefreshCw",
+    size: 13,
+    className: isTestingLatencies ? "animate-spin" : ""
+  }), isTestingLatencies ? "測速中..." : "重新測速")), /*#__PURE__*/React.createElement("div", {
+    className: "space-y-3"
+  }, MIRROR_LINES.map(m => {
+    const isCurrent = typeof window !== 'undefined' && window.location.hostname.includes(m.host);
+    const latency = mirrorLatencies[m.id];
+    let latencyBadge = null;
+    if (isTestingLatencies && latency === undefined) {
+      latencyBadge = /*#__PURE__*/React.createElement("span", {
+        className: "text-[11px] text-stone-400 font-mono flex items-center gap-1"
+      }, /*#__PURE__*/React.createElement("span", {
+        className: "w-1.5 h-1.5 rounded-full bg-stone-400 animate-ping"
+      }), "測速中...");
+    } else if (latency !== undefined) {
+      if (latency === -1) {
+        latencyBadge = /*#__PURE__*/React.createElement("span", {
+          className: "text-[11px] font-bold text-red-600 bg-red-50 border border-red-200 px-2 py-0.5 rounded-md font-mono"
+        }, "連線逾時 / 阻斷");
+      } else if (latency < 120) {
+        latencyBadge = /*#__PURE__*/React.createElement("span", {
+          className: "text-[11px] font-bold text-emerald-700 bg-emerald-50 border border-emerald-200 px-2 py-0.5 rounded-md font-mono flex items-center gap-1"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "w-1.5 h-1.5 rounded-full bg-emerald-500"
+        }), `極速 ${latency}ms`);
+      } else if (latency < 350) {
+        latencyBadge = /*#__PURE__*/React.createElement("span", {
+          className: "text-[11px] font-bold text-amber-700 bg-amber-50 border border-amber-200 px-2 py-0.5 rounded-md font-mono flex items-center gap-1"
+        }, /*#__PURE__*/React.createElement("span", {
+          className: "w-1.5 h-1.5 rounded-full bg-amber-500"
+        }), `順暢 ${latency}ms`);
+      } else {
+        latencyBadge = /*#__PURE__*/React.createElement("span", {
+          className: "text-[11px] font-bold text-stone-600 bg-stone-100 border border-stone-200 px-2 py-0.5 rounded-md font-mono"
+        }, `稍慢 ${latency}ms`);
+      }
+    }
+
+    return /*#__PURE__*/React.createElement("div", {
+      key: m.id,
+      className: `p-3.5 sm:p-4 rounded-2xl border transition-all flex flex-col sm:flex-row sm:items-center justify-between gap-3 ${isCurrent ? 'bg-amber-50/70 border-amber-400 ring-2 ring-amber-400/30' : 'bg-white/80 hover:bg-white border-stone-200 hover:border-stone-300 shadow-sm'}`
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "space-y-1 min-w-0 flex-1"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex flex-wrap items-center gap-2"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "font-bold text-sm sm:text-base text-stone-900 font-serif"
+    }, m.name), /*#__PURE__*/React.createElement("span", {
+      className: `text-[10px] font-bold px-2 py-0.5 rounded-full ${m.badgeColor}`
+    }, m.badge), latencyBadge), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs text-stone-600"
+    }, m.desc), /*#__PURE__*/React.createElement("div", {
+      className: "text-[11px] font-mono text-stone-400 truncate"
+    }, m.url)), /*#__PURE__*/React.createElement("div", {
+      className: "shrink-0 flex items-center gap-2 pt-2 sm:pt-0 border-t sm:border-t-0 border-stone-100"
+    }, isCurrent ? /*#__PURE__*/React.createElement("span", {
+      className: "bg-emerald-100 text-emerald-800 font-bold px-3 py-1.5 rounded-xl text-xs flex items-center gap-1.5 border border-emerald-300"
+    }, /*#__PURE__*/React.createElement(Icon, {
+      name: "Check",
+      size: 14
+    }), "當前使用中") : /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: () => switchMirror(m.url),
+      className: "bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white font-bold px-4 py-1.5 rounded-xl text-xs transition shadow-sm hover:shadow flex items-center gap-1.5 active:scale-95 cursor-pointer"
+    }, "立即切換", /*#__PURE__*/React.createElement(Icon, {
+      name: "ChevronRight",
+      size: 14
+    }))));
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "bg-stone-50 border border-stone-200/80 p-3 sm:p-4 rounded-2xl text-xs text-stone-600 space-y-1.5"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "font-bold text-stone-800 flex items-center gap-1.5"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Sparkles",
+    size: 14,
+    className: "text-amber-600"
+  }), " 大陸同胞與海外訪問小指南："), /*#__PURE__*/React.createElement("ul", {
+    className: "list-disc list-inside space-y-1 text-stone-500 pl-1"
+  }, /*#__PURE__*/React.createElement("li", null, "中國大陸地區（未翻牆）：強烈推薦使用【Cloudflare 節點】，具備 Anycast 智慧多路由與高抗阻斷能力。"), /*#__PURE__*/React.createElement("li", null, "港澳台與歐美讀者：推薦使用【Vercel 節點】或【GitHub 官方站】，享全球邊緣快取極速響應。"), /*#__PURE__*/React.createElement("li", null, "推廣或分享給大陸朋友：可直接複製 ", /*#__PURE__*/React.createElement("code", {
+    className: "bg-stone-200 px-1.5 py-0.5 rounded text-[11px] font-mono text-stone-800 select-all"
+  }, "https://theliberalartspress.pages.dev/"), "，避免因 GitHub 被封鎖導致無法開啟。")))))), notification && /*#__PURE__*/React.createElement("div", {
     className: "fixed bottom-20 md:bottom-8 left-1/2 -translate-x-1/2 glass-dark text-white px-5 py-3 rounded-2xl shadow-2xl animate-in font-bold text-xs md:text-sm z-[300] flex items-center gap-2 border-l-4 border-[var(--primary-color)] whitespace-nowrap"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "CheckCircle",
