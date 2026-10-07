@@ -3,4 +3,4 @@ Allow: /
 
 Sitemap: https://theliberalartspress.github.io/sitemap.xml
 Sitemap: https://theliberalartspress.github.io/sitemap-books.xml
-Sitemap: https://theliberalartspress.github.io/sitemap-all.xml
+Sitemap: https://theliberalartspress.github.io/sitemap-All.xml
