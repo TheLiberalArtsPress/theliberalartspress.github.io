@@ -14,6 +14,9 @@
 <link rel="alternate" href="https://theliberalartspress.netlify.app/">
 <link rel="alternate" href="https://theliberalartspress.onrender.com/">
 
+<!-- ⚡ 首頁首張大圖優先預載 (0秒瞬間出圖) -->
+<link rel="preload" as="image" href="assets/covers/carousel_0.jpg" fetchpriority="high">
+
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
@@ -566,9 +569,32 @@
   </div>
 </noscript>
 
-<!-- ⚡ 核心數據與應用程序載入（data.js 與 app.js 依序遞延執行，秒開並即時載入全館 2,621 冊書籍） -->
-<script src="init_data.js?v=20261005_01"></script>
-<script src="data.js?v=20261005_01" defer></script>
-<script src="app.js?v=20261005_01" defer></script>
+<!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
+<script src="init_data.js?v=20261007_01"></script>
+<script src="app.js?v=20261007_01" defer></script>
+
+<!-- ⚡ 全館 2,632 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
+<script>
+  (function() {
+    function loadDataJs() {
+      var s = document.createElement('script');
+      s.src = 'data.js?v=20261007_01';
+      s.async = true;
+      s.onload = function() {
+        if (window.STATIC_DATA) {
+          window.dispatchEvent(new CustomEvent('lapenDataLoaded', { detail: window.STATIC_DATA }));
+        }
+      };
+      document.body.appendChild(s);
+    }
+    if (document.readyState === 'complete' || document.readyState === 'interactive') {
+      setTimeout(loadDataJs, 30);
+    } else {
+      window.addEventListener('DOMContentLoaded', function() {
+        setTimeout(loadDataJs, 30);
+      });
+    }
+  })();
+</script>
 </body>
 </html>

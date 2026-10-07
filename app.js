@@ -2059,8 +2059,16 @@ function App() {
   }, "致力於出版高品質文學、歷史、哲學著作，讓深厚底蘊更貼近當代讀者；跨越時空的底蘊，化為當代心靈的迴響。"))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "w-full max-w-6xl mx-auto mb-14"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-white/60 bg-[#1A1412] flex items-center justify-center"
-  }, carousels.map((c, idx) => {
+    className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-stone-300/80 bg-gradient-to-br from-[#2D231D] via-[#3B2F27] to-[#1E1714] flex items-center justify-center"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "absolute inset-0 bg-gradient-to-r from-stone-800/40 via-stone-700/20 to-stone-800/40 animate-pulse pointer-events-none z-0 flex flex-col items-center justify-center text-amber-100/40 gap-2.5 select-none"
+  }, /*#__PURE__*/React.createElement(ModernLogo, {
+    className: "w-12 h-12 opacity-25 animate-pulse",
+    color1: "#FAF8F5",
+    color2: "var(--primary-color)"
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs tracking-widest font-serif opacity-40 text-stone-300"
+  }, "文史哲出版社 ‧ 傳承文化 創新閱讀")), carousels.map((c, idx) => {
     const isFbSlide = c.title?.toLowerCase().includes('fb') || c.title?.toLowerCase().includes('facebook') || c.title?.includes('臉書') || c.title?.includes('粉絲') || c.description?.toLowerCase().includes('fb') || c.description?.toLowerCase().includes('facebook') || c.description?.includes('臉書') || c.description?.includes('粉絲') || c.image?.includes('61590146114229') || c.id === 'fb1' || idx === 0;
     const slideLink = c.link || c.url || (isFbSlide ? "https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW" : null);
     const SlideContainer = slideLink ? 'a' : 'div';
