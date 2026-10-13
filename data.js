@@ -796,8 +796,71 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1791878776122-w2cw",
+      "timestamp": "2026/10/13 16:06:16",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791878762904-htxn",
+      "timestamp": "2026/10/13 16:06:02",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《最新公文程式大全(修訂再版）》(書碼: 80005) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791878748288-jkhx",
+      "timestamp": "2026/10/13 16:05:48",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 1 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791799390304-oogg",
+      "timestamp": "Mon Oct 12 2026 18:03:10 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 1 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791798589246-zbpn",
+      "timestamp": "Mon Oct 12 2026 17:49:49 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 1 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791567240332-j26b",
+      "timestamp": "Sat Oct 10 2026 01:34:00 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 1 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791453235562-m3sj",
+      "timestamp": "Thu Oct 08 2026 17:53:55 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1791453225185-6vlf",
-      "timestamp": "2026/10/08 17:53:45",
+      "timestamp": "Thu Oct 08 2026 17:53:45 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791453210853-p2x3",
-      "timestamp": "2026/10/08 17:53:30",
+      "timestamp": "Thu Oct 08 2026 17:53:30 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《航運策略與法律論叢》(書碼: 01755) 定價 NT$ 400、庫存 20",
@@ -815,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791453199203-w7xg",
-      "timestamp": "2026/10/08 17:53:19",
+      "timestamp": "Thu Oct 08 2026 17:53:19 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 0 本、庫存 0 本、新增 3 本",
@@ -16798,14 +16861,14 @@ window.STATIC_DATA = {
       "year": "113年 平一",
       "price": 400,
       "isbn": "978-986-314-676-6",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "",
-      "localCover": "",
       "intro": "本書《航運策略與法律論叢》由學者彭銘淵所撰著，深入研析《航運策略與法律論叢》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《航運策略與法律論叢》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《航運策略與法律論叢》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": ""
     },
     {
       "id": "01756",
@@ -38780,16 +38843,16 @@ window.STATIC_DATA = {
       "title": "最新公文程式大全(修訂再版）",
       "author": "張仁青編著",
       "year": "103年 平一",
-      "price": 250,
+      "price": 320,
       "isbn": "978-957-547-194-1",
-      "stock": "20",
+      "stock": 20,
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80005.jpg",
+      "localCover": "assets/covers/80005.jpg",
       "intro": "本書《最新公文程式大全(修訂再版）》由學者張仁青所撰著，深入研析《最新公文程式大全》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《最新公文程式大全(修訂再版）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/80005.jpg"
+      "心得": "【學術導讀】《最新公文程式大全(修訂再版）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "80006",
