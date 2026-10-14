@@ -796,8 +796,26 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1791945736789-g65p",
+      "timestamp": "2026/10/14 10:42:16",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 6 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791944952509-i2cj",
+      "timestamp": "Wed Oct 14 2026 10:29:12 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1791944941291-5we8",
-      "timestamp": "2026/10/14 10:29:01",
+      "timestamp": "Wed Oct 14 2026 10:29:01 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +824,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791944930497-obxu",
-      "timestamp": "2026/10/14 10:28:50",
+      "timestamp": "Wed Oct 14 2026 10:28:50 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《善本劇曲經眼錄》(書碼: 87001) 定價 NT$ 460、庫存 20",
@@ -815,7 +833,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791944888989-8zw7",
-      "timestamp": "2026/10/14 10:28:08",
+      "timestamp": "Wed Oct 14 2026 10:28:08 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 5 本、庫存 0 本、新增 3 本",
@@ -43028,14 +43046,14 @@ window.STATIC_DATA = {
       "year": "65年 平一",
       "price": 460,
       "isbn": "978-986-314-662-9",
-      "stock": 20,
+      "stock": "20",
       "category": "戲曲",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/87001.jpg",
-      "localCover": "assets/covers/87001.jpg",
       "intro": "本書《善本劇曲經眼錄》由學者張隸華所撰著，深入研析《善本劇曲經眼錄》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《善本劇曲經眼錄》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《善本劇曲經眼錄》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/87001.jpg"
     },
     {
       "id": "87004",
