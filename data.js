@@ -796,6 +796,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1791961561872-qfbx",
+      "timestamp": "2026/10/14 15:06:01",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791961548834-s7gd",
+      "timestamp": "2026/10/14 15:05:48",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《從《易經》談人類發展學》(書碼: 00634) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791945950392-wtd3",
+      "timestamp": "2026/10/14 10:45:50",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1791945736789-g65p",
       "timestamp": "2026/10/14 10:42:16",
       "category": "書籍庫存",
@@ -14324,16 +14351,16 @@ window.STATIC_DATA = {
       "title": "從《易經》談人類發展學",
       "author": "賴世炯著",
       "year": "102年 平一",
-      "price": 380,
+      "price": 420,
       "isbn": "978-986-314-087-0",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00634.jpg",
+      "localCover": "assets/covers/00634.jpg",
       "intro": "本書《從《易經》談人類發展學》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
-      "localCover": "assets/covers/00634.jpg"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
     },
     {
       "id": "00635",
