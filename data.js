@@ -796,8 +796,80 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1791971718884-ncia",
+      "timestamp": "2026/10/14 17:55:18",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791971705074-e3ml",
+      "timestamp": "2026/10/14 17:55:05",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《唐人傳奇小說》(書碼: 89203) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791971701311-ei9r",
+      "timestamp": "2026/10/14 17:55:01",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791971687933-q7af",
+      "timestamp": "2026/10/14 17:54:47",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紅學六十年》(書碼: 89001) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791971679345-5zv7",
+      "timestamp": "2026/10/14 17:54:39",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 7 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791971401163-c0ne",
+      "timestamp": "Wed Oct 14 2026 17:50:01 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 7 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791971398758-cidy",
+      "timestamp": "Wed Oct 14 2026 17:49:58 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 7 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791961572329-3fid",
+      "timestamp": "Wed Oct 14 2026 15:06:12 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1791961561872-qfbx",
-      "timestamp": "2026/10/14 15:06:01",
+      "timestamp": "Wed Oct 14 2026 15:06:01 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791961548834-s7gd",
-      "timestamp": "2026/10/14 15:05:48",
+      "timestamp": "Wed Oct 14 2026 15:05:48 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《從《易經》談人類發展學》(書碼: 00634) 定價 NT$ 420、庫存 20",
@@ -815,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791945950392-wtd3",
-      "timestamp": "2026/10/14 10:45:50",
+      "timestamp": "Wed Oct 14 2026 10:45:50 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -824,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791945736789-g65p",
-      "timestamp": "2026/10/14 10:42:16",
+      "timestamp": "Wed Oct 14 2026 10:42:16 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 6 本、庫存 0 本、新增 3 本",
@@ -14353,14 +14425,14 @@ window.STATIC_DATA = {
       "year": "102年 平一",
       "price": 420,
       "isbn": "978-986-314-087-0",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00634.jpg",
-      "localCover": "assets/covers/00634.jpg",
       "intro": "本書《從《易經》談人類發展學》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
+      "localCover": "assets/covers/00634.jpg"
     },
     {
       "id": "00635",
@@ -43807,16 +43879,16 @@ window.STATIC_DATA = {
       "title": "紅學六十年",
       "author": "潘重規著",
       "year": "63年 精一",
-      "price": 0,
+      "price": 320,
       "isbn": "978-957-547-743-1",
-      "stock": "20",
+      "stock": 20,
       "category": "小說",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/89001.jpg",
+      "localCover": "assets/covers/89001.jpg",
       "intro": "本書《紅學六十年》由學者潘重規所撰著，深入研析《紅學六十年》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《紅學六十年》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/89001.jpg"
+      "心得": "【學術導讀】《紅學六十年》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "89201",
@@ -43855,16 +43927,16 @@ window.STATIC_DATA = {
       "title": "唐人傳奇小說",
       "author": "本 社編",
       "year": "82年 平一",
-      "price": 280,
+      "price": 320,
       "isbn": "978-957-547-746-2",
-      "stock": "20",
+      "stock": 20,
       "category": "小說",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/89203.jpg",
+      "localCover": "assets/covers/89203.jpg",
       "intro": "本書《唐人傳奇小說》深入探究中國古典小說與戲曲藝術之敘事結構、思想內涵及文體演變。著者從版本源流、人物塑造、情節母題及社會文化心態切入，系統考辨文本底本之流變與接受史，揭示古典敘事文學在明清市民社會中之生命力與哲理寄託，展現了深厚之文本解讀功力與宏闊之文學史視野。",
-      "心得": "【學術導讀】本書對《唐人傳奇小說》之人物心理刻劃與敘事結構的解析極為透闢。著者善於從版本細節與社會文化史視角發掘文本隱喻，持論嚴謹且見解新穎，是古典小說與戲曲研究者之重要參考著作。",
-      "localCover": "assets/covers/89203.jpg"
+      "心得": "【學術導讀】本書對《唐人傳奇小說》之人物心理刻劃與敘事結構的解析極為透闢。著者善於從版本細節與社會文化史視角發掘文本隱喻，持論嚴謹且見解新穎，是古典小說與戲曲研究者之重要參考著作。"
     },
     {
       "id": "89204",
