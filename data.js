@@ -796,8 +796,62 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1791944941291-5we8",
+      "timestamp": "2026/10/14 10:29:01",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791944930497-obxu",
+      "timestamp": "2026/10/14 10:28:50",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《善本劇曲經眼錄》(書碼: 87001) 定價 NT$ 460、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791944888989-8zw7",
+      "timestamp": "2026/10/14 10:28:08",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 5 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791943884198-9qtu",
+      "timestamp": "Wed Oct 14 2026 10:11:24 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 5 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791943882441-fk6w",
+      "timestamp": "Wed Oct 14 2026 10:11:22 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 5 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1791885177250-9ksm",
+      "timestamp": "Tue Oct 13 2026 17:52:57 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1791885166281-8tep",
-      "timestamp": "2026/10/13 17:52:46",
+      "timestamp": "Tue Oct 13 2026 17:52:46 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +860,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791885155415-6wxt",
-      "timestamp": "2026/10/13 17:52:35",
+      "timestamp": "Tue Oct 13 2026 17:52:35 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《公文寫作指南》(書碼: 80006) 定價 NT$ 300、庫存 20",
@@ -815,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791880052858-cegr",
-      "timestamp": "2026/10/13 16:27:32",
+      "timestamp": "Tue Oct 13 2026 16:27:32 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -824,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791880039014-yavw",
-      "timestamp": "2026/10/13 16:27:19",
+      "timestamp": "Tue Oct 13 2026 16:27:19 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《閩南話考證－古書例證》(書碼: 81212) 定價 NT$ 660、庫存 20",
@@ -833,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791879906623-lob7",
-      "timestamp": "2026/10/13 16:25:06",
+      "timestamp": "Tue Oct 13 2026 16:25:06 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -842,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791879894432-mmro",
-      "timestamp": "2026/10/13 16:24:54",
+      "timestamp": "Tue Oct 13 2026 16:24:54 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -851,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791879879858-vr5r",
-      "timestamp": "2026/10/13 16:24:39",
+      "timestamp": "Tue Oct 13 2026 16:24:39 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《香妃考證研究》(書碼: 78004) 定價 NT$ 340、庫存 20",
@@ -860,7 +914,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791879138711-j35r",
-      "timestamp": "2026/10/13 16:12:18",
+      "timestamp": "Tue Oct 13 2026 16:12:18 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -869,7 +923,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791878790733-8fr7",
-      "timestamp": "2026/10/13 16:06:30",
+      "timestamp": "Tue Oct 13 2026 16:06:30 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -878,7 +932,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791878776122-w2cw",
-      "timestamp": "2026/10/13 16:06:16",
+      "timestamp": "Tue Oct 13 2026 16:06:16 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -887,7 +941,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791878762904-htxn",
-      "timestamp": "2026/10/13 16:06:02",
+      "timestamp": "Tue Oct 13 2026 16:06:02 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《最新公文程式大全(修訂再版）》(書碼: 80005) 定價 NT$ 320、庫存 20",
@@ -896,7 +950,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1791878748288-jkhx",
-      "timestamp": "2026/10/13 16:05:48",
+      "timestamp": "Tue Oct 13 2026 16:05:48 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 1 本、庫存 0 本、新增 3 本",
@@ -37358,14 +37412,14 @@ window.STATIC_DATA = {
       "year": "78年 平一",
       "price": 340,
       "isbn": "978-957-547-631-2",
-      "stock": 20,
+      "stock": "20",
       "category": "傳記",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/78004.jpg",
-      "localCover": "assets/covers/78004.jpg",
       "intro": "本書《香妃考證研究》由學者姜龍昭所撰著，深入研析《香妃考證研究》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《香妃考證研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《香妃考證研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/78004.jpg"
     },
     {
       "id": "78005",
@@ -38926,14 +38980,14 @@ window.STATIC_DATA = {
       "year": "103年 平一",
       "price": 320,
       "isbn": "978-957-547-194-1",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80005.jpg",
-      "localCover": "assets/covers/80005.jpg",
       "intro": "本書《最新公文程式大全(修訂再版）》由學者張仁青所撰著，深入研析《最新公文程式大全》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《最新公文程式大全(修訂再版）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《最新公文程式大全(修訂再版）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80005.jpg"
     },
     {
       "id": "80006",
@@ -38942,14 +38996,14 @@ window.STATIC_DATA = {
       "year": "72年 平一",
       "price": 300,
       "isbn": "978-957-547-633-5",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80006.jpg",
-      "localCover": "assets/covers/80006.jpg",
       "intro": "本書《公文寫作指南》由學者王會均所撰著，深入研析《公文寫作指南》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《公文寫作指南》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《公文寫作指南》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80006.jpg"
     },
     {
       "id": "80007",
@@ -40302,14 +40356,14 @@ window.STATIC_DATA = {
       "year": "79年 平一",
       "price": 660,
       "isbn": "978-957-547-679-3",
-      "stock": 20,
+      "stock": "20",
       "category": "文字、聲韻、訓詁",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/81212.jpg",
-      "localCover": "assets/covers/81212.jpg",
       "intro": "本書《閩南話考證－古書例證》由學者黃敬安所撰著，深入研析《閩南話考證－古書例證》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《閩南話考證－古書例證》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《閩南話考證－古書例證》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/81212.jpg"
     },
     {
       "id": "81213",
@@ -42971,17 +43025,17 @@ window.STATIC_DATA = {
       "id": "87001",
       "title": "善本劇曲經眼錄",
       "author": "張隸華著",
-      "year": "65年 精一",
-      "price": 520,
-      "isbn": "978-957-547-725-7",
-      "stock": "20",
+      "year": "65年 平一",
+      "price": 460,
+      "isbn": "978-986-314-662-9",
+      "stock": 20,
       "category": "戲曲",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/87001.jpg",
+      "localCover": "assets/covers/87001.jpg",
       "intro": "本書《善本劇曲經眼錄》由學者張隸華所撰著，深入研析《善本劇曲經眼錄》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《善本劇曲經眼錄》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/87001.jpg"
+      "心得": "【學術導讀】《善本劇曲經眼錄》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "87004",
