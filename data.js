@@ -796,8 +796,62 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792141025444-ekl0",
+      "timestamp": "2026/10/16 16:57:05",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《八十憶往》(書碼: 78825)，定價 NT$ 260",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792138593156-frb4",
+      "timestamp": "2026/10/16 16:16:33",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 9 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792071117373-xsjm",
+      "timestamp": "Thu Oct 15 2026 21:31:57 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 9 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792057119590-yym8",
+      "timestamp": "Thu Oct 15 2026 17:38:39 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 9 本、庫存 0 本、新增 3 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792036673015-n7qo",
+      "timestamp": "Thu Oct 15 2026 11:57:53 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792036669545-pg69",
+      "timestamp": "Thu Oct 15 2026 11:57:49 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792036656495-r6jt",
-      "timestamp": "2026/10/15 11:57:36",
+      "timestamp": "Thu Oct 15 2026 11:57:36 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《鄭樑生教授紀念集》(書碼: 07103) 定價 NT$ 480、庫存 20",
@@ -806,7 +860,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792031305369-rpg9",
-      "timestamp": "2026/10/15 10:28:25",
+      "timestamp": "Thu Oct 15 2026 10:28:25 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -815,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792031293810-v6ua",
-      "timestamp": "2026/10/15 10:28:13",
+      "timestamp": "Thu Oct 15 2026 10:28:13 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -824,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792031279725-x5vc",
-      "timestamp": "2026/10/15 10:27:59",
+      "timestamp": "Thu Oct 15 2026 10:27:59 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《林錫嘉現代詩賞析》(書碼: 86102) 定價 NT$ 420、庫存 20",
@@ -833,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792031176482-9lhd",
-      "timestamp": "2026/10/15 10:26:16",
+      "timestamp": "Thu Oct 15 2026 10:26:16 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2624 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -842,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792031159926-732l",
-      "timestamp": "2026/10/15 10:25:59",
+      "timestamp": "Thu Oct 15 2026 10:25:59 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《愛上老子：反向思維的管理與對策》(書碼: 12134) 定價 NT$ 500、庫存 20",
@@ -851,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792028660782-2i9h",
-      "timestamp": "2026/10/15 09:44:20",
+      "timestamp": "Thu Oct 15 2026 09:44:20 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 9 本、庫存 0 本、新增 3 本",
@@ -4892,6 +4946,22 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
+    {
+      "id": "78825",
+      "title": "八十憶往",
+      "author": "周希賢著",
+      "year": "112年 平一",
+      "price": 260,
+      "isbn": "",
+      "stock": 20,
+      "category": "傳記叢刊",
+      "isNew": true,
+      "isLast": false,
+      "cover": "",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
     {
       "id": "00001",
       "title": "中國圖書史略",
@@ -19459,14 +19529,14 @@ window.STATIC_DATA = {
       "year": "98年 平一",
       "price": 480,
       "isbn": "978-957-549-839-9",
-      "stock": 20,
+      "stock": "20",
       "category": "論叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/07103.jpg",
-      "localCover": "assets/covers/07103.jpg",
       "intro": "本書《鄭樑生教授紀念集》由學者鄭卉芸所撰著，深入研析《鄭樑生教授紀念集》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《鄭樑生教授紀念集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《鄭樑生教授紀念集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/07103.jpg"
     },
     {
       "id": "07104",
@@ -33347,14 +33417,14 @@ window.STATIC_DATA = {
       "year": "106年2月 平裝一冊",
       "price": 500,
       "isbn": "978-986-314-352-9",
-      "stock": 20,
+      "stock": "20",
       "category": "哲學類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/12134.jpg",
-      "localCover": "assets/covers/12134.jpg",
       "intro": "本書《愛上老子：反向思維的管理與對策》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
+      "localCover": "assets/covers/12134.jpg"
     },
     {
       "id": "12191",
@@ -42979,14 +43049,14 @@ window.STATIC_DATA = {
       "year": "107年8月 平裝一冊",
       "price": 420,
       "isbn": "978-986-314-422-9",
-      "stock": 20,
+      "stock": "20",
       "category": "華文現代詩點將錄",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/86102.jpg",
-      "localCover": "assets/covers/86102.jpg",
       "intro": "本書《林錫嘉現代詩賞析》由學者陳福成所撰著，深入研析《林錫嘉現代詩賞析》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《林錫嘉現代詩賞析》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《林錫嘉現代詩賞析》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/86102.jpg"
     },
     {
       "id": "86103",
