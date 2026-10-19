@@ -796,6 +796,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792399808008-0uxg",
+      "timestamp": "2026/10/19 16:50:08",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792399795264-cid7",
+      "timestamp": "2026/10/19 16:49:55",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《程伊川易學述評》(書碼: 00350) 定價 NT$ 520、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792397602201-sjus",
+      "timestamp": "2026/10/19 16:13:22",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792397570249-dgoq",
       "timestamp": "2026/10/19 16:12:50",
       "category": "書籍庫存",
@@ -10570,16 +10597,16 @@ window.STATIC_DATA = {
       "title": "程伊川易學述評",
       "author": "胡自逢著",
       "year": "84年 平一",
-      "price": 460,
+      "price": 520,
       "isbn": "978-957-547-978-7",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00350.jpg",
+      "localCover": "assets/covers/00350.jpg",
       "intro": "本書《程伊川易學述評》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
-      "localCover": "assets/covers/00350.jpg"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
     },
     {
       "id": "00351",
