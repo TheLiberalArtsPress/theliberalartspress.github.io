@@ -796,6 +796,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792394357946-o6k9",
+      "timestamp": "2026/10/19 15:19:17",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792394338051-n6it",
+      "timestamp": "2026/10/19 15:18:58",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《白居易年譜》(書碼: 78009) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792393915234-ni0z",
+      "timestamp": "2026/10/19 15:11:55",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792393904821-erbx",
       "timestamp": "2026/10/19 15:11:44",
       "category": "書籍庫存",
@@ -37782,16 +37809,16 @@ window.STATIC_DATA = {
       "title": "白居易年譜",
       "author": "朱金城著",
       "year": "80年 平一",
-      "price": 350,
+      "price": 420,
       "isbn": "978-957-547-095-1",
-      "stock": "20",
+      "stock": 20,
       "category": "傳記",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/78009.jpg",
+      "localCover": "assets/covers/78009.jpg",
       "intro": "本書《白居易年譜》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《白居易年譜》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《白居易年譜》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
-      "localCover": "assets/covers/78009.jpg"
+      "心得": "【詩學品讀】研讀《白居易年譜》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
     },
     {
       "id": "78010",
