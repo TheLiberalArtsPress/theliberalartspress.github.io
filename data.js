@@ -796,6 +796,15 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792397285027-2l10",
+      "timestamp": "2026/10/19 16:08:05",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792397275451-tx5x",
       "timestamp": "2026/10/19 16:07:55",
       "category": "書籍庫存",
