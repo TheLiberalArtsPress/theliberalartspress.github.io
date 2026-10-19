@@ -796,8 +796,71 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792393904821-erbx",
+      "timestamp": "2026/10/19 15:11:44",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792393888628-7rd8",
+      "timestamp": "2026/10/19 15:11:28",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《中文參考用書指引（二次增訂本）》(書碼: 02106) 定價 NT$ 1000、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792379167051-g1tu",
+      "timestamp": "2026/10/19 11:06:07",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 9 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792143238788-pmge",
+      "timestamp": "Fri Oct 16 2026 17:33:58 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792143212425-8k27",
+      "timestamp": "Fri Oct 16 2026 17:33:32 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《理存事中‧時習致用：顏習齋哲學思想的展現與落實》(書碼: 12027)，定價 NT$ 260",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792141039587-d6fi",
+      "timestamp": "Fri Oct 16 2026 16:57:19 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2625 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792141037532-odpk",
+      "timestamp": "Fri Oct 16 2026 16:57:17 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792141025444-ekl0",
-      "timestamp": "2026/10/16 16:57:05",
+      "timestamp": "Fri Oct 16 2026 16:57:05 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "新增",
       "details": "新增書籍《八十憶往》(書碼: 78825)，定價 NT$ 260",
@@ -806,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792138593156-frb4",
-      "timestamp": "2026/10/16 16:16:33",
+      "timestamp": "Fri Oct 16 2026 16:16:33 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2624 本，變更價格 9 本、庫存 0 本、新增 3 本",
@@ -4946,22 +5009,6 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
-    {
-      "id": "78825",
-      "title": "八十憶往",
-      "author": "周希賢著",
-      "year": "112年 平一",
-      "price": 260,
-      "isbn": "",
-      "stock": 20,
-      "category": "傳記叢刊",
-      "isNew": true,
-      "isLast": false,
-      "cover": "",
-      "localCover": "",
-      "intro": "",
-      "心得": ""
-    },
     {
       "id": "00001",
       "title": "中國圖書史略",
@@ -17639,16 +17686,16 @@ window.STATIC_DATA = {
       "title": "中文參考用書指引（二次增訂本）",
       "author": "張錦郎編著",
       "year": "72年 平一",
-      "price": 450,
+      "price": 1000,
       "isbn": "978-957-547-463-8",
-      "stock": "20",
+      "stock": 20,
       "category": "圖書與資訊集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/02106.jpg",
+      "localCover": "assets/covers/02106.jpg",
       "intro": "本書《中文參考用書指引（二次增訂本）》由學者張錦郎所撰著，深入研析《中文參考用書指引》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《中文參考用書指引（二次增訂本）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/02106.jpg"
+      "心得": "【學術導讀】《中文參考用書指引（二次增訂本）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "02107",
@@ -46897,6 +46944,36 @@ window.STATIC_DATA = {
       "intro": "本書《孔子傳略． 論語新編》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
       "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
       "localCover": "assets/covers/T9426.jpg"
+    },
+    {
+      "id": "12027",
+      "title": "理存事中‧時習致用：顏習齋哲學思想的展現與落實",
+      "author": "汪文祺著",
+      "year": "105年 平一",
+      "price": 260,
+      "isbn": "",
+      "stock": "20",
+      "category": "哲學類",
+      "isNew": true,
+      "isLast": false,
+      "cover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
+      "id": "78825",
+      "title": "八十憶往",
+      "author": "周希賢著",
+      "year": "112年 平一",
+      "price": 260,
+      "isbn": "",
+      "stock": "20",
+      "category": "傳記叢刊",
+      "isNew": true,
+      "isLast": false,
+      "cover": "",
+      "intro": "",
+      "心得": ""
     },
     {
       "id": "09172",
