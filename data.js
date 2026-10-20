@@ -796,8 +796,71 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792466829706-zyfv",
+      "timestamp": "2026/10/20 11:27:09",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466816554-yq2p",
+      "timestamp": "2026/10/20 11:26:56",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《魏晉南北朝文學思想史(上 、下)》(書碼: 00024) 定價 NT$ 1000、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466795092-glt0",
+      "timestamp": "2026/10/20 11:26:35",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466781821-7s6y",
+      "timestamp": "2026/10/20 11:26:21",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《魏晉南北朝文學思想史（再版）》(書碼: 00024) 定價 NT$ 1000、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466770100-rwim",
+      "timestamp": "2026/10/20 11:26:10",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 17 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792405228255-40vq",
+      "timestamp": "Mon Oct 19 2026 18:20:28 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 17 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792403694229-e369",
+      "timestamp": "Mon Oct 19 2026 17:54:54 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792399898955-fupi",
-      "timestamp": "2026/10/19 16:51:38",
+      "timestamp": "Mon Oct 19 2026 16:51:38 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -806,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792399808008-0uxg",
-      "timestamp": "2026/10/19 16:50:08",
+      "timestamp": "Mon Oct 19 2026 16:50:08 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -815,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792399795264-cid7",
-      "timestamp": "2026/10/19 16:49:55",
+      "timestamp": "Mon Oct 19 2026 16:49:55 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《程伊川易學述評》(書碼: 00350) 定價 NT$ 520、庫存 20",
@@ -824,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397602201-sjus",
-      "timestamp": "2026/10/19 16:13:22",
+      "timestamp": "Mon Oct 19 2026 16:13:22 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -833,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397570249-dgoq",
-      "timestamp": "2026/10/19 16:12:50",
+      "timestamp": "Mon Oct 19 2026 16:12:50 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -842,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397553822-26qn",
-      "timestamp": "2026/10/19 16:12:33",
+      "timestamp": "Mon Oct 19 2026 16:12:33 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《國學方法論文集》(書碼: 03005) 定價 NT$ 980、庫存 20",
@@ -851,7 +914,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397437055-5seb",
-      "timestamp": "2026/10/19 16:10:37",
+      "timestamp": "Mon Oct 19 2026 16:10:37 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -860,7 +923,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397285027-2l10",
-      "timestamp": "2026/10/19 16:08:05",
+      "timestamp": "Mon Oct 19 2026 16:08:05 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -869,7 +932,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397275451-tx5x",
-      "timestamp": "2026/10/19 16:07:55",
+      "timestamp": "Mon Oct 19 2026 16:07:55 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -878,7 +941,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397262372-c8nr",
-      "timestamp": "2026/10/19 16:07:42",
+      "timestamp": "Mon Oct 19 2026 16:07:42 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《瑞安林景伊教授八十冥誕紀念論文集》(書碼: 07027) 定價 NT$ 580、庫存 20",
@@ -887,7 +950,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397258451-z22b",
-      "timestamp": "2026/10/19 16:07:38",
+      "timestamp": "Mon Oct 19 2026 16:07:38 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《瑞安林景伊教授八十冥誕紀念論文集》(書碼: 07027) 定價 NT$ 508、庫存 20",
@@ -896,7 +959,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397255263-um4i",
-      "timestamp": "2026/10/19 16:07:35",
+      "timestamp": "Mon Oct 19 2026 16:07:35 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《瑞安林景伊教授八十冥誕紀念論文集》(書碼: 07027) 定價 NT$ 50、庫存 20",
@@ -905,7 +968,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397084879-mm1w",
-      "timestamp": "2026/10/19 16:04:44",
+      "timestamp": "Mon Oct 19 2026 16:04:44 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -914,7 +977,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397054331-xcok",
-      "timestamp": "2026/10/19 16:04:14",
+      "timestamp": "Mon Oct 19 2026 16:04:14 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -923,7 +986,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397041858-ha0q",
-      "timestamp": "2026/10/19 16:04:01",
+      "timestamp": "Mon Oct 19 2026 16:04:01 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《真堂學術論文集》(書碼: 07062) 定價 NT$ 380、庫存 20",
@@ -932,7 +995,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397020765-ejho",
-      "timestamp": "2026/10/19 16:03:40",
+      "timestamp": "Mon Oct 19 2026 16:03:40 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -941,7 +1004,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397005380-3ne5",
-      "timestamp": "2026/10/19 16:03:25",
+      "timestamp": "Mon Oct 19 2026 16:03:25 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《駢文觀止（精）》(書碼: 88304) 定價 NT$ 640、庫存 20",
@@ -950,7 +1013,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792397002243-0f9o",
-      "timestamp": "2026/10/19 16:03:22",
+      "timestamp": "Mon Oct 19 2026 16:03:22 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -959,7 +1022,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792396986665-d7pr",
-      "timestamp": "2026/10/19 16:03:06",
+      "timestamp": "Mon Oct 19 2026 16:03:06 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《科學博物館教育活動的理論與實際》(書碼: 02105) 定價 NT$ 440、庫存 20",
@@ -967,8 +1030,17 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1792396974683-hnnn",
+      "timestamp": "Mon Oct 19 2026 16:02:54 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 11 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792396974831-2cyf",
-      "timestamp": "2026/10/19 16:02:54",
+      "timestamp": "Mon Oct 19 2026 16:02:54 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 11 本、庫存 0 本、新增 5 本",
@@ -5547,19 +5619,19 @@ window.STATIC_DATA = {
     },
     {
       "id": "00024",
-      "title": "魏晉南北朝文學思想史（再版）",
+      "title": "魏晉南北朝文學思想史(上 、下)",
       "author": "張仁青著",
       "year": "67年 平二",
-      "price": 800,
+      "price": 1000,
       "isbn": "978-957-547-230-6",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00024.jpg",
+      "localCover": "assets/covers/00024.jpg",
       "intro": "本書深入探討魏晉南北朝時期文學思想之演變脈絡。自漢末建安風骨之慷慨，歷經正始玄學之清談、兩晉之放達，乃至南北朝之駢儷美學。作者張仁青教授以嚴謹之學術眼光，剖析文人個體自覺與儒釋道三教合流對創作之影響。書中系統性梳理《文心雕龍》、《詩品》等重要文論，展示了中國文學由載道轉向言情、由質樸趨向華麗的關鍵轉型期。",
-      "心得": "本書為研究魏晉文論之圭臬，張教授筆觸洗鍊，將亂世中騷人墨客的精神追求活現於紙上。其對「自覺時代」的精準捕捉，揭示了中國美學思想從政教束縛中解脫的歷程。即便歷經星霜，其論述之深刻與學術價值，仍是文史學者不可或缺的案頭參考。",
-      "localCover": "assets/covers/00024.jpg"
+      "心得": "本書為研究魏晉文論之圭臬，張教授筆觸洗鍊，將亂世中騷人墨客的精神追求活現於紙上。其對「自覺時代」的精準捕捉，揭示了中國美學思想從政教束縛中解脫的歷程。即便歷經星霜，其論述之深刻與學術價值，仍是文史學者不可或缺的案頭參考。"
     },
     {
       "id": "00025",
@@ -10608,14 +10680,14 @@ window.STATIC_DATA = {
       "year": "84年 平一",
       "price": 520,
       "isbn": "978-957-547-978-7",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00350.jpg",
-      "localCover": "assets/covers/00350.jpg",
       "intro": "本書《程伊川易學述評》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
+      "localCover": "assets/covers/00350.jpg"
     },
     {
       "id": "00351",
@@ -17888,14 +17960,14 @@ window.STATIC_DATA = {
       "year": "76年 平一",
       "price": 440,
       "isbn": "978-957-547-461-4",
-      "stock": 20,
+      "stock": "20",
       "category": "圖書與資訊集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/02105.jpg",
-      "localCover": "assets/covers/02105.jpg",
       "intro": "本書《科學博物館教育活動的理論與實際》由學者張譽騰所撰著，深入研析《科學博物館教育活動的理論與實際》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《科學博物館教育活動的理論與實際》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《科學博物館教育活動的理論與實際》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/02105.jpg"
     },
     {
       "id": "02106",
@@ -18336,14 +18408,14 @@ window.STATIC_DATA = {
       "year": "73年 平二",
       "price": 980,
       "isbn": "978-957-547-010-4",
-      "stock": 20,
+      "stock": "20",
       "category": "國學",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/03005.jpg",
-      "localCover": "assets/covers/03005.jpg",
       "intro": "本書《國學方法論文集》由學者吳福助所撰著，深入研析《國學方法論文集》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《國學方法論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《國學方法論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/03005.jpg"
     },
     {
       "id": "03006",
@@ -18976,14 +19048,14 @@ window.STATIC_DATA = {
       "year": "83年 平一",
       "price": 580,
       "isbn": "978-957-547-847-6",
-      "stock": 20,
+      "stock": "20",
       "category": "論叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/07027.jpg",
-      "localCover": "assets/covers/07027.jpg",
       "intro": "本書《瑞安林景伊教授八十冥誕紀念論文集》由學者陳立夫等所撰著，深入研析《瑞安林景伊教授八十冥誕紀念論文集》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《瑞安林景伊教授八十冥誕紀念論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《瑞安林景伊教授八十冥誕紀念論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/07027.jpg"
     },
     {
       "id": "07028",
@@ -19200,14 +19272,14 @@ window.STATIC_DATA = {
       "year": "83年 平一",
       "price": 380,
       "isbn": "978-957-547-841-4",
-      "stock": 20,
+      "stock": "20",
       "category": "論叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/07062.jpg",
-      "localCover": "assets/covers/07062.jpg",
       "intro": "本書《真堂學術論文集》由學者詹秀惠所撰著，深入研析《真堂學術論文集》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《真堂學術論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《真堂學術論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/07062.jpg"
     },
     {
       "id": "07063",
@@ -44080,14 +44152,14 @@ window.STATIC_DATA = {
       "year": "75年 精一",
       "price": 640,
       "isbn": "978-957-547-111-8",
-      "stock": 20,
+      "stock": "20",
       "category": "騷賦駢散",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/88304.jpg",
-      "localCover": "assets/covers/88304.jpg",
       "intro": "本書《駢文觀止（精）》由學者張仁青所撰著，深入研析《駢文觀止》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《駢文觀止（精）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《駢文觀止（精）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/88304.jpg"
     },
     {
       "id": "88305",
