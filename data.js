@@ -796,8 +796,26 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792567098799-rd90",
+      "timestamp": "2026/10/21 15:18:18",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 26 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792566335625-3crx",
+      "timestamp": "Wed Oct 21 2026 15:05:35 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792566324108-oxy6",
-      "timestamp": "2026/10/21 15:05:24",
+      "timestamp": "Wed Oct 21 2026 15:05:24 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +824,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792566314110-wrce",
-      "timestamp": "2026/10/21 15:05:14",
+      "timestamp": "Wed Oct 21 2026 15:05:14 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《千金之旅》(書碼: 08064) 定價 NT$ 500、庫存 20",
@@ -815,7 +833,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792555601360-4hgq",
-      "timestamp": "2026/10/21 12:06:41",
+      "timestamp": "Wed Oct 21 2026 12:06:41 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -824,7 +842,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792555548468-9mib",
-      "timestamp": "2026/10/21 12:05:48",
+      "timestamp": "Wed Oct 21 2026 12:05:48 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +851,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792555538325-qr68",
-      "timestamp": "2026/10/21 12:05:38",
+      "timestamp": "Wed Oct 21 2026 12:05:38 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《方塊舞》(書碼: 08812) 定價 NT$ 320、庫存 20",
@@ -842,7 +860,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792549506718-dvyk",
-      "timestamp": "2026/10/21 10:25:06",
+      "timestamp": "Wed Oct 21 2026 10:25:06 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 24 本、庫存 0 本、新增 5 本",
@@ -21765,14 +21783,14 @@ window.STATIC_DATA = {
       "year": "85年 平一",
       "price": 500,
       "isbn": "978-957-549-032-4",
-      "stock": 20,
+      "stock": "20",
       "category": "文學叢刊",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/08064.jpg",
-      "localCover": "assets/covers/08064.jpg",
       "intro": "本書《千金之旅》由學者紀 絃所撰著，深入研析《千金之旅》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《千金之旅》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《千金之旅》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/08064.jpg"
     },
     {
       "id": "08065",
@@ -27285,14 +27303,14 @@ window.STATIC_DATA = {
       "year": "83年 平一",
       "price": 320,
       "isbn": "978-957-547-883-4",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲詩叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/08812.jpg",
-      "localCover": "assets/covers/08812.jpg",
       "intro": "本書《方塊舞》由學者藍 雲所撰著，深入研析《方塊舞》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《方塊舞》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《方塊舞》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/08812.jpg"
     },
     {
       "id": "08813",
