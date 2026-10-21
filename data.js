@@ -796,8 +796,134 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792555548468-9mib",
+      "timestamp": "2026/10/21 12:05:48",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792555538325-qr68",
+      "timestamp": "2026/10/21 12:05:38",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《方塊舞》(書碼: 08812) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792549506718-dvyk",
+      "timestamp": "2026/10/21 10:25:06",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 24 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792491082802-orl8",
+      "timestamp": "Tue Oct 20 2026 18:11:22 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792491058132-9jd5",
+      "timestamp": "Tue Oct 20 2026 18:10:58 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《歷代著錄畫目》(書碼: 92012) 定價 NT$ 1200、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792491012967-ps3x",
+      "timestamp": "Tue Oct 20 2026 18:10:12 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《唐人選唐詩新編》(書碼: 85217) 定價 NT$ 1200、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792490933691-nmom",
+      "timestamp": "Tue Oct 20 2026 18:08:53 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《校長手記》(書碼: 52101) 定價 NT$ 400、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792490913359-3my9",
+      "timestamp": "Tue Oct 20 2026 18:08:33 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《力爭上游－裴上苑自傳》(書碼: 78018) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792490892915-llf0",
+      "timestamp": "Tue Oct 20 2026 18:08:12 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《現代名人與養生》(書碼: 78806) 定價 NT$ 480、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792490881688-88sz",
+      "timestamp": "Tue Oct 20 2026 18:08:01 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 19 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792487863922-j35b",
+      "timestamp": "Tue Oct 20 2026 17:17:43 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 19 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792485144485-ts1h",
+      "timestamp": "Tue Oct 20 2026 16:32:24 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792485133008-j4kj",
+      "timestamp": "Tue Oct 20 2026 16:32:13 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《周易詁辭》(書碼: 12016) 定價 NT$ 440、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792467057763-cdey",
+      "timestamp": "Tue Oct 20 2026 11:30:57 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792467046061-9i4o",
-      "timestamp": "2026/10/20 11:30:46",
+      "timestamp": "Tue Oct 20 2026 11:30:46 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +932,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792467030068-uvwo",
-      "timestamp": "2026/10/20 11:30:30",
+      "timestamp": "Tue Oct 20 2026 11:30:30 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《文心雕龍讀本（上、下篇）》(書碼: 84202) 定價 NT$ 1000、庫存 20",
@@ -814,8 +940,53 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1792466839963-bvch",
+      "timestamp": "Tue Oct 20 2026 11:27:19 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466829706-zyfv",
+      "timestamp": "Tue Oct 20 2026 11:27:09 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466816554-yq2p",
+      "timestamp": "Tue Oct 20 2026 11:26:56 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《魏晉南北朝文學思想史(上 、下)》(書碼: 00024) 定價 NT$ 1000、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466795092-glt0",
+      "timestamp": "Tue Oct 20 2026 11:26:35 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792466781821-7s6y",
+      "timestamp": "Tue Oct 20 2026 11:26:21 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《魏晉南北朝文學思想史（再版）》(書碼: 00024) 定價 NT$ 1000、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792466772138-daz9",
-      "timestamp": "2026/10/20 11:26:12",
+      "timestamp": "Tue Oct 20 2026 11:26:12 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 17 本、庫存 0 本、新增 5 本",
@@ -27085,16 +27256,16 @@ window.STATIC_DATA = {
       "title": "方塊舞",
       "author": "藍 雲著",
       "year": "83年 平一",
-      "price": 280,
+      "price": 320,
       "isbn": "978-957-547-883-4",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲詩叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/08812.jpg",
+      "localCover": "assets/covers/08812.jpg",
       "intro": "本書《方塊舞》由學者藍 雲所撰著，深入研析《方塊舞》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《方塊舞》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/08812.jpg"
+      "心得": "【學術導讀】《方塊舞》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "08813",
@@ -33485,7 +33656,7 @@ window.STATIC_DATA = {
       "title": "周易詁辭",
       "author": "范耕研著",
       "year": "87年 平一",
-      "price": 400,
+      "price": 440,
       "isbn": "978-957-549-128-4",
       "stock": "20",
       "category": "哲學類",
@@ -34717,7 +34888,7 @@ window.STATIC_DATA = {
       "title": "校長手記",
       "author": "胡振海著",
       "year": "83年 平一",
-      "price": 300,
+      "price": 400,
       "isbn": "978-957-547-907-7",
       "stock": "20",
       "category": "教育",
@@ -38205,7 +38376,7 @@ window.STATIC_DATA = {
       "title": "力爭上游－裴上苑自傳",
       "author": "裴上苑著",
       "year": "88年 平一",
-      "price": 360,
+      "price": 420,
       "isbn": "978-957-549-242-6",
       "stock": "20",
       "category": "傳記",
@@ -39005,7 +39176,7 @@ window.STATIC_DATA = {
       "title": "現代名人與養生",
       "author": "李煥明著",
       "year": "89年 平一",
-      "price": 420,
+      "price": 480,
       "isbn": "978-957-549-327-1",
       "stock": "20",
       "category": "傳記叢刊",
@@ -42111,14 +42282,14 @@ window.STATIC_DATA = {
       "year": "75年 平二",
       "price": 1000,
       "isbn": "978-957-547-067-8",
-      "stock": 20,
+      "stock": "20",
       "category": "文學批評",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/84202.jpg",
-      "localCover": "assets/covers/84202.jpg",
       "intro": "本書《文心雕龍讀本（上、下篇）》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《文心雕龍讀本》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《文心雕龍讀本（上、下篇）》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
+      "心得": "【詩學品讀】研讀《文心雕龍讀本（上、下篇）》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
+      "localCover": "assets/covers/84202.jpg"
     },
     {
       "id": "84204",
@@ -42508,9 +42679,9 @@ window.STATIC_DATA = {
       "id": "85217",
       "title": "唐人選唐詩新編",
       "author": "傅璇琮著",
-      "year": "88年 平一",
-      "price": 1000,
-      "isbn": "978-957-549-190-1",
+      "year": "88年 精一",
+      "price": 1200,
+      "isbn": "978-957-549-190-4",
       "stock": "20",
       "category": "詩",
       "isNew": false,
@@ -45149,7 +45320,7 @@ window.STATIC_DATA = {
       "title": "歷代著錄畫目",
       "author": "福開森編",
       "year": "71年 精一",
-      "price": 750,
+      "price": 1200,
       "isbn": "978-957-547-765-3",
       "stock": "20",
       "category": "書畫",
