@@ -796,8 +796,53 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792652451954-plqo",
+      "timestamp": "2026/10/22 15:00:51",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792652441714-rwvb",
+      "timestamp": "2026/10/22 15:00:41",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《香妃考證研究續集》(書碼: 78006) 定價 NT$ 500、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792652376956-sp7d",
+      "timestamp": "2026/10/22 14:59:36",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 29 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792642966747-ehii",
+      "timestamp": "Thu Oct 22 2026 12:22:46 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792642965531-sal8",
+      "timestamp": "Thu Oct 22 2026 12:22:45 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792642954478-nqzm",
-      "timestamp": "2026/10/22 12:22:34",
+      "timestamp": "Thu Oct 22 2026 12:22:34 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《明清詩文研究新視野》(書碼: 00490) 定價 NT$ 320、庫存 20",
@@ -806,7 +851,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792642943652-cpv9",
-      "timestamp": "2026/10/22 12:22:23",
+      "timestamp": "Thu Oct 22 2026 12:22:23 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 28 本、庫存 0 本、新增 5 本",
@@ -13004,14 +13049,14 @@ window.STATIC_DATA = {
       "year": "93年 平一",
       "price": 320,
       "isbn": "978-957-549-565-7",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00490.jpg",
-      "localCover": "assets/covers/00490.jpg",
       "intro": "本書乃作者歷年來，圍繞明清詩文進行討論且發表的論文集結成冊。論文收錄十四篇，加上附錄一篇，共十五篇。內容探討八股文、錢謙益、錢曾、陸貽典、陳璧、蔣士銓、虞山派等，由文體、人物、派別各層面，予以明清詩文新的角度理解。",
-      "心得": "【學術導讀】《明清詩文研究新視野》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《明清詩文研究新視野》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00490.jpg"
     },
     {
       "id": "00491",
@@ -38378,16 +38423,16 @@ window.STATIC_DATA = {
       "title": "香妃考證研究續集",
       "author": "姜龍昭著",
       "year": "80年 平一",
-      "price": 400,
+      "price": 500,
       "isbn": "978-957-547-046-3",
-      "stock": "20",
+      "stock": 20,
       "category": "傳記",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/78006.jpg",
+      "localCover": "assets/covers/78006.jpg",
       "intro": "本書《香妃考證研究續集》由學者姜龍昭所撰著，深入研析《香妃考證研究續集》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《香妃考證研究續集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/78006.jpg"
+      "心得": "【學術導讀】《香妃考證研究續集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "78009",
