@@ -796,8 +796,35 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792642954478-nqzm",
+      "timestamp": "2026/10/22 12:22:34",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《明清詩文研究新視野》(書碼: 00490) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792642943652-cpv9",
+      "timestamp": "2026/10/22 12:22:23",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 28 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792575621154-fqpf",
+      "timestamp": "Wed Oct 21 2026 17:40:21 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792575610569-cidi",
-      "timestamp": "2026/10/21 17:40:10",
+      "timestamp": "Wed Oct 21 2026 17:40:10 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +833,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792575597782-q4zw",
-      "timestamp": "2026/10/21 17:39:57",
+      "timestamp": "Wed Oct 21 2026 17:39:57 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《心曲》(書碼: 08866) 定價 NT$ 160、庫存 20",
@@ -815,7 +842,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792574855250-mqpz",
-      "timestamp": "2026/10/21 17:27:35",
+      "timestamp": "Wed Oct 21 2026 17:27:35 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -824,7 +851,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792574844081-uexm",
-      "timestamp": "2026/10/21 17:27:24",
+      "timestamp": "Wed Oct 21 2026 17:27:24 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +860,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792574833249-ykw6",
-      "timestamp": "2026/10/21 17:27:13",
+      "timestamp": "Wed Oct 21 2026 17:27:13 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《實用漢語語法》(書碼: 80212) 定價 NT$ 600、庫存 20",
@@ -842,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792574827008-f3se",
-      "timestamp": "2026/10/21 17:27:07",
+      "timestamp": "Wed Oct 21 2026 17:27:07 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 26 本、庫存 0 本、新增 5 本",
@@ -12975,16 +13002,16 @@ window.STATIC_DATA = {
       "title": "明清詩文研究新視野",
       "author": "羅時進著",
       "year": "93年 平一",
-      "price": 260,
+      "price": 320,
       "isbn": "978-957-549-565-7",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00490.jpg",
+      "localCover": "assets/covers/00490.jpg",
       "intro": "本書乃作者歷年來，圍繞明清詩文進行討論且發表的論文集結成冊。論文收錄十四篇，加上附錄一篇，共十五篇。內容探討八股文、錢謙益、錢曾、陸貽典、陳璧、蔣士銓、虞山派等，由文體、人物、派別各層面，予以明清詩文新的角度理解。",
-      "心得": "【學術導讀】《明清詩文研究新視野》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/00490.jpg"
+      "心得": "【學術導讀】《明清詩文研究新視野》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "00491",
@@ -28225,14 +28252,14 @@ window.STATIC_DATA = {
       "year": "94年 平一",
       "price": 160,
       "isbn": "978-957-549-611-1",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲詩叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/08866.jpg",
-      "localCover": "assets/covers/08866.jpg",
       "intro": "本書《心 曲》由學者孫如陵所撰著，深入研析《心 曲》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《心 曲》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《心 曲》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/08866.jpg"
     },
     {
       "id": "08867",
@@ -40337,14 +40364,14 @@ window.STATIC_DATA = {
       "year": "99年 平一",
       "price": 600,
       "isbn": "978-957-549-918-1",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80212.jpg",
-      "localCover": "assets/covers/80212.jpg",
       "intro": "本書《實用漢語語法》由學者劉靜宜所撰著，深入研析《實用漢語語法》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《實用漢語語法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《實用漢語語法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80212.jpg"
     },
     {
       "id": "80213",
