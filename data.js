@@ -796,6 +796,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1792663577650-zkhn",
+      "timestamp": "2026/10/22 18:06:17",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792663567459-krqr",
+      "timestamp": "2026/10/22 18:06:07",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《昨夜不是夢》(書碼: 08802) 定價 NT$ 220、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792662105060-kum3",
+      "timestamp": "2026/10/22 17:41:45",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792662092514-2mbe",
       "timestamp": "2026/10/22 17:41:32",
       "category": "書籍庫存",
@@ -27330,16 +27357,16 @@ window.STATIC_DATA = {
       "title": "昨夜不是夢",
       "author": "藍海文著",
       "year": "80年 平一",
-      "price": 160,
+      "price": 220,
       "isbn": "978-957-547-092-0",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲詩叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/08802.jpg",
+      "localCover": "assets/covers/08802.jpg",
       "intro": "本書《昨夜不是夢》由學者藍海文所撰著，深入研析《昨夜不是夢》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《昨夜不是夢》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/08802.jpg"
+      "心得": "【學術導讀】《昨夜不是夢》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "08803",
