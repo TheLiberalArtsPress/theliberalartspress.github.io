@@ -796,8 +796,62 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793074427555-hkpw",
+      "timestamp": "2026/10/27 12:13:47",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793074410186-77r2",
+      "timestamp": "2026/10/27 12:13:30",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《強者的塑造》(書碼: 88401) 定價 NT$ 120、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793074386022-gtjr",
+      "timestamp": "2026/10/27 12:13:06",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 32 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793074383088-fkrr",
+      "timestamp": "Tue Oct 27 2026 12:13:03 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 32 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793074383601-r4ad",
+      "timestamp": "Tue Oct 27 2026 12:13:03 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 32 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1792663610382-362p",
+      "timestamp": "Thu Oct 22 2026 18:06:50 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1792663577650-zkhn",
-      "timestamp": "2026/10/22 18:06:17",
+      "timestamp": "Thu Oct 22 2026 18:06:17 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +860,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792663567459-krqr",
-      "timestamp": "2026/10/22 18:06:07",
+      "timestamp": "Thu Oct 22 2026 18:06:07 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《昨夜不是夢》(書碼: 08802) 定價 NT$ 220、庫存 20",
@@ -815,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792662105060-kum3",
-      "timestamp": "2026/10/22 17:41:45",
+      "timestamp": "Thu Oct 22 2026 17:41:45 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -824,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792662092514-2mbe",
-      "timestamp": "2026/10/22 17:41:32",
+      "timestamp": "Thu Oct 22 2026 17:41:32 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792662066979-eig9",
-      "timestamp": "2026/10/22 17:41:06",
+      "timestamp": "Thu Oct 22 2026 17:41:06 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《中華民族源流炎黃彭氏簡易譜(增修版)》(書碼: 78924) 定價 NT$ 1200、庫存 20",
@@ -842,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792652482773-lb77",
-      "timestamp": "2026/10/22 15:01:22",
+      "timestamp": "Thu Oct 22 2026 15:01:22 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -851,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792652451954-plqo",
-      "timestamp": "2026/10/22 15:00:51",
+      "timestamp": "Thu Oct 22 2026 15:00:51 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -860,7 +914,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792652441714-rwvb",
-      "timestamp": "2026/10/22 15:00:41",
+      "timestamp": "Thu Oct 22 2026 15:00:41 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《香妃考證研究續集》(書碼: 78006) 定價 NT$ 500、庫存 20",
@@ -869,7 +923,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1792652376956-sp7d",
-      "timestamp": "2026/10/22 14:59:36",
+      "timestamp": "Thu Oct 22 2026 14:59:36 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 29 本、庫存 0 本、新增 5 本",
@@ -27359,14 +27413,14 @@ window.STATIC_DATA = {
       "year": "80年 平一",
       "price": 220,
       "isbn": "978-957-547-092-0",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲詩叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/08802.jpg",
-      "localCover": "assets/covers/08802.jpg",
       "intro": "本書《昨夜不是夢》由學者藍海文所撰著，深入研析《昨夜不是夢》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《昨夜不是夢》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《昨夜不是夢》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/08802.jpg"
     },
     {
       "id": "08803",
@@ -38479,14 +38533,14 @@ window.STATIC_DATA = {
       "year": "80年 平一",
       "price": 500,
       "isbn": "978-957-547-046-3",
-      "stock": 20,
+      "stock": "20",
       "category": "傳記",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/78006.jpg",
-      "localCover": "assets/covers/78006.jpg",
       "intro": "本書《香妃考證研究續集》由學者姜龍昭所撰著，深入研析《香妃考證研究續集》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《香妃考證研究續集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《香妃考證研究續集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/78006.jpg"
     },
     {
       "id": "78009",
@@ -39791,14 +39845,14 @@ window.STATIC_DATA = {
       "year": "103年 平一",
       "price": 1200,
       "isbn": "978-986-314-168-6",
-      "stock": 20,
+      "stock": "20",
       "category": "傳記",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/78924.jpg",
-      "localCover": "assets/covers/78924.jpg",
       "intro": "本書《中華民族源流炎黃彭氏簡易譜(增修版)》由學者彭伯良編纂所撰著，深入研析《中華民族源流炎黃彭氏簡易譜》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《中華民族源流炎黃彭氏簡易譜(增修版)》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《中華民族源流炎黃彭氏簡易譜(增修版)》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/78924.jpg"
     },
     {
       "id": "78925",
@@ -44637,16 +44691,16 @@ window.STATIC_DATA = {
       "title": "強者的塑造",
       "author": "楊鴻銘著",
       "year": "73年 平一",
-      "price": 100,
+      "price": 120,
       "isbn": "978-957-547-739-4",
-      "stock": "20",
+      "stock": 20,
       "category": "騷賦駢散",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/88401.jpg",
+      "localCover": "assets/covers/88401.jpg",
       "intro": "本書《強者的塑造》由學者楊鴻銘所撰著，深入研析《強者的塑造》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《強者的塑造》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/88401.jpg"
+      "心得": "【學術導讀】《強者的塑造》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "88402",
