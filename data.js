@@ -796,8 +796,44 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793097374083-hkx3",
+      "timestamp": "2026/10/27 18:36:14",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793097363784-ozin",
+      "timestamp": "2026/10/27 18:36:03",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《周易詁辭(精)》(書碼: 12018) 定價 NT$ 600、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793097357478-16vj",
+      "timestamp": "2026/10/27 18:35:57",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 34 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793074710153-9ivl",
+      "timestamp": "Tue Oct 27 2026 12:18:30 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793074623628-kssy",
-      "timestamp": "2026/10/27 12:17:03",
+      "timestamp": "Tue Oct 27 2026 12:17:03 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -806,7 +842,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793074610498-do9i",
-      "timestamp": "2026/10/27 12:16:50",
+      "timestamp": "Tue Oct 27 2026 12:16:50 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《說文解字入門》(書碼: 81223) 定價 NT$ 460、庫存 20",
@@ -815,7 +851,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793074441487-4bry",
-      "timestamp": "2026/10/27 12:14:01",
+      "timestamp": "Tue Oct 27 2026 12:14:01 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -824,7 +860,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793074427555-hkpw",
-      "timestamp": "2026/10/27 12:13:47",
+      "timestamp": "Tue Oct 27 2026 12:13:47 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793074410186-77r2",
-      "timestamp": "2026/10/27 12:13:30",
+      "timestamp": "Tue Oct 27 2026 12:13:30 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《強者的塑造》(書碼: 88401) 定價 NT$ 120、庫存 20",
@@ -842,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793074386022-gtjr",
-      "timestamp": "2026/10/27 12:13:06",
+      "timestamp": "Tue Oct 27 2026 12:13:06 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 32 本、庫存 0 本、新增 5 本",
@@ -34030,16 +34066,16 @@ window.STATIC_DATA = {
       "title": "周易詁辭(精)",
       "author": "范耕研著",
       "year": "87年 精一",
-      "price": 500,
+      "price": 600,
       "isbn": "978-957-549-127-7",
-      "stock": "20",
+      "stock": 20,
       "category": "哲學類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/12018.jpg",
+      "localCover": "assets/covers/12018.jpg",
       "intro": "本書《周易詁辭(精)》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
-      "localCover": "assets/covers/12018.jpg"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
     },
     {
       "id": "12019",
@@ -41648,14 +41684,14 @@ window.STATIC_DATA = {
       "year": "84年 平一",
       "price": 460,
       "isbn": "978-957-547-952-7",
-      "stock": 20,
+      "stock": "20",
       "category": "文字、聲韻、訓詁",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/81223.jpg",
-      "localCover": "assets/covers/81223.jpg",
       "intro": "本書《說文解字入門》為文字學、聲韻學與訓詁學（傳統小學）領域之權威考訂專著。全書博採甲骨卜辭、青銅彝銘、簡帛帛書與歷代韻書注釋，嚴格依循形音義互求之傳統考據法則，由字形演變溯其造字本旨，考訂語音流變與詞義引申之系統規律。全書材料翔實、考證確鑿，展現極高之小學考訂功力。",
-      "心得": "【考據評介】傳統小學乃通讀古典經史之金鑰匙。本書體例嚴謹、論據扎實，對疑難字形與古音古義之考辨極具說服力，展現了乾嘉樸學實事求是的深厚功力，為漢語言文字學研究者之必備工具書。"
+      "心得": "【考據評介】傳統小學乃通讀古典經史之金鑰匙。本書體例嚴謹、論據扎實，對疑難字形與古音古義之考辨極具說服力，展現了乾嘉樸學實事求是的深厚功力，為漢語言文字學研究者之必備工具書。",
+      "localCover": "assets/covers/81223.jpg"
     },
     {
       "id": "81224",
@@ -44720,14 +44756,14 @@ window.STATIC_DATA = {
       "year": "73年 平一",
       "price": 120,
       "isbn": "978-957-547-739-4",
-      "stock": 20,
+      "stock": "20",
       "category": "騷賦駢散",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/88401.jpg",
-      "localCover": "assets/covers/88401.jpg",
       "intro": "本書《強者的塑造》由學者楊鴻銘所撰著，深入研析《強者的塑造》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《強者的塑造》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《強者的塑造》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/88401.jpg"
     },
     {
       "id": "88402",
