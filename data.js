@@ -796,6 +796,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793074623628-kssy",
+      "timestamp": "2026/10/27 12:17:03",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793074610498-do9i",
+      "timestamp": "2026/10/27 12:16:50",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《說文解字入門》(書碼: 81223) 定價 NT$ 460、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793074441487-4bry",
+      "timestamp": "2026/10/27 12:14:01",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793074427555-hkpw",
       "timestamp": "2026/10/27 12:13:47",
       "category": "書籍庫存",
@@ -41619,16 +41646,16 @@ window.STATIC_DATA = {
       "title": "說文解字入門",
       "author": "陳潔雅著",
       "year": "84年 平一",
-      "price": 0,
+      "price": 460,
       "isbn": "978-957-547-952-7",
-      "stock": "20",
+      "stock": 20,
       "category": "文字、聲韻、訓詁",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/81223.jpg",
+      "localCover": "assets/covers/81223.jpg",
       "intro": "本書《說文解字入門》為文字學、聲韻學與訓詁學（傳統小學）領域之權威考訂專著。全書博採甲骨卜辭、青銅彝銘、簡帛帛書與歷代韻書注釋，嚴格依循形音義互求之傳統考據法則，由字形演變溯其造字本旨，考訂語音流變與詞義引申之系統規律。全書材料翔實、考證確鑿，展現極高之小學考訂功力。",
-      "心得": "【考據評介】傳統小學乃通讀古典經史之金鑰匙。本書體例嚴謹、論據扎實，對疑難字形與古音古義之考辨極具說服力，展現了乾嘉樸學實事求是的深厚功力，為漢語言文字學研究者之必備工具書。",
-      "localCover": "assets/covers/81223.jpg"
+      "心得": "【考據評介】傳統小學乃通讀古典經史之金鑰匙。本書體例嚴謹、論據扎實，對疑難字形與古音古義之考辨極具說服力，展現了乾嘉樸學實事求是的深厚功力，為漢語言文字學研究者之必備工具書。"
     },
     {
       "id": "81224",
