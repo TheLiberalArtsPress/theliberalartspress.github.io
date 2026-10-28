@@ -801,6 +801,24 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793174679190-2mn6",
+      "timestamp": "2026/10/28 16:04:39",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 20 本、暢銷 17 本）",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793174612383-r0vt",
+      "timestamp": "2026/10/28 16:03:32",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793174603312-yc7e",
       "timestamp": "2026/10/28 16:03:23",
       "category": "書籍庫存",
