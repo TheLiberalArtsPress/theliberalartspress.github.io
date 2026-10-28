@@ -460,6 +460,38 @@ window.STATIC_DATA = {
       "localCover": "",
       "intro": "📖 詩人二十年磨一劍，用1100行詩「深潛」秀江 📖\n詩人學詩二十載，歷經三個重要里程碑，終於在43歲這年，完成了長達1100多行的長詩—《秀江》。\n不僅僅是一首關於「秀江」的詩，更是一部跨越晚唐至現代的「江右詩人精神史」。詩人以一年多的現場感受為底，融匯禪宗祖師與歷代詩哲的語言，創造出如「六音步的雪」、「煙霞的藥引」等獨特意象，試圖探討組詩與長詩的區別，並在技術與心性上尋求突破。\n📚 《秀江》是一次關於詩歌體量、縱深與原創性的探索。 詩人自言，這首詩的根源，來自於明晰而強烈的個體生命律動，試圖濃縮古今宜春的精粹。\n✨ 本書亮點搶先看：\n👉突破自我體量： 從80行到1000多行，挑戰長詩的寫法與縱深。\n👉獨特意象創造： 發明「六音步的雪」等全新意象，豐富詩歌語言。\n👉廣義秀江精神： 不僅寫地緣，更寫禪宗祖師與詩哲的語言匯流。\n👉江右詩人精神史： 構成小半個江西詩人的精神史，濃縮古今宜春精粹。",
       "心得": ""
+    },
+    {
+      "id": "10511",
+      "title": "《華夏春秋》史話：從台灣到大陸的傳承",
+      "author": "陳福成 編著",
+      "year": "115年 平一",
+      "price": 460,
+      "isbn": "978-986-314-766-4",
+      "stock": 20,
+      "category": "文學叢刊",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1dtpFnDqACoZdE9NVu7FA10886rxK5rUm/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
+      "id": "10510",
+      "title": "想念山西芮城劉焦智：《鳳梅人》報詩文選",
+      "author": "陳福成 編著",
+      "year": "115年 平一",
+      "price": 400,
+      "isbn": "978-986-314-765-7",
+      "stock": 20,
+      "category": "文學叢刊",
+      "isNew": false,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1zve5-0I3IszLREt5WhNqIhKXS3KoVYp5/view?usp=sharing",
+      "localCover": "",
+      "intro": "本書《未命名書籍》由學者未知作者所撰著，深入研析《未命名書籍》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
+      "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     }
   ],
   "newArrivalsList": [
@@ -800,6 +832,42 @@ window.STATIC_DATA = {
     }
   ],
   "logs": [
+    {
+      "id": "LOG-1793178500892-9uj4",
+      "timestamp": "2026/10/28 17:08:20",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 22 本、暢銷 17 本）",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793178493264-39ym",
+      "timestamp": "2026/10/28 17:08:13",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《想念山西芮城劉焦智：《鳳梅人》報詩文選》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793178488258-qhe8",
+      "timestamp": "2026/10/28 17:08:08",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《《華夏春秋》史話：從台灣到大陸的傳承》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793178458357-spby",
+      "timestamp": "2026/10/28 17:07:38",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
     {
       "id": "LOG-1793178448198-nn35",
       "timestamp": "2026/10/28 17:07:28",
