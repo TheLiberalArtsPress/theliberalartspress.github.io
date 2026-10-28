@@ -801,6 +801,42 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793177982137-m93k",
+      "timestamp": "2026/10/28 16:59:42",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793177965583-d862",
+      "timestamp": "2026/10/28 16:59:25",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《想念山西芮城劉焦智：《鳳梅人》報詩文選》(書碼: 10510) 定價 NT$ 400、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793176861556-99um",
+      "timestamp": "2026/10/28 16:41:01",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《想念山西芮城劉焦智：《鳳梅人》報詩文選》(書碼: 10510) 定價 NT$ 400、庫存 10",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793174691637-b8do",
+      "timestamp": "2026/10/28 16:04:51",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793174679190-2mn6",
       "timestamp": "2026/10/28 16:04:39",
       "category": "推薦書單",
@@ -33983,19 +34019,19 @@ window.STATIC_DATA = {
     },
     {
       "id": "10510",
-      "title": "未命名書籍",
-      "author": "未知作者",
-      "year": "",
-      "price": 0,
-      "isbn": "",
-      "stock": "10",
-      "category": "未分類",
+      "title": "想念山西芮城劉焦智：《鳳梅人》報詩文選",
+      "author": "陳福成 編著",
+      "year": "115年 平一",
+      "price": 400,
+      "isbn": "978-986-314-765-7",
+      "stock": 20,
+      "category": "文學叢刊",
       "isNew": false,
       "isLast": false,
-      "cover": "",
+      "cover": "https://drive.google.com/file/d/1zve5-0I3IszLREt5WhNqIhKXS3KoVYp5/view?usp=sharing",
+      "localCover": "",
       "intro": "本書《未命名書籍》由學者未知作者所撰著，深入研析《未命名書籍》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": ""
+      "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "11001",
