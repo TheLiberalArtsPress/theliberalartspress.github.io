@@ -796,8 +796,44 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793156916484-ase8",
+      "timestamp": "2026/10/28 11:08:36",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793156906036-l097",
+      "timestamp": "2026/10/28 11:08:26",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《文言虛字用法》(書碼: 80105) 定價 NT$ 300、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793156857174-eeh0",
+      "timestamp": "2026/10/28 11:07:37",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 35 本、庫存 0 本、新增 5 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793097412969-70he",
+      "timestamp": "Tue Oct 27 2026 18:36:52 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793097384551-18tf",
-      "timestamp": "2026/10/27 18:36:24",
+      "timestamp": "Tue Oct 27 2026 18:36:24 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -806,7 +842,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793097374083-hkx3",
-      "timestamp": "2026/10/27 18:36:14",
+      "timestamp": "Tue Oct 27 2026 18:36:14 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -815,7 +851,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793097363784-ozin",
-      "timestamp": "2026/10/27 18:36:03",
+      "timestamp": "Tue Oct 27 2026 18:36:03 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《周易詁辭(精)》(書碼: 12018) 定價 NT$ 600、庫存 20",
@@ -824,7 +860,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793097357478-16vj",
-      "timestamp": "2026/10/27 18:35:57",
+      "timestamp": "Tue Oct 27 2026 18:35:57 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 34 本、庫存 0 本、新增 5 本",
@@ -34077,14 +34113,14 @@ window.STATIC_DATA = {
       "year": "87年 精一",
       "price": 600,
       "isbn": "978-957-549-127-7",
-      "stock": 20,
+      "stock": "20",
       "category": "哲學類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/12018.jpg",
-      "localCover": "assets/covers/12018.jpg",
       "intro": "本書《周易詁辭(精)》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
+      "localCover": "assets/covers/12018.jpg"
     },
     {
       "id": "12019",
@@ -40267,16 +40303,16 @@ window.STATIC_DATA = {
       "title": "文言虛字用法",
       "author": "朱翔新著",
       "year": "70年 平一",
-      "price": 220,
+      "price": 300,
       "isbn": "978-957-547-026-5",
-      "stock": "20",
+      "stock": 20,
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80105.jpg",
+      "localCover": "assets/covers/80105.jpg",
       "intro": "本書《文言虛字用法》由學者朱翔新所撰著，深入研析《文言虛字用法》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《文言虛字用法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/80105.jpg"
+      "心得": "【學術導讀】《文言虛字用法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "80106",
