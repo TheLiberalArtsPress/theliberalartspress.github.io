@@ -446,7 +446,7 @@ window.STATIC_DATA = {
       "localCover": ""
     },
     {
-      "id": "9172",
+      "id": "09172",
       "title": "秀江",
       "author": "劉義 著",
       "year": "115年 平一",
@@ -454,10 +454,12 @@ window.STATIC_DATA = {
       "isbn": "978-986-314-774-9",
       "stock": 20,
       "category": "文史哲詩叢",
+      "isNew": true,
+      "isLast": false,
       "cover": "https://drive.google.com/file/d/1BH4SylJj2aSaRb49Aw7YhBmlS228D3N7/view?usp=sharing",
+      "localCover": "",
       "intro": "📖 詩人二十年磨一劍，用1100行詩「深潛」秀江 📖\n詩人學詩二十載，歷經三個重要里程碑，終於在43歲這年，完成了長達1100多行的長詩—《秀江》。\n不僅僅是一首關於「秀江」的詩，更是一部跨越晚唐至現代的「江右詩人精神史」。詩人以一年多的現場感受為底，融匯禪宗祖師與歷代詩哲的語言，創造出如「六音步的雪」、「煙霞的藥引」等獨特意象，試圖探討組詩與長詩的區別，並在技術與心性上尋求突破。\n📚 《秀江》是一次關於詩歌體量、縱深與原創性的探索。 詩人自言，這首詩的根源，來自於明晰而強烈的個體生命律動，試圖濃縮古今宜春的精粹。\n✨ 本書亮點搶先看：\n👉突破自我體量： 從80行到1000多行，挑戰長詩的寫法與縱深。\n👉獨特意象創造： 發明「六音步的雪」等全新意象，豐富詩歌語言。\n👉廣義秀江精神： 不僅寫地緣，更寫禪宗祖師與詩哲的語言匯流。\n👉江右詩人精神史： 構成小半個江西詩人的精神史，濃縮古今宜春精粹。",
-      "心得": "",
-      "localCover": ""
+      "心得": ""
     }
   ],
   "newArrivalsList": [
@@ -798,6 +800,42 @@ window.STATIC_DATA = {
     }
   ],
   "logs": [
+    {
+      "id": "LOG-1793174603312-yc7e",
+      "timestamp": "2026/10/28 16:03:23",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《秀江》(書碼: 09172) 定價 NT$ 160、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793174598498-u3cg",
+      "timestamp": "2026/10/28 16:03:18",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《秀江》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793174593538-wnc0",
+      "timestamp": "2026/10/28 16:03:13",
+      "category": "推薦書單",
+      "action": "刪除",
+      "details": "將《秀江》移出精選推薦",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793174567293-clbo",
+      "timestamp": "2026/10/28 16:02:47",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
     {
       "id": "LOG-1793174522058-zi43",
       "timestamp": "2026/10/28 16:02:02",
