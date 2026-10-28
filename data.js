@@ -801,6 +801,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793178448198-nn35",
+      "timestamp": "2026/10/28 17:07:28",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793178429646-noq6",
+      "timestamp": "2026/10/28 17:07:09",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《《華夏春秋》史話：從台灣到大陸的傳承》(書碼: 10511)，定價 NT$ 460",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793178221705-zouu",
+      "timestamp": "2026/10/28 17:03:41",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793177982137-m93k",
       "timestamp": "2026/10/28 16:59:42",
       "category": "書籍庫存",
@@ -6049,6 +6076,22 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
+    {
+      "id": "10511",
+      "title": "《華夏春秋》史話：從台灣到大陸的傳承",
+      "author": "陳福成 編著",
+      "year": "115年 平一",
+      "price": 460,
+      "isbn": "978-986-314-766-4",
+      "stock": 20,
+      "category": "文學叢刊",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1dtpFnDqACoZdE9NVu7FA10886rxK5rUm/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
     {
       "id": "00001",
       "title": "中國圖書史略",
