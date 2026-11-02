@@ -186,12 +186,11 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 220,
       "isbn": "978-986-314-770-1",
-      "stock": 20,
+      "stock": "20",
       "category": "文學叢刊",
       "cover": "https://drive.google.com/file/d/1Z2ol52QRhsK_zciLcDkCOjLE7QEvRoaB/view?usp=sharing",
       "intro": "【天天生活在台北，你真的了解腳下踩的這片土地嗎？】\n你可能知道信義區的繁華、西門町的熱鬧，但你可曾想過—幾千幾萬年前，這座盆地曾歷經怎樣驚天動地的改變？  \n而我們所熟悉的士林、新莊、板橋平原，又是如何隨三大水系流轉而生？   \n「在台北住了一輩子，對自己住的地方，總想有更深刻的認識。這過程就像『挖礦』，越挖，越發現底下的寶藏多得驚人。」——作者 陳福成   \n本書不是一本生硬枯燥的歷史大拜拜，而是一位在地耆老搬出板凳，用最接地氣的「講古」口吻，細細道來先民如何在這片土地披荊斬棘、滄海桑田的故事。  \n 無論為土生土長的台北人、離鄉背井打拚的北漂族，或是喜愛文史的老靈魂，翻開這本書，帶你穿越時空，重新愛上這座城市的底蘊！",
-      "心得": "",
-      "localCover": ""
+      "心得": ""
     },
     {
       "id": "65175",
@@ -200,26 +199,22 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 880,
       "isbn": "978-986-314-767-1",
-      "stock": 20,
+      "stock": "20",
       "category": "史料",
       "cover": "https://drive.google.com/file/d/1bJXoRjGkX0Dc3GBQxBHZKd3oJJmtQdHf/view?usp=sharing",
       "intro": "本書《滿文原檔《滿文原檔》選讀譯注 太宗朝(十二)》為清史與滿學泰斗莊吉發教授對清代第一手滿文原始檔冊之權威解讀與精審譯注巨著。全書立足於珍稀之無圈點老滿文與加圈點滿文檔案，逐件對勘清代滿漢原始文獻及《清實錄》，聚焦於太宗朝(十一之八旗制度演變、軍政決策、邊疆經略及滿漢文化整合。著者以深厚之滿語語法功底與歷史考據學養，詳加箋釋考訂，訂正諸多傳世史籍之訛誤，為研究清代早期歷史、滿語文獻學及清史檔案之頂尖權威著作。",
-      "心得": "",
-      "localCover": ""
+      "心得": ""
     },
     {
-      "id": "09172",
+      "id": "9172",
       "title": "秀江",
       "author": "劉義 著",
       "year": "115年 平一",
       "price": 160,
       "isbn": "978-986-314-774-9",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲詩叢",
-      "isNew": true,
-      "isLast": false,
       "cover": "https://drive.google.com/file/d/1BH4SylJj2aSaRb49Aw7YhBmlS228D3N7/view?usp=sharing",
-      "localCover": "",
       "intro": "📖 詩人二十年磨一劍，用1100行詩「深潛」秀江 📖\n詩人學詩二十載，歷經三個重要里程碑，終於在43歲這年，完成了長達1100多行的長詩—《秀江》。\n不僅僅是一首關於「秀江」的詩，更是一部跨越晚唐至現代的「江右詩人精神史」。詩人以一年多的現場感受為底，融匯禪宗祖師與歷代詩哲的語言，創造出如「六音步的雪」、「煙霞的藥引」等獨特意象，試圖探討組詩與長詩的區別，並在技術與心性上尋求突破。\n📚 《秀江》是一次關於詩歌體量、縱深與原創性的探索。 詩人自言，這首詩的根源，來自於明晰而強烈的個體生命律動，試圖濃縮古今宜春的精粹。\n✨ 本書亮點搶先看：\n👉突破自我體量： 從80行到1000多行，挑戰長詩的寫法與縱深。\n👉獨特意象創造： 發明「六音步的雪」等全新意象，豐富詩歌語言。\n👉廣義秀江精神： 不僅寫地緣，更寫禪宗祖師與詩哲的語言匯流。\n👉江右詩人精神史： 構成小半個江西詩人的精神史，濃縮古今宜春精粹。",
       "心得": ""
     },
@@ -230,14 +225,12 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 400,
       "isbn": "978-986-314-765-7",
-      "stock": 20,
+      "stock": "20",
       "category": "文學叢刊",
-      "isNew": false,
-      "isLast": false,
       "cover": "https://drive.google.com/file/d/1zve5-0I3IszLREt5WhNqIhKXS3KoVYp5/view?usp=sharing",
-      "localCover": "",
       "intro": "本書《未命名書籍》由學者未知作者所撰著，深入研析《未命名書籍》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": ""
     },
     {
       "id": "10511",
@@ -246,12 +239,9 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 460,
       "isbn": "978-986-314-766-4",
-      "stock": 20,
+      "stock": "20",
       "category": "文學叢刊",
-      "isNew": true,
-      "isLast": false,
       "cover": "https://drive.google.com/file/d/1dtpFnDqACoZdE9NVu7FA10886rxK5rUm/view?usp=sharing",
-      "localCover": "",
       "intro": "",
       "心得": ""
     },
@@ -833,8 +823,62 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793585753388-be5g",
+      "timestamp": "2026/11/02 10:15:53",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793585740664-u1r3",
+      "timestamp": "2026/11/02 10:15:40",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《陸游《南唐書本紀》考釋及史事補遺》(書碼: 00383) 定價 NT$ 540、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793585628667-1kdr",
+      "timestamp": "2026/11/02 10:13:48",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 37 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793350951793-9ldy",
+      "timestamp": "Fri Oct 30 2026 17:02:31 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 37 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793327317200-8fa1",
+      "timestamp": "Fri Oct 30 2026 10:28:37 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 37 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793178731022-hpkh",
+      "timestamp": "Wed Oct 28 2026 17:12:11 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793178714820-uvl7",
-      "timestamp": "2026/10/28 17:11:54",
+      "timestamp": "Wed Oct 28 2026 17:11:54 GMT+0800 (台北標準時間)",
       "category": "推薦書單",
       "action": "雲端同步",
       "details": "手動推送推薦書單至 Google 試算表（精選 22 本、暢銷 17 本）",
@@ -843,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178513212-hcql",
-      "timestamp": "2026/10/28 17:08:33",
+      "timestamp": "Wed Oct 28 2026 17:08:33 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -852,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178500892-9uj4",
-      "timestamp": "2026/10/28 17:08:20",
+      "timestamp": "Wed Oct 28 2026 17:08:20 GMT+0800 (台北標準時間)",
       "category": "推薦書單",
       "action": "雲端同步",
       "details": "手動推送推薦書單至 Google 試算表（精選 22 本、暢銷 17 本）",
@@ -861,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178493264-39ym",
-      "timestamp": "2026/10/28 17:08:13",
+      "timestamp": "Wed Oct 28 2026 17:08:13 GMT+0800 (台北標準時間)",
       "category": "推薦書單",
       "action": "新增",
       "details": "將《想念山西芮城劉焦智：《鳳梅人》報詩文選》加入精選書單",
@@ -870,7 +914,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178488258-qhe8",
-      "timestamp": "2026/10/28 17:08:08",
+      "timestamp": "Wed Oct 28 2026 17:08:08 GMT+0800 (台北標準時間)",
       "category": "推薦書單",
       "action": "新增",
       "details": "將《《華夏春秋》史話：從台灣到大陸的傳承》加入精選書單",
@@ -879,7 +923,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178458357-spby",
-      "timestamp": "2026/10/28 17:07:38",
+      "timestamp": "Wed Oct 28 2026 17:07:38 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -888,7 +932,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178448198-nn35",
-      "timestamp": "2026/10/28 17:07:28",
+      "timestamp": "Wed Oct 28 2026 17:07:28 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -897,7 +941,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178429646-noq6",
-      "timestamp": "2026/10/28 17:07:09",
+      "timestamp": "Wed Oct 28 2026 17:07:09 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "新增",
       "details": "新增書籍《《華夏春秋》史話：從台灣到大陸的傳承》(書碼: 10511)，定價 NT$ 460",
@@ -906,7 +950,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793178221705-zouu",
-      "timestamp": "2026/10/28 17:03:41",
+      "timestamp": "Wed Oct 28 2026 17:03:41 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -915,7 +959,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793177982137-m93k",
-      "timestamp": "2026/10/28 16:59:42",
+      "timestamp": "Wed Oct 28 2026 16:59:42 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -924,7 +968,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793177965583-d862",
-      "timestamp": "2026/10/28 16:59:25",
+      "timestamp": "Wed Oct 28 2026 16:59:25 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《想念山西芮城劉焦智：《鳳梅人》報詩文選》(書碼: 10510) 定價 NT$ 400、庫存 20",
@@ -933,7 +977,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793176861556-99um",
-      "timestamp": "2026/10/28 16:41:01",
+      "timestamp": "Wed Oct 28 2026 16:41:01 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《想念山西芮城劉焦智：《鳳梅人》報詩文選》(書碼: 10510) 定價 NT$ 400、庫存 10",
@@ -942,7 +986,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174691637-b8do",
-      "timestamp": "2026/10/28 16:04:51",
+      "timestamp": "Wed Oct 28 2026 16:04:51 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -951,7 +995,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174679190-2mn6",
-      "timestamp": "2026/10/28 16:04:39",
+      "timestamp": "Wed Oct 28 2026 16:04:39 GMT+0800 (台北標準時間)",
       "category": "推薦書單",
       "action": "雲端同步",
       "details": "手動推送推薦書單至 Google 試算表（精選 20 本、暢銷 17 本）",
@@ -960,7 +1004,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174612383-r0vt",
-      "timestamp": "2026/10/28 16:03:32",
+      "timestamp": "Wed Oct 28 2026 16:03:32 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -969,7 +1013,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174603312-yc7e",
-      "timestamp": "2026/10/28 16:03:23",
+      "timestamp": "Wed Oct 28 2026 16:03:23 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《秀江》(書碼: 09172) 定價 NT$ 160、庫存 20",
@@ -978,7 +1022,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174598498-u3cg",
-      "timestamp": "2026/10/28 16:03:18",
+      "timestamp": "Wed Oct 28 2026 16:03:18 GMT+0800 (台北標準時間)",
       "category": "推薦書單",
       "action": "新增",
       "details": "將《秀江》加入精選書單",
@@ -987,7 +1031,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174593538-wnc0",
-      "timestamp": "2026/10/28 16:03:13",
+      "timestamp": "Wed Oct 28 2026 16:03:13 GMT+0800 (台北標準時間)",
       "category": "推薦書單",
       "action": "刪除",
       "details": "將《秀江》移出精選推薦",
@@ -996,7 +1040,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174567293-clbo",
-      "timestamp": "2026/10/28 16:02:47",
+      "timestamp": "Wed Oct 28 2026 16:02:47 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -1005,7 +1049,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174522058-zi43",
-      "timestamp": "2026/10/28 16:02:02",
+      "timestamp": "Wed Oct 28 2026 16:02:02 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -1014,7 +1058,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174511026-4z9g",
-      "timestamp": "2026/10/28 16:01:51",
+      "timestamp": "Wed Oct 28 2026 16:01:51 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《秀江》(書碼: 09172) 定價 NT$ 160、庫存 20",
@@ -1023,7 +1067,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174494577-2v79",
-      "timestamp": "2026/10/28 16:01:34",
+      "timestamp": "Wed Oct 28 2026 16:01:34 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -1032,7 +1076,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174480496-h0oc",
-      "timestamp": "2026/10/28 16:01:20",
+      "timestamp": "Wed Oct 28 2026 16:01:20 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《秀江》(書碼: 9172) 定價 NT$ 160、庫存 20",
@@ -1041,7 +1085,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174472532-zl0a",
-      "timestamp": "2026/10/28 16:01:12",
+      "timestamp": "Wed Oct 28 2026 16:01:12 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《秀江》(書碼: 9172) 定價 NT$ 160、庫存 20",
@@ -1050,7 +1094,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174427804-7fbv",
-      "timestamp": "2026/10/28 16:00:27",
+      "timestamp": "Wed Oct 28 2026 16:00:27 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《臺北講古：講古臺北》(書碼: 10513) 定價 NT$ 220、庫存 20",
@@ -1059,7 +1103,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793174363970-sf3x",
-      "timestamp": "2026/10/28 15:59:23",
+      "timestamp": "Wed Oct 28 2026 15:59:23 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《滿文原檔《滿文原檔》選讀譯注 太宗朝(十二)》(書碼: 65175) 定價 NT$ 880、庫存 20",
@@ -1068,7 +1112,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793156945463-n3ro",
-      "timestamp": "2026/10/28 11:09:05",
+      "timestamp": "Wed Oct 28 2026 11:09:05 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -1077,7 +1121,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793156916484-ase8",
-      "timestamp": "2026/10/28 11:08:36",
+      "timestamp": "Wed Oct 28 2026 11:08:36 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2626 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -1086,7 +1130,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793156906036-l097",
-      "timestamp": "2026/10/28 11:08:26",
+      "timestamp": "Wed Oct 28 2026 11:08:26 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《文言虛字用法》(書碼: 80105) 定價 NT$ 300、庫存 20",
@@ -1095,7 +1139,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793156857174-eeh0",
-      "timestamp": "2026/10/28 11:07:37",
+      "timestamp": "Wed Oct 28 2026 11:07:37 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2626 本，變更價格 35 本、庫存 0 本、新增 5 本",
@@ -6162,22 +6206,6 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
-    {
-      "id": "10511",
-      "title": "《華夏春秋》史話：從台灣到大陸的傳承",
-      "author": "陳福成 編著",
-      "year": "115年 平一",
-      "price": 460,
-      "isbn": "978-986-314-766-4",
-      "stock": 20,
-      "category": "文學叢刊",
-      "isNew": true,
-      "isLast": false,
-      "cover": "https://drive.google.com/file/d/1dtpFnDqACoZdE9NVu7FA10886rxK5rUm/view?usp=sharing",
-      "localCover": "",
-      "intro": "",
-      "心得": ""
-    },
     {
       "id": "00001",
       "title": "中國圖書史略",
@@ -12023,16 +12051,16 @@ window.STATIC_DATA = {
       "title": "陸游《南唐書本紀》考釋及史事補遺",
       "author": "鄭滋斌著",
       "year": "87年 平一",
-      "price": 500,
+      "price": 540,
       "isbn": "978-957-549-075-1",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00383.jpg",
+      "localCover": "assets/covers/00383.jpg",
       "intro": "本書《陸游《南唐書本紀》考釋及史事補遺》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《陸游《南唐書本紀》考釋及史事補遺》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《陸游《南唐書本紀》考釋及史事補遺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
-      "localCover": "assets/covers/00383.jpg"
+      "心得": "【詩學品讀】研讀《陸游《南唐書本紀》考釋及史事補遺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
     },
     {
       "id": "00385",
@@ -34153,14 +34181,14 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 400,
       "isbn": "978-986-314-765-7",
-      "stock": 20,
+      "stock": "20",
       "category": "文學叢刊",
       "isNew": false,
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1zve5-0I3IszLREt5WhNqIhKXS3KoVYp5/view?usp=sharing",
-      "localCover": "",
       "intro": "本書《未命名書籍》由學者未知作者所撰著，深入研析《未命名書籍》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": ""
     },
     {
       "id": "11001",
@@ -40601,14 +40629,14 @@ window.STATIC_DATA = {
       "year": "70年 平一",
       "price": 300,
       "isbn": "978-957-547-026-5",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80105.jpg",
-      "localCover": "assets/covers/80105.jpg",
       "intro": "本書《文言虛字用法》由學者朱翔新所撰著，深入研析《文言虛字用法》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《文言虛字用法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《文言虛字用法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80105.jpg"
     },
     {
       "id": "80106",
@@ -48115,6 +48143,21 @@ window.STATIC_DATA = {
       "localCover": "assets/covers/T9426.jpg"
     },
     {
+      "id": "10511",
+      "title": "《華夏春秋》史話：從台灣到大陸的傳承",
+      "author": "陳福成 編著",
+      "year": "115年 平一",
+      "price": 460,
+      "isbn": "978-986-314-766-4",
+      "stock": "20",
+      "category": "文學叢刊",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1dtpFnDqACoZdE9NVu7FA10886rxK5rUm/view?usp=sharing",
+      "intro": "",
+      "心得": ""
+    },
+    {
       "id": "12027",
       "title": "理存事中‧時習致用：顏習齋哲學思想的展現與落實",
       "author": "汪文祺著",
@@ -48151,12 +48194,11 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 160,
       "isbn": "978-986-314-774-9",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲詩叢",
       "isNew": true,
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1BH4SylJj2aSaRb49Aw7YhBmlS228D3N7/view?usp=sharing",
-      "localCover": "",
       "intro": "📖 詩人二十年磨一劍，用1100行詩「深潛」秀江 📖\n詩人學詩二十載，歷經三個重要里程碑，終於在43歲這年，完成了長達1100多行的長詩—《秀江》。\n不僅僅是一首關於「秀江」的詩，更是一部跨越晚唐至現代的「江右詩人精神史」。詩人以一年多的現場感受為底，融匯禪宗祖師與歷代詩哲的語言，創造出如「六音步的雪」、「煙霞的藥引」等獨特意象，試圖探討組詩與長詩的區別，並在技術與心性上尋求突破。\n📚 《秀江》是一次關於詩歌體量、縱深與原創性的探索。 詩人自言，這首詩的根源，來自於明晰而強烈的個體生命律動，試圖濃縮古今宜春的精粹。\n✨ 本書亮點搶先看：\n👉突破自我體量： 從80行到1000多行，挑戰長詩的寫法與縱深。\n👉獨特意象創造： 發明「六音步的雪」等全新意象，豐富詩歌語言。\n👉廣義秀江精神： 不僅寫地緣，更寫禪宗祖師與詩哲的語言匯流。\n👉江右詩人精神史： 構成小半個江西詩人的精神史，濃縮古今宜春精粹。",
       "心得": ""
     },
@@ -48167,12 +48209,11 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 880,
       "isbn": "978-986-314-767-1",
-      "stock": 20,
+      "stock": "20",
       "category": "史料",
       "isNew": true,
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1bJXoRjGkX0Dc3GBQxBHZKd3oJJmtQdHf/view?usp=sharing",
-      "localCover": "",
       "intro": "本書《滿文原檔《滿文原檔》選讀譯注 太宗朝(十二)》為清史與滿學泰斗莊吉發教授對清代第一手滿文原始檔冊之權威解讀與精審譯注巨著。全書立足於珍稀之無圈點老滿文與加圈點滿文檔案，逐件對勘清代滿漢原始文獻及《清實錄》，聚焦於太宗朝(十一之八旗制度演變、軍政決策、邊疆經略及滿漢文化整合。著者以深厚之滿語語法功底與歷史考據學養，詳加箋釋考訂，訂正諸多傳世史籍之訛誤，為研究清代早期歷史、滿語文獻學及清史檔案之頂尖權威著作。",
       "心得": ""
     },
@@ -48183,12 +48224,11 @@ window.STATIC_DATA = {
       "year": "115年 平一",
       "price": 220,
       "isbn": "978-986-314-770-1",
-      "stock": 20,
+      "stock": "20",
       "category": "文學叢刊",
       "isNew": true,
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1Z2ol52QRhsK_zciLcDkCOjLE7QEvRoaB/view?usp=sharing",
-      "localCover": "",
       "intro": "【天天生活在台北，你真的了解腳下踩的這片土地嗎？】\n你可能知道信義區的繁華、西門町的熱鬧，但你可曾想過—幾千幾萬年前，這座盆地曾歷經怎樣驚天動地的改變？  \n而我們所熟悉的士林、新莊、板橋平原，又是如何隨三大水系流轉而生？   \n「在台北住了一輩子，對自己住的地方，總想有更深刻的認識。這過程就像『挖礦』，越挖，越發現底下的寶藏多得驚人。」——作者 陳福成   \n本書不是一本生硬枯燥的歷史大拜拜，而是一位在地耆老搬出板凳，用最接地氣的「講古」口吻，細細道來先民如何在這片土地披荊斬棘、滄海桑田的故事。  \n 無論為土生土長的台北人、離鄉背井打拚的北漂族，或是喜愛文史的老靈魂，翻開這本書，帶你穿越時空，重新愛上這座城市的底蘊！",
       "心得": ""
     }
