@@ -823,8 +823,44 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793702500947-bfgs",
+      "timestamp": "2026/11/03 18:41:40",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793702485892-axw2",
+      "timestamp": "2026/11/03 18:41:25",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《饗禮考辨（BOD）》(書碼: 00596) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793702472673-oa5y",
+      "timestamp": "2026/11/03 18:41:12",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 42 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793700442928-3t03",
+      "timestamp": "Tue Nov 03 2026 18:07:22 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793700412607-xuo9",
-      "timestamp": "2026/11/03 18:06:52",
+      "timestamp": "Tue Nov 03 2026 18:06:52 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793700399817-7ino",
-      "timestamp": "2026/11/03 18:06:39",
+      "timestamp": "Tue Nov 03 2026 18:06:39 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《三禮禮器論叢（BOD）》(書碼: 00595) 定價 NT$ 400、庫存 20",
@@ -842,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793699621543-v8kl",
-      "timestamp": "2026/11/03 17:53:41",
+      "timestamp": "Tue Nov 03 2026 17:53:41 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -851,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793699611089-zkve",
-      "timestamp": "2026/11/03 17:53:31",
+      "timestamp": "Tue Nov 03 2026 17:53:31 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -860,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793699598736-9wmd",
-      "timestamp": "2026/11/03 17:53:18",
+      "timestamp": "Tue Nov 03 2026 17:53:18 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《滿漢西遊記會話》(書碼: 65116) 定價 NT$ 580、庫存 20",
@@ -869,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793680742037-kitu",
-      "timestamp": "2026/11/03 12:39:02",
+      "timestamp": "Tue Nov 03 2026 12:39:02 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -878,7 +914,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793680023093-i122",
-      "timestamp": "2026/11/03 12:27:03",
+      "timestamp": "Tue Nov 03 2026 12:27:03 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -887,7 +923,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793680020199-s9z2",
-      "timestamp": "2026/11/03 12:27:00",
+      "timestamp": "Tue Nov 03 2026 12:27:00 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -896,7 +932,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793680007874-tmap",
-      "timestamp": "2026/11/03 12:26:47",
+      "timestamp": "Tue Nov 03 2026 12:26:47 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《新編五專國文 第一冊》(書碼: 80221) 定價 NT$ 360、庫存 20",
@@ -905,7 +941,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793679983409-281a",
-      "timestamp": "2026/11/03 12:26:23",
+      "timestamp": "Tue Nov 03 2026 12:26:23 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 39 本、庫存 1 本、新增 6 本",
@@ -15412,30 +15448,30 @@ window.STATIC_DATA = {
       "year": "100年 平一",
       "price": 400,
       "isbn": "978-957-549-948-8",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00595.jpg",
-      "localCover": "assets/covers/00595.jpg",
       "intro": "本書《三禮禮器論叢（BOD）》由學者周聰俊所撰著，深入研析《三禮禮器論叢》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《三禮禮器論叢（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《三禮禮器論叢（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00595.jpg"
     },
     {
       "id": "00596",
       "title": "饗禮考辨（BOD）",
       "author": "周聰俊著",
       "year": "100年 平一",
-      "price": 380,
+      "price": 420,
       "isbn": "978-957-549-949-5",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00596.jpg",
+      "localCover": "assets/covers/00596.jpg",
       "intro": "本書《饗禮考辨（BOD）》由學者周聰俊所撰著，深入研析《饗禮考辨》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《饗禮考辨（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/00596.jpg"
+      "心得": "【學術導讀】《饗禮考辨（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "00597",
@@ -37460,14 +37496,14 @@ window.STATIC_DATA = {
       "year": "96年 平一",
       "price": 580,
       "isbn": "978-957-549-712-5",
-      "stock": 20,
+      "stock": "20",
       "category": "史料",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/65116.jpg",
-      "localCover": "assets/covers/65116.jpg",
       "intro": "本書《滿漢西遊記會話》為清史與滿學權威學者莊吉發教授之精研專著。全書立足於第一手滿漢原始檔案文獻，針對清代政治制度、八旗社會結構、民族治理及邊疆經營進行深層考證。作者憑藉深厚之滿語解讀與史料辨析功力，訂正諸多傳世史料之訛誤，展現清史研究之立體全貌，為明清史學界公認之奠基力作。",
-      "心得": "【清史名家導讀】莊吉發教授治清史以精熟滿文原檔見稱。研讀本書，最能體會第一手民族檔案對重構歷史真相之關鍵力量。全書考訂縝密、條分縷析，使諸多清代決策內幕與邊疆經略脈絡豁然開朗，極具學術參考價值。"
+      "心得": "【清史名家導讀】莊吉發教授治清史以精熟滿文原檔見稱。研讀本書，最能體會第一手民族檔案對重構歷史真相之關鍵力量。全書考訂縝密、條分縷析，使諸多清代決策內幕與邊疆經略脈絡豁然開朗，極具學術參考價值。",
+      "localCover": "assets/covers/65116.jpg"
     },
     {
       "id": "65117",
@@ -41188,14 +41224,14 @@ window.STATIC_DATA = {
       "year": "97年 平一",
       "price": 360,
       "isbn": "978-957-547-154-5",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80221.jpg",
-      "localCover": "assets/covers/80221.jpg",
       "intro": "本書《新編五專國文 第一冊》由學者李春等所撰著，深入研析《新編五專國文 第一冊》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《新編五專國文 第一冊》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《新編五專國文 第一冊》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80221.jpg"
     },
     {
       "id": "80222",
