@@ -823,8 +823,53 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793678583950-wpt1",
+      "timestamp": "2026/11/03 12:03:03",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793678572191-10gq",
+      "timestamp": "2026/11/03 12:02:52",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《三教心法》(書碼: 20002) 定價 NT$ 520、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793672206054-guan",
+      "timestamp": "2026/11/03 10:16:46",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 38 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793607530725-7odf",
+      "timestamp": "Mon Nov 02 2026 16:18:50 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 38 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793593612517-a14x",
+      "timestamp": "Mon Nov 02 2026 12:26:52 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793589695619-iy8q",
-      "timestamp": "2026/11/02 11:21:35",
+      "timestamp": "Mon Nov 02 2026 11:21:35 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -833,7 +878,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793585753388-be5g",
-      "timestamp": "2026/11/02 10:15:53",
+      "timestamp": "Mon Nov 02 2026 10:15:53 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -842,7 +887,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793585740664-u1r3",
-      "timestamp": "2026/11/02 10:15:40",
+      "timestamp": "Mon Nov 02 2026 10:15:40 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《陸游《南唐書本紀》考釋及史事補遺》(書碼: 00383) 定價 NT$ 540、庫存 20",
@@ -851,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793585628667-1kdr",
-      "timestamp": "2026/11/02 10:13:48",
+      "timestamp": "Mon Nov 02 2026 10:13:48 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 37 本、庫存 1 本、新增 6 本",
@@ -12062,14 +12107,14 @@ window.STATIC_DATA = {
       "year": "87年 平一",
       "price": 540,
       "isbn": "978-957-549-075-1",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00383.jpg",
-      "localCover": "assets/covers/00383.jpg",
       "intro": "本書《陸游《南唐書本紀》考釋及史事補遺》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《陸游《南唐書本紀》考釋及史事補遺》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《陸游《南唐書本紀》考釋及史事補遺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
+      "心得": "【詩學品讀】研讀《陸游《南唐書本紀》考釋及史事補遺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
+      "localCover": "assets/covers/00383.jpg"
     },
     {
       "id": "00385",
@@ -35036,16 +35081,16 @@ window.STATIC_DATA = {
       "title": "三教心法",
       "author": "光月老人著",
       "year": "76年 平一",
-      "price": 400,
+      "price": 520,
       "isbn": "978-957-547-184-2",
-      "stock": "20",
+      "stock": 20,
       "category": "宗教類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/20002.jpg",
+      "localCover": "assets/covers/20002.jpg",
       "intro": "本書《三教心法》由學者光月老人所撰著，深入研析《三教心法》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《三教心法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/20002.jpg"
+      "心得": "【學術導讀】《三教心法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "20004",
