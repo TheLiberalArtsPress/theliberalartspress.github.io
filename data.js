@@ -823,8 +823,44 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793680007874-tmap",
+      "timestamp": "2026/11/03 12:26:47",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《新編五專國文 第一冊》(書碼: 80221) 定價 NT$ 360、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793679983409-281a",
+      "timestamp": "2026/11/03 12:26:23",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 39 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793678594912-4eld",
+      "timestamp": "Tue Nov 03 2026 12:03:14 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793678585986-1m0l",
+      "timestamp": "Tue Nov 03 2026 12:03:05 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 39 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793678583950-wpt1",
-      "timestamp": "2026/11/03 12:03:03",
+      "timestamp": "Tue Nov 03 2026 12:03:03 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +869,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793678572191-10gq",
-      "timestamp": "2026/11/03 12:02:52",
+      "timestamp": "Tue Nov 03 2026 12:02:52 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《三教心法》(書碼: 20002) 定價 NT$ 520、庫存 20",
@@ -841,8 +877,53 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1793677189769-keyd",
+      "timestamp": "Tue Nov 03 2026 11:39:49 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 39 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793672349505-zq4f",
+      "timestamp": "Tue Nov 03 2026 10:19:09 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793672336084-m2tj",
+      "timestamp": "Tue Nov 03 2026 10:18:56 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《華梵人文教育之實踐》(書碼: B0027) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793672238286-cnsb",
+      "timestamp": "Tue Nov 03 2026 10:17:18 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 38 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793672206054-guan",
-      "timestamp": "2026/11/03 10:16:46",
+      "timestamp": "Tue Nov 03 2026 10:16:46 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 38 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793672206106-b7nz",
+      "timestamp": "Tue Nov 03 2026 10:16:46 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 38 本、庫存 1 本、新增 6 本",
@@ -35083,14 +35164,14 @@ window.STATIC_DATA = {
       "year": "76年 平一",
       "price": 520,
       "isbn": "978-957-547-184-2",
-      "stock": 20,
+      "stock": "20",
       "category": "宗教類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/20002.jpg",
-      "localCover": "assets/covers/20002.jpg",
       "intro": "本書《三教心法》由學者光月老人所撰著，深入研析《三教心法》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《三教心法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《三教心法》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/20002.jpg"
     },
     {
       "id": "20004",
@@ -41033,16 +41114,16 @@ window.STATIC_DATA = {
       "title": "新編五專國文 第一冊",
       "author": "李春等編著",
       "year": "97年 平一",
-      "price": 280,
+      "price": 360,
       "isbn": "978-957-547-154-5",
-      "stock": "20",
+      "stock": 20,
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80221.jpg",
+      "localCover": "assets/covers/80221.jpg",
       "intro": "本書《新編五專國文 第一冊》由學者李春等所撰著，深入研析《新編五專國文 第一冊》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《新編五專國文 第一冊》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/80221.jpg"
+      "心得": "【學術導讀】《新編五專國文 第一冊》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "80222",
