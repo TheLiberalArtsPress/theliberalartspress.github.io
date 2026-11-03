@@ -823,6 +823,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793699611089-zkve",
+      "timestamp": "2026/11/03 17:53:31",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793699598736-9wmd",
+      "timestamp": "2026/11/03 17:53:18",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《滿漢西遊記會話》(書碼: 65116) 定價 NT$ 580、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793680742037-kitu",
+      "timestamp": "2026/11/03 12:39:02",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793680023093-i122",
       "timestamp": "2026/11/03 12:27:03",
       "category": "雲端同步",
@@ -37404,16 +37431,16 @@ window.STATIC_DATA = {
       "title": "滿漢西遊記會話",
       "author": "莊吉發編譯",
       "year": "96年 平一",
-      "price": 560,
+      "price": 580,
       "isbn": "978-957-549-712-5",
-      "stock": "20",
+      "stock": 20,
       "category": "史料",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/65116.jpg",
+      "localCover": "assets/covers/65116.jpg",
       "intro": "本書《滿漢西遊記會話》為清史與滿學權威學者莊吉發教授之精研專著。全書立足於第一手滿漢原始檔案文獻，針對清代政治制度、八旗社會結構、民族治理及邊疆經營進行深層考證。作者憑藉深厚之滿語解讀與史料辨析功力，訂正諸多傳世史料之訛誤，展現清史研究之立體全貌，為明清史學界公認之奠基力作。",
-      "心得": "【清史名家導讀】莊吉發教授治清史以精熟滿文原檔見稱。研讀本書，最能體會第一手民族檔案對重構歷史真相之關鍵力量。全書考訂縝密、條分縷析，使諸多清代決策內幕與邊疆經略脈絡豁然開朗，極具學術參考價值。",
-      "localCover": "assets/covers/65116.jpg"
+      "心得": "【清史名家導讀】莊吉發教授治清史以精熟滿文原檔見稱。研讀本書，最能體會第一手民族檔案對重構歷史真相之關鍵力量。全書考訂縝密、條分縷析，使諸多清代決策內幕與邊疆經略脈絡豁然開朗，極具學術參考價值。"
     },
     {
       "id": "65117",
