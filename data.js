@@ -823,6 +823,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793700412607-xuo9",
+      "timestamp": "2026/11/03 18:06:52",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793700399817-7ino",
+      "timestamp": "2026/11/03 18:06:39",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《三禮禮器論叢（BOD）》(書碼: 00595) 定價 NT$ 400、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793699621543-v8kl",
+      "timestamp": "2026/11/03 17:53:41",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793699611089-zkve",
       "timestamp": "2026/11/03 17:53:31",
       "category": "書籍庫存",
@@ -15383,16 +15410,16 @@ window.STATIC_DATA = {
       "title": "三禮禮器論叢（BOD）",
       "author": "周聰俊著",
       "year": "100年 平一",
-      "price": 360,
+      "price": 400,
       "isbn": "978-957-549-948-8",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00595.jpg",
+      "localCover": "assets/covers/00595.jpg",
       "intro": "本書《三禮禮器論叢（BOD）》由學者周聰俊所撰著，深入研析《三禮禮器論叢》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《三禮禮器論叢（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/00595.jpg"
+      "心得": "【學術導讀】《三禮禮器論叢（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "00596",
