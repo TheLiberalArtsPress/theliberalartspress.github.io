@@ -823,8 +823,71 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793759645245-vz5o",
+      "timestamp": "2026/11/04 10:34:05",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793759632606-c95r",
+      "timestamp": "2026/11/04 10:33:52",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《魏晉南朝恩赦制度的探討》(書碼: 00714) 定價 NT$ 340、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793758666465-mtjt",
+      "timestamp": "2026/11/04 10:17:46",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793758654978-3y71",
+      "timestamp": "2026/11/04 10:17:34",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《簡明古代漢語教程》(書碼: 80284) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793757246058-ppck",
+      "timestamp": "2026/11/04 09:54:06",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 43 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793757243110-n0jg",
+      "timestamp": "Wed Nov 04 2026 09:54:03 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 43 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793702512128-ika5",
+      "timestamp": "Tue Nov 03 2026 18:41:52 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793702500947-bfgs",
-      "timestamp": "2026/11/03 18:41:40",
+      "timestamp": "Tue Nov 03 2026 18:41:40 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793702485892-axw2",
-      "timestamp": "2026/11/03 18:41:25",
+      "timestamp": "Tue Nov 03 2026 18:41:25 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《饗禮考辨（BOD）》(書碼: 00596) 定價 NT$ 420、庫存 20",
@@ -842,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793702472673-oa5y",
-      "timestamp": "2026/11/03 18:41:12",
+      "timestamp": "Tue Nov 03 2026 18:41:12 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 42 本、庫存 1 本、新增 6 本",
@@ -15464,14 +15527,14 @@ window.STATIC_DATA = {
       "year": "100年 平一",
       "price": 420,
       "isbn": "978-957-549-949-5",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00596.jpg",
-      "localCover": "assets/covers/00596.jpg",
       "intro": "本書《饗禮考辨（BOD）》由學者周聰俊所撰著，深入研析《饗禮考辨》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《饗禮考辨（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《饗禮考辨（BOD）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00596.jpg"
     },
     {
       "id": "00597",
@@ -17334,16 +17397,16 @@ window.STATIC_DATA = {
       "title": "魏晉南朝恩赦制度的探討",
       "author": "陳俊強著",
       "year": "87年 平一",
-      "price": 320,
+      "price": 340,
       "isbn": "978-957-549-120-8",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學術叢刊",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00714.jpg",
+      "localCover": "assets/covers/00714.jpg",
       "intro": "本書《魏晉南朝恩赦制度的探討》深入探討中國斷代歷史演變、政治制度變革與社會經濟結構。全書廣泛蒐羅傳世官修正史、起居注、檔案奏摺、文集筆記及民間碑刻，針對政務運作機制、階層流動、邊疆經營及重大歷史事件展開多視角實證考辨，力求還原歷史決策之深層背景與制度實態。",
-      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。",
-      "localCover": "assets/covers/00714.jpg"
+      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。"
     },
     {
       "id": "00715",
@@ -41606,16 +41669,16 @@ window.STATIC_DATA = {
       "title": "簡明古代漢語教程",
       "author": "曹 煒著",
       "year": "100年 平一",
-      "price": 280,
+      "price": 320,
       "isbn": "978-986-314-002-3",
-      "stock": "20",
+      "stock": 20,
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80284.jpg",
+      "localCover": "assets/covers/80284.jpg",
       "intro": "本書《簡明古代漢語教程》由學者曹 煒所撰著，深入研析《簡明古代漢語教程》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《簡明古代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/80284.jpg"
+      "心得": "【學術導讀】《簡明古代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "80301",
