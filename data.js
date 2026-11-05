@@ -823,8 +823,80 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793873137464-fpkr",
+      "timestamp": "2026/11/05 18:05:37",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793873118460-k8wx",
+      "timestamp": "2026/11/05 18:05:18",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 48 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793872931127-j6ra",
+      "timestamp": "Thu Nov 05 2026 18:02:11 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《滿文原檔《滿文原檔》選讀譯注 太宗朝（十三）》(書碼: 65176)，定價 NT$ 880",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793872905255-4sgi",
+      "timestamp": "Thu Nov 05 2026 18:01:45 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "刪除",
+      "details": "刪除書籍《滿文原檔《滿文原檔》選讀譯注 太宗朝（十三）》(書碼: 65176A)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793872889497-nl2g",
+      "timestamp": "Thu Nov 05 2026 18:01:29 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "刪除",
+      "details": "刪除書籍《三藏問答：《西遊記》滿文譯本選讀導讀》(書碼: 65176)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793872846219-yu0z",
+      "timestamp": "Thu Nov 05 2026 18:00:46 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《滿文原檔《滿文原檔》選讀譯注 太宗朝（十三）》(書碼: 65176A)，定價 NT$ 880",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793872627659-m3fm",
+      "timestamp": "Thu Nov 05 2026 17:57:07 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 47 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793863418087-gk7l",
+      "timestamp": "Thu Nov 05 2026 15:23:38 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793863407800-3vmu",
-      "timestamp": "2026/11/05 15:23:27",
+      "timestamp": "Thu Nov 05 2026 15:23:27 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793863378289-sna8",
-      "timestamp": "2026/11/05 15:22:58",
+      "timestamp": "Thu Nov 05 2026 15:22:58 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 分書（二寸字） 八開本》(書碼: 94206) 定價 NT$ 1200、庫存 20",
@@ -842,7 +914,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793863368130-jkgz",
-      "timestamp": "2026/11/05 15:22:48",
+      "timestamp": "Thu Nov 05 2026 15:22:48 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 行書（二寸字） 八開本》(書碼: 94205) 定價 NT$ 1200、庫存 20",
@@ -851,7 +923,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793863363936-5rl1",
-      "timestamp": "2026/11/05 15:22:43",
+      "timestamp": "Thu Nov 05 2026 15:22:43 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 楷書（二寸字） 八開本》(書碼: 94204) 定價 NT$ 1200、庫存 20",
@@ -860,7 +932,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793862796599-zcww",
-      "timestamp": "2026/11/05 15:13:16",
+      "timestamp": "Thu Nov 05 2026 15:13:16 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 44 本、庫存 1 本、新增 6 本",
@@ -38597,10 +38669,10 @@ window.STATIC_DATA = {
     },
     {
       "id": "65176",
-      "title": "三藏問答：《西遊記》滿文譯本選讀導讀",
-      "author": "莊吉發譯注",
-      "year": "114年 平一",
-      "price": 480,
+      "title": "滿文原檔《滿文原檔》選讀譯注 太宗朝（十三）",
+      "author": "莊吉發 譯注",
+      "year": "115年 平一",
+      "price": 880,
       "isbn": "978-986-314-734-3",
       "stock": "20",
       "category": "史料",
@@ -46858,7 +46930,7 @@ window.STATIC_DATA = {
       "year": "平一",
       "price": 1200,
       "isbn": "978-957-547-039-5",
-      "stock": 20,
+      "stock": "20",
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
@@ -46874,7 +46946,7 @@ window.STATIC_DATA = {
       "year": "平一",
       "price": 1200,
       "isbn": "978-957-547-038-8",
-      "stock": 20,
+      "stock": "20",
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
@@ -46890,7 +46962,7 @@ window.STATIC_DATA = {
       "year": "平一",
       "price": 1200,
       "isbn": "978-957-547-779-0",
-      "stock": 20,
+      "stock": "20",
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
