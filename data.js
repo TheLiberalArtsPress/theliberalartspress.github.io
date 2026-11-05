@@ -823,8 +823,71 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793863407800-3vmu",
+      "timestamp": "2026/11/05 15:23:27",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793863378289-sna8",
+      "timestamp": "2026/11/05 15:22:58",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 分書（二寸字） 八開本》(書碼: 94206) 定價 NT$ 1200、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793863368130-jkgz",
+      "timestamp": "2026/11/05 15:22:48",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 行書（二寸字） 八開本》(書碼: 94205) 定價 NT$ 1200、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793863363936-5rl1",
+      "timestamp": "2026/11/05 15:22:43",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 楷書（二寸字） 八開本》(書碼: 94204) 定價 NT$ 1200、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793862796599-zcww",
+      "timestamp": "2026/11/05 15:13:16",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 44 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793784347364-cm3a",
+      "timestamp": "Wed Nov 04 2026 17:25:47 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 44 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793784061724-a8ik",
+      "timestamp": "Wed Nov 04 2026 17:21:01 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793784005779-kb4c",
-      "timestamp": "2026/11/04 17:20:05",
+      "timestamp": "Wed Nov 04 2026 17:20:05 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +896,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793783992775-5pfi",
-      "timestamp": "2026/11/04 17:19:52",
+      "timestamp": "Wed Nov 04 2026 17:19:52 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《魏晉南北朝文學思想史（再版）》(書碼: 00024) 定價 NT$ 1000、庫存 20",
@@ -841,8 +904,71 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1793759677491-ntn9",
+      "timestamp": "Wed Nov 04 2026 10:34:37 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793759657967-sjlq",
+      "timestamp": "Wed Nov 04 2026 10:34:17 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793759645245-vz5o",
+      "timestamp": "Wed Nov 04 2026 10:34:05 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793759632606-c95r",
+      "timestamp": "Wed Nov 04 2026 10:33:52 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《魏晉南朝恩赦制度的探討》(書碼: 00714) 定價 NT$ 340、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793758666465-mtjt",
+      "timestamp": "Wed Nov 04 2026 10:17:46 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793758654978-3y71",
+      "timestamp": "Wed Nov 04 2026 10:17:34 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《簡明古代漢語教程》(書碼: 80284) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793757246058-ppck",
+      "timestamp": "Wed Nov 04 2026 09:54:06 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 43 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793757243110-n0jg",
-      "timestamp": "2026/11/04 09:54:03",
+      "timestamp": "Wed Nov 04 2026 09:54:03 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 43 本、庫存 1 本、新增 6 本",
@@ -6812,14 +6938,14 @@ window.STATIC_DATA = {
       "year": "67年 平二",
       "price": 1000,
       "isbn": "978-957-547-230-6",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00024.jpg",
-      "localCover": "assets/covers/00024.jpg",
       "intro": "本書深入探討魏晉南北朝時期文學思想之演變脈絡。自漢末建安風骨之慷慨，歷經正始玄學之清談、兩晉之放達，乃至南北朝之駢儷美學。作者張仁青教授以嚴謹之學術眼光，剖析文人個體自覺與儒釋道三教合流對創作之影響。書中系統性梳理《文心雕龍》、《詩品》等重要文論，展示了中國文學由載道轉向言情、由質樸趨向華麗的關鍵轉型期。",
-      "心得": "本書為研究魏晉文論之圭臬，張教授筆觸洗鍊，將亂世中騷人墨客的精神追求活現於紙上。其對「自覺時代」的精準捕捉，揭示了中國美學思想從政教束縛中解脫的歷程。即便歷經星霜，其論述之深刻與學術價值，仍是文史學者不可或缺的案頭參考。"
+      "心得": "本書為研究魏晉文論之圭臬，張教授筆觸洗鍊，將亂世中騷人墨客的精神追求活現於紙上。其對「自覺時代」的精準捕捉，揭示了中國美學思想從政教束縛中解脫的歷程。即便歷經星霜，其論述之深刻與學術價值，仍是文史學者不可或缺的案頭參考。",
+      "localCover": "assets/covers/00024.jpg"
     },
     {
       "id": "00025",
@@ -46730,9 +46856,9 @@ window.STATIC_DATA = {
       "title": "商用字彙 楷書（二寸字） 八開本",
       "author": "劉元祥寫作",
       "year": "平一",
-      "price": 1000,
+      "price": 1200,
       "isbn": "978-957-547-039-5",
-      "stock": "20",
+      "stock": 20,
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
@@ -46746,9 +46872,9 @@ window.STATIC_DATA = {
       "title": "商用字彙 行書（二寸字） 八開本",
       "author": "劉元祥寫作",
       "year": "平一",
-      "price": 1000,
+      "price": 1200,
       "isbn": "978-957-547-038-8",
-      "stock": "20",
+      "stock": 20,
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
@@ -46762,9 +46888,9 @@ window.STATIC_DATA = {
       "title": "商用字彙 分書（二寸字） 八開本",
       "author": "劉元祥寫作",
       "year": "平一",
-      "price": 1000,
+      "price": 1200,
       "isbn": "978-957-547-779-0",
-      "stock": "20",
+      "stock": 20,
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
