@@ -823,8 +823,80 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1793949729316-zqbd",
+      "timestamp": "2026/11/06 15:22:09",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793949704069-ronl",
+      "timestamp": "2026/11/06 15:21:44",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《聲韻學表解》(書碼: 81266) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793949684345-p27i",
+      "timestamp": "2026/11/06 15:21:24",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《兒童詩觀察》(書碼: T9409) 定價 NT$ 220、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793949674742-vkm7",
+      "timestamp": "2026/11/06 15:21:14",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 49 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793937782198-gexq",
+      "timestamp": "Fri Nov 06 2026 12:03:02 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793937769889-xvg7",
+      "timestamp": "Fri Nov 06 2026 12:02:49 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《莊子寓言研究》(書碼: 00721) 定價 NT$ 440、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793937258615-5wku",
+      "timestamp": "Fri Nov 06 2026 11:54:18 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 48 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1793873151474-jxa3",
+      "timestamp": "Thu Nov 05 2026 18:05:51 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1793873137464-fpkr",
-      "timestamp": "2026/11/05 18:05:37",
+      "timestamp": "Thu Nov 05 2026 18:05:37 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +905,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1793873118460-k8wx",
-      "timestamp": "2026/11/05 18:05:18",
+      "timestamp": "Thu Nov 05 2026 18:05:18 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 48 本、庫存 1 本、新增 6 本",
@@ -17680,7 +17752,7 @@ window.STATIC_DATA = {
       "title": "莊子寓言研究",
       "author": "葉程義著",
       "year": "93年 平一",
-      "price": 420,
+      "price": 440,
       "isbn": "978-957-549-574-9",
       "stock": "20",
       "category": "文史哲學術叢刊",
@@ -42640,16 +42712,16 @@ window.STATIC_DATA = {
       "title": "聲韻學表解",
       "author": "劉 賾著",
       "year": "93年 平一",
-      "price": 280,
+      "price": 320,
       "isbn": "978-957-549-550-3",
-      "stock": "20",
+      "stock": 20,
       "category": "文字、聲韻、訓詁",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/81266.jpg",
+      "localCover": "assets/covers/81266.jpg",
       "intro": "本書《聲韻學表解》為文字學、聲韻學與訓詁學（傳統小學）領域之權威考訂專著。全書博採甲骨卜辭、青銅彝銘、簡帛帛書與歷代韻書注釋，嚴格依循形音義互求之傳統考據法則，由字形演變溯其造字本旨，考訂語音流變與詞義引申之系統規律。全書材料翔實、考證確鑿，展現極高之小學考訂功力。",
-      "心得": "【考據評介】傳統小學乃通讀古典經史之金鑰匙。本書體例嚴謹、論據扎實，對疑難字形與古音古義之考辨極具說服力，展現了乾嘉樸學實事求是的深厚功力，為漢語言文字學研究者之必備工具書。",
-      "localCover": "assets/covers/81266.jpg"
+      "心得": "【考據評介】傳統小學乃通讀古典經史之金鑰匙。本書體例嚴謹、論據扎實，對疑難字形與古音古義之考辨極具說服力，展現了乾嘉樸學實事求是的深厚功力，為漢語言文字學研究者之必備工具書。"
     },
     {
       "id": "81302",
@@ -48464,16 +48536,16 @@ window.STATIC_DATA = {
       "title": "兒童詩觀察",
       "author": "林鍾隆著",
       "year": "平一冊",
-      "price": 120,
+      "price": 220,
       "isbn": "",
-      "stock": "20",
+      "stock": 20,
       "category": "益智書局",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/T9409.jpg",
+      "localCover": "assets/covers/T9409.jpg",
       "intro": "本書《兒童詩觀察》由學者林鍾隆所撰著，深入研析《兒童詩觀察》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《兒童詩觀察》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/T9409.jpg"
+      "心得": "【學術導讀】《兒童詩觀察》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "T9410",
