@@ -823,8 +823,161 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1794388478375-1puk",
+      "timestamp": "2026/11/11 17:14:38",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364) 定價 NT$ 280、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388474182-6g6c",
+      "timestamp": "2026/11/11 17:14:34",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2629 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388460066-e73c",
+      "timestamp": "2026/11/11 17:14:20",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364) 定價 NT$ 280、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388448620-lwkh",
+      "timestamp": "2026/11/11 17:14:08",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364) 定價 NT$ 300、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388321281-465r",
+      "timestamp": "2026/11/11 17:12:01",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364)，定價 NT$ 300",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388161722-270i",
+      "timestamp": "2026/11/11 17:09:21",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2628 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388138773-sd95",
+      "timestamp": "2026/11/11 17:08:58",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《欲與君》(書碼: 09171)，定價 NT$ 340",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388098828-9xmc",
+      "timestamp": "2026/11/11 17:08:18",
+      "category": "書籍庫存",
+      "action": "刪除",
+      "details": "刪除書籍《欲與君》(書碼: 19171)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388026506-0irl",
+      "timestamp": "2026/11/11 17:07:06",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《欲與君》(書碼: 19171) 定價 NT$ 340、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794387921189-29bu",
+      "timestamp": "2026/11/11 17:05:21",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《欲與君》(書碼: 19171) 定價 NT$ 340、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794387890935-nxur",
+      "timestamp": "2026/11/11 17:04:50",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《欲與君》(書碼: 19171)，定價 NT$ 340",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794387848238-667c",
+      "timestamp": "2026/11/11 17:04:08",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 54 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794387782507-t993",
+      "timestamp": "Wed Nov 11 2026 17:03:02 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 54 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794382129295-l7yq",
+      "timestamp": "Wed Nov 11 2026 15:28:49 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 54 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794367716010-mn77",
+      "timestamp": "Wed Nov 11 2026 11:28:36 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 54 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794304597185-119j",
+      "timestamp": "Tue Nov 10 2026 17:56:37 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 54 本、庫存 1 本、新增 6 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794278962283-02ez",
+      "timestamp": "Tue Nov 10 2026 10:49:22 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794278950152-l7gi",
-      "timestamp": "2026/11/10 10:49:10",
+      "timestamp": "Tue Nov 10 2026 10:49:10 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2627 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -833,7 +986,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794278937331-ocnx",
-      "timestamp": "2026/11/10 10:48:57",
+      "timestamp": "Tue Nov 10 2026 10:48:57 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《韓愈文統探微》(書碼: 00263) 定價 NT$ 240、庫存 20",
@@ -842,7 +995,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794278920250-ehaf",
-      "timestamp": "2026/11/10 10:48:40",
+      "timestamp": "Tue Nov 10 2026 10:48:40 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2627 本，變更價格 53 本、庫存 1 本、新增 6 本",
@@ -6846,6 +6999,38 @@ window.STATIC_DATA = {
   ],
   "books": [
     {
+      "id": "78364",
+      "title": "紫荊怒放：香港文學的傳播與接受",
+      "author": "楊明著",
+      "year": "115年 平一",
+      "price": 280,
+      "isbn": "978-986-314-775-6",
+      "stock": 20,
+      "category": "民國文學與文化系列論叢",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1w-DQo5w10vIOu8sVY7kjEJAOF5i9sdKe/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
+      "id": "09171",
+      "title": "欲與君",
+      "author": "呂建春著",
+      "year": "115年 平一",
+      "price": 340,
+      "isbn": "978-986-314-773-2",
+      "stock": 20,
+      "category": "文史哲詩叢",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1ivYTNnf5IMZUSyekfm7KGU3TRJe1J2TR/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
       "id": "00001",
       "title": "中國圖書史略",
       "author": "昌彼得著",
@@ -10900,14 +11085,14 @@ window.STATIC_DATA = {
       "year": "81年 平一",
       "price": 240,
       "isbn": "978-957-547-162-0",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00263.jpg",
-      "localCover": "assets/covers/00263.jpg",
       "intro": "本書《韓愈文統探微》由學者鄧國光所撰著，深入研析《韓愈文統探微》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《韓愈文統探微》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《韓愈文統探微》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00263.jpg"
     },
     {
       "id": "00264",
