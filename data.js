@@ -823,6 +823,42 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1794388667289-000v",
+      "timestamp": "2026/11/11 17:17:47",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2630 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388642940-24oa",
+      "timestamp": "2026/11/11 17:17:22",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《陳維德書法教育的實踐歷程》(書碼: 78829) 定價 NT$ 700、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388581308-mzvs",
+      "timestamp": "2026/11/11 17:16:21",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《陳維德書法教育的實踐歷程》(書碼: 78829)，定價 NT$ 700",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388485534-3b5t",
+      "timestamp": "2026/11/11 17:14:45",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794388478375-1puk",
       "timestamp": "2026/11/11 17:14:38",
       "category": "書籍庫存",
@@ -6998,6 +7034,22 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
+    {
+      "id": "78829",
+      "title": "陳維德書法教育的實踐歷程",
+      "author": "趙蕙芬",
+      "year": "115年 平一",
+      "price": 700,
+      "isbn": "",
+      "stock": 20,
+      "category": "傳記叢刊",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/117f3TXgIDjTFjkzj8KzGy0XLivwZscb5/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
     {
       "id": "78364",
       "title": "紫荊怒放：香港文學的傳播與接受",
