@@ -823,6 +823,51 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1794389855791-5zax",
+      "timestamp": "2026/11/11 17:37:35",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2632 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389843275-q1z9",
+      "timestamp": "2026/11/11 17:37:23",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《心花詩集》(書碼: 09169)，定價 NT$ 220",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389786237-1ap5",
+      "timestamp": "2026/11/11 17:36:26",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2631 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389770017-jt8x",
+      "timestamp": "2026/11/11 17:36:10",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《長命無絕衰》(書碼: 09170)，定價 NT$ 300",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389597545-hv3l",
+      "timestamp": "2026/11/11 17:33:17",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794389585488-i6tr",
       "timestamp": "2026/11/11 17:33:05",
       "category": "書籍庫存",
@@ -7106,6 +7151,38 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
+    {
+      "id": "09169",
+      "title": "心花詩集",
+      "author": "蔡彤緯著",
+      "year": "115年 平一",
+      "price": 220,
+      "isbn": "978-986-314-744-2",
+      "stock": 20,
+      "category": "文史哲詩叢",
+      "isNew": true,
+      "isLast": false,
+      "cover": "",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
+      "id": "09170",
+      "title": "長命無絕衰",
+      "author": "呂建春 著",
+      "year": "115年 平一",
+      "price": 300,
+      "isbn": "978-986-314-747-3",
+      "stock": 20,
+      "category": "文史哲詩叢",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/14JQ3tAVk9D5DRZhKSl04wBuNqZQC87Af/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
     {
       "id": "78829",
       "title": "陳維德書法教育的實踐歷程",
