@@ -180,6 +180,54 @@ window.STATIC_DATA = {
   ],
   "choices": [
     {
+      "id": "09171",
+      "title": "欲與君",
+      "author": "呂建春著",
+      "year": "115年 平一",
+      "price": 340,
+      "isbn": "978-986-314-773-2",
+      "stock": 20,
+      "category": "文史哲詩叢",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1ivYTNnf5IMZUSyekfm7KGU3TRJe1J2TR/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
+      "id": "78364",
+      "title": "紫荊怒放：香港文學的傳播與接受",
+      "author": "楊明著",
+      "year": "115年 平一",
+      "price": 280,
+      "isbn": "978-986-314-775-6",
+      "stock": 20,
+      "category": "民國文學與文化系列論叢",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1w-DQo5w10vIOu8sVY7kjEJAOF5i9sdKe/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
+      "id": "78829",
+      "title": "陳維德書法教育的實踐歷程",
+      "author": "趙蕙芬",
+      "year": "115年 平一",
+      "price": 700,
+      "isbn": "978-986-314-772-5",
+      "stock": 20,
+      "category": "傳記叢刊",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/117f3TXgIDjTFjkzj8KzGy0XLivwZscb5/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
       "id": "10513",
       "title": "臺北講古：講古臺北",
       "author": "陳福成 著",
@@ -822,6 +870,51 @@ window.STATIC_DATA = {
     }
   ],
   "logs": [
+    {
+      "id": "LOG-1794390113326-0iei",
+      "timestamp": "2026/11/11 17:41:53",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 25 本、暢銷 17 本）",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794390005597-msrs",
+      "timestamp": "2026/11/11 17:40:05",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《陳維德書法教育的實踐歷程》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794390004835-2co6",
+      "timestamp": "2026/11/11 17:40:04",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《紫荊怒放：香港文學的傳播與接受》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389997987-5626",
+      "timestamp": "2026/11/11 17:39:57",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《欲與君》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389876507-zfj4",
+      "timestamp": "2026/11/11 17:37:56",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
     {
       "id": "LOG-1794389855791-5zax",
       "timestamp": "2026/11/11 17:37:35",
