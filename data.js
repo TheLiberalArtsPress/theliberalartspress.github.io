@@ -823,6 +823,78 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1794389585488-i6tr",
+      "timestamp": "2026/11/11 17:33:05",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2630 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389573438-m8rs",
+      "timestamp": "2026/11/11 17:32:53",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364) 定價 NT$ 280、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389531134-ja0c",
+      "timestamp": "2026/11/11 17:32:11",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364) 定價 NT$ 280、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389465331-66tu",
+      "timestamp": "2026/11/11 17:31:05",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2630 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389455314-92kb",
+      "timestamp": "2026/11/11 17:30:55",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《陳維德書法教育的實踐歷程》(書碼: 78829) 定價 NT$ 700、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794389081777-ohhd",
+      "timestamp": "2026/11/11 17:24:41",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364) 定價 NT$ 280、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388682447-urhl",
+      "timestamp": "2026/11/11 17:18:02",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《紫荊怒放：香港文學的傳播與接受》(書碼: 78364) 定價 NT$ 280、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794388678685-5hc4",
+      "timestamp": "2026/11/11 17:17:58",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794388667289-000v",
       "timestamp": "2026/11/11 17:17:47",
       "category": "書籍庫存",
@@ -7040,7 +7112,7 @@ window.STATIC_DATA = {
       "author": "趙蕙芬",
       "year": "115年 平一",
       "price": 700,
-      "isbn": "",
+      "isbn": "978-986-314-772-5",
       "stock": 20,
       "category": "傳記叢刊",
       "isNew": true,
