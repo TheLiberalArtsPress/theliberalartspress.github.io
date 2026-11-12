@@ -35,7 +35,7 @@ let html = `<!DOCTYPE html>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>文史哲出版社 全館圖書總目錄（2,633冊學術典籍目錄與單書專頁索引）</title>
   <meta name="description" content="文史哲出版社創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、滿學清史研究等專業出版。此為全館2,633冊學術圖書完整總目錄、書碼、ISBN與官方定價檢索索引。">
-  <meta name="keywords" content="文史哲出版社, 文史哲圖書目錄, 台灣文史哲出版社, 文史哲學集成, 滿文原檔, 莊吉發, 昌彼得, 胡自逢, 中國歷史, 中國文學, 中國哲學, 國學研究">
+  <meta name="keywords" content="文史哲出版社, 文史哲圖書目錄, 文史哲图书目录, 台湾文史哲出版社, 臺灣文史哲出版社, 文史哲出版社官網, 文史哲出版社官网, 文史哲學集成, 文史哲学集成, 文史哲學術叢刊, 文史哲学术丛刊, 滿文原檔, 满文原档, 莊吉發, 庄吉发, 昌彼得, 胡自逢, 廖忠俊, 二十五史人物志, 中國歷史, 中国历史, 中國文學, 中国文学, 中國哲學, 中国哲学, 國學研究, 国学研究">
   <link rel="canonical" href="https://theliberalartspress.github.io/catalog.html">
   <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large">
   <style>
@@ -140,12 +140,19 @@ html += `</main>
 </footer>
 
 <script>
+const S2T_MAP = {
+  '满':'滿','庄':'莊','发':'發','蒋':'蔣','历':'歷','国':'國','学':'學','术':'術',
+  '丛':'叢','选':'選','读':'讀','译':'譯','纪':'紀','传':'傳','图':'圖','书':'書',
+  '华':'華','艺':'藝','简':'簡','谱':'譜','论':'論','经':'經','传':'傳','释':'釋',
+  '诗':'詩','词':'詞','注':'註','录':'錄','考':'考','订':'訂','辑':'輯','异':'異'
+};
 function filterBooks() {
-  const query = document.getElementById('filterInput').value.toLowerCase().trim();
+  let query = document.getElementById('filterInput').value.toLowerCase().trim();
+  let queryTrad = query.split('').map(c => S2T_MAP[c] || c).join('');
   const rows = document.querySelectorAll('.book-row');
   rows.forEach(r => {
     const text = r.textContent.toLowerCase();
-    r.style.display = text.includes(query) ? '' : 'none';
+    r.style.display = (text.includes(query) || text.includes(queryTrad)) ? '' : 'none';
   });
 }
 </script>
