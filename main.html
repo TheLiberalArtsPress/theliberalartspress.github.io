@@ -1811,7 +1811,8 @@ function App() {
                                         <div>年份：<strong>{selectedBookDetail.year || '未標記'}</strong></div>
                                         <div>分類：<strong className="text-[var(--primary-color)]">{selectedBookDetail.category || '未分類'}</strong></div>
                                         <div>書碼：<strong className="font-mono">{selectedBookDetail.id || '無'}</strong></div>
-                                        <div className="col-span-2">定價：<strong className={`${isBookDetailFullscreen ? 'text-xl' : 'text-base'} font-black text-[var(--primary-color)]`}>NT$ {selectedBookDetail.price}</strong></div>
+                                        <div className="pt-0.5 flex items-baseline gap-1">定價：<strong className={`${isBookDetailFullscreen ? 'text-xl' : 'text-base'} font-black text-[var(--primary-color)]`}>NT$ {selectedBookDetail.price}</strong></div>
+                                        <div className="pt-0.5 flex items-baseline gap-1">ISBN：<strong className="font-mono font-bold select-all break-all">{selectedBookDetail.isbn || '無'}</strong></div>
                                     </div>
                                     <div>
                                         <h4 className={`${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-[var(--dark-color)] mb-1 flex items-center gap-1`}><Icon name="FileText" size={16} className="text-[var(--primary-color)]" /> 書籍簡介：</h4>

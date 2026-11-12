@@ -926,7 +926,7 @@ function App() {
       const bookParam = urlParams.get('book') || urlParams.get('id');
       const catParam = urlParams.get('category');
       if (bookParam) {
-        const found = books.find(b => String(b.id) === String(bookParam) || b.title === bookParam);
+        const found = books.find(b => String(b.id) === String(bookParam) || (b.id && String(b.id).padStart(5, '0') === String(bookParam).padStart(5, '0')) || (b.isbn && b.isbn.replace(/-/g, '') === String(bookParam).replace(/-/g, '')) || b.title === bookParam);
         if (found) setSelectedBookDetail(found);
       }
       if (catParam) {
@@ -1421,7 +1421,7 @@ function App() {
   };
   const indexSearchBooks = useMemo(() => {
     return books.filter(b => {
-      const matchCode = !appliedSearch.code || b.id && b.id.toString().includes(appliedSearch.code);
+      const matchCode = !appliedSearch.code || (b.id && b.id.toString().includes(appliedSearch.code)) || (b.isbn && b.isbn.replace(/-/g, '').includes(appliedSearch.code.replace(/-/g, '')));
       const matchTitle = !appliedSearch.title || b.title && b.title.includes(appliedSearch.title);
       const matchAuthor = !appliedSearch.author || b.author && b.author.includes(appliedSearch.author);
       const matchPage = !appliedSearch.year || b.year && b.year.toString().includes(appliedSearch.year);
@@ -3364,10 +3364,14 @@ function App() {
   }, selectedBookDetail.category || '未分類')), /*#__PURE__*/React.createElement("div", null, "書碼：", /*#__PURE__*/React.createElement("strong", {
     className: "font-mono font-bold"
   }, selectedBookDetail.id || '無')), /*#__PURE__*/React.createElement("div", {
-    className: "col-span-2 pt-0.5"
+    className: "pt-0.5 flex items-baseline gap-1"
   }, "定價：", /*#__PURE__*/React.createElement("strong", {
     className: `${isBookDetailFullscreen ? 'text-2xl' : 'text-lg'} font-black text-[#B83B26] font-sans`
-  }, "NT$ ", selectedBookDetail.price))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
+  }, "NT$ ", selectedBookDetail.price)), /*#__PURE__*/React.createElement("div", {
+    className: "pt-0.5 flex items-baseline gap-1"
+  }, "ISBN：", /*#__PURE__*/React.createElement("strong", {
+    className: "font-mono font-bold select-all break-all"
+  }, selectedBookDetail.isbn || '無'))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
     className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-[var(--dark-color)] mb-1 flex items-center gap-1`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "FileText",
