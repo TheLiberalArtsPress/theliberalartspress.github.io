@@ -152,6 +152,13 @@
 <script src="assets/vendor/react.min.js"></script>
 <script src="assets/vendor/react-dom.min.js"></script>
 <script>window.react = window.React;</script>
+<script>
+  try {
+    if (localStorage.getItem('lapen_eyecare_theme') === 'true') {
+      document.documentElement.classList.add('theme-eyecare');
+    }
+  } catch(e) {}
+</script>
 
 <style>
     :root {
@@ -166,6 +173,90 @@
         --footer-bg: #161210;
         --body-font: 'Noto Sans TC', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "PingFang TC", "Microsoft JhengHei", sans-serif;
         --title-font: 'Noto Serif TC', "Songti TC", "STSong", "PMingLiU", "MingLiU", serif;
+    }
+
+    /* 🏮 深夜書房燭光護眼模式 (Low-Blue-Light Candlelight Eye-Care Mode) */
+    html.theme-eyecare {
+        --primary-color: #D6974B;
+        --dark-color: #F0E6D6;
+        --bg-color: #14110E;
+        --bg-light: #1E1915;
+        --text-dark: #DCD0C0;
+        --border-color: #382D24;
+        --accent-color: #8C7862;
+        --seal-red: #D65A4B;
+        --footer-bg: #0D0A08;
+    }
+
+    html.theme-eyecare body {
+        background-color: #14110E !important;
+        background-image: 
+            radial-gradient(rgba(214, 151, 75, 0.08) 1px, transparent 1px),
+            radial-gradient(rgba(214, 90, 75, 0.04) 1px, transparent 1px) !important;
+        color: #DCD0C0 !important;
+    }
+
+    html.theme-eyecare header,
+    html.theme-eyecare .bg-\[\#FDFBF7\],
+    html.theme-eyecare .bg-\[\#FDFBF7\]\/95 {
+        background-color: rgba(20, 17, 14, 0.95) !important;
+        border-color: #382D24 !important;
+        color: #F0E6D6 !important;
+    }
+
+    html.theme-eyecare .bg-white,
+    html.theme-eyecare .glass-card,
+    html.theme-eyecare .glass-modal,
+    html.theme-eyecare .receipt-container {
+        background-color: #1E1915 !important;
+        border-color: #382D24 !important;
+        color: #DCD0C0 !important;
+    }
+
+    html.theme-eyecare .bg-stone-50,
+    html.theme-eyecare .bg-stone-100,
+    html.theme-eyecare .bg-gray-50,
+    html.theme-eyecare .bg-gray-100,
+    html.theme-eyecare .bg-amber-50\/70,
+    html.theme-eyecare .bg-amber-50\/90 {
+        background-color: #27211C !important;
+        border-color: #382D24 !important;
+        color: #DCD0C0 !important;
+    }
+
+    html.theme-eyecare .text-stone-900,
+    html.theme-eyecare .text-stone-800,
+    html.theme-eyecare .text-stone-700,
+    html.theme-eyecare .text-gray-800,
+    html.theme-eyecare .text-gray-900 {
+        color: #F0E6D6 !important;
+    }
+
+    html.theme-eyecare .text-stone-600,
+    html.theme-eyecare .text-stone-500,
+    html.theme-eyecare .text-gray-600,
+    html.theme-eyecare .text-gray-500 {
+        color: #A39380 !important;
+    }
+
+    html.theme-eyecare .border-stone-200,
+    html.theme-eyecare .border-stone-200\/60,
+    html.theme-eyecare .border-stone-200\/70,
+    html.theme-eyecare .border-stone-200\/80,
+    html.theme-eyecare .border-\[\#E8DCCE\]\/80 {
+        border-color: #382D24 !important;
+    }
+
+    html.theme-eyecare input,
+    html.theme-eyecare textarea,
+    html.theme-eyecare select {
+        background-color: #27211C !important;
+        color: #F0E6D6 !important;
+        border-color: #382D24 !important;
+    }
+
+    html.theme-eyecare img {
+        filter: brightness(0.92) contrast(1.02);
     }
 
     body {
@@ -675,8 +766,8 @@
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261112_08"></script>
-<script src="app.js?v=20261112_08" defer></script>
+<script src="init_data.js?v=20261112_09"></script>
+<script src="app.js?v=20261112_09" defer></script>
 
 <!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
 <script>
@@ -684,7 +775,7 @@
     var hasBookQuery = window.location.search && (window.location.search.indexOf('book=') !== -1 || window.location.search.indexOf('id=') !== -1);
     function loadDataJs() {
       var s = document.createElement('script');
-      s.src = 'data.js?v=20261112_08';
+      s.src = 'data.js?v=20261112_09';
       s.async = true;
       s.onload = function() {
         if (window.STATIC_DATA) {

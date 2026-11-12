@@ -882,6 +882,44 @@ function App() {
   const [isMirrorModalOpen, setIsMirrorModalOpen] = useState(false);
   const [mirrorLatencies, setMirrorLatencies] = useState({});
   const [isTestingLatencies, setIsTestingLatencies] = useState(false);
+
+  // 🏮 護眼模式（夜讀暖黃燭光模式）
+  const [isEyeCare, setIsEyeCare] = useState(() => {
+    try {
+      if (typeof window !== 'undefined') {
+        return localStorage.getItem('lapen_eyecare_theme') === 'true';
+      }
+    } catch (e) {}
+    return false;
+  });
+
+  const toggleEyeCare = useCallback(() => {
+    setIsEyeCare(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('lapen_eyecare_theme', String(next));
+        if (next) {
+          document.documentElement.classList.add('theme-eyecare');
+          showMsg('🏮 已開啟夜讀護眼模式（低藍光・暖黃燭光）');
+        } else {
+          document.documentElement.classList.remove('theme-eyecare');
+          showMsg('☀️ 已恢復日間素雅模式');
+        }
+      } catch (e) {}
+      return next;
+    });
+  }, [showMsg]);
+
+  useEffect(() => {
+    try {
+      if (isEyeCare) {
+        document.documentElement.classList.add('theme-eyecare');
+      } else {
+        document.documentElement.classList.remove('theme-eyecare');
+      }
+    } catch (e) {}
+  }, [isEyeCare]);
+
   const [showChinaBanner, setShowChinaBanner] = useState(() => {
     try {
       if (typeof window === 'undefined') return false;
@@ -2706,8 +2744,14 @@ function App() {
     size: 14,
     className: "animate-spin"
   }) : null, isSubmittingCS ? ui.csSubmittingBtn : ui.csSubmitBtn))), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col gap-2.5"
-  }, showBackToTop && /*#__PURE__*/React.createElement("button", {
+    className: "flex flex-col gap-2.5 items-end"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": isEyeCare ? "關閉護眼模式" : "開啟護眼模式",
+    onClick: toggleEyeCare,
+    title: isEyeCare ? "☀️ 目前為夜讀護眼模式（點擊恢復日間素雅）" : "🌙 開啟夜讀護眼模式（低藍光・暖黃燭光）",
+    className: `w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border self-end hover:scale-110 active:scale-95 text-base cursor-pointer ${isEyeCare ? 'bg-[#D6974B] text-[#14110E] border-[#F5C27A] shadow-[0_0_15px_rgba(214,151,75,0.5)] ring-2 ring-[#D6974B]/50' : 'bg-white/90 text-stone-700 hover:bg-stone-100 border-[var(--border-color)]'}`
+  }, isEyeCare ? "🏮" : "🌙"), showBackToTop && /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": "回到頁面頂端",
     onClick: () => window.scrollTo({
