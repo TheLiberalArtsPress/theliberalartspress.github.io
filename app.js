@@ -2463,7 +2463,7 @@ function App() {
       e.stopPropagation();
       addToCart(book, e);
     },
-    className: "w-full bg-white shimmer-btn border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-1.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1.5 shadow-sm active:scale-95"
+    className: "w-full bg-[var(--bg-light)] shimmer-btn border border-[var(--border-color)] text-[var(--text-dark)] py-1.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all text-xs flex justify-center items-center gap-1.5 shadow-sm active:scale-95"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 13
@@ -2487,11 +2487,11 @@ function App() {
         window.history.replaceState(null, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams.toString() : ''));
       } catch (e) {}
     },
-    className: `px-5 py-2 rounded-full text-sm font-bold transition-all border ${!selectedAuthor && selectedCategory === cat ? `${getCategoryBadgeClass(cat)} shadow-md scale-105` : 'bg-white/85 border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:bg-white'}`
+    className: `px-5 py-2 rounded-full text-sm font-bold transition-all border ${!selectedAuthor && selectedCategory === cat ? `${getCategoryBadgeClass(cat)} shadow-md scale-105` : 'bg-[var(--bg-light)] border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:text-[var(--primary-color)] hover:bg-[var(--bg-color)]'}`
   }, cat)), dynamicCategories.length > 5 && /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsAllCategoriesExpanded(!isAllCategoriesExpanded),
-    className: "px-5 py-2 rounded-full text-sm font-bold transition-all border border-[var(--primary-color)] text-[var(--primary-color)] bg-white/80 hover:bg-[var(--primary-color)] hover:text-white flex items-center gap-1 active:scale-95"
+    className: "px-5 py-2 rounded-full text-sm font-bold transition-all border border-[var(--primary-color)] text-[var(--primary-color)] bg-[var(--bg-light)] hover:bg-[var(--primary-color)] hover:text-white flex items-center gap-1 active:scale-95 cursor-pointer"
   }, isAllCategoriesExpanded ? "收合類別" : "更多類別", /*#__PURE__*/React.createElement(Icon, {
     name: isAllCategoriesExpanded ? "ChevronUp" : "ChevronDown",
     size: 14
@@ -2614,7 +2614,7 @@ function App() {
       e.stopPropagation();
       addToCart(book, e);
     },
-    className: "w-full bg-white shimmer-btn border border-[var(--accent-color)]/70 text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-2 font-sans shadow-sm active:scale-95 text-sm"
+    className: "w-full bg-[var(--bg-light)] shimmer-btn border border-[var(--border-color)] text-[var(--text-dark)] py-2.5 rounded-xl font-bold hover:bg-[var(--primary-color)] hover:border-[var(--primary-color)] hover:text-white transition-all flex items-center justify-center gap-2 font-sans shadow-sm active:scale-95 text-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 16
@@ -2634,7 +2634,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setVisibleCount(prev => prev + 8),
-    className: "bg-white border border-[var(--accent-color)] text-[var(--text-dark)] px-7 py-2.5 rounded-full font-bold hover:bg-[var(--dark-color)] hover:text-white transition-all shadow-sm flex items-center gap-2 text-sm active:scale-95"
+    className: "bg-[var(--bg-light)] border border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:text-[var(--primary-color)] px-7 py-2.5 rounded-full font-bold hover:bg-[var(--bg-color)] transition-all shadow-sm flex items-center gap-2 text-sm active:scale-95 cursor-pointer"
   }, ui.sectionMoreBooksBtn, " ", /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronRight",
     size: 16
