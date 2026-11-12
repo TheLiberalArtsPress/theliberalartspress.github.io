@@ -1097,11 +1097,6 @@ function App() {
       setCitationMeta('citation_language', 'zh-TW');
       if (selectedBookDetail.isbn) setCitationMeta('citation_isbn', selectedBookDetail.isbn);
     } else {
-      document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
-      let canonical = document.querySelector('link[rel="canonical"]');
-      if (canonical) {
-        canonical.href = `${window.location.origin}${window.location.pathname}`;
-      }
       // 移除 Google Scholar 臨時標籤
       ['citation_title', 'citation_author', 'citation_publisher', 'citation_language', 'citation_isbn'].forEach(n => {
         const el = document.querySelector(`meta[name="${n}"]`);
@@ -1112,13 +1107,68 @@ function App() {
           const currentUrl = new URL(window.location.href);
           currentUrl.searchParams.delete('book');
           currentUrl.searchParams.delete('id');
+          if (selectedCategory && selectedCategory !== '全部') {
+            currentUrl.searchParams.set('category', selectedCategory);
+          } else {
+            currentUrl.searchParams.delete('category');
+          }
           window.history.replaceState(null, '', currentUrl.pathname + (currentUrl.searchParams.toString() ? '?' + currentUrl.searchParams.toString() : ''));
         } catch(e) {}
       }
       const script = document.getElementById('schema-book-jsonld');
       if (script) script.remove();
+
+      // 📚 分類專屬落地頁 SEO (Category Landing SEO)
+      let canonical = document.querySelector('link[rel="canonical"]');
+      let catScript = document.getElementById('schema-category-jsonld');
+      let metaDesc = document.querySelector('meta[name="description"]');
+
+      if (selectedCategory && selectedCategory !== '全部') {
+        const catTitle = `《${selectedCategory}》專題學術典籍・推薦書目 - 文史哲出版社官方網站`;
+        document.title = catTitle;
+        const currentCatUrl = `${window.location.origin}${window.location.pathname}?category=${encodeURIComponent(selectedCategory)}`;
+        if (canonical) {
+          canonical.href = currentCatUrl;
+        }
+        if (metaDesc) {
+          metaDesc.setAttribute('content', `文史哲出版社《${selectedCategory}》專題學術圖書目錄，嚴選權威專著、古典文獻與考據論著，提供全書目線上查詢與專屬訂購。`);
+        }
+        if (!catScript) {
+          catScript = document.createElement('script');
+          catScript.id = 'schema-category-jsonld';
+          catScript.type = 'application/ld+json';
+          document.head.appendChild(catScript);
+        }
+        catScript.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "@id": `${currentCatUrl}#category`,
+          "name": `《${selectedCategory}》專題學術典籍目錄`,
+          "description": `文史哲出版社半世紀嚴選《${selectedCategory}》領域學術論著與典籍。`,
+          "url": currentCatUrl,
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "文史哲出版社官方網站",
+            "url": "https://theliberalartspress.github.io/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "文史哲出版社有限公司",
+            "url": "https://theliberalartspress.github.io/"
+          }
+        });
+      } else {
+        document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
+        if (canonical) {
+          canonical.href = `${window.location.origin}${window.location.pathname}`;
+        }
+        if (metaDesc) {
+          metaDesc.setAttribute('content', '文史哲出版社有限公司創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學學術論著出版。全館典藏超過2,500種專業圖書，傳承文化，創新閱讀。');
+        }
+        if (catScript) catScript.remove();
+      }
     }
-  }, [selectedBookDetail]);
+  }, [selectedBookDetail, selectedCategory]);
   const syncWithGAS = useCallback(async (action, payloadData = null) => {
     try {
       const currentOrigin = window.location.origin;
@@ -2316,6 +2366,15 @@ function App() {
     onClick: () => {
       setSelectedCategory(cat);
       setVisibleCount(8);
+      try {
+        const u = new URL(window.location.href);
+        if (cat === '全部') {
+          u.searchParams.delete('category');
+        } else {
+          u.searchParams.set('category', cat);
+        }
+        window.history.replaceState(null, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams.toString() : ''));
+      } catch (e) {}
     },
     className: `px-5 py-2 rounded-full text-sm font-bold transition-all border ${selectedCategory === cat ? `${getCategoryBadgeClass(cat)} shadow-md scale-105` : 'bg-white/85 border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:bg-white'}`
   }, cat)), dynamicCategories.length > 5 && /*#__PURE__*/React.createElement("button", {
@@ -2325,7 +2384,34 @@ function App() {
   }, isAllCategoriesExpanded ? "收合類別" : "更多類別", /*#__PURE__*/React.createElement(Icon, {
     name: isAllCategoriesExpanded ? "ChevronUp" : "ChevronDown",
     size: 14
-  }))), /*#__PURE__*/React.createElement("div", {
+  }))), selectedCategory !== '全部' && /*#__PURE__*/React.createElement("div", {
+    className: "mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-stone-50 via-amber-50/40 to-stone-50 border border-stone-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-stone-700 animate-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-10 h-10 rounded-xl bg-[var(--primary-color)]/10 text-[var(--primary-color)] flex items-center justify-center font-serif text-xl shrink-0"
+  }, "📖"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 flex-wrap"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "text-base sm:text-lg font-serif font-black text-stone-900"
+  }, `《${selectedCategory}》學術典籍專題`), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs px-2.5 py-0.5 rounded-full bg-amber-100 text-amber-900 font-bold"
+  }, `典藏 ${filteredBooks.length} 冊`)), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-stone-500 font-sans mt-0.5"
+  }, `文史哲出版社半世紀嚴選《${selectedCategory}》領域學術論著、校釋考據與專題典籍`))), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 shrink-0 self-end sm:self-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setSelectedCategory('全部');
+      try {
+        const u = new URL(window.location.href);
+        u.searchParams.delete('category');
+        window.history.replaceState(null, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams.toString() : ''));
+      } catch (e) {}
+    },
+    className: "px-3 py-1.5 rounded-xl text-xs font-bold text-stone-600 bg-white hover:bg-stone-100 border border-stone-200 transition shadow-sm flex items-center gap-1 active:scale-95"
+  }, "✕ 返回全部書籍"))), /*#__PURE__*/React.createElement("div", {
     className: "grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6"
   }, isBooksLoading && books.length <= 1 ? Array.from({
     length: 8
@@ -3434,7 +3520,27 @@ function App() {
   }, selectedBookDetail.author || '未標記')), /*#__PURE__*/React.createElement("div", null, "年份：", /*#__PURE__*/React.createElement("strong", {
     className: "font-semibold"
   }, selectedBookDetail.year || '未標記')), /*#__PURE__*/React.createElement("div", null, "分類：", /*#__PURE__*/React.createElement("span", {
-    className: `${getCategoryBadgeClass(selectedBookDetail.category)} px-2 py-0.5 rounded text-[11px] font-bold shadow-sm inline-block`
+    onClick: () => {
+      const cat = selectedBookDetail.category;
+      if (cat && cat !== '未分類') {
+        setSelectedCategory(cat);
+        setSelectedBookDetail(null);
+        setIsBookDetailFullscreen(false);
+        try {
+          const u = new URL(window.location.href);
+          u.searchParams.delete('book');
+          u.searchParams.delete('id');
+          u.searchParams.set('category', cat);
+          window.history.replaceState(null, '', u.pathname + '?' + u.searchParams.toString());
+        } catch (e) {}
+        setTimeout(() => {
+          const el = document.getElementById('search-section') || document.querySelector('.search-table-container');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      }
+    },
+    title: `點擊查看《${selectedBookDetail.category}》專題全部書籍`,
+    className: `${getCategoryBadgeClass(selectedBookDetail.category)} px-2 py-0.5 rounded text-[11px] font-bold shadow-sm inline-block cursor-pointer hover:opacity-80 hover:scale-105 transition-all`
   }, selectedBookDetail.category || '未分類')), /*#__PURE__*/React.createElement("div", null, "書碼：", /*#__PURE__*/React.createElement("strong", {
     className: "font-mono font-bold"
   }, selectedBookDetail.id || '無')), /*#__PURE__*/React.createElement("div", {
