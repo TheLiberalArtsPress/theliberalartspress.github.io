@@ -114,6 +114,23 @@
   })();
 </script>
 
+<!-- ⚡ 百度自動推送 (無需大陸手機認證，任何訪客與爬蟲造訪時自動通知百度蜘蛛排程抓取與更新) -->
+<script>
+  (function(){
+    try {
+      var bp = document.createElement('script');
+      var curProtocol = window.location.protocol.split(':')[0];
+      if (curProtocol === 'https') {
+        bp.src = 'https://zz.bdstatic.com/linksubmit/push.js';
+      } else {
+        bp.src = 'http://push.zhanzhang.baidu.com/push.js';
+      }
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(bp, s);
+    } catch(e) {}
+  })();
+</script>
+
 <!-- ⚡ 預先連線關鍵字體與圖片資源 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
