@@ -1958,7 +1958,16 @@ function App() {
       key: idx
     }, line));
   };
-  const rootStyle = {
+  const rootStyle = isEyeCare ? {
+    '--primary-color': '#D6974B',
+    '--dark-color': '#F5EBE1',
+    '--bg-color': '#14110E',
+    '--bg-light': '#1E1915',
+    '--text-dark': '#E2D5C3',
+    '--border-color': '#3E3228',
+    '--accent-color': '#8C7862',
+    '--footer-bg': '#0D0A08'
+  } : {
     '--primary-color': ui.themeColor,
     '--dark-color': ui.darkThemeColor,
     '--bg-color': ui.lightBgColor,

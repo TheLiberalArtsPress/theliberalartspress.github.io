@@ -178,11 +178,11 @@
     /* 🏮 深夜書房燭光護眼模式 (Low-Blue-Light Candlelight Eye-Care Mode) */
     html.theme-eyecare {
         --primary-color: #D6974B;
-        --dark-color: #F0E6D6;
+        --dark-color: #F5EBE1;
         --bg-color: #14110E;
         --bg-light: #1E1915;
-        --text-dark: #DCD0C0;
-        --border-color: #382D24;
+        --text-dark: #E2D5C3;
+        --border-color: #3E3228;
         --accent-color: #8C7862;
         --seal-red: #D65A4B;
         --footer-bg: #0D0A08;
@@ -193,7 +193,7 @@
         background-image: 
             radial-gradient(rgba(214, 151, 75, 0.08) 1px, transparent 1px),
             radial-gradient(rgba(214, 90, 75, 0.04) 1px, transparent 1px) !important;
-        color: #DCD0C0 !important;
+        color: #E2D5C3 !important;
     }
 
     html.theme-eyecare header,
@@ -201,58 +201,120 @@
     html.theme-eyecare .bg-\[\#FDFBF7\]\/95 {
         background-color: rgba(20, 17, 14, 0.95) !important;
         border-color: #382D24 !important;
-        color: #F0E6D6 !important;
+        color: #F5EBE1 !important;
     }
 
     html.theme-eyecare .bg-white,
     html.theme-eyecare .glass-card,
     html.theme-eyecare .glass-modal,
     html.theme-eyecare .receipt-container {
+        background: #1E1915 !important;
         background-color: #1E1915 !important;
-        border-color: #382D24 !important;
-        color: #DCD0C0 !important;
+        border-color: #3E3228 !important;
+        color: #E2D5C3 !important;
     }
 
     html.theme-eyecare .bg-stone-50,
     html.theme-eyecare .bg-stone-100,
     html.theme-eyecare .bg-gray-50,
     html.theme-eyecare .bg-gray-100,
+    html.theme-eyecare .bg-amber-50,
     html.theme-eyecare .bg-amber-50\/70,
     html.theme-eyecare .bg-amber-50\/90 {
         background-color: #27211C !important;
-        border-color: #382D24 !important;
-        color: #DCD0C0 !important;
+        border-color: #3E3228 !important;
+        color: #E2D5C3 !important;
     }
 
     html.theme-eyecare .text-stone-900,
     html.theme-eyecare .text-stone-800,
     html.theme-eyecare .text-stone-700,
     html.theme-eyecare .text-gray-800,
-    html.theme-eyecare .text-gray-900 {
-        color: #F0E6D6 !important;
+    html.theme-eyecare .text-gray-900,
+    html.theme-eyecare .text-amber-950 {
+        color: #F5EBE1 !important;
     }
 
     html.theme-eyecare .text-stone-600,
     html.theme-eyecare .text-stone-500,
     html.theme-eyecare .text-gray-600,
     html.theme-eyecare .text-gray-500 {
-        color: #A39380 !important;
+        color: #B5A593 !important;
+    }
+
+    html.theme-eyecare .text-amber-800 {
+        color: #D6974B !important;
     }
 
     html.theme-eyecare .border-stone-200,
     html.theme-eyecare .border-stone-200\/60,
     html.theme-eyecare .border-stone-200\/70,
     html.theme-eyecare .border-stone-200\/80,
-    html.theme-eyecare .border-\[\#E8DCCE\]\/80 {
-        border-color: #382D24 !important;
+    html.theme-eyecare .border-\[\#E8DCCE\]\/80,
+    html.theme-eyecare .border-amber-200 {
+        border-color: #3E3228 !important;
     }
 
     html.theme-eyecare input,
     html.theme-eyecare textarea,
-    html.theme-eyecare select {
+    html.theme-eyecare select,
+    html.theme-eyecare .glass-input {
+        background: #27211C !important;
         background-color: #27211C !important;
-        color: #F0E6D6 !important;
-        border-color: #382D24 !important;
+        color: #F5EBE1 !important;
+        border-color: #4A3C31 !important;
+    }
+
+    html.theme-eyecare .glass-input:focus,
+    html.theme-eyecare input:focus,
+    html.theme-eyecare select:focus {
+        background: #2D2520 !important;
+        border-color: #D6974B !important;
+        box-shadow: 0 0 0 3px rgba(214, 151, 75, 0.25) !important;
+    }
+
+    html.theme-eyecare select option {
+        background-color: #27211C !important;
+        color: #F5EBE1 !important;
+    }
+
+    html.theme-eyecare label {
+        color: #E2D5C3 !important;
+    }
+
+    /* 檢索表格高對比夜讀樣式 */
+    html.theme-eyecare table thead tr {
+        background-color: #27211C !important;
+        border-bottom-color: #D6974B !important;
+    }
+    html.theme-eyecare table thead th {
+        color: #F5EBE1 !important;
+    }
+    html.theme-eyecare table tbody tr {
+        border-color: rgba(62, 50, 40, 0.6) !important;
+        color: #E2D5C3 !important;
+    }
+    html.theme-eyecare table tbody tr:hover {
+        background-color: rgba(214, 151, 75, 0.12) !important;
+    }
+    html.theme-eyecare table tbody td {
+        color: #E2D5C3 !important;
+    }
+    html.theme-eyecare table td button {
+        background-color: #27211C !important;
+        border-color: #4A3C31 !important;
+        color: #D6974B !important;
+    }
+    html.theme-eyecare table td button:hover {
+        background-color: #D6974B !important;
+        color: #14110E !important;
+    }
+
+    /* 手機選單與按鈕 hover 效果 */
+    html.theme-eyecare .glass-modal button:hover,
+    html.theme-eyecare .hover\:bg-white\/60:hover,
+    html.theme-eyecare .hover\:bg-white\/80:hover {
+        background-color: rgba(214, 151, 75, 0.15) !important;
     }
 
     html.theme-eyecare img {
@@ -766,8 +828,8 @@
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261112_11"></script>
-<script src="app.js?v=20261112_11" defer></script>
+<script src="init_data.js?v=20261112_12"></script>
+<script src="app.js?v=20261112_12" defer></script>
 
 <!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
 <script>
