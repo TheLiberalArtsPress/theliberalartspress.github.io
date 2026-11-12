@@ -1732,6 +1732,9 @@ function App() {
       }];
     });
     showMsg(`已加入書包: 《${book.title}》`);
+    try {
+      window.dispatchEvent(new CustomEvent('mobaoAddToCart', { detail: { title: book.title } }));
+    } catch (_) {}
   };
   const removeFromCart = id => setCart(prev => prev.filter(i => i.id !== id));
   const updateCartQty = (id, delta) => {
@@ -4138,7 +4141,484 @@ function App() {
     name: "CheckCircle",
     size: 16,
     className: "text-emerald-400"
-  }), " ", notification));
+  }), " ", notification), /*#__PURE__*/React.createElement(ScholarlyInkCursor, null), /*#__PURE__*/React.createElement(MobaoCatMascot, null));
+}
+
+// --- 🖋️ 古典墨韻微光鼠標與水墨漣漪 (Scholarly Ink Halo Cursor & Ink Ripple) ---
+function ScholarlyInkCursor() {
+  const dotRef = React.useRef(null);
+  const haloRef = React.useRef(null);
+
+  React.useEffect(() => {
+    if (typeof window === 'undefined' || !window.matchMedia) return;
+    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+    if (!isFinePointer) return;
+
+    let mouseX = -100;
+    let mouseY = -100;
+    let haloX = -100;
+    let haloY = -100;
+    let animFrameId = null;
+
+    const onMouseMove = (e) => {
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      if (dotRef.current) {
+        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      }
+    };
+
+    const updateHalo = () => {
+      haloX += (mouseX - haloX) * 0.22;
+      haloY += (mouseY - haloY) * 0.22;
+      if (haloRef.current) {
+        haloRef.current.style.transform = `translate3d(${haloX}px, ${haloY}px, 0) translate(-50%, -50%)`;
+      }
+      animFrameId = requestAnimationFrame(updateHalo);
+    };
+    animFrameId = requestAnimationFrame(updateHalo);
+
+    const onMouseOver = (e) => {
+      const target = e.target;
+      if (target && target.closest && target.closest('a, button, input, select, textarea, [role="button"], .cursor-pointer')) {
+        if (haloRef.current) haloRef.current.classList.add('is-hovering');
+      } else {
+        if (haloRef.current) haloRef.current.classList.remove('is-hovering');
+      }
+    };
+
+    const onClick = (e) => {
+      try {
+        const ripple = document.createElement('div');
+        ripple.className = 'ink-ripple';
+        const size = Math.floor(Math.random() * 16) + 48;
+        ripple.style.width = `${size}px`;
+        ripple.style.height = `${size}px`;
+        ripple.style.left = `${e.clientX}px`;
+        ripple.style.top = `${e.clientY}px`;
+        document.body.appendChild(ripple);
+        setTimeout(() => {
+          if (ripple.parentNode) ripple.parentNode.removeChild(ripple);
+        }, 650);
+      } catch (_) {}
+    };
+
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('mouseover', onMouseOver, { passive: true });
+    window.addEventListener('click', onClick, { passive: true });
+
+    return () => {
+      cancelAnimationFrame(animFrameId);
+      window.removeEventListener('mousemove', onMouseMove);
+      window.removeEventListener('mouseover', onMouseOver);
+      window.removeEventListener('click', onClick);
+    };
+  }, []);
+
+  return /*#__PURE__*/React.createElement(React.Fragment, null,
+    /*#__PURE__*/React.createElement("div", {
+      ref: dotRef,
+      className: "custom-cursor-dot"
+    }),
+    /*#__PURE__*/React.createElement("div", {
+      ref: haloRef,
+      className: "custom-cursor-halo"
+    })
+  );
+}
+
+// --- 🐱 文房小書僮「墨寶喵」（Mobao Cat Mascot）---
+const MOBAO_QUOTES = [
+  "讀書百遍，其義自見。墨寶在旁為您磨墨添香～🐾",
+  "先生若尋特定典籍，點擊上方『書籍檢索』或依學者分類尋覓甚便！📜",
+  "文史哲半世紀嚴選，冊冊皆名家心血結晶。🐱",
+  "夜讀倦了麼？右下角點擊紅燈籠切換『護眼燭光模式』暖心溫潤喔！🏮",
+  "博學之，審問之，慎思之，明辨之，篤行之。✨",
+  "書中自有黃金屋，每本好書都是一次跨越時空的相遇。📖",
+  "墨寶喵在此守護文史哲二千餘冊典籍，請先生隨意翻閱～🐾",
+  "發憤忘食，樂以忘憂，不知老之將至云爾。墨寶伴您共讀！🌸"
+];
+
+function MobaoCatMascot() {
+  const [isSleeping, setIsSleeping] = React.useState(false);
+  const [dialogue, setDialogue] = React.useState(null);
+  const [isJumping, setIsJumping] = React.useState(false);
+  const [isMinimized, setIsMinimized] = React.useState(() => {
+    try {
+      return localStorage.getItem('lapen_mobao_minimized') === 'true';
+    } catch (_) {
+      return false;
+    }
+  });
+
+  const sleepTimerRef = React.useRef(null);
+  const dialogueTimerRef = React.useRef(null);
+
+  const resetSleepTimer = React.useCallback(() => {
+    setIsSleeping(false);
+    if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
+    sleepTimerRef.current = setTimeout(() => {
+      setIsSleeping(true);
+    }, 9000);
+  }, []);
+
+  React.useEffect(() => {
+    const handleActivity = () => resetSleepTimer();
+    window.addEventListener('mousemove', handleActivity, { passive: true });
+    window.addEventListener('scroll', handleActivity, { passive: true });
+    window.addEventListener('keydown', handleActivity, { passive: true });
+    window.addEventListener('touchstart', handleActivity, { passive: true });
+    window.addEventListener('click', handleActivity, { passive: true });
+    resetSleepTimer();
+
+    const handleAddToCartEvent = (e) => {
+      const title = e.detail && e.detail.title ? e.detail.title : '典籍';
+      setIsSleeping(false);
+      setIsJumping(true);
+      if (dialogueTimerRef.current) clearTimeout(dialogueTimerRef.current);
+      setDialogue(`已為先生收入《${title}》！🎒✨`);
+      setTimeout(() => setIsJumping(false), 900);
+      dialogueTimerRef.current = setTimeout(() => setDialogue(null), 3800);
+      resetSleepTimer();
+    };
+    window.addEventListener('mobaoAddToCart', handleAddToCartEvent);
+
+    return () => {
+      if (sleepTimerRef.current) clearTimeout(sleepTimerRef.current);
+      if (dialogueTimerRef.current) clearTimeout(dialogueTimerRef.current);
+      window.removeEventListener('mousemove', handleActivity);
+      window.removeEventListener('scroll', handleActivity);
+      window.removeEventListener('keydown', handleActivity);
+      window.removeEventListener('touchstart', handleActivity);
+      window.removeEventListener('click', handleActivity);
+      window.removeEventListener('mobaoAddToCart', handleAddToCartEvent);
+    };
+  }, [resetSleepTimer]);
+
+  const handleMascotClick = (e) => {
+    e.stopPropagation();
+    setIsSleeping(false);
+    setIsJumping(true);
+    setTimeout(() => setIsJumping(false), 600);
+    resetSleepTimer();
+
+    const quote = MOBAO_QUOTES[Math.floor(Math.random() * MOBAO_QUOTES.length)];
+    setDialogue(quote);
+    if (dialogueTimerRef.current) clearTimeout(dialogueTimerRef.current);
+    dialogueTimerRef.current = setTimeout(() => {
+      setDialogue(null);
+    }, 4500);
+  };
+
+  const toggleMinimize = (e) => {
+    e.stopPropagation();
+    setIsMinimized(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('lapen_mobao_minimized', next ? 'true' : 'false');
+      } catch (_) {}
+      return next;
+    });
+  };
+
+  if (isMinimized) {
+    return /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: toggleMinimize,
+      title: "召喚書僮墨寶喵",
+      className: "fixed right-5 bottom-24 z-40 bg-white/90 dark:bg-stone-900/90 text-stone-800 dark:text-stone-100 p-2 rounded-full shadow-lg border border-amber-800/20 hover:scale-110 active:scale-95 transition flex items-center justify-center cursor-pointer text-lg",
+      style: { backdropFilter: 'blur(8px)' }
+    }, "🐾");
+  }
+
+  return /*#__PURE__*/React.createElement("div", {
+    className: "mobao-mascot-container group"
+  }, 
+    dialogue && /*#__PURE__*/React.createElement("div", {
+      className: "mobao-dialogue-bubble font-serif"
+    }, /*#__PURE__*/React.createElement("div", {
+      className: "flex items-start justify-between gap-1 mb-1"
+    }, /*#__PURE__*/React.createElement("span", {
+      className: "font-bold text-xs text-[#8C5A2B] dark:text-amber-400 flex items-center gap-1"
+    }, "🐾 文房書僮・墨寶"), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: (e) => { e.stopPropagation(); setDialogue(null); },
+      className: "text-stone-400 hover:text-stone-600 text-xs px-1 cursor-pointer"
+    }, "✕")), /*#__PURE__*/React.createElement("p", {
+      className: "text-xs font-medium"
+    }, dialogue)),
+
+    isSleeping && /*#__PURE__*/React.createElement("div", {
+      className: "mobao-sleep-z -top-3 left-4 text-xs font-serif"
+    }, "z"),
+    isSleeping && /*#__PURE__*/React.createElement("div", {
+      className: "mobao-sleep-z -top-6 left-8 text-sm font-serif",
+      style: { animationDelay: '0.8s' }
+    }, "Z"),
+
+    /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      onClick: toggleMinimize,
+      title: "將墨寶暫時收起為足印",
+      className: "absolute -top-1 -right-1 w-5 h-5 rounded-full bg-stone-200/80 hover:bg-stone-300 text-stone-600 text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition z-50 cursor-pointer shadow-sm"
+    }, "✕"),
+
+    /*#__PURE__*/React.createElement("div", {
+      onClick: handleMascotClick,
+      title: isSleeping ? "墨寶打瞌睡中～點擊喚醒" : "點擊與文房書僮墨寶交流",
+      className: `mobao-cat-body ${isJumping ? 'mobao-jumping' : ''}`
+    }, /*#__PURE__*/React.createElement("svg", {
+      width: "74",
+      height: "82",
+      viewBox: "0 0 74 82",
+      fill: "none",
+      xmlns: "http://www.w3.org/2000/svg"
+    },
+      /*#__PURE__*/React.createElement("path", {
+        d: "M 54 62 C 64 62, 70 54, 68 44 C 67 40, 63 42, 63 46 C 63 52, 58 57, 50 58",
+        fill: "#E8D5C4",
+        stroke: "#8C5A2B",
+        strokeWidth: "2",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("ellipse", {
+        cx: "37",
+        cy: "56",
+        rx: "24",
+        ry: "20",
+        fill: "#FDFBF7",
+        stroke: "#2D241E",
+        strokeWidth: "2"
+      }),
+      /*#__PURE__*/React.createElement("ellipse", {
+        cx: "37",
+        cy: "58",
+        rx: "14",
+        ry: "11",
+        fill: "#F7EFE5"
+      }),
+      /*#__PURE__*/React.createElement("ellipse", {
+        cx: "37",
+        cy: "35",
+        rx: "22",
+        ry: "18",
+        fill: "#FDFBF7",
+        stroke: "#2D241E",
+        strokeWidth: "2"
+      }),
+      /*#__PURE__*/React.createElement("polygon", {
+        points: "19,25 24,10 32,21",
+        fill: "#8C5A2B",
+        stroke: "#2D241E",
+        strokeWidth: "1.5",
+        strokeLinejoin: "round"
+      }),
+      /*#__PURE__*/React.createElement("polygon", {
+        points: "21,23 24,14 29,21",
+        fill: "#F9D5D3"
+      }),
+      /*#__PURE__*/React.createElement("polygon", {
+        points: "55,25 50,10 42,21",
+        fill: "#3D3126",
+        stroke: "#2D241E",
+        strokeWidth: "1.5",
+        strokeLinejoin: "round"
+      }),
+      /*#__PURE__*/React.createElement("polygon", {
+        points: "53,23 50,14 45,21",
+        fill: "#F9D5D3"
+      }),
+      /*#__PURE__*/React.createElement("path", {
+        d: "M 28 20 L 46 20 L 44 9 L 30 9 Z",
+        fill: "#241D17",
+        stroke: "#1A1410",
+        strokeWidth: "1.5"
+      }),
+      /*#__PURE__*/React.createElement("rect", {
+        x: "35",
+        y: "14",
+        width: "4",
+        height: "4",
+        rx: "1",
+        fill: "#B83B26"
+      }),
+      /*#__PURE__*/React.createElement("path", {
+        d: "M 29 18 C 24 22, 22 28, 24 32",
+        fill: "none",
+        stroke: "#B83B26",
+        strokeWidth: "1.8",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("ellipse", {
+        cx: "24",
+        cy: "39",
+        rx: "4",
+        ry: "2.5",
+        fill: "rgba(235, 140, 140, 0.45)"
+      }),
+      /*#__PURE__*/React.createElement("ellipse", {
+        cx: "50",
+        cy: "39",
+        rx: "4",
+        ry: "2.5",
+        fill: "rgba(235, 140, 140, 0.45)"
+      }),
+      isSleeping ? /*#__PURE__*/React.createElement(React.Fragment, null,
+        /*#__PURE__*/React.createElement("path", {
+          d: "M 27 34 Q 30 38 33 34",
+          fill: "none",
+          stroke: "#2D241E",
+          strokeWidth: "2",
+          strokeLinecap: "round"
+        }),
+        /*#__PURE__*/React.createElement("path", {
+          d: "M 41 34 Q 44 38 47 34",
+          fill: "none",
+          stroke: "#2D241E",
+          strokeWidth: "2",
+          strokeLinecap: "round"
+        })
+      ) : /*#__PURE__*/React.createElement(React.Fragment, null,
+        /*#__PURE__*/React.createElement("circle", {
+          cx: "30",
+          cy: "34",
+          r: "3.5",
+          fill: "#2D241E"
+        }),
+        /*#__PURE__*/React.createElement("circle", {
+          cx: "29",
+          cy: "33",
+          r: "1.2",
+          fill: "#FFFFFF"
+        }),
+        /*#__PURE__*/React.createElement("circle", {
+          cx: "44",
+          cy: "34",
+          r: "3.5",
+          fill: "#2D241E"
+        }),
+        /*#__PURE__*/React.createElement("circle", {
+          cx: "43",
+          cy: "33",
+          r: "1.2",
+          fill: "#FFFFFF"
+        })
+      ),
+      /*#__PURE__*/React.createElement("polygon", {
+        points: "36,37 38,37 37,38.5",
+        fill: "#B83B26"
+      }),
+      /*#__PURE__*/React.createElement("path", {
+        d: "M 34.5 40 Q 37 42 37 40 Q 37 42 39.5 40",
+        fill: "none",
+        stroke: "#2D241E",
+        strokeWidth: "1.2",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("line", {
+        x1: "15",
+        y1: "36",
+        x2: "23",
+        y2: "37",
+        stroke: "#A89A8C",
+        strokeWidth: "1",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("line", {
+        x1: "14",
+        y1: "40",
+        x2: "22",
+        y2: "39",
+        stroke: "#A89A8C",
+        strokeWidth: "1",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("line", {
+        x1: "59",
+        y1: "36",
+        x2: "51",
+        y2: "37",
+        stroke: "#A89A8C",
+        strokeWidth: "1",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("line", {
+        x1: "60",
+        y1: "40",
+        x2: "52",
+        y2: "39",
+        stroke: "#A89A8C",
+        strokeWidth: "1",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("rect", {
+        x: "26",
+        y: "50",
+        width: "22",
+        height: "22",
+        rx: "2",
+        fill: "#2C4C64",
+        stroke: "#1B3142",
+        strokeWidth: "1.2"
+      }),
+      /*#__PURE__*/React.createElement("line", {
+        x1: "30",
+        y1: "50",
+        x2: "30",
+        y2: "72",
+        stroke: "#E8E2D8",
+        strokeWidth: "1",
+        strokeDasharray: "2,2"
+      }),
+      /*#__PURE__*/React.createElement("rect", {
+        x: "33",
+        y: "53",
+        width: "6",
+        height: "14",
+        rx: "1",
+        fill: "#FAF8F5"
+      }),
+      /*#__PURE__*/React.createElement("line", {
+        x1: "36",
+        y1: "55",
+        x2: "36",
+        y2: "65",
+        stroke: "#8B261E",
+        strokeWidth: "1.2"
+      }),
+      /*#__PURE__*/React.createElement("ellipse", {
+        cx: "25",
+        cy: "58",
+        rx: "3.5",
+        ry: "3",
+        fill: "#FFFFFF",
+        stroke: "#2D241E",
+        strokeWidth: "1.2"
+      }),
+      /*#__PURE__*/React.createElement("ellipse", {
+        cx: "49",
+        cy: "58",
+        rx: "3.5",
+        ry: "3",
+        fill: "#FFFFFF",
+        stroke: "#2D241E",
+        strokeWidth: "1.2"
+      }),
+      /*#__PURE__*/React.createElement("line", {
+        x1: "48",
+        y1: "52",
+        x2: "58",
+        y2: "44",
+        stroke: "#B28451",
+        strokeWidth: "2",
+        strokeLinecap: "round"
+      }),
+      /*#__PURE__*/React.createElement("polygon", {
+        points: "57,45 61,41 59,46",
+        fill: "#241D17"
+      })
+    ))
+  );
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render( /*#__PURE__*/React.createElement(App, null));
