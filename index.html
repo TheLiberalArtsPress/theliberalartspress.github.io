@@ -848,27 +848,22 @@
 
     /* 🐱 文房小書僮「墨寶喵」（Mobao Cat Mascot）動態與樣式 */
     .mobao-mascot-container {
-        position: fixed;
-        right: 20px;
-        bottom: 92px;
+        position: relative;
         z-index: 45;
         user-select: none;
         transition: transform 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
-    }
-    @media (max-width: 640px) {
-        .mobao-mascot-container {
-            right: 12px;
-            bottom: 84px;
-            transform: scale(0.88);
-            transform-origin: bottom right;
-        }
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        margin-bottom: 2px;
     }
     .mobao-mascot-container:hover {
         transform: translateY(-4px) scale(1.03);
     }
     @media (max-width: 640px) {
-        .mobao-mascot-container:hover {
-            transform: scale(0.92);
+        .mobao-mascot-container {
+            transform: scale(0.9);
+            transform-origin: bottom right;
         }
     }
     .mobao-cat-body {
@@ -1050,8 +1045,8 @@
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261113_01"></script>
-<script src="app.js?v=20261113_01" defer></script>
+<script src="init_data.js?v=20261113_02"></script>
+<script src="app.js?v=20261113_02" defer></script>
 
 <!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
 <script>

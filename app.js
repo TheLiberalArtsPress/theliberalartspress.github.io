@@ -2867,7 +2867,7 @@ function App() {
     className: "animate-spin"
   }) : null, isSubmittingCS ? ui.csSubmittingBtn : ui.csSubmitBtn))), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-col gap-2.5 items-end"
-  }, /*#__PURE__*/React.createElement("button", {
+  }, /*#__PURE__*/React.createElement(MobaoCatMascot, null), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": isEyeCare ? "關閉護眼模式" : "開啟護眼模式",
     onClick: toggleEyeCare,
@@ -4141,7 +4141,7 @@ function App() {
     name: "CheckCircle",
     size: 16,
     className: "text-emerald-400"
-  }), " ", notification), /*#__PURE__*/React.createElement(ScholarlyInkCursor, null), /*#__PURE__*/React.createElement(MobaoCatMascot, null));
+  }), " ", notification), /*#__PURE__*/React.createElement(ScholarlyInkCursor, null));
 }
 
 // --- 🖋️ 古典墨韻微光鼠標與水墨漣漪 (Scholarly Ink Halo Cursor & Ink Ripple) ---
@@ -4326,7 +4326,7 @@ function MobaoCatMascot() {
       type: "button",
       onClick: toggleMinimize,
       title: "召喚書僮墨寶喵",
-      className: "fixed right-5 bottom-24 z-40 bg-white/90 dark:bg-stone-900/90 text-stone-800 dark:text-stone-100 p-2 rounded-full shadow-lg border border-amber-800/20 hover:scale-110 active:scale-95 transition flex items-center justify-center cursor-pointer text-lg",
+      className: "w-10 h-10 rounded-full shadow-lg bg-white/90 dark:bg-stone-900/90 text-stone-800 dark:text-stone-100 flex items-center justify-center border border-[var(--border-color)] hover:scale-110 active:scale-95 transition cursor-pointer text-base self-end",
       style: { backdropFilter: 'blur(8px)' }
     }, "🐾");
   }
@@ -4356,6 +4356,7 @@ function MobaoCatMascot() {
       style: { animationDelay: '0.8s' }
     }, "Z"),
 
+    /* 一鍵收起小按鈕 */
     /*#__PURE__*/React.createElement("button", {
       type: "button",
       onClick: toggleMinimize,
@@ -4363,261 +4364,17 @@ function MobaoCatMascot() {
       className: "absolute -top-1 -right-1 w-5 h-5 rounded-full bg-stone-200/80 hover:bg-stone-300 text-stone-600 text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition z-50 cursor-pointer shadow-sm"
     }, "✕"),
 
+    /* 墨寶喵主體（第一張圖原創透明去背插畫） */
     /*#__PURE__*/React.createElement("div", {
       onClick: handleMascotClick,
       title: isSleeping ? "墨寶打瞌睡中～點擊喚醒" : "點擊與文房書僮墨寶交流",
       className: `mobao-cat-body ${isJumping ? 'mobao-jumping' : ''}`
-    }, /*#__PURE__*/React.createElement("svg", {
-      width: "74",
-      height: "82",
-      viewBox: "0 0 74 82",
-      fill: "none",
-      xmlns: "http://www.w3.org/2000/svg"
-    },
-      /*#__PURE__*/React.createElement("path", {
-        d: "M 54 62 C 64 62, 70 54, 68 44 C 67 40, 63 42, 63 46 C 63 52, 58 57, 50 58",
-        fill: "#E8D5C4",
-        stroke: "#8C5A2B",
-        strokeWidth: "2",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("ellipse", {
-        cx: "37",
-        cy: "56",
-        rx: "24",
-        ry: "20",
-        fill: "#FDFBF7",
-        stroke: "#2D241E",
-        strokeWidth: "2"
-      }),
-      /*#__PURE__*/React.createElement("ellipse", {
-        cx: "37",
-        cy: "58",
-        rx: "14",
-        ry: "11",
-        fill: "#F7EFE5"
-      }),
-      /*#__PURE__*/React.createElement("ellipse", {
-        cx: "37",
-        cy: "35",
-        rx: "22",
-        ry: "18",
-        fill: "#FDFBF7",
-        stroke: "#2D241E",
-        strokeWidth: "2"
-      }),
-      /*#__PURE__*/React.createElement("polygon", {
-        points: "19,25 24,10 32,21",
-        fill: "#8C5A2B",
-        stroke: "#2D241E",
-        strokeWidth: "1.5",
-        strokeLinejoin: "round"
-      }),
-      /*#__PURE__*/React.createElement("polygon", {
-        points: "21,23 24,14 29,21",
-        fill: "#F9D5D3"
-      }),
-      /*#__PURE__*/React.createElement("polygon", {
-        points: "55,25 50,10 42,21",
-        fill: "#3D3126",
-        stroke: "#2D241E",
-        strokeWidth: "1.5",
-        strokeLinejoin: "round"
-      }),
-      /*#__PURE__*/React.createElement("polygon", {
-        points: "53,23 50,14 45,21",
-        fill: "#F9D5D3"
-      }),
-      /*#__PURE__*/React.createElement("path", {
-        d: "M 28 20 L 46 20 L 44 9 L 30 9 Z",
-        fill: "#241D17",
-        stroke: "#1A1410",
-        strokeWidth: "1.5"
-      }),
-      /*#__PURE__*/React.createElement("rect", {
-        x: "35",
-        y: "14",
-        width: "4",
-        height: "4",
-        rx: "1",
-        fill: "#B83B26"
-      }),
-      /*#__PURE__*/React.createElement("path", {
-        d: "M 29 18 C 24 22, 22 28, 24 32",
-        fill: "none",
-        stroke: "#B83B26",
-        strokeWidth: "1.8",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("ellipse", {
-        cx: "24",
-        cy: "39",
-        rx: "4",
-        ry: "2.5",
-        fill: "rgba(235, 140, 140, 0.45)"
-      }),
-      /*#__PURE__*/React.createElement("ellipse", {
-        cx: "50",
-        cy: "39",
-        rx: "4",
-        ry: "2.5",
-        fill: "rgba(235, 140, 140, 0.45)"
-      }),
-      isSleeping ? /*#__PURE__*/React.createElement(React.Fragment, null,
-        /*#__PURE__*/React.createElement("path", {
-          d: "M 27 34 Q 30 38 33 34",
-          fill: "none",
-          stroke: "#2D241E",
-          strokeWidth: "2",
-          strokeLinecap: "round"
-        }),
-        /*#__PURE__*/React.createElement("path", {
-          d: "M 41 34 Q 44 38 47 34",
-          fill: "none",
-          stroke: "#2D241E",
-          strokeWidth: "2",
-          strokeLinecap: "round"
-        })
-      ) : /*#__PURE__*/React.createElement(React.Fragment, null,
-        /*#__PURE__*/React.createElement("circle", {
-          cx: "30",
-          cy: "34",
-          r: "3.5",
-          fill: "#2D241E"
-        }),
-        /*#__PURE__*/React.createElement("circle", {
-          cx: "29",
-          cy: "33",
-          r: "1.2",
-          fill: "#FFFFFF"
-        }),
-        /*#__PURE__*/React.createElement("circle", {
-          cx: "44",
-          cy: "34",
-          r: "3.5",
-          fill: "#2D241E"
-        }),
-        /*#__PURE__*/React.createElement("circle", {
-          cx: "43",
-          cy: "33",
-          r: "1.2",
-          fill: "#FFFFFF"
-        })
-      ),
-      /*#__PURE__*/React.createElement("polygon", {
-        points: "36,37 38,37 37,38.5",
-        fill: "#B83B26"
-      }),
-      /*#__PURE__*/React.createElement("path", {
-        d: "M 34.5 40 Q 37 42 37 40 Q 37 42 39.5 40",
-        fill: "none",
-        stroke: "#2D241E",
-        strokeWidth: "1.2",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("line", {
-        x1: "15",
-        y1: "36",
-        x2: "23",
-        y2: "37",
-        stroke: "#A89A8C",
-        strokeWidth: "1",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("line", {
-        x1: "14",
-        y1: "40",
-        x2: "22",
-        y2: "39",
-        stroke: "#A89A8C",
-        strokeWidth: "1",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("line", {
-        x1: "59",
-        y1: "36",
-        x2: "51",
-        y2: "37",
-        stroke: "#A89A8C",
-        strokeWidth: "1",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("line", {
-        x1: "60",
-        y1: "40",
-        x2: "52",
-        y2: "39",
-        stroke: "#A89A8C",
-        strokeWidth: "1",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("rect", {
-        x: "26",
-        y: "50",
-        width: "22",
-        height: "22",
-        rx: "2",
-        fill: "#2C4C64",
-        stroke: "#1B3142",
-        strokeWidth: "1.2"
-      }),
-      /*#__PURE__*/React.createElement("line", {
-        x1: "30",
-        y1: "50",
-        x2: "30",
-        y2: "72",
-        stroke: "#E8E2D8",
-        strokeWidth: "1",
-        strokeDasharray: "2,2"
-      }),
-      /*#__PURE__*/React.createElement("rect", {
-        x: "33",
-        y: "53",
-        width: "6",
-        height: "14",
-        rx: "1",
-        fill: "#FAF8F5"
-      }),
-      /*#__PURE__*/React.createElement("line", {
-        x1: "36",
-        y1: "55",
-        x2: "36",
-        y2: "65",
-        stroke: "#8B261E",
-        strokeWidth: "1.2"
-      }),
-      /*#__PURE__*/React.createElement("ellipse", {
-        cx: "25",
-        cy: "58",
-        rx: "3.5",
-        ry: "3",
-        fill: "#FFFFFF",
-        stroke: "#2D241E",
-        strokeWidth: "1.2"
-      }),
-      /*#__PURE__*/React.createElement("ellipse", {
-        cx: "49",
-        cy: "58",
-        rx: "3.5",
-        ry: "3",
-        fill: "#FFFFFF",
-        stroke: "#2D241E",
-        strokeWidth: "1.2"
-      }),
-      /*#__PURE__*/React.createElement("line", {
-        x1: "48",
-        y1: "52",
-        x2: "58",
-        y2: "44",
-        stroke: "#B28451",
-        strokeWidth: "2",
-        strokeLinecap: "round"
-      }),
-      /*#__PURE__*/React.createElement("polygon", {
-        points: "57,45 61,41 59,46",
-        fill: "#241D17"
-      })
-    ))
+    }, /*#__PURE__*/React.createElement("img", {
+      src: "mobao_mascot.png?v=20261113_02",
+      alt: "文房書僮墨寶喵",
+      className: `w-[76px] sm:w-[86px] h-auto object-contain select-none pointer-events-auto filter drop-shadow-md hover:drop-shadow-xl transition-all duration-300 transform ${isSleeping ? 'opacity-85 scale-95' : 'hover:scale-105'}`,
+      draggable: false
+    }))
   );
 }
 const root = ReactDOM.createRoot(document.getElementById('root'));
