@@ -205,6 +205,11 @@
     }
 
     html.theme-eyecare .bg-white,
+    html.theme-eyecare .bg-white\/95,
+    html.theme-eyecare .bg-white\/90,
+    html.theme-eyecare .bg-white\/80,
+    html.theme-eyecare .bg-white\/70,
+    html.theme-eyecare .bg-white\/60,
     html.theme-eyecare .glass-card,
     html.theme-eyecare .glass-modal,
     html.theme-eyecare .receipt-container {
@@ -315,6 +320,51 @@
     html.theme-eyecare .hover\:bg-white\/60:hover,
     html.theme-eyecare .hover\:bg-white\/80:hover {
         background-color: rgba(214, 151, 75, 0.15) !important;
+    }
+
+    /* 🏮 頂部導航欄（首頁頂欄 & 搜尋彈窗頂欄）在護眼燭光模式下的全面適配 */
+    html.theme-eyecare .glass-nav,
+    html.theme-eyecare nav.glass-nav {
+        background: rgba(20, 17, 14, 0.95) !important;
+        background-color: rgba(20, 17, 14, 0.95) !important;
+        border-bottom: 1px solid #3E3228 !important;
+        color: #F5EBE1 !important;
+    }
+
+    html.theme-eyecare .nav-segmented-group {
+        background: rgba(30, 25, 21, 0.9) !important;
+        border: 1px solid #3E3228 !important;
+        box-shadow: 0 2px 10px -2px rgba(0, 0, 0, 0.4) !important;
+    }
+
+    html.theme-eyecare .nav-segmented-item {
+        color: #E2D5C3 !important;
+    }
+
+    html.theme-eyecare .nav-segmented-item:hover {
+        background-color: rgba(214, 151, 75, 0.15) !important;
+        color: #D6974B !important;
+        box-shadow: 0 2px 8px rgba(214, 151, 75, 0.25) !important;
+    }
+
+    html.theme-eyecare .nav-segmented-divider {
+        background-color: #3E3228 !important;
+    }
+
+    html.theme-eyecare .glass-nav-pill-active {
+        background: linear-gradient(135deg, #D6974B 0%, #B27734 100%) !important;
+        color: #14110E !important;
+        border: 1px solid rgba(214, 151, 75, 0.5) !important;
+    }
+
+    html.theme-eyecare .glass-nav-pill-active:hover {
+        background: linear-gradient(135deg, #E0A65D 0%, #C2843E 100%) !important;
+        color: #14110E !important;
+    }
+
+    /* 頂欄按鈕（我的書包、關閉檢索、全球線路切換） */
+    html.theme-eyecare .glass-nav button {
+        border-color: #3E3228 !important;
     }
 
     html.theme-eyecare img {
@@ -828,8 +878,8 @@
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261112_12"></script>
-<script src="app.js?v=20261112_12" defer></script>
+<script src="init_data.js?v=20261112_13"></script>
+<script src="app.js?v=20261112_13" defer></script>
 
 <!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
 <script>

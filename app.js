@@ -2877,7 +2877,8 @@ function App() {
       top: 0,
       behavior: 'smooth'
     }),
-    className: "bg-white/90 text-[var(--dark-color)] hover:bg-[var(--dark-color)] hover:text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border border-[var(--border-color)] self-end animate-in"
+    className: "bg-[var(--bg-light)] text-[var(--dark-color)] hover:bg-[var(--primary-color)] hover:text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border border-[var(--border-color)] self-end animate-in cursor-pointer",
+    title: "回到頁面頂端"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronUp",
     size: 20
@@ -2973,7 +2974,7 @@ function App() {
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsCartOpen(true),
-    className: "relative bg-white/80 border border-[var(--accent-color)] text-[var(--dark-color)] px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-bold"
+    className: "relative bg-[var(--bg-light)] hover:bg-[var(--bg-color)] border border-[var(--border-color)] text-[var(--dark-color)] px-3 py-1.5 rounded-full flex items-center gap-1.5 text-xs font-bold transition shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 15
@@ -2982,7 +2983,7 @@ function App() {
   }, cart.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsSearchModalOpen(false),
-    className: "bg-[var(--accent-color)]/20 border border-[var(--accent-color)] hover:bg-[var(--accent-color)]/40 px-3.5 py-1.5 rounded-full text-xs font-bold text-[var(--text-dark)] transition flex items-center gap-1.5"
+    className: "bg-[var(--bg-light)] border border-[var(--border-color)] hover:bg-[var(--bg-color)] px-3.5 py-1.5 rounded-full text-xs font-bold text-[var(--text-dark)] hover:text-[var(--primary-color)] transition flex items-center gap-1.5 shadow-sm"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "X",
     size: 14
@@ -3632,7 +3633,7 @@ function App() {
     className: `glass-modal modal-book-flip w-full ${isBookDetailFullscreen ? 'h-full max-w-none max-h-none rounded-none border-0' : 'max-w-3xl max-h-[90vh] rounded-3xl border border-white/80'} shadow-2xl flex flex-col overflow-hidden transition-all duration-300`,
     onClick: e => e.stopPropagation()
   }, /*#__PURE__*/React.createElement("div", {
-    className: "p-3.5 md:p-4 border-b border-[var(--border-color)] flex justify-between items-center bg-white/95 backdrop-blur-md shrink-0 z-10"
+    className: "p-3.5 md:p-4 border-b border-[var(--border-color)] flex justify-between items-center bg-[var(--bg-light)]/95 backdrop-blur-md shrink-0 z-10"
   }, /*#__PURE__*/React.createElement("h2", {
     className: "text-base md:text-lg font-serif font-black text-[var(--dark-color)] flex items-center gap-2"
   }, /*#__PURE__*/React.createElement(Icon, {
@@ -3655,7 +3656,7 @@ function App() {
       setSelectedBookDetail(null);
       setIsBookDetailFullscreen(false);
     },
-    className: "p-1 rounded-full text-stone-400 hover:text-stone-700 hover:bg-stone-100 transition"
+    className: "p-1 rounded-full text-[var(--accent-color)] hover:text-[var(--primary-color)] hover:bg-[var(--bg-light)] transition"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "X",
     size: 18
@@ -3749,23 +3750,23 @@ function App() {
     size: 14,
     className: "text-[var(--primary-color)]"
   }), " 書籍簡介："), /*#__PURE__*/React.createElement("div", {
-    className: `bg-white/90 border border-[var(--border-color)]/70 p-3 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-56' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto whitespace-pre-wrap text-stone-700 shadow-sm`
+    className: `bg-[var(--bg-color)] border border-[var(--border-color)]/70 p-3.5 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-56' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto whitespace-pre-wrap text-[var(--text-dark)] shadow-sm`
   }, getBookIntro(selectedBookDetail))), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("h4", {
-    className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-purple-900 mb-1 flex items-center gap-1`
+    className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-[var(--dark-color)] mb-1 flex items-center gap-1`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Sparkles",
     size: 14,
-    className: "text-purple-600"
+    className: "text-[var(--primary-color)]"
   }), " 讀後心得與學術評析："), /*#__PURE__*/React.createElement("div", {
-    className: `bg-purple-50/90 border border-purple-200 p-3 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-56' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto text-purple-950 italic shadow-sm`
+    className: `bg-[var(--bg-color)] border border-[var(--border-color)]/70 p-3.5 rounded-xl ${isBookDetailFullscreen ? 'text-sm md:text-base leading-relaxed max-h-56' : 'text-xs leading-relaxed max-h-36'} overflow-y-auto text-[var(--text-dark)] italic shadow-sm`
   }, getBookReview(selectedBookDetail))), /*#__PURE__*/React.createElement("div", {
     className: "pt-1"
   }, /*#__PURE__*/React.createElement("h4", {
-    className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-amber-900 mb-1.5 flex items-center gap-1`
+    className: `${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} font-bold text-[var(--dark-color)] mb-1.5 flex items-center gap-1`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "BookOpen",
     size: 14,
-    className: "text-amber-700"
+    className: "text-[var(--primary-color)]"
   }), " 權威文獻與關聯知識庫："), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap gap-2 text-xs"
   }, /*#__PURE__*/React.createElement("a", {
@@ -3913,7 +3914,7 @@ function App() {
     className: "px-2.5 py-1 bg-[#1877F2] hover:bg-[#166fe5] text-white rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "分享到 Facebook"
   }, "📘 FB")))), /*#__PURE__*/React.createElement("div", {
-    className: "p-3.5 md:p-4 border-t border-[var(--border-color)]/70 bg-white/95 backdrop-blur-md shrink-0 flex gap-3 z-10"
+    className: "p-3.5 md:p-4 border-t border-[var(--border-color)]/70 bg-[var(--bg-light)]/95 backdrop-blur-md shrink-0 flex gap-3 z-10"
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
@@ -3921,7 +3922,7 @@ function App() {
       setSelectedBookDetail(null);
       openReviewModalForBook(b);
     },
-    className: `flex-1 bg-gradient-to-r from-purple-700 to-indigo-700 hover:from-purple-800 hover:to-indigo-800 text-white py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow active:scale-95 transition`
+    className: `flex-1 bg-[var(--bg-color)] hover:bg-[var(--bg-light)] border-2 border-[var(--primary-color)] text-[var(--primary-color)] py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow-sm active:scale-95 transition`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "MessageSquare",
     size: 16
@@ -3929,7 +3930,7 @@ function App() {
     type: "button",
     onClick: e => addToCart(selectedBookDetail, e),
     disabled: selectedBookDetail.stock <= 0,
-    className: `flex-1 bg-[var(--primary-color)] shimmer-btn text-white py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`
+    className: `flex-1 bg-[var(--primary-color)] hover:bg-[var(--dark-color)] shimmer-btn text-white py-2.5 px-4 rounded-xl font-bold flex justify-center items-center gap-1.5 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} shadow ${selectedBookDetail.stock <= 0 ? 'opacity-50 cursor-not-allowed' : 'active:scale-95'}`
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 16
