@@ -3184,7 +3184,7 @@ function App() {
     alt: book.title,
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   }), /*#__PURE__*/React.createElement("div", {
-    className: "absolute top-2 left-2 bg-gradient-to-r from-[var(--primary-color)] to-[var(--dark-color)] text-white text-[10px] px-2 py-0.5 rounded font-bold shadow-md border border-white/30 z-10"
+    className: `absolute top-2 left-2 ${getCategoryBadgeClass(book.category)} text-[10px] px-2 py-0.5 rounded font-bold shadow-md z-10`
   }, book.category)), /*#__PURE__*/React.createElement("div", {
     className: "p-3.5 flex flex-col flex-1"
   }, /*#__PURE__*/React.createElement("h3", {
@@ -3198,7 +3198,7 @@ function App() {
       e.stopPropagation();
       addToCart(book, e);
     },
-    className: "w-full bg-white border border-[var(--accent-color)] text-[var(--text-dark)] py-1.5 rounded-lg font-bold hover:bg-[var(--primary-color)] hover:text-white transition text-xs flex items-center justify-center gap-1"
+    className: "w-full bg-[var(--bg-light)] shimmer-btn border border-[var(--border-color)] text-[var(--text-dark)] py-1.5 rounded-lg font-bold hover:bg-[var(--primary-color)] hover:text-white transition text-xs flex items-center justify-center gap-1 active:scale-95 cursor-pointer"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ShoppingCart",
     size: 14
