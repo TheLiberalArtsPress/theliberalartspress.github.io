@@ -4141,57 +4141,17 @@ function App() {
     name: "CheckCircle",
     size: 16,
     className: "text-emerald-400"
-  }), " ", notification), /*#__PURE__*/React.createElement(ScholarlyInkCursor, null));
+  }), " ", notification), /*#__PURE__*/React.createElement(InkRippleEffect, null));
 }
 
-// --- 🖋️ 古典墨韻微光鼠標與水墨漣漪 (Scholarly Ink Halo Cursor & Ink Ripple) ---
-function ScholarlyInkCursor() {
-  const dotRef = React.useRef(null);
-  const haloRef = React.useRef(null);
-
+// --- 🌊 點擊水墨漣漪效果 (Ink Ripple on Click - 0% CPU開銷，純點擊觸發) ---
+function InkRippleEffect() {
   React.useEffect(() => {
-    if (typeof window === 'undefined' || !window.matchMedia) return;
-    const isFinePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
-    if (!isFinePointer) return;
-
-    let mouseX = -100;
-    let mouseY = -100;
-    let haloX = -100;
-    let haloY = -100;
-    let animFrameId = null;
-
-    const onMouseMove = (e) => {
-      mouseX = e.clientX;
-      mouseY = e.clientY;
-      if (dotRef.current) {
-        dotRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
-      }
-    };
-
-    const updateHalo = () => {
-      haloX += (mouseX - haloX) * 0.22;
-      haloY += (mouseY - haloY) * 0.22;
-      if (haloRef.current) {
-        haloRef.current.style.transform = `translate3d(${haloX}px, ${haloY}px, 0) translate(-50%, -50%)`;
-      }
-      animFrameId = requestAnimationFrame(updateHalo);
-    };
-    animFrameId = requestAnimationFrame(updateHalo);
-
-    const onMouseOver = (e) => {
-      const target = e.target;
-      if (target && target.closest && target.closest('a, button, input, select, textarea, [role="button"], .cursor-pointer')) {
-        if (haloRef.current) haloRef.current.classList.add('is-hovering');
-      } else {
-        if (haloRef.current) haloRef.current.classList.remove('is-hovering');
-      }
-    };
-
     const onClick = (e) => {
       try {
         const ripple = document.createElement('div');
         ripple.className = 'ink-ripple';
-        const size = Math.floor(Math.random() * 16) + 48;
+        const size = Math.floor(Math.random() * 14) + 42;
         ripple.style.width = `${size}px`;
         ripple.style.height = `${size}px`;
         ripple.style.left = `${e.clientX}px`;
@@ -4202,29 +4162,10 @@ function ScholarlyInkCursor() {
         }, 650);
       } catch (_) {}
     };
-
-    window.addEventListener('mousemove', onMouseMove, { passive: true });
-    window.addEventListener('mouseover', onMouseOver, { passive: true });
     window.addEventListener('click', onClick, { passive: true });
-
-    return () => {
-      cancelAnimationFrame(animFrameId);
-      window.removeEventListener('mousemove', onMouseMove);
-      window.removeEventListener('mouseover', onMouseOver);
-      window.removeEventListener('click', onClick);
-    };
+    return () => window.removeEventListener('click', onClick);
   }, []);
-
-  return /*#__PURE__*/React.createElement(React.Fragment, null,
-    /*#__PURE__*/React.createElement("div", {
-      ref: dotRef,
-      className: "custom-cursor-dot"
-    }),
-    /*#__PURE__*/React.createElement("div", {
-      ref: haloRef,
-      className: "custom-cursor-halo"
-    })
-  );
+  return null;
 }
 
 // --- 🐱 文房小書僮「墨寶喵」（Mobao Cat Mascot）---
@@ -4326,7 +4267,7 @@ function MobaoCatMascot() {
       type: "button",
       onClick: toggleMinimize,
       title: "召喚書僮墨寶喵",
-      className: "w-10 h-10 rounded-full shadow-lg bg-white/90 dark:bg-stone-900/90 text-stone-800 dark:text-stone-100 flex items-center justify-center border border-[var(--border-color)] hover:scale-110 active:scale-95 transition cursor-pointer text-base self-end",
+      className: "mobao-cat-btn text-base",
       style: { backdropFilter: 'blur(8px)' }
     }, "🐾");
   }
@@ -4349,10 +4290,10 @@ function MobaoCatMascot() {
     }, dialogue)),
 
     isSleeping && /*#__PURE__*/React.createElement("div", {
-      className: "mobao-sleep-z -top-3 left-4 text-xs font-serif"
+      className: "mobao-sleep-z -top-3 left-2 text-xs font-serif"
     }, "z"),
     isSleeping && /*#__PURE__*/React.createElement("div", {
-      className: "mobao-sleep-z -top-6 left-8 text-sm font-serif",
+      className: "mobao-sleep-z -top-6 left-5 text-sm font-serif",
       style: { animationDelay: '0.8s' }
     }, "Z"),
 
@@ -4361,18 +4302,20 @@ function MobaoCatMascot() {
       type: "button",
       onClick: toggleMinimize,
       title: "將墨寶暫時收起為足印",
-      className: "absolute -top-1 -right-1 w-5 h-5 rounded-full bg-stone-200/80 hover:bg-stone-300 text-stone-600 text-[10px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition z-50 cursor-pointer shadow-sm"
+      className: "absolute -top-1 -right-1 w-4 h-4 rounded-full bg-stone-200/90 dark:bg-stone-700/90 hover:bg-stone-300 text-stone-600 dark:text-stone-300 text-[9px] flex items-center justify-center opacity-0 group-hover:opacity-100 transition z-50 cursor-pointer shadow-sm"
     }, "✕"),
 
-    /* 墨寶喵主體（第一張圖原創透明去背插畫） */
-    /*#__PURE__*/React.createElement("div", {
+    /* 墨寶喵主體（與夜間模式UI一致之 40px x 40px 圓形圖標） */
+    /*#__PURE__*/React.createElement("button", {
+      type: "button",
       onClick: handleMascotClick,
       title: isSleeping ? "墨寶打瞌睡中～點擊喚醒" : "點擊與文房書僮墨寶交流",
-      className: `mobao-cat-body ${isJumping ? 'mobao-jumping' : ''}`
+      "aria-label": "文房書僮墨寶喵",
+      className: `mobao-cat-btn ${isJumping ? 'mobao-jumping' : ''}`
     }, /*#__PURE__*/React.createElement("img", {
-      src: "mobao_mascot.png?v=20261113_02",
+      src: "mobao_avatar.png?v=20261113_03",
       alt: "文房書僮墨寶喵",
-      className: `w-[76px] sm:w-[86px] h-auto object-contain select-none pointer-events-auto filter drop-shadow-md hover:drop-shadow-xl transition-all duration-300 transform ${isSleeping ? 'opacity-85 scale-95' : 'hover:scale-105'}`,
+      className: `w-full h-full object-cover select-none pointer-events-none ${isSleeping ? 'opacity-80 scale-95' : 'scale-100'} transition-all duration-300`,
       draggable: false
     }))
   );
