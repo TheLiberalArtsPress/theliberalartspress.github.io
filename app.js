@@ -1068,12 +1068,33 @@ function App() {
       if (canonical) {
         canonical.href = currentBookUrl;
       }
+
+      // 🎓 Google Scholar 學術引用標籤 (Highwire Press 規範)
+      const setCitationMeta = (name, content) => {
+        let el = document.querySelector(`meta[name="${name}"]`);
+        if (!el) {
+          el = document.createElement('meta');
+          el.setAttribute('name', name);
+          document.head.appendChild(el);
+        }
+        el.setAttribute('content', content || '');
+      };
+      setCitationMeta('citation_title', selectedBookDetail.title);
+      setCitationMeta('citation_author', cleanAuthor || '文史哲作者');
+      setCitationMeta('citation_publisher', '文史哲出版社有限公司');
+      setCitationMeta('citation_language', 'zh-TW');
+      if (selectedBookDetail.isbn) setCitationMeta('citation_isbn', selectedBookDetail.isbn);
     } else {
       document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
       let canonical = document.querySelector('link[rel="canonical"]');
       if (canonical) {
         canonical.href = `${window.location.origin}${window.location.pathname}`;
       }
+      // 移除 Google Scholar 臨時標籤
+      ['citation_title', 'citation_author', 'citation_publisher', 'citation_language', 'citation_isbn'].forEach(n => {
+        const el = document.querySelector(`meta[name="${n}"]`);
+        if (el) el.remove();
+      });
       if (!pendingUrlBookRef.current) {
         try {
           const currentUrl = new URL(window.location.href);

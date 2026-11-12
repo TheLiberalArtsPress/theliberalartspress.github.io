@@ -51,6 +51,14 @@ xml += '    <changefreq>daily</changefreq>\n';
 xml += '    <priority>1.0</priority>\n';
 xml += '  </url>\n';
 
+// 1.1 Catalog Page (全館 2,633 冊總目錄靜態地圖)
+xml += '  <url>\n';
+xml += '    <loc>https://theliberalartspress.github.io/catalog.html</loc>\n';
+xml += '    <lastmod>' + today + '</lastmod>\n';
+xml += '    <changefreq>weekly</changefreq>\n';
+xml += '    <priority>0.95</priority>\n';
+xml += '  </url>\n';
+
 // 2. Categories
 const categories = [...new Set(books.map(b => b.category).filter(Boolean))];
 for (const cat of categories) {

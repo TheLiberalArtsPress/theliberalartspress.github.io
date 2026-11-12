@@ -8,6 +8,12 @@
     <priority>1.0</priority>
   </url>
   <url>
+    <loc>https://theliberalartspress.github.io/catalog.html</loc>
+    <lastmod>2026-11-12</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.95</priority>
+  </url>
+  <url>
     <loc>https://theliberalartspress.github.io/?category=%E6%B0%91%E5%9C%8B%E6%96%87%E5%AD%B8%E8%88%87%E6%96%87%E5%8C%96%E7%B3%BB%E5%88%97%E8%AB%96%E5%8F%A2</loc>
     <lastmod>2026-11-12</lastmod>
     <changefreq>weekly</changefreq>

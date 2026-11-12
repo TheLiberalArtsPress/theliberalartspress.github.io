@@ -593,8 +593,9 @@
         <h1>文史哲出版社官方網站（臺灣文史哲出版社・創立於1971年）</h1>
         <p>文史哲出版社（The Liberal Arts Press）由彭正雄先生創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、滿學研究、古典文獻與人文社會科學等專業學術論著出版。全館典藏超過2,630種文史哲專業學術圖書。</p>
         <nav>
-          <h2>官方分流與鏡像站點</h2>
+          <h2>官方分流與圖書總目錄導航</h2>
           <ul>
+            <li><a href="catalog.html">全館 2,633 冊圖書完整總目錄（HTML 靜態書目地圖）</a></li>
             <li><a href="https://theliberalartspress.github.io/">臺灣主站 (GitHub Pages)</a></li>
             <li><a href="https://theliberalartspress.pages.dev/">全球高速鏡像 (Cloudflare Pages)</a></li>
             <li><a href="https://theliberalartspress.vercel.app/">極速分流站 (Vercel)</a></li>
@@ -628,6 +629,11 @@
         <li style="margin-bottom: 0.5rem;"><strong>現代文學創作與文藝評論</strong>：無名氏《塔裡的女人》、馮馮《霧航》、詩人紀弦、羅門、辛鬱等作家代表作。</li>
         <li style="margin-bottom: 0.5rem;"><strong>民國文學與文化系列論叢、國學大師叢書、人文社會科學叢書</strong>等專題出版。</li>
       </ul>
+    </section>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #3D3126; font-size: 1.3rem; border-left: 4px solid #8C5A2B; padding-left: 0.5rem; margin-bottom: 0.8rem;">全館圖書總目錄（2,633 冊典籍檢索）</h2>
+      <p>歡迎造訪 <a href="catalog.html" style="color: #8C5A2B; font-weight: bold; text-decoration: underline;">文史哲出版社 全館 2,633 冊學術圖書總目錄（含書碼、ISBN、定價與單書專頁）</a> 進行全文檢索與書目比對。</p>
     </section>
 
     <section style="margin-bottom: 2rem;">
@@ -665,8 +671,8 @@
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261112_04"></script>
-<script src="app.js?v=20261112_04" defer></script>
+<script src="init_data.js?v=20261112_05"></script>
+<script src="app.js?v=20261112_05" defer></script>
 
 <!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
 <script>
@@ -674,7 +680,7 @@
     var hasBookQuery = window.location.search && (window.location.search.indexOf('book=') !== -1 || window.location.search.indexOf('id=') !== -1);
     function loadDataJs() {
       var s = document.createElement('script');
-      s.src = 'data.js?v=20261112_04';
+      s.src = 'data.js?v=20261112_05';
       s.async = true;
       s.onload = function() {
         if (window.STATIC_DATA) {
