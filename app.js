@@ -883,7 +883,7 @@ function App() {
   const [mirrorLatencies, setMirrorLatencies] = useState({});
   const [isTestingLatencies, setIsTestingLatencies] = useState(false);
 
-  // 🏮 護眼模式（夜讀暖黃燭光模式）
+  // 🏮 護眼模式狀態（夜讀暖黃燭光模式）
   const [isEyeCare, setIsEyeCare] = useState(() => {
     try {
       if (typeof window !== 'undefined') {
@@ -892,33 +892,6 @@ function App() {
     } catch (e) {}
     return false;
   });
-
-  const toggleEyeCare = useCallback(() => {
-    setIsEyeCare(prev => {
-      const next = !prev;
-      try {
-        localStorage.setItem('lapen_eyecare_theme', String(next));
-        if (next) {
-          document.documentElement.classList.add('theme-eyecare');
-          showMsg('🏮 已開啟夜讀護眼模式（低藍光・暖黃燭光）');
-        } else {
-          document.documentElement.classList.remove('theme-eyecare');
-          showMsg('☀️ 已恢復日間素雅模式');
-        }
-      } catch (e) {}
-      return next;
-    });
-  }, [showMsg]);
-
-  useEffect(() => {
-    try {
-      if (isEyeCare) {
-        document.documentElement.classList.add('theme-eyecare');
-      } else {
-        document.documentElement.classList.remove('theme-eyecare');
-      }
-    } catch (e) {}
-  }, [isEyeCare]);
 
   const [showChinaBanner, setShowChinaBanner] = useState(() => {
     try {
@@ -965,6 +938,34 @@ function App() {
     setNotification(text);
     setTimeout(() => setNotification(null), 3000);
   }, []);
+
+  // 🏮 護眼燭光模式切換 (放在 showMsg 之後確保已初始化)
+  const toggleEyeCare = useCallback(() => {
+    setIsEyeCare(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('lapen_eyecare_theme', String(next));
+        if (next) {
+          document.documentElement.classList.add('theme-eyecare');
+          showMsg('🏮 已開啟夜讀護眼模式（低藍光・暖黃燭光）');
+        } else {
+          document.documentElement.classList.remove('theme-eyecare');
+          showMsg('☀️ 已恢復日間素雅模式');
+        }
+      } catch (e) {}
+      return next;
+    });
+  }, [showMsg]);
+
+  useEffect(() => {
+    try {
+      if (isEyeCare) {
+        document.documentElement.classList.add('theme-eyecare');
+      } else {
+        document.documentElement.classList.remove('theme-eyecare');
+      }
+    } catch (e) {}
+  }, [isEyeCare]);
   const checkRateLimit = useCallback(() => {
     return true;
   }, []);
