@@ -1063,8 +1063,17 @@ function App() {
       };
 
       script.textContent = JSON.stringify(fullGraph);
+
+      let canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) {
+        canonical.href = currentBookUrl;
+      }
     } else {
       document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
+      let canonical = document.querySelector('link[rel="canonical"]');
+      if (canonical) {
+        canonical.href = `${window.location.origin}${window.location.pathname}`;
+      }
       if (!pendingUrlBookRef.current) {
         try {
           const currentUrl = new URL(window.location.href);

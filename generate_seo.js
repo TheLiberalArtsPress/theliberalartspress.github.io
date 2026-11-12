@@ -17,6 +17,26 @@ function escapeXml(str) {
         .replace(/'/g, '&apos;');
 }
 
+function cleanImageUrl(rawUrl, localCover) {
+    if (localCover) {
+        return 'https://theliberalartspress.github.io/' + localCover;
+    }
+    if (!rawUrl || typeof rawUrl !== 'string') return null;
+    const trimmed = rawUrl.trim();
+    if (!trimmed.startsWith('http')) return null;
+
+    // Convert Google Drive view/share links to direct image thumbnails for Google Images compliance
+    const driveMatch = trimmed.match(/drive\.google\.com\/file\/d\/([a-zA-Z0-9_-]+)/);
+    if (driveMatch && driveMatch[1]) {
+        return 'https://lh3.googleusercontent.com/d/' + driveMatch[1];
+    }
+    const driveIdMatch = trimmed.match(/[?&]id=([a-zA-Z0-9_-]+)/);
+    if (trimmed.includes('drive.google.com') && driveIdMatch && driveIdMatch[1]) {
+        return 'https://lh3.googleusercontent.com/d/' + driveIdMatch[1];
+    }
+    return trimmed;
+}
+
 const today = new Date().toISOString().split('T')[0];
 
 let xml = '<?xml version="1.0" encoding="UTF-8"?>\n';
@@ -42,7 +62,7 @@ for (const cat of categories) {
     xml += '  </url>\n';
 }
 
-// 3. All 2,631 Books
+// 3. All Books
 for (const b of books) {
     if (!b.id) continue;
     xml += '  <url>\n';
@@ -50,27 +70,40 @@ for (const b of books) {
     xml += '    <lastmod>' + today + '</lastmod>\n';
     xml += '    <changefreq>weekly</changefreq>\n';
     xml += '    <priority>0.8</priority>\n';
-    if (b.localCover || b.cover) {
-        const imgUrl = b.localCover ? 'https://theliberalartspress.github.io/' + b.localCover : b.cover;
-        if (imgUrl && imgUrl.startsWith('http')) {
-            xml += '    <image:image>\n';
-            xml += '      <image:loc>' + escapeXml(imgUrl) + '</image:loc>\n';
-            xml += '      <image:title>' + escapeXml(b.title || '') + '</image:title>\n';
-            xml += '    </image:image>\n';
-        }
+    
+    const validImg = cleanImageUrl(b.cover, b.localCover);
+    if (validImg) {
+        xml += '    <image:image>\n';
+        xml += '      <image:loc>' + escapeXml(validImg) + '</image:loc>\n';
+        xml += '      <image:title>' + escapeXml(b.title || '') + '</image:title>\n';
+        xml += '    </image:image>\n';
     }
     xml += '  </url>\n';
 }
 
 xml += '</urlset>\n';
 
+// Write all three aliases so GSC and bots never get 404 regardless of which URL was submitted
 fs.writeFileSync('sitemap.xml', xml, 'utf8');
-console.log('Successfully generated sitemap.xml with', books.length + categories.length + 1, 'URLs!');
+fs.writeFileSync('sitemap-books.xml', xml, 'utf8');
+fs.writeFileSync('sitemap-All.xml', xml, 'utf8');
+console.log('Successfully generated sitemap.xml, sitemap-books.xml, and sitemap-All.xml with', books.length + categories.length + 1, 'URLs!');
 
 const robotsTxt = `User-agent: *
 Allow: /
 
+User-agent: Baiduspider
+Allow: /
+
+User-agent: Googlebot
+Allow: /
+
+User-agent: Bingbot
+Allow: /
+
 Sitemap: https://theliberalartspress.github.io/sitemap.xml
+Sitemap: https://theliberalartspress.github.io/sitemap-books.xml
+Sitemap: https://theliberalartspress.github.io/sitemap-All.xml
 `;
 fs.writeFileSync('robots.txt', robotsTxt, 'utf8');
-console.log('Successfully generated robots.txt!');
+console.log('Successfully generated robots.txt with Baiduspider, Googlebot, and Bingbot permissions!');

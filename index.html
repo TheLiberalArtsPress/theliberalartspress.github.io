@@ -78,7 +78,7 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <meta name="google-site-verification" content="google1286063aa2e88d8b" />
 <meta name="description" content="文史哲出版社有限公司創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學學術論著出版。全館典藏超過2,500種專業圖書，傳承文化，創新閱讀。">
-<meta name="keywords" content="文史哲出版社, 文史哲, 彭正雄, 文史哲學集成, 文史哲學術叢刊, 滿文原檔, 莊吉發, 國學研究, 中國歷史, 哲學叢刊, 學術出版">
+<meta name="keywords" content="文史哲出版社, 文史哲, 台湾文史哲出版社, 台灣文史哲出版社, 文史哲出版社官網, 文史哲出版社官网, 彭正雄, 文史哲學集成, 文史哲學術叢刊, 滿文原檔, 莊吉發, 國學研究, 中國歷史, 哲學叢刊, 學術出版">
 <meta property="og:title" content="文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版">
 <meta property="og:description" content="創立於1971年，專注文學、歷史、哲學、藝術、語言學及人文社會科學出版。典藏半世紀智慧，點亮新視界。">
 <meta property="og:type" content="website">
@@ -91,7 +91,28 @@
 <meta name="twitter:description" content="創立於1971年，專注文學、歷史、哲學、藝術、語言學及人文社會科學出版。">
 <meta name="twitter:image" content="https://theliberalartspress.github.io/og-image.jpg">
 <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
-<link rel="canonical" href="https://theliberalartspress.github.io/">
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+<link id="canonical-url" rel="canonical" href="https://theliberalartspress.github.io/">
+
+<!-- ⚡ 動態正規化網址 (動態維護 Canonical，避免搜尋引擎誤判重複頁面而拒絕索引單書) -->
+<script>
+  (function() {
+    try {
+      var params = new URLSearchParams(window.location.search);
+      var bookId = params.get('book') || params.get('id');
+      var cat = params.get('category');
+      var canonicalTag = document.getElementById('canonical-url');
+      if (canonicalTag) {
+        if (bookId) {
+          canonicalTag.href = window.location.origin + window.location.pathname + '?book=' + encodeURIComponent(bookId);
+        } else if (cat) {
+          canonicalTag.href = window.location.origin + window.location.pathname + '?category=' + encodeURIComponent(cat);
+        }
+      }
+    } catch(e) {}
+  })();
+</script>
 
 <!-- ⚡ 預先連線關鍵字體與圖片資源 -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -546,40 +567,97 @@
     <main class="max-w-7xl mx-auto px-4 py-8 flex-1 w-full space-y-8">
       <div class="w-full h-64 md:h-80 bg-gradient-to-r from-stone-200/70 via-stone-100/50 to-stone-200/70 rounded-3xl animate-pulse flex items-center justify-center border border-stone-200/60">
         <div class="text-center space-y-2">
-          <div class="font-serif text-xl font-bold text-stone-400">正在極速為您載入全館 2,632 本學術典籍...</div>
+          <div class="font-serif text-xl font-bold text-stone-400">正在極速為您載入全館 2,633 本學術典籍...</div>
           <div class="text-xs text-stone-400">1971年創立・文學歷史哲學專業出版</div>
         </div>
       </div>
+      <!-- ⚡ 語義化首頁 SEO 靜態內容（供百度、Google等搜尋爬蟲抓取，React掛載後自動無縫替換） -->
+      <article class="sr-only">
+        <h1>文史哲出版社官方網站（臺灣文史哲出版社・創立於1971年）</h1>
+        <p>文史哲出版社（The Liberal Arts Press）由彭正雄先生創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、滿學研究、古典文獻與人文社會科學等專業學術論著出版。全館典藏超過2,630種文史哲專業學術圖書。</p>
+        <nav>
+          <h2>官方分流與鏡像站點</h2>
+          <ul>
+            <li><a href="https://theliberalartspress.github.io/">臺灣主站 (GitHub Pages)</a></li>
+            <li><a href="https://theliberalartspress.pages.dev/">全球高速鏡像 (Cloudflare Pages)</a></li>
+            <li><a href="https://theliberalartspress.vercel.app/">極速分流站 (Vercel)</a></li>
+            <li><a href="https://theliberalartspress.netlify.app/">備用分流站 (Netlify)</a></li>
+            <li><a href="https://theliberalartspress.onrender.com/">雲端分流站 (Render)</a></li>
+          </ul>
+        </nav>
+      </article>
     </main>
   </div>
 </div>
 
 <noscript>
-  <div style="padding: 2rem; font-family: sans-serif; line-height: 1.6; max-width: 800px; margin: auto;">
-    <h1>文史哲出版社官方網站（創立於1971年）</h1>
-    <p>文史哲出版社專注於出版大學院校研究論著及文史哲相關書籍，典藏超過2,500種專業圖書，涵蓋文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學等領域。</p>
-    <h2>代表叢書與重點書目：</h2>
-    <ul>
-      <li><strong>文史哲學集成</strong>：收錄昌彼得《中國目錄學》、于大成《淮南論文三種》、胡自逢《先秦諸子易說通考》等權威著作。</li>
-      <li><strong>清史史料與滿學研究</strong>：莊吉發教授《滿文原檔選讀譯注》、《清史論集》系列、《滿語叢刊》。</li>
-      <li><strong>文學與哲學叢刊</strong>：無名氏《塔裡的女人》、馮馮《霧航》、紀弦、羅門、辛鬱等作家名著。</li>
-    </ul>
-    <h3>聯絡文史哲出版社：</h3>
-    <p>地址：100040 台北市羅斯福路一段72巷4號<br>電話：(02) 2351-1028<br>傳真：(02) 2396-5656<br>電子郵件：lapentw@gmail.com</p>
+  <div style="padding: 2.5rem 1.5rem; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Noto Sans TC', sans-serif; line-height: 1.8; max-width: 900px; margin: auto; color: #2D241E;">
+    <header style="border-bottom: 2px solid #8C5A2B; padding-bottom: 1rem; margin-bottom: 1.5rem;">
+      <h1 style="color: #8B261E; margin-bottom: 0.5rem; font-size: 1.8rem;">文史哲出版社官方網站（臺灣文史哲出版社・創立於1971年）</h1>
+      <p style="font-size: 0.95rem; color: #666;">THE LIBERAL ARTS PRESS CO., LTD. ｜ 專注人文學術・典藏半世紀智慧</p>
+    </header>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #3D3126; font-size: 1.3rem; border-left: 4px solid #8C5A2B; padding-left: 0.5rem; margin-bottom: 0.8rem;">關於文史哲出版社</h2>
+      <p>文史哲出版社（臺灣文史哲出版社官網）由創辦人彭正雄先生於民國六十年（1971年）在台北創立。半世紀以來專注文學、歷史、哲學、藝術史、語言文字學、滿學清史研究、宗教文化及人文社會科學專業學術論著出版。全館典藏超過2,630種權威學術圖書，深受兩岸三地、歐美日韓等漢學研究機構與各大院校師生信賴。</p>
+    </section>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #3D3126; font-size: 1.3rem; border-left: 4px solid #8C5A2B; padding-left: 0.5rem; margin-bottom: 0.8rem;">代表叢書與重點學術書目</h2>
+      <ul style="padding-left: 1.2rem;">
+        <li style="margin-bottom: 0.5rem;"><strong>文史哲學集成</strong>：昌彼得《中國目錄學》、胡自逢《先秦諸子易說通考》、于大成《淮南論文三種》、周何《廣雅疏證引方言考》、黃永武《宋代詩話考》等權威巨著。</li>
+        <li style="margin-bottom: 0.5rem;"><strong>清史史料與滿學研究</strong>：莊吉發教授《滿文原檔選讀譯注》（天命朝至乾隆朝各冊）、《清史論集》、《故宮檔案述要》、《滿語叢刊》。</li>
+        <li style="margin-bottom: 0.5rem;"><strong>二十五史與古代人物精要</strong>：廖忠俊著《二十五史人物志-本紀與列傳精要》(ISBN 9789575499990)、《二十五史人物志-世家精要》(ISBN 9789575499983)。</li>
+        <li style="margin-bottom: 0.5rem;"><strong>現代文學創作與文藝評論</strong>：無名氏《塔裡的女人》、馮馮《霧航》、詩人紀弦、羅門、辛鬱等作家代表作。</li>
+        <li style="margin-bottom: 0.5rem;"><strong>民國文學與文化系列論叢、國學大師叢書、人文社會科學叢書</strong>等專題出版。</li>
+      </ul>
+    </section>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #3D3126; font-size: 1.3rem; border-left: 4px solid #8C5A2B; padding-left: 0.5rem; margin-bottom: 0.8rem;">五大官方訪問入口與鏡像</h2>
+      <p>為方便全球與兩岸讀者及各大搜尋引擎檢索，文史哲出版社提供五大高速入口：</p>
+      <ul style="padding-left: 1.2rem;">
+        <li>臺灣官方主站：<a href="https://theliberalartspress.github.io/" style="color: #8C5A2B;">https://theliberalartspress.github.io/</a></li>
+        <li>全球高速鏡像：<a href="https://theliberalartspress.pages.dev/" style="color: #8C5A2B;">https://theliberalartspress.pages.dev/</a>（推薦百度與中國大陸訪問）</li>
+        <li>極速分流站點：<a href="https://theliberalartspress.vercel.app/" style="color: #8C5A2B;">https://theliberalartspress.vercel.app/</a></li>
+        <li>備用分流站點：<a href="https://theliberalartspress.netlify.app/" style="color: #8C5A2B;">https://theliberalartspress.netlify.app/</a></li>
+        <li>雲端備援站點：<a href="https://theliberalartspress.onrender.com/" style="color: #8C5A2B;">https://theliberalartspress.onrender.com/</a></li>
+      </ul>
+    </section>
+
+    <section style="margin-bottom: 2rem;">
+      <h2 style="color: #3D3126; font-size: 1.3rem; border-left: 4px solid #8C5A2B; padding-left: 0.5rem; margin-bottom: 0.8rem;">經典典籍單書專屬頁面導覽</h2>
+      <ul style="padding-left: 1.2rem;">
+        <li><a href="https://theliberalartspress.github.io/?book=61016" style="color: #8C5A2B;">《二十五史人物志-本紀與列傳精要》廖忠俊 著（書碼 61016 / ISBN 9789575499990）</a></li>
+        <li><a href="https://theliberalartspress.github.io/?book=61017" style="color: #8C5A2B;">《二十五史人物志-世家精要》廖忠俊 著（書碼 61017 / ISBN 9789575499983）</a></li>
+        <li><a href="https://theliberalartspress.github.io/?book=00003" style="color: #8C5A2B;">《淮南論文三種》于大成 著（書碼 00003 / ISBN 9789575490034）</a></li>
+        <li><a href="https://theliberalartspress.github.io/?book=00001" style="color: #8C5A2B;">《中國目錄學》昌彼得 著（書碼 00001 / ISBN 9789575490010）</a></li>
+        <li><a href="https://theliberalartspress.github.io/?book=65175" style="color: #8C5A2B;">《滿文原檔選讀譯注 太宗朝(十二)》莊吉發 著（書碼 65175 / ISBN 9789575499877）</a></li>
+        <li><a href="https://theliberalartspress.github.io/?book=09170" style="color: #8C5A2B;">《長命無絕衰》彭正雄 著（書碼 09170 / ISBN 9789575498887）</a></li>
+      </ul>
+    </section>
+
+    <footer style="border-top: 1px solid #E8DCCE; padding-top: 1rem; font-size: 0.9rem; color: #555;">
+      <h3 style="color: #3D3126; font-size: 1.1rem; margin-bottom: 0.5rem;">聯絡我們與郵購資訊</h3>
+      <p>文史哲出版社有限公司<br>
+      門市地址：100040 台北市中正區羅斯福路一段72巷4號<br>
+      電話：(02) 2351-1028、(02) 2396-5656 ｜ 傳真：(02) 2396-5656<br>
+      電子信箱：lapentw@gmail.com ｜ 郵政劃撥：01026027 文史哲出版社有限公司</p>
+    </footer>
   </div>
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261112_03"></script>
-<script src="app.js?v=20261112_03" defer></script>
+<script src="init_data.js?v=20261112_04"></script>
+<script src="app.js?v=20261112_04" defer></script>
 
-<!-- ⚡ 全館 2,632 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
+<!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
 <script>
   (function() {
     var hasBookQuery = window.location.search && (window.location.search.indexOf('book=') !== -1 || window.location.search.indexOf('id=') !== -1);
     function loadDataJs() {
       var s = document.createElement('script');
-      s.src = 'data.js?v=20261112_03';
+      s.src = 'data.js?v=20261112_04';
       s.async = true;
       s.onload = function() {
         if (window.STATIC_DATA) {
