@@ -855,6 +855,15 @@ function App() {
   const [isQueryingGAS, setIsQueryingGAS] = useState(false);
   const [hasQueried, setHasQueried] = useState(false);
   const [selectedBookDetail, setSelectedBookDetail] = useState(null);
+  const pendingUrlBookRef = useRef((() => {
+    try {
+      if (typeof window === 'undefined') return null;
+      const params = new URLSearchParams(window.location.search);
+      return params.get('book') || params.get('id') || null;
+    } catch(e) {
+      return null;
+    }
+  })());
   const [isBookDetailFullscreen, setIsBookDetailFullscreen] = useState(false);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [reviewBook, setReviewBook] = useState(null);
@@ -920,14 +929,35 @@ function App() {
 
   // 🔍 SEO 與專屬書籍 / 分類直達網址支援 (?book=ID 或 ?category=名稱)
   useEffect(() => {
-    if (!books || books.length === 0) return;
     try {
       const urlParams = new URLSearchParams(window.location.search);
-      const bookParam = urlParams.get('book') || urlParams.get('id');
+      const targetQuery = urlParams.get('book') || urlParams.get('id') || pendingUrlBookRef.current;
       const catParam = urlParams.get('category');
-      if (bookParam) {
-        const found = books.find(b => String(b.id) === String(bookParam) || (b.id && String(b.id).padStart(5, '0') === String(bookParam).padStart(5, '0')) || (b.isbn && b.isbn.replace(/-/g, '') === String(bookParam).replace(/-/g, '')) || b.title === bookParam);
-        if (found) setSelectedBookDetail(found);
+      if (targetQuery) {
+        const pool = (books && books.length > 0) ? books : [
+          ...((staticData && staticData.books) || []),
+          ...((initData && initData.initialBooks) || []),
+          ...((initData && initData.choices) || [])
+        ];
+        const q = String(targetQuery).trim().toLowerCase();
+        const qClean = q.replace(/[^0-9a-zA-Z\u4e00-\u9fa5]/g, '');
+        const found = pool.find(b => {
+          if (!b) return false;
+          const bId = String(b.id || '').trim().toLowerCase();
+          if (bId && (bId === q || bId.padStart(5, '0') === q.padStart(5, '0') || bId.replace(/^0+/, '') === q.replace(/^0+/, ''))) return true;
+          if (b.isbn) {
+            const bIsbn = String(b.isbn).replace(/[^0-9a-zA-Z]/g, '');
+            const qIsbn = q.replace(/[^0-9a-zA-Z]/g, '');
+            if (bIsbn && qIsbn && bIsbn === qIsbn) return true;
+          }
+          const bTitle = String(b.title || '').trim().toLowerCase();
+          if (bTitle && (bTitle === q || (qClean && bTitle.replace(/[^0-9a-zA-Z\u4e00-\u9fa5]/g, '') === qClean))) return true;
+          return false;
+        });
+        if (found) {
+          setSelectedBookDetail(found);
+          pendingUrlBookRef.current = null;
+        }
       }
       if (catParam) {
         setSelectedCategory(catParam);
@@ -1035,12 +1065,14 @@ function App() {
       script.textContent = JSON.stringify(fullGraph);
     } else {
       document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
-      try {
-        const currentUrl = new URL(window.location.href);
-        currentUrl.searchParams.delete('book');
-        currentUrl.searchParams.delete('id');
-        window.history.replaceState(null, '', currentUrl.pathname + (currentUrl.searchParams.toString() ? '?' + currentUrl.searchParams.toString() : ''));
-      } catch(e) {}
+      if (!pendingUrlBookRef.current) {
+        try {
+          const currentUrl = new URL(window.location.href);
+          currentUrl.searchParams.delete('book');
+          currentUrl.searchParams.delete('id');
+          window.history.replaceState(null, '', currentUrl.pathname + (currentUrl.searchParams.toString() ? '?' + currentUrl.searchParams.toString() : ''));
+        } catch(e) {}
+      }
       const script = document.getElementById('schema-book-jsonld');
       if (script) script.remove();
     }
