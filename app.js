@@ -26,6 +26,13 @@ const maskPhone = phone => {
   if (str.length <= 6) return "****";
   return str.substring(0, 3) + "*".repeat(str.length - 6) + str.substring(str.length - 3);
 };
+const cleanAuthorName = raw => {
+  return String(raw || '')
+    .replace(/^(著|編著|主編|校訂|譯注|輯|整理|編)\s*/, '')
+    .replace(/\s*(著|編著|主編|校訂|譯注|輯|整理|編)$/, '')
+    .replace(/著|編|校|註|輯/g, '')
+    .trim();
+};
 const Icon = memo(({
   name,
   size = 18,
@@ -807,6 +814,7 @@ function App() {
   const [isSubmittingCS, setIsSubmittingCS] = useState(false);
   const [lastActionTime, setLastActionTime] = useState(0);
   const [selectedCategory, setSelectedCategory] = useState('全部');
+  const [selectedAuthor, setSelectedAuthor] = useState(null);
   const [visibleCount, setVisibleCount] = useState(8);
   const [iframeModal, setIframeModal] = useState({
     isOpen: false,
@@ -1014,6 +1022,16 @@ function App() {
         const searchEl = document.getElementById('search-section') || document.querySelector('.search-table-container');
         if (searchEl) searchEl.scrollIntoView({ behavior: 'smooth' });
       }
+      const authorParam = urlParams.get('author');
+      if (authorParam) {
+        const ca = cleanAuthorName(authorParam);
+        if (ca) {
+          setSelectedAuthor(ca);
+          setSelectedCategory('全部');
+          const searchEl = document.getElementById('search-section') || document.querySelector('.search-table-container');
+          if (searchEl) searchEl.scrollIntoView({ behavior: 'smooth' });
+        }
+      }
     } catch(e) {
       console.warn("URL parse error:", e);
     }
@@ -1146,10 +1164,15 @@ function App() {
           const currentUrl = new URL(window.location.href);
           currentUrl.searchParams.delete('book');
           currentUrl.searchParams.delete('id');
-          if (selectedCategory && selectedCategory !== '全部') {
+          if (selectedAuthor) {
+            currentUrl.searchParams.set('author', selectedAuthor);
+            currentUrl.searchParams.delete('category');
+          } else if (selectedCategory && selectedCategory !== '全部') {
             currentUrl.searchParams.set('category', selectedCategory);
+            currentUrl.searchParams.delete('author');
           } else {
             currentUrl.searchParams.delete('category');
+            currentUrl.searchParams.delete('author');
           }
           window.history.replaceState(null, '', currentUrl.pathname + (currentUrl.searchParams.toString() ? '?' + currentUrl.searchParams.toString() : ''));
         } catch(e) {}
@@ -1157,12 +1180,46 @@ function App() {
       const script = document.getElementById('schema-book-jsonld');
       if (script) script.remove();
 
-      // 📚 分類專屬落地頁 SEO (Category Landing SEO)
+      // 📚 分類與學者專屬落地頁 SEO (Landing SEO)
       let canonical = document.querySelector('link[rel="canonical"]');
       let catScript = document.getElementById('schema-category-jsonld');
       let metaDesc = document.querySelector('meta[name="description"]');
 
-      if (selectedCategory && selectedCategory !== '全部') {
+      if (selectedAuthor) {
+        const authorTitle = `《${selectedAuthor}》學者全館出版專題・典藏著作 - 文史哲出版社官方網站`;
+        document.title = authorTitle;
+        const currentAuthorUrl = `${window.location.origin}${window.location.pathname}?author=${encodeURIComponent(selectedAuthor)}`;
+        if (canonical) {
+          canonical.href = currentAuthorUrl;
+        }
+        if (metaDesc) {
+          metaDesc.setAttribute('content', `文史哲出版社《${selectedAuthor}》學者出版專題，收錄相關學術專著、考據研究與代表文集，提供線上書目檢索與郵購服務。`);
+        }
+        if (!catScript) {
+          catScript = document.createElement('script');
+          catScript.id = 'schema-category-jsonld';
+          catScript.type = 'application/ld+json';
+          document.head.appendChild(catScript);
+        }
+        catScript.textContent = JSON.stringify({
+          "@context": "https://schema.org",
+          "@type": "CollectionPage",
+          "@id": `${currentAuthorUrl}#author`,
+          "name": `《${selectedAuthor}》學者出版專題目錄`,
+          "description": `文史哲出版社半世紀嚴選《${selectedAuthor}》學者出版專題與典籍。`,
+          "url": currentAuthorUrl,
+          "isPartOf": {
+            "@type": "WebSite",
+            "name": "文史哲出版社官方網站",
+            "url": "https://theliberalartspress.github.io/"
+          },
+          "publisher": {
+            "@type": "Organization",
+            "name": "文史哲出版社有限公司",
+            "url": "https://theliberalartspress.github.io/"
+          }
+        });
+      } else if (selectedCategory && selectedCategory !== '全部') {
         const catTitle = `《${selectedCategory}》專題學術典籍・推薦書目 - 文史哲出版社官方網站`;
         document.title = catTitle;
         const currentCatUrl = `${window.location.origin}${window.location.pathname}?category=${encodeURIComponent(selectedCategory)}`;
@@ -1207,7 +1264,7 @@ function App() {
         if (catScript) catScript.remove();
       }
     }
-  }, [selectedBookDetail, selectedCategory]);
+  }, [selectedBookDetail, selectedCategory, selectedAuthor]);
   const syncWithGAS = useCallback(async (action, payloadData = null) => {
     try {
       const currentOrigin = window.location.origin;
@@ -1346,6 +1403,10 @@ function App() {
     return [...new Set(cats)].sort();
   }, [books]);
   const filteredBooks = useMemo(() => {
+    if (selectedAuthor) {
+      const ca = cleanAuthorName(selectedAuthor).toLowerCase();
+      return books.filter(b => b.author && cleanAuthorName(b.author).toLowerCase().includes(ca));
+    }
     const list = selectedCategory === '全部' ? books : books.filter(b => b.category === selectedCategory);
     const shuffled = [...list];
     for (let i = shuffled.length - 1; i > 0; i--) {
@@ -1353,7 +1414,7 @@ function App() {
       [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
     }
     return shuffled;
-  }, [books, selectedCategory]);
+  }, [books, selectedCategory, selectedAuthor]);
   const visibleBooks = useMemo(() => filteredBooks.slice(0, visibleCount), [filteredBooks, visibleCount]);
   const displayChoiceBooks = useMemo(() => {
     const sourceList = choiceBooks.length > 0 ? choiceBooks : books.slice(0, 10);
@@ -2403,10 +2464,12 @@ function App() {
     type: "button",
     key: cat,
     onClick: () => {
+      setSelectedAuthor(null);
       setSelectedCategory(cat);
       setVisibleCount(8);
       try {
         const u = new URL(window.location.href);
+        u.searchParams.delete('author');
         if (cat === '全部') {
           u.searchParams.delete('category');
         } else {
@@ -2415,7 +2478,7 @@ function App() {
         window.history.replaceState(null, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams.toString() : ''));
       } catch (e) {}
     },
-    className: `px-5 py-2 rounded-full text-sm font-bold transition-all border ${selectedCategory === cat ? `${getCategoryBadgeClass(cat)} shadow-md scale-105` : 'bg-white/85 border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:bg-white'}`
+    className: `px-5 py-2 rounded-full text-sm font-bold transition-all border ${!selectedAuthor && selectedCategory === cat ? `${getCategoryBadgeClass(cat)} shadow-md scale-105` : 'bg-white/85 border-[var(--border-color)] text-[var(--text-dark)] hover:border-[var(--primary-color)] hover:bg-white'}`
   }, cat)), dynamicCategories.length > 5 && /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsAllCategoriesExpanded(!isAllCategoriesExpanded),
@@ -2423,7 +2486,34 @@ function App() {
   }, isAllCategoriesExpanded ? "收合類別" : "更多類別", /*#__PURE__*/React.createElement(Icon, {
     name: isAllCategoriesExpanded ? "ChevronUp" : "ChevronDown",
     size: 14
-  }))), selectedCategory !== '全部' && /*#__PURE__*/React.createElement("div", {
+  }))), selectedAuthor && /*#__PURE__*/React.createElement("div", {
+    className: "mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-sky-50 via-blue-50/40 to-sky-50 border border-sky-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-stone-700 animate-in"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-3"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-10 h-10 rounded-xl bg-sky-600/10 text-sky-700 flex items-center justify-center font-serif text-xl shrink-0"
+  }, "👤"), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 flex-wrap"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "text-base sm:text-lg font-serif font-black text-stone-900"
+  }, `《${selectedAuthor}》學者出版專題`), /*#__PURE__*/React.createElement("span", {
+    className: "text-xs px-2.5 py-0.5 rounded-full bg-sky-100 text-sky-900 font-bold"
+  }, `全館典藏 ${filteredBooks.length} 冊`)), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-stone-500 font-sans mt-0.5"
+  }, `文史哲出版社半世紀嚴選・典藏學者《${selectedAuthor}》之學術專著、考據研究與代表文集`))), /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center gap-2 shrink-0 self-end sm:self-center"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setSelectedAuthor(null);
+      try {
+        const u = new URL(window.location.href);
+        u.searchParams.delete('author');
+        window.history.replaceState(null, '', u.pathname + (u.searchParams.toString() ? '?' + u.searchParams.toString() : ''));
+      } catch (e) {}
+    },
+    className: "px-3 py-1.5 rounded-xl text-xs font-bold text-stone-600 bg-white hover:bg-stone-100 border border-stone-200 transition shadow-sm flex items-center gap-1 active:scale-95"
+  }, "✕ 返回全部書籍"))), !selectedAuthor && selectedCategory !== '全部' && /*#__PURE__*/React.createElement("div", {
     className: "mb-6 p-4 sm:p-5 rounded-2xl bg-gradient-to-r from-stone-50 via-amber-50/40 to-stone-50 border border-stone-200/80 shadow-sm flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-stone-700 animate-in"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-3"
@@ -2486,9 +2576,28 @@ function App() {
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
     className: "p-5 flex flex-col flex-1"
   }, /*#__PURE__*/React.createElement("h3", {
-    className: "font-bold text-lg mb-2 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors",
+    className: "font-bold text-lg mb-1.5 text-[var(--dark-color)] line-clamp-2 font-serif leading-snug group-hover:text-[var(--primary-color)] transition-colors",
     title: book.title
-  }, book.title), /*#__PURE__*/React.createElement("p", {
+  }, book.title), book.author && book.author !== '未標記' && /*#__PURE__*/React.createElement("p", {
+    onClick: e => {
+      e.stopPropagation();
+      const ca = cleanAuthorName(book.author);
+      if (ca) {
+        setSelectedAuthor(ca);
+        setSelectedCategory('全部');
+        try {
+          const u = new URL(window.location.href);
+          u.searchParams.delete('category');
+          u.searchParams.set('author', ca);
+          window.history.replaceState(null, '', u.pathname + '?' + u.searchParams.toString());
+        } catch (err) {}
+        const el = document.getElementById('search-section') || document.querySelector('.search-table-container');
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      }
+    },
+    title: `點擊查看《${cleanAuthorName(book.author)}》全館專著`,
+    className: "text-xs text-stone-500 font-sans mb-3 flex items-center gap-1 hover:text-[var(--primary-color)] transition-colors w-max cursor-pointer font-medium"
+  }, "✍️ ", book.author), /*#__PURE__*/React.createElement("p", {
     className: "text-[#B83B26] font-black mb-4 text-xl font-sans mt-auto"
   }, "NT$ ", book.price), /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -3560,9 +3669,37 @@ function App() {
     className: `${isBookDetailFullscreen ? 'text-2xl md:text-3xl' : 'text-lg md:text-xl'} font-black text-[var(--dark-color)] font-serif leading-snug`
   }, selectedBookDetail.title), /*#__PURE__*/React.createElement("div", {
     className: `grid grid-cols-2 gap-y-2 gap-x-4 ${isBookDetailFullscreen ? 'text-sm md:text-base' : 'text-xs'} text-[var(--text-dark)] border-y border-[var(--border-color)]/70 py-2.5`
-  }, /*#__PURE__*/React.createElement("div", null, "作者：", /*#__PURE__*/React.createElement("strong", {
-    className: "font-semibold"
-  }, selectedBookDetail.author || '未標記')), /*#__PURE__*/React.createElement("div", null, "年份：", /*#__PURE__*/React.createElement("strong", {
+  }, /*#__PURE__*/React.createElement("div", null, "作者：", (() => {
+    const ca = cleanAuthorName(selectedBookDetail.author);
+    const authorBooksCount = (ca && ca !== '未標記' && ca !== '不詳') ? books.filter(b => cleanAuthorName(b.author).toLowerCase().includes(ca.toLowerCase())).length : 0;
+    if (!ca || ca === '未標記' || ca === '不詳') {
+      return /*#__PURE__*/React.createElement("strong", {
+        className: "font-semibold"
+      }, selectedBookDetail.author || '未標記');
+    }
+    return /*#__PURE__*/React.createElement("span", {
+      onClick: () => {
+        setSelectedAuthor(ca);
+        setSelectedCategory('全部');
+        setSelectedBookDetail(null);
+        setIsBookDetailFullscreen(false);
+        try {
+          const u = new URL(window.location.href);
+          u.searchParams.delete('book');
+          u.searchParams.delete('id');
+          u.searchParams.delete('category');
+          u.searchParams.set('author', ca);
+          window.history.replaceState(null, '', u.pathname + '?' + u.searchParams.toString());
+        } catch (e) {}
+        setTimeout(() => {
+          const el = document.getElementById('search-section') || document.querySelector('.search-table-container');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      },
+      title: `點擊查看《${ca}》在文史哲出版的所有著作`,
+      className: "px-2 py-0.5 rounded text-[11px] font-bold bg-sky-50 text-sky-800 border border-sky-200 shadow-sm inline-flex items-center gap-1 cursor-pointer hover:bg-sky-100 hover:scale-105 transition-all"
+    }, "👤 ", selectedBookDetail.author, authorBooksCount > 1 ? ` (全館${authorBooksCount}冊 ↗)` : ' ↗');
+  })()), /*#__PURE__*/React.createElement("div", null, "年份：", /*#__PURE__*/React.createElement("strong", {
     className: "font-semibold"
   }, selectedBookDetail.year || '未標記')), /*#__PURE__*/React.createElement("div", null, "分類：", /*#__PURE__*/React.createElement("span", {
     onClick: () => {
@@ -3634,7 +3771,32 @@ function App() {
     rel: "noreferrer",
     className: "px-2.5 py-1 bg-blue-50 hover:bg-blue-100 text-blue-800 border border-blue-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "在維基百科查詢作者生平與學術著作"
-  }, `👤 作者維基 (${String(selectedBookDetail.author).replace(/著|編|校|註|輯/g, '').trim()})`), /*#__PURE__*/React.createElement("a", {
+  }, `👤 作者維基 (${String(selectedBookDetail.author).replace(/著|編|校|註|輯/g, '').trim()})`), selectedBookDetail.author && selectedBookDetail.author !== '未標記' && /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      const ca = cleanAuthorName(selectedBookDetail.author);
+      if (ca) {
+        setSelectedAuthor(ca);
+        setSelectedCategory('全部');
+        setSelectedBookDetail(null);
+        setIsBookDetailFullscreen(false);
+        try {
+          const u = new URL(window.location.href);
+          u.searchParams.delete('book');
+          u.searchParams.delete('id');
+          u.searchParams.delete('category');
+          u.searchParams.set('author', ca);
+          window.history.replaceState(null, '', u.pathname + '?' + u.searchParams.toString());
+        } catch (e) {}
+        setTimeout(() => {
+          const el = document.getElementById('search-section') || document.querySelector('.search-table-container');
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 120);
+      }
+    },
+    className: "px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95 cursor-pointer",
+    title: "在文史哲官網查看該學者出版之全部著作"
+  }, "📚 本館收錄該學者著作 (", books.filter(b => cleanAuthorName(b.author).toLowerCase().includes(cleanAuthorName(selectedBookDetail.author).toLowerCase())).length, "本)"), /*#__PURE__*/React.createElement("a", {
     href: `https://scholar.google.com.tw/scholar?q=${encodeURIComponent(selectedBookDetail.title + ' ' + (selectedBookDetail.author || ''))}`,
     target: "_blank",
     rel: "noreferrer",
