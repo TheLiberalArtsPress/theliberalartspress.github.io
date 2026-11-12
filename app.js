@@ -865,6 +865,17 @@ function App() {
     }
   })());
   const [isBookDetailFullscreen, setIsBookDetailFullscreen] = useState(false);
+  const [isRelatedBooksOpen, setIsRelatedBooksOpen] = useState(false);
+
+  const relatedBooks = useMemo(() => {
+    if (!selectedBookDetail || !books || books.length === 0) return [];
+    const currentCat = selectedBookDetail.category;
+    const currentId = selectedBookDetail.id;
+    const matched = books.filter(b => b.id !== currentId && b.category === currentCat);
+    if (matched.length >= 4) return matched.slice(0, 4);
+    const others = books.filter(b => b.id !== currentId && b.category !== currentCat);
+    return [...matched, ...others].slice(0, 4);
+  }, [selectedBookDetail, books]);
   const [isReviewModalOpen, setIsReviewModalOpen] = useState(false);
   const [reviewBook, setReviewBook] = useState(null);
   const [isSubmittingReview, setIsSubmittingReview] = useState(false);
@@ -972,6 +983,7 @@ function App() {
   // 🏷️ 結構化數據 (Schema.org / JSON-LD) 與動態標題
   useEffect(() => {
     if (selectedBookDetail) {
+      setIsRelatedBooksOpen(false);
       const title = `《${selectedBookDetail.title}》${selectedBookDetail.author ? `・${selectedBookDetail.author}` : ''} - 文史哲出版社官方網站`;
       document.title = title;
       try {
@@ -3490,6 +3502,47 @@ function App() {
     className: "px-2.5 py-1 bg-rose-50 hover:bg-rose-100 text-rose-800 border border-rose-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
     title: "在 Google 圖書查詢書籍預覽與出版資訊"
   }, "📚 Google 圖書"))))), /*#__PURE__*/React.createElement("div", {
+    className: "border-t border-[var(--border-color)]/60 pt-2 text-xs"
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setIsRelatedBooksOpen(!isRelatedBooksOpen),
+    className: "w-full py-1.5 px-3 rounded-xl bg-amber-50/70 hover:bg-amber-100/90 text-amber-900 border border-amber-200/80 font-bold transition flex items-center justify-between shadow-sm active:scale-[0.99]",
+    title: "展開同分類其他書籍推薦"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "flex items-center gap-1.5"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "BookOpen",
+    size: 14,
+    className: "text-[var(--primary-color)]"
+  }), `📚 查看同分類《${selectedBookDetail.category || '學術典籍'}》其他精選典籍 (${relatedBooks.length}本)`), /*#__PURE__*/React.createElement("span", {
+    className: "text-[11px] font-sans text-amber-800 font-bold"
+  }, isRelatedBooksOpen ? "收起 ▴" : "展開 ▾")), isRelatedBooksOpen && /*#__PURE__*/React.createElement("div", {
+    className: "mt-2.5 grid grid-cols-2 sm:grid-cols-4 gap-2.5 animate-in"
+  }, relatedBooks.map(rb => /*#__PURE__*/React.createElement("a", {
+    key: rb.id,
+    href: `?book=${encodeURIComponent(rb.id)}`,
+    onClick: e => {
+      e.preventDefault();
+      setSelectedBookDetail(rb);
+      setIsRelatedBooksOpen(false);
+    },
+    className: "p-2 rounded-xl bg-white border border-stone-200 hover:border-[var(--primary-color)] hover:shadow-md transition flex flex-col justify-between text-left group"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "w-full h-24 bg-stone-100 rounded-lg overflow-hidden mb-1.5 flex items-center justify-center p-1 border border-stone-100"
+  }, /*#__PURE__*/React.createElement("img", {
+    src: formatImageUrl(rb.localCover || rb.cover, 200),
+    alt: rb.title,
+    className: "w-full h-full object-contain group-hover:scale-105 transition"
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "font-serif font-bold text-xs text-stone-800 line-clamp-2 leading-tight group-hover:text-[var(--primary-color)] transition",
+    title: rb.title
+  }, rb.title), /*#__PURE__*/React.createElement("div", {
+    className: "mt-1 flex items-baseline justify-between text-[11px]"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-stone-400 font-mono"
+  }, rb.id), /*#__PURE__*/React.createElement("span", {
+    className: "text-[var(--primary-color)] font-bold"
+  }, `NT$ ${rb.price || 0}`)))))), /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center justify-between gap-2 pt-2 border-t border-[var(--border-color)]/60 text-xs text-stone-500"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-[var(--dark-color)] flex items-center gap-1.5"
@@ -3500,6 +3553,20 @@ function App() {
   }), " 分享此書："), /*#__PURE__*/React.createElement("div", {
     className: "flex items-center gap-2"
   }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      const cleanAuthor = String(selectedBookDetail.author || '').replace(/著|編|校|註|輯/g, '').trim();
+      const currentBookUrl = `${window.location.origin}${window.location.pathname}?book=${encodeURIComponent(selectedBookDetail.id || selectedBookDetail.title)}`;
+      const cite = `${cleanAuthor}（2026）。《${selectedBookDetail.title}》。台北：文史哲出版社。${selectedBookDetail.isbn ? `ISBN: ${selectedBookDetail.isbn}。` : ''}取自 ${currentBookUrl}`;
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(cite).then(() => showMsg('✅ 已複製學術論文引用格式（APA）！可直接貼入論文。')).catch(() => showMsg(cite));
+      } else {
+        showMsg(cite);
+      }
+    },
+    className: "px-2.5 py-1 bg-amber-50 hover:bg-amber-100 text-amber-900 border border-amber-200 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95",
+    title: "一鍵複製 APA 學術論文引用格式"
+  }, "🎓 論文引用"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
       const shareUrl = `${window.location.origin}${window.location.pathname}?book=${encodeURIComponent(selectedBookDetail.id || selectedBookDetail.title)}`;
