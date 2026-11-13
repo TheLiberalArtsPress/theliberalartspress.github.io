@@ -166,7 +166,7 @@ window.STATIC_DATA = {
       "id": "1783336874823",
       "title": "慶祝~!文史哲官方及臉書正式上線！",
       "description": "點擊【下方連結】FB粉絲入口！享有更多獨家 📚 書訊、新書搶先報及會員限定優惠！✨",
-      "image": "https://drive.google.com/thumbnail?id=1fwM5eH0fGrlGz7o1-xTfNyeY1nW7WDGU&sz=w1200-rw",
+      "image": "assets/covers/promo_fb_banner.webp",
       "status": "已發佈"
     },
     {
@@ -269,7 +269,7 @@ window.STATIC_DATA = {
       "cover": "https://drive.google.com/file/d/1zve5-0I3IszLREt5WhNqIhKXS3KoVYp5/view?usp=sharing",
       "intro": "本書《未命名書籍》由學者未知作者所撰著，深入研析《未命名書籍》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
       "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": ""
+      "localCover": "assets/covers/10510.webp"
     },
     {
       "id": "10511",
@@ -35361,7 +35361,7 @@ window.STATIC_DATA = {
       "cover": "https://drive.google.com/file/d/1zve5-0I3IszLREt5WhNqIhKXS3KoVYp5/view?usp=sharing",
       "intro": "本書《未命名書籍》由學者未知作者所撰著，深入研析《未命名書籍》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
       "心得": "【學術導讀】《未命名書籍》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": ""
+      "localCover": "assets/covers/10510.webp"
     },
     {
       "id": "11001",
@@ -46417,7 +46417,7 @@ window.STATIC_DATA = {
       "cover": "https://drive.google.com/thumbnail?id=1X3YJMgiOCx8qqJ8Job-l3oYad1fhWuDI&sz=w1000",
       "intro": "本書《歐陽修散文研讀》由學者王更生所撰著，深入研析《歐陽修散文研讀》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
       "心得": "【學術導讀】《歐陽修散文研讀》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": ""
+      "localCover": "assets/covers/88503.webp"
     },
     {
       "id": "88504",
@@ -49358,7 +49358,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/14JQ3tAVk9D5DRZhKSl04wBuNqZQC87Af/view?usp=sharing",
       "intro": "",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/09170.webp"
     },
     {
       "id": "78829",
@@ -49373,7 +49374,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/117f3TXgIDjTFjkzj8KzGy0XLivwZscb5/view?usp=sharing",
       "intro": "",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/78829.webp"
     },
     {
       "id": "78364",
@@ -49388,7 +49390,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1w-DQo5w10vIOu8sVY7kjEJAOF5i9sdKe/view?usp=sharing",
       "intro": "",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/78364.webp"
     },
     {
       "id": "09171",
@@ -49403,7 +49406,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1ivYTNnf5IMZUSyekfm7KGU3TRJe1J2TR/view?usp=sharing",
       "intro": "",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/09171.webp"
     },
     {
       "id": "10511",
@@ -49418,7 +49422,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1dtpFnDqACoZdE9NVu7FA10886rxK5rUm/view?usp=sharing",
       "intro": "",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/10511.webp"
     },
     {
       "id": "12027",
@@ -49463,7 +49468,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1BH4SylJj2aSaRb49Aw7YhBmlS228D3N7/view?usp=sharing",
       "intro": "📖 詩人二十年磨一劍，用1100行詩「深潛」秀江 📖\n詩人學詩二十載，歷經三個重要里程碑，終於在43歲這年，完成了長達1100多行的長詩—《秀江》。\n不僅僅是一首關於「秀江」的詩，更是一部跨越晚唐至現代的「江右詩人精神史」。詩人以一年多的現場感受為底，融匯禪宗祖師與歷代詩哲的語言，創造出如「六音步的雪」、「煙霞的藥引」等獨特意象，試圖探討組詩與長詩的區別，並在技術與心性上尋求突破。\n📚 《秀江》是一次關於詩歌體量、縱深與原創性的探索。 詩人自言，這首詩的根源，來自於明晰而強烈的個體生命律動，試圖濃縮古今宜春的精粹。\n✨ 本書亮點搶先看：\n👉突破自我體量： 從80行到1000多行，挑戰長詩的寫法與縱深。\n👉獨特意象創造： 發明「六音步的雪」等全新意象，豐富詩歌語言。\n👉廣義秀江精神： 不僅寫地緣，更寫禪宗祖師與詩哲的語言匯流。\n👉江右詩人精神史： 構成小半個江西詩人的精神史，濃縮古今宜春精粹。",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/09172.webp"
     },
     {
       "id": "65175",
@@ -49478,7 +49484,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1bJXoRjGkX0Dc3GBQxBHZKd3oJJmtQdHf/view?usp=sharing",
       "intro": "本書《滿文原檔《滿文原檔》選讀譯注 太宗朝(十二)》為清史與滿學泰斗莊吉發教授對清代第一手滿文原始檔冊之權威解讀與精審譯注巨著。全書立足於珍稀之無圈點老滿文與加圈點滿文檔案，逐件對勘清代滿漢原始文獻及《清實錄》，聚焦於太宗朝(十一之八旗制度演變、軍政決策、邊疆經略及滿漢文化整合。著者以深厚之滿語語法功底與歷史考據學養，詳加箋釋考訂，訂正諸多傳世史籍之訛誤，為研究清代早期歷史、滿語文獻學及清史檔案之頂尖權威著作。",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/65175.webp"
     },
     {
       "id": "10513",
@@ -49493,7 +49500,8 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1Z2ol52QRhsK_zciLcDkCOjLE7QEvRoaB/view?usp=sharing",
       "intro": "【天天生活在台北，你真的了解腳下踩的這片土地嗎？】\n你可能知道信義區的繁華、西門町的熱鬧，但你可曾想過—幾千幾萬年前，這座盆地曾歷經怎樣驚天動地的改變？  \n而我們所熟悉的士林、新莊、板橋平原，又是如何隨三大水系流轉而生？   \n「在台北住了一輩子，對自己住的地方，總想有更深刻的認識。這過程就像『挖礦』，越挖，越發現底下的寶藏多得驚人。」——作者 陳福成   \n本書不是一本生硬枯燥的歷史大拜拜，而是一位在地耆老搬出板凳，用最接地氣的「講古」口吻，細細道來先民如何在這片土地披荊斬棘、滄海桑田的故事。  \n 無論為土生土長的台北人、離鄉背井打拚的北漂族，或是喜愛文史的老靈魂，翻開這本書，帶你穿越時空，重新愛上這座城市的底蘊！",
-      "心得": ""
+      "心得": "",
+      "localCover": "assets/covers/10513.webp"
     }
   ]
 };
