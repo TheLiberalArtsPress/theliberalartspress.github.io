@@ -15,7 +15,7 @@
 <link rel="alternate" href="https://theliberalartspress.onrender.com/">
 
 <!-- ⚡ 首頁首張大圖優先預載 (0秒瞬間出圖) -->
-<link rel="preload" as="image" href="assets/covers/carousel_0.jpg" fetchpriority="high">
+<link rel="preload" as="image" href="assets/covers/carousel_0.webp" fetchpriority="high">
 
 <script type="application/ld+json">
 {
@@ -1712,9 +1712,8 @@
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+TC:wght@400;500;700;900&family=Noto+Sans+TC:wght@400;500;700;900&display=swap">
 </noscript>
 
-<script src="assets/vendor/react.min.js"></script>
-<script src="assets/vendor/react-dom.min.js"></script>
-<script>window.react = window.React;</script>
+<script src="assets/vendor/react.min.js" defer></script>
+<script src="assets/vendor/react-dom.min.js" defer></script>
 <script>
   try {
     if (localStorage.getItem('lapen_eyecare_theme') === 'true') {
@@ -2587,7 +2586,7 @@
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261113_08"></script>
+<script src="init_data.js?v=20261113_08" defer></script>
 <script src="app.js?v=20261113_08" defer></script>
 
 <!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
@@ -2617,14 +2616,9 @@
 
 <script>
   if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.getRegistrations().then(function(registrations) {
-      for (var reg of registrations) { reg.unregister(); }
+    window.addEventListener('load', function() {
+      navigator.serviceWorker.register('sw.js?v=20261113').catch(function() {});
     });
-    if ('caches' in window) {
-      caches.keys().then(function(names) {
-        for (var name of names) { caches.delete(name); }
-      });
-    }
   }
 </script>
 </body>
