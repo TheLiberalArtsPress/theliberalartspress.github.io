@@ -1,0 +1,44 @@
+name: Auto-generate Static Book Pages & Sitemap
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'data.js'
+      - 'scripts/generate_static_books.py'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: static-books-gen
+  cancel-in-progress: false
+
+jobs:
+  build-static-books:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Generate static book pages and sitemap
+        run: python scripts/generate_static_books.py
+
+      - name: Commit and push updated static pages
+        run: |
+          if [ -n "$(git status --porcelain books/ catalog.html sitemap.xml)" ]; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add books/ catalog.html sitemap.xml
+            git commit -m "chore(seo): auto-regenerate static book pages and sitemap [skip ci]"
+            git push
+          else
+            echo "No changes detected in books/, catalog.html, or sitemap.xml."
+          fi
