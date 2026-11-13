@@ -15,7 +15,7 @@
 <link rel="alternate" href="https://theliberalartspress.onrender.com/">
 
 <!-- ⚡ 首頁首張大圖優先預載 (0秒瞬間出圖) -->
-<link rel="preload" as="image" href="assets/covers/carousel_0.webp" fetchpriority="high">
+<link rel="preload" as="image" href="assets/covers/carousel_0.jpg" fetchpriority="high">
 
 <script type="application/ld+json">
 {
@@ -1651,7 +1651,6 @@
 <meta http-equiv="Cache-Control" content="no-transform" />
 <meta http-equiv="Cache-Control" content="no-siteapp" />
 <link id="canonical-url" rel="canonical" href="https://theliberalartspress.github.io/">
-<link rel="manifest" href="manifest.json">
 
 <!-- 🎓 Google Scholar 國際學術出版索引基底標籤 (Highwire Press 規範) -->
 <meta name="citation_publisher" content="文史哲出版社有限公司">
@@ -2588,8 +2587,8 @@
 </noscript>
 
 <!-- ⚡ 核心首頁極速秒開架構：init_data.js (76KB) + app.js 先行渲染，0.1 秒秒開內頁與精選書單 -->
-<script src="init_data.js?v=20261113_06"></script>
-<script src="app.js?v=20261113_06" defer></script>
+<script src="init_data.js?v=20261113_07"></script>
+<script src="app.js?v=20261113_07" defer></script>
 
 <!-- ⚡ 全館 2,633 冊完整庫存（data.js，7.6MB）於背景非同步延遲載入，絕不阻擋首頁畫面 -->
 <script>
@@ -2597,7 +2596,7 @@
     var hasBookQuery = window.location.search && (window.location.search.indexOf('book=') !== -1 || window.location.search.indexOf('id=') !== -1);
     function loadDataJs() {
       var s = document.createElement('script');
-      s.src = 'data.js?v=20261113_06';
+      s.src = 'data.js?v=20261113_07';
       s.async = true;
       s.onload = function() {
         if (window.STATIC_DATA) {
@@ -2616,18 +2615,16 @@
   })();
 </script>
 
-<!-- ⚡ PWA Service Worker 離線加速工作線程註冊 -->
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', function() {
-      navigator.serviceWorker.register('./sw.js?v=20261113_06')
-        .then(function(reg) {
-          console.log('[PWA] Service Worker registered with scope:', reg.scope);
-        })
-        .catch(function(err) {
-          console.warn('[PWA] Service Worker registration failed:', err);
-        });
+    navigator.serviceWorker.getRegistrations().then(function(registrations) {
+      for (var reg of registrations) { reg.unregister(); }
     });
+    if ('caches' in window) {
+      caches.keys().then(function(names) {
+        for (var name of names) { caches.delete(name); }
+      });
+    }
   }
 </script>
 </body>

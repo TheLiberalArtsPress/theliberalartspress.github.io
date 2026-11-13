@@ -9,6 +9,17 @@ const {
 } = React;
 const SVG_COVER_FALLBACK = "data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='100%25' height='100%25' fill='%23F4EFEA'/%3E%3Crect x='20' y='20' width='360' height='560' fill='none' stroke='%23E8DCCE' stroke-width='2' stroke-dasharray='6 6'/%3E%3Ctext x='50%25' y='48%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='20' font-weight='bold' fill='%238C5A2B'%3E典籍書目封面%3C/text%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%23BFAF9E'%3E文史哲出版社%3C/text%3E%3C/svg%3E";
 const handleImgError = (e, fallbackSrc = SVG_COVER_FALLBACK) => {
+  const currentSrc = e.target.src || '';
+  if (currentSrc.includes('.webp') && !e.target.dataset.triedJpg) {
+    e.target.dataset.triedJpg = 'true';
+    e.target.src = currentSrc.replace('.webp', '.jpg');
+    return;
+  }
+  if (currentSrc.includes('.jpg') && !e.target.dataset.triedWebp) {
+    e.target.dataset.triedWebp = 'true';
+    e.target.src = currentSrc.replace('.jpg', '.webp');
+    return;
+  }
   e.target.onerror = null;
   e.target.src = fallbackSrc;
 };
