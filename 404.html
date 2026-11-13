@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>找不到頁面｜文史哲出版社</title>
+<meta name="robots" content="noindex, follow">
+<link rel="icon" type="image/png" href="https://theliberalartspress.github.io/mobao_avatar.png">
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 24px;
+    background: radial-gradient(circle at top, #281f18 0%, #120e0b 70%);
+    color: #efe7dc;
+    font-family: -apple-system, BlinkMacSystemFont, "Noto Sans TC", "Microsoft JhengHei", sans-serif;
+  }
+  .card {
+    width: 100%;
+    max-width: 520px;
+    background: #1c1713;
+    border: 1px solid #352b22;
+    border-radius: 16px;
+    padding: 36px 28px;
+    text-align: center;
+    box-shadow: 0 24px 60px rgba(0, 0, 0, 0.65);
+  }
+  .code {
+    font-family: "Noto Serif TC", Georgia, serif;
+    font-size: 56px;
+    font-weight: 700;
+    color: #e09f4c;
+    line-height: 1;
+    margin-bottom: 12px;
+  }
+  h1 {
+    font-family: "Noto Serif TC", Georgia, serif;
+    font-size: 22px;
+    margin-bottom: 10px;
+    color: #f7f1e8;
+  }
+  p {
+    font-size: 14px;
+    color: #b7aa9b;
+    line-height: 1.7;
+    margin-bottom: 22px;
+  }
+  .search-form {
+    display: flex;
+    gap: 8px;
+    margin-bottom: 20px;
+  }
+  .search-form input {
+    flex: 1;
+    padding: 11px 14px;
+    border-radius: 10px;
+    border: 1px solid #3e3228;
+    background: #130f0c;
+    color: #f5efe6;
+    font-size: 14px;
+    outline: none;
+  }
+  .search-form input:focus { border-color: #e09f4c; }
+  .search-form button {
+    padding: 11px 18px;
+    border: none;
+    border-radius: 10px;
+    background: #e09f4c;
+    color: #1c140d;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+  }
+  .actions {
+    display: flex;
+    gap: 10px;
+    justify-content: center;
+    flex-wrap: wrap;
+  }
+  .btn {
+    display: inline-block;
+    padding: 10px 18px;
+    border-radius: 10px;
+    text-decoration: none;
+    font-size: 14px;
+    font-weight: 600;
+    border: 1px solid #3e3228;
+    color: #e5dacb;
+    background: #241d18;
+  }
+  .btn:hover { border-color: #e09f4c; color: #f6c987; }
+</style>
+</head>
+<body>
+  <main class="card">
+    <div class="code">404</div>
+    <h1>找不到這個書目或頁面</h1>
+    <p>您造訪的網址可能已搬移或不存在。您可以直接搜尋書名、作者、ISBN，或返回文史哲出版社官方首頁與全館總目錄。</p>
+    <form class="search-form" onsubmit="event.preventDefault(); var q=this.q.value.trim(); location.href=q?('/index.html?search='+encodeURIComponent(q)):'/index.html';">
+      <input type="text" name="q" placeholder="輸入書名、作者或書碼搜尋..." aria-label="搜尋全館圖書">
+      <button type="submit">搜尋</button>
+    </form>
+    <div class="actions">
+      <a href="/index.html" class="btn">🏠 返回官方首頁</a>
+      <a href="/catalog.html" class="btn">📚 瀏覽全館總目錄</a>
+    </div>
+  </main>
+</body>
+</html>
