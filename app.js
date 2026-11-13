@@ -408,7 +408,16 @@ const formatImageUrl = (url, width = 800) => {
   if (!url) return typeof SVG_FALLBACK !== 'undefined' ? SVG_FALLBACK : (typeof SVG_COVER_FALLBACK !== 'undefined' ? SVG_COVER_FALLBACK : '');
   let strUrl = String(url).trim();
   if (!strUrl) return typeof SVG_FALLBACK !== 'undefined' ? SVG_FALLBACK : (typeof SVG_COVER_FALLBACK !== 'undefined' ? SVG_COVER_FALLBACK : '');
-  if (strUrl.startsWith('data:image') || strUrl.startsWith('assets/')) return strUrl;
+  if (strUrl.startsWith('data:image')) return strUrl;
+
+  // ⚡ 優先讀取極速 WebP 格式（若伺服器上該書只有 .jpg，handleImgError 會在 0.01 秒內自動切換回 .jpg）
+  if (strUrl.startsWith('assets/covers/')) {
+    if (strUrl.endsWith('.jpg') || strUrl.endsWith('.jpeg')) {
+      return strUrl.replace(/\.(jpg|jpeg)$/i, '.webp');
+    }
+    return strUrl;
+  }
+  if (strUrl.startsWith('assets/')) return strUrl;
 
   let driveId = null;
   if (strUrl.includes('drive.google.com') || strUrl.includes('googleusercontent.com')) {
