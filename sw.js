@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lapen-cache-20261114_09';
+const CACHE_NAME = 'lapen-cache-20261114_10';
 const PRECACHE_URLS = [
   './',
   './manifest.json',
@@ -7,7 +7,7 @@ const PRECACHE_URLS = [
   './assets/vendor/react.min.js',
   './assets/vendor/react-dom.min.js',
   './init_data.js?v=20261114_01',
-  './app.js?v=20261114_09'
+  './app.js?v=20261114_10'
 ];
 
 self.addEventListener('install', (event) => {

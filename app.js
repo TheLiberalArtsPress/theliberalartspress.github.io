@@ -1017,6 +1017,21 @@ function App() {
 
   useEffect(() => {
     const onKeyDown = e => {
+      if (e.key === 'Escape') {
+        if (isReviewModalOpen) { setIsReviewModalOpen(false); return; }
+        if (submittedDetail) { setSubmittedDetail(null); return; }
+        if (selectedBookDetail) { setSelectedBookDetail(null); return; }
+        if (isRandomBooksOpen) { setIsRandomBooksOpen(false); return; }
+        if (isCartOpen) { setIsCartOpen(false); return; }
+        if (isSearchModalOpen) { setIsSearchModalOpen(false); return; }
+        if (isAboutOpen) { setIsAboutOpen(false); return; }
+        if (isPresidentOpen) { setIsPresidentOpen(false); return; }
+        if (isContactPageOpen) { setIsContactPageOpen(false); return; }
+        if (iframeModal && iframeModal.isOpen) { setIframeModal(prev => ({ ...prev, isOpen: false })); return; }
+        if (isRecentOpen) { setIsRecentOpen(false); return; }
+        if (isContactOpen) { setIsContactOpen(false); return; }
+        return;
+      }
       const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
       const isEditing = tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable);
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -1029,7 +1044,8 @@ function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [openQuickSearch]);
+  }, [openQuickSearch, isReviewModalOpen, submittedDetail, selectedBookDetail, isRandomBooksOpen, isCartOpen, isSearchModalOpen, isAboutOpen, isPresidentOpen, isContactPageOpen, iframeModal, isRecentOpen, isContactOpen]);
+  const carouselTouchStartRef = useRef(null);
   const [isBookDetailFullscreen, setIsBookDetailFullscreen] = useState(false);
   const [isRelatedBooksOpen, setIsRelatedBooksOpen] = useState(false);
 
@@ -2478,7 +2494,21 @@ function App() {
   }, "致力於出版高品質文學、歷史、哲學著作，讓深厚底蘊更貼近當代讀者；跨越時空的底蘊，化為當代心靈的迴響。"))), carousels.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: "w-full max-w-6xl mx-auto mb-14"
   }, /*#__PURE__*/React.createElement("div", {
-    className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-stone-300/80 bg-gradient-to-br from-[#2D231D] via-[#3B2F27] to-[#1E1714] flex items-center justify-center"
+    className: "relative w-full h-[320px] md:h-[460px] rounded-3xl overflow-hidden shadow-2xl group border border-stone-300/80 bg-gradient-to-br from-[#2D231D] via-[#3B2F27] to-[#1E1714] flex items-center justify-center",
+    onTouchStart: e => {
+      if (e.touches && e.touches[0]) {
+        carouselTouchStartRef.current = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+      }
+    },
+    onTouchEnd: e => {
+      if (!carouselTouchStartRef.current || !e.changedTouches || !e.changedTouches[0] || carousels.length <= 1) return;
+      const dx = e.changedTouches[0].clientX - carouselTouchStartRef.current.x;
+      const dy = e.changedTouches[0].clientY - carouselTouchStartRef.current.y;
+      carouselTouchStartRef.current = null;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) {
+        setCarouselIndex(prev => dx < 0 ? (prev + 1) % carousels.length : (prev - 1 + carousels.length) % carousels.length);
+      }
+    }
   }, /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-gradient-to-r from-stone-800/40 via-stone-700/20 to-stone-800/40 animate-pulse pointer-events-none z-0 flex flex-col items-center justify-center text-amber-100/40 gap-2.5 select-none"
   }, /*#__PURE__*/React.createElement(ModernLogo, {
@@ -2523,7 +2553,7 @@ function App() {
     type: "button",
     "aria-label": "上一張輪播",
     onClick: () => setCarouselIndex(prev => (prev - 1 + carousels.length) % carousels.length),
-    className: "absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-[var(--dark-color)] text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 border border-white/20"
+    className: "absolute left-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-[var(--dark-color)] text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-70 md:opacity-0 md:group-hover:opacity-100 border border-white/20"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronLeft",
     size: 20
@@ -2531,7 +2561,7 @@ function App() {
     type: "button",
     "aria-label": "下一張輪播",
     onClick: () => setCarouselIndex(prev => (prev + 1) % carousels.length),
-    className: "absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-[var(--dark-color)] text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-0 group-hover:opacity-100 border border-white/20"
+    className: "absolute right-4 top-1/2 -translate-y-1/2 z-30 bg-black/40 hover:bg-[var(--dark-color)] text-white p-2.5 rounded-full backdrop-blur-md transition-all opacity-70 md:opacity-0 md:group-hover:opacity-100 border border-white/20"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronRight",
     size: 20
@@ -3009,8 +3039,8 @@ function App() {
   }), /*#__PURE__*/React.createElement("span", null, ui.footerCopyright))))), /*#__PURE__*/React.createElement("div", {
     className: "fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
   }, isContactOpen && /*#__PURE__*/React.createElement("div", {
-    className: "glass-modal w-80 shadow-2xl rounded-2xl border border-[var(--border-color)] overflow-hidden animate-in",
-    style: { position: 'absolute', right: '60px', bottom: '0px', zIndex: 55 }
+    className: "glass-modal shadow-2xl rounded-2xl border border-[var(--border-color)] overflow-hidden animate-in",
+    style: { position: 'absolute', right: '60px', bottom: '0px', zIndex: 55, width: 'min(320px, calc(100vw - 96px))', maxWidth: 'calc(100vw - 96px)' }
   }, /*#__PURE__*/React.createElement("div", {
     className: "glass-dark p-3.5 text-white flex justify-between items-center font-sans border-b-2 border-[var(--primary-color)]"
   }, /*#__PURE__*/React.createElement("span", {
@@ -3064,8 +3094,9 @@ function App() {
       position: 'absolute',
       right: '58px',
       bottom: '54px',
-      width: '300px',
-      maxHeight: '460px',
+      width: 'min(300px, calc(100vw - 96px))',
+      maxWidth: 'calc(100vw - 96px)',
+      maxHeight: 'min(460px, calc(100vh - 110px))',
       display: 'flex',
       flexDirection: 'column',
       borderRadius: '24px',
@@ -3513,27 +3544,33 @@ function App() {
     size: 18,
     className: "text-[var(--primary-color)]"
   }), " 半世紀出版大事記"), /*#__PURE__*/React.createElement("div", {
-    className: "relative pl-6 border-l-2 border-[var(--primary-color)]/50 space-y-4"
+    style: { display: 'flex', flexDirection: 'column', gap: '12px' }
   }, [
     { year: '1971', title: '創立文史哲出版社', desc: '8 月 1 日由彭正雄先生白手起家創立，首推《明版善本影印》，專注大學院校研究論著與文史典籍。' },
     { year: '1979', title: '張仁青《應用文》長銷奠基', desc: '廣受各級院校採為教材，以穩健收益持續資助學術專著、現代詩集與博碩士論文出版。' },
     { year: '1992', title: '改組為文史哲出版社有限公司', desc: '3 月 11 日正式改組，陸續推出《文史哲學集成》、《台灣近百年研究叢刊》等重量級大型叢書。' },
     { year: '2,500+', title: '累積出版逾二千五百種典籍', desc: '扶持海內外學者並承印三、四百種博碩士論文，現仍有約 2,100 種珍貴書目可供讀者選購。' },
     { year: '數位時代', title: '數位官網與行動書庫上線', desc: '建置全館極速檢索、護眼閱讀模式與 PWA 行動書庫，讓深厚學術底蘊跨越時空、貼近當代讀者。' }
-  ].map((m, idx) => /*#__PURE__*/React.createElement("div", {
+  ].map((m, idx, arr) => /*#__PURE__*/React.createElement("div", {
     key: idx,
-    className: "relative bg-[var(--bg-light)]/90 border border-[var(--border-color)] rounded-2xl p-4 shadow-sm"
+    style: { display: 'flex', alignItems: 'stretch', gap: '12px' }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { display: 'flex', flexDirection: 'column', alignItems: 'center', width: '16px', flexShrink: 0, paddingTop: '18px' }
   }, /*#__PURE__*/React.createElement("span", {
-    className: "absolute -left-[31px] top-4 w-3.5 h-3.5 rounded-full bg-[var(--primary-color)] border-2 border-white shadow"
-  }), /*#__PURE__*/React.createElement("div", {
+    style: { width: '12px', height: '12px', borderRadius: '9999px', background: 'var(--primary-color)', border: '2px solid #FFFFFF', boxShadow: '0 1px 4px rgba(0,0,0,0.2)', flexShrink: 0 }
+  }), idx < arr.length - 1 && /*#__PURE__*/React.createElement("span", {
+    style: { width: '2px', flex: 1, background: 'var(--primary-color)', opacity: 0.35, marginTop: '4px' }
+  })), /*#__PURE__*/React.createElement("div", {
+    className: "flex-1 bg-[var(--bg-light)]/90 border border-[var(--border-color)] rounded-2xl p-4 shadow-sm"
+  }, /*#__PURE__*/React.createElement("div", {
     className: "flex flex-wrap items-center gap-2 mb-1"
   }, /*#__PURE__*/React.createElement("span", {
-    className: "px-2.5 py-0.5 rounded-full text-xs font-black bg-[var(--primary-color)] text-white tracking-wider"
+    style: { background: 'var(--primary-color)', color: '#FFFFFF', padding: '2px 10px', borderRadius: '9999px', fontSize: '12px', fontWeight: 900, letterSpacing: '0.04em' }
   }, m.year), /*#__PURE__*/React.createElement("strong", {
     className: "text-sm md:text-base text-[var(--dark-color)]"
   }, m.title)), /*#__PURE__*/React.createElement("p", {
     className: "text-xs md:text-sm opacity-85 leading-relaxed"
-  }, m.desc))))), /*#__PURE__*/React.createElement("div", {
+  }, m.desc)))))), /*#__PURE__*/React.createElement("div", {
     className: "pt-4 border-t border-[var(--border-color)]/60"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-lg text-[var(--dark-color)] mb-3 flex items-center gap-2"
