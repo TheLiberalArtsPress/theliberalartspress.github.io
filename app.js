@@ -2639,7 +2639,8 @@ function App() {
     "aria-label": isWishlisted(book.id) ? "移除收藏" : "加入收藏",
     title: isWishlisted(book.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單",
     onClick: ev => toggleWishlist(book, ev),
-    className: `absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow transition-all ${isWishlisted(book.id) ? 'bg-rose-600 text-white' : 'bg-white/85 text-stone-600 hover:text-rose-600 hover:bg-white'}`
+    className: "absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow transition-all",
+    style: isWishlisted(book.id) ? { background: '#E11D48', color: '#FFFFFF', border: '1px solid #E11D48' } : { background: 'rgba(255,255,255,0.9)', color: '#57534E', border: '1px solid #E7E5E4' }
   }, isWishlisted(book.id) ? "♥" : "♡"), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
@@ -4264,7 +4265,8 @@ function App() {
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: ev => toggleWishlist(selectedBookDetail, ev),
-    className: `px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95 border ${isWishlisted(selectedBookDetail.id) ? 'bg-rose-600 text-white border-rose-600' : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border-rose-200'}`,
+    className: "px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95 border text-xs",
+    style: isWishlisted(selectedBookDetail.id) ? { background: '#E11D48', color: '#FFFFFF', borderColor: '#E11D48' } : { background: '#FFF1F2', color: '#BE123C', borderColor: '#FECDD3' },
     title: isWishlisted(selectedBookDetail.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單"
   }, isWishlisted(selectedBookDetail.id) ? "♥ 已收藏" : "♡ 收藏"), /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -4502,7 +4504,8 @@ function App() {
   }, /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: ev => toggleWishlist(selectedBookDetail, ev),
-    className: `px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95 border ${isWishlisted(selectedBookDetail.id) ? 'bg-rose-600 text-white border-rose-600' : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border-rose-200'}`,
+    className: "px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95 border text-xs",
+    style: isWishlisted(selectedBookDetail.id) ? { background: '#E11D48', color: '#FFFFFF', borderColor: '#E11D48' } : { background: '#FFF1F2', color: '#BE123C', borderColor: '#FECDD3' },
     title: isWishlisted(selectedBookDetail.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單"
   }, isWishlisted(selectedBookDetail.id) ? "♥ 已收藏" : "♡ 收藏"), /*#__PURE__*/React.createElement("button", {
     type: "button",
