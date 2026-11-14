@@ -1017,21 +1017,6 @@ function App() {
 
   useEffect(() => {
     const onKeyDown = e => {
-      if (e.key === 'Escape') {
-        if (isReviewModalOpen) { setIsReviewModalOpen(false); return; }
-        if (submittedDetail) { setSubmittedDetail(null); return; }
-        if (selectedBookDetail) { setSelectedBookDetail(null); return; }
-        if (isRandomBooksOpen) { setIsRandomBooksOpen(false); return; }
-        if (isCartOpen) { setIsCartOpen(false); return; }
-        if (isSearchModalOpen) { setIsSearchModalOpen(false); return; }
-        if (isAboutOpen) { setIsAboutOpen(false); return; }
-        if (isPresidentOpen) { setIsPresidentOpen(false); return; }
-        if (isContactPageOpen) { setIsContactPageOpen(false); return; }
-        if (iframeModal && iframeModal.isOpen) { setIframeModal(prev => ({ ...prev, isOpen: false })); return; }
-        if (isRecentOpen) { setIsRecentOpen(false); return; }
-        if (isContactOpen) { setIsContactOpen(false); return; }
-        return;
-      }
       const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
       const isEditing = tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable);
       if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
@@ -1044,7 +1029,7 @@ function App() {
     };
     window.addEventListener('keydown', onKeyDown);
     return () => window.removeEventListener('keydown', onKeyDown);
-  }, [openQuickSearch, isReviewModalOpen, submittedDetail, selectedBookDetail, isRandomBooksOpen, isCartOpen, isSearchModalOpen, isAboutOpen, isPresidentOpen, isContactPageOpen, iframeModal, isRecentOpen, isContactOpen]);
+  }, [openQuickSearch]);
   const carouselTouchStartRef = useRef(null);
   const [isBookDetailFullscreen, setIsBookDetailFullscreen] = useState(false);
   const [isRelatedBooksOpen, setIsRelatedBooksOpen] = useState(false);
@@ -1064,6 +1049,27 @@ function App() {
   const [isMirrorModalOpen, setIsMirrorModalOpen] = useState(false);
   const [mirrorLatencies, setMirrorLatencies] = useState({});
   const [isTestingLatencies, setIsTestingLatencies] = useState(false);
+
+  useEffect(() => {
+    const onEsc = e => {
+      if (e.key !== 'Escape') return;
+      if (isReviewModalOpen) { setIsReviewModalOpen(false); return; }
+      if (submittedDetail) { setSubmittedDetail(null); return; }
+      if (selectedBookDetail) { setSelectedBookDetail(null); return; }
+      if (isRandomBooksOpen) { setIsRandomBooksOpen(false); return; }
+      if (isCartOpen) { setIsCartOpen(false); return; }
+      if (isSearchModalOpen) { setIsSearchModalOpen(false); return; }
+      if (isAboutOpen) { setIsAboutOpen(false); return; }
+      if (isPresidentOpen) { setIsPresidentOpen(false); return; }
+      if (isContactPageOpen) { setIsContactPageOpen(false); return; }
+      if (isMirrorModalOpen) { setIsMirrorModalOpen(false); return; }
+      if (iframeModal && iframeModal.isOpen) { setIframeModal(prev => ({ ...prev, isOpen: false })); return; }
+      if (isRecentOpen) { setIsRecentOpen(false); return; }
+      if (isContactOpen) { setIsContactOpen(false); return; }
+    };
+    window.addEventListener('keydown', onEsc);
+    return () => window.removeEventListener('keydown', onEsc);
+  }, [isReviewModalOpen, submittedDetail, selectedBookDetail, isRandomBooksOpen, isCartOpen, isSearchModalOpen, isAboutOpen, isPresidentOpen, isContactPageOpen, isMirrorModalOpen, iframeModal, isRecentOpen, isContactOpen]);
 
   // 🏮 護眼模式狀態（夜讀暖黃燭光模式）
   const [isEyeCare, setIsEyeCare] = useState(() => {
