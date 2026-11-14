@@ -4559,12 +4559,12 @@ function InkRippleEffect() {
 // --- 🐱 文房小書僮「墨寶喵」（Mobao Cat Mascot）---
 const MOBAO_QUOTES = [
   "讀書百遍，其義自見。墨寶在旁為您磨墨添香～🐾",
-  "先生若尋特定典籍，點擊上方『書籍檢索』或依學者分類尋覓甚便！📜",
+  "先生/女士若尋特定典籍，點擊上方『書籍檢索』或依學者分類尋覓甚便！📜",
   "文史哲半世紀嚴選，冊冊皆名家心血結晶。🐱",
   "夜讀倦了麼？右下角點擊紅燈籠切換『護眼燭光模式』暖心溫潤喔！🏮",
   "博學之，審問之，慎思之，明辨之，篤行之。✨",
   "書中自有黃金屋，每本好書都是一次跨越時空的相遇。📖",
-  "墨寶喵在此守護文史哲二千餘冊典籍，請先生隨意翻閱～🐾",
+  "墨寶喵在此守護文史哲二千餘冊典籍，請先生/女士隨意翻閱～🐾",
   "發憤忘食，樂以忘憂，不知老之將至云爾。墨寶伴您共讀！🌸"
 ];
 
@@ -4605,7 +4605,7 @@ function MobaoCatMascot() {
       setIsSleeping(false);
       setIsJumping(true);
       if (dialogueTimerRef.current) clearTimeout(dialogueTimerRef.current);
-      setDialogue(`已為先生收入《${title}》！🎒✨`);
+      setDialogue(`已為先生/女士收入《${title}》！🎒✨`);
       setTimeout(() => setIsJumping(false), 900);
       dialogueTimerRef.current = setTimeout(() => setDialogue(null), 3800);
       resetSleepTimer();
