@@ -413,7 +413,10 @@ const formatImageUrl = (url, width = 800) => {
   // ⚡ 優先讀取極速 WebP 格式（若伺服器上該書只有 .jpg，handleImgError 會在 0.01 秒內自動切換回 .jpg）
   if (strUrl.startsWith('assets/covers/')) {
     if (strUrl.endsWith('.jpg') || strUrl.endsWith('.jpeg')) {
-      return strUrl.replace(/\.(jpg|jpeg)$/i, '.webp');
+      strUrl = strUrl.replace(/\.(jpg|jpeg)$/i, '.webp');
+    }
+    if (strUrl.includes('carousel_') || strUrl.includes('promo_fb_banner') || strUrl.includes('1783336874823')) {
+      return `${strUrl}?v=20261114_07`;
     }
     return strUrl;
   }
@@ -4560,79 +4563,21 @@ function InkRippleEffect() {
   return null;
 }
 
-// --- 📜 關於社長（彭正雄先生剪影）---
+// --- 📜 關於社長（社長剪影｜保持「品牌故事」同款風格與完整原文）---
 function PresidentModal({ onClose, ui }) {
   const e = React.createElement;
-  const highlights = [
-    { label: '創立年份', value: '1971 年 8 月 1 日', desc: '深耕台灣學術出版逾半世紀' },
-    { label: '出版規模', value: '1,500～2,500+ 種', desc: '歷年印行文史哲典籍與叢刊' },
-    { label: '扶持後學', value: '300～400 餘種', desc: '貼錢承印各大學博碩士論文' },
-    { label: '治學精神', value: '每日工時 16 小時', desc: '一人兼任多職・親力親為送書' }
-  ];
-  const chivalryCases = [
-    {
-      tag: '現代詩史料',
-      title: '紀弦《千金之旅》',
-      text: '紀弦先生自美國來台攜來廿幾萬字雜文集，雖自知難銷、他社皆卻步，彭社長念及紀弦為台灣現代詩點火者，二話不說一口答應出版，為現代文學史留存珍貴史料。'
-    },
-    {
-      tag: '搶救名家詩評',
-      title: '現代詩評論專集三書',
-      text: '原出版社因銷路退縮停印，彭社長毅然接手印行蕭蕭編《詩儒的創造》（評亞弦）、《詩癡的刻痕》（評張默）、《人文風景鎸刻者》（評葉維廉）三部十餘萬字專著，不計工本只為留傳青史。'
-    },
-    {
-      tag: '四十年詩友',
-      title: '羅門詩集廿餘種與《燈屋》',
-      text: '為近四十年老友羅門出版二十餘本詩集、研討會論文及特殊作品《燈屋》，在友誼與學術的天秤上，從不以金錢衡量分量。'
-    },
-    {
-      tag: '培育新秀學人',
-      title: '三、四百種博碩士論文與全集',
-      text: '學校僅補助四千元印費亦甘願貼錢出版，學生取書後餘歸本社流通；如龔鵬程《四十自述》特誌謝忱、黃永武早年論文，及方祖榮《方祖榮全集》皆託付文史哲精印。'
-    }
-  ];
-  const fiveSecrets = [
-    {
-      num: '一',
-      title: '超人精力・日作十六小時',
-      text: '早年徹底效法拿破崙，每日僅睡四、五小時；花甲之年經友人苦勸始增為六小時。一人龍活虎抵得上兩人，業務做得既深又透。'
-    },
-    {
-      num: '二',
-      title: '精簡團隊・驚人出版量',
-      text: '歷年印行一千五百餘種（現今已達二千五百種），年出四十至七十種好書；僅憑三位幹部與妻子、女兒協力完成，效率堪稱出版界奇蹟。'
-    },
-    {
-      num: '三',
-      title: '一人多職・親騎機車送書',
-      text: '社長、總編輯、美工、會計、校對、發行、送貨一手包辦，常騎著摩托車載運大包新書往返書店。省下人事薪資，只為「有這筆錢，又可多出一些書」。'
-    },
-    {
-      num: '四',
-      title: '癡心一片・敬惜字紙',
-      text: '「每次出一本新書，捧在手裡，我真是歡喜。」三十坪小巷辦公室裡，秉持古人「敬惜字紙」之志與顏回「居陋巷而不改其樂」的苦幹精神。'
-    },
-    {
-      num: '五',
-      title: '節流亦開源・古籍立口碑',
-      text: '1979 年出版張仁青《應用文》長銷至今，一書利潤即可資助年印十本新書；《明版善本影印》與古籍專著更贏得台、美、日學界與海內外華僑長期肯定。'
-    }
-  ];
-  const mentors = ['吳相湘（台大教授）', '毛子水', '鄭騫', '高明', '嚴靈峰', '戴君仁', '夏德儀', '昌彼得', '林尹'];
-  const seriesList = ['《文史哲學集成》', '《文史哲學術叢刊》', '《台灣近百年研究叢刊》', '《南洋研究史料叢刊》', '《藝術叢刊》', '《中日外交論集》', '《明版善本影印》', '《李卓吾文集》', '《文史哲雜誌》'];
-
   return e('div', {
-    className: 'fixed inset-0 bg-black/65 backdrop-blur-md z-[150] flex justify-center items-center p-3 md:p-6',
+    className: 'fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8',
     onClick: onClose
   }, e('div', {
-    className: 'glass-modal w-full max-w-4xl max-h-[88vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80',
+    className: 'glass-modal w-full max-w-3xl max-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80',
     onClick: ev => ev.stopPropagation()
   },
-    // Header
+    // Header (same as 品牌故事)
     e('div', { className: 'glass-dark p-4 flex justify-between items-center border-b-2 border-[var(--primary-color)]' },
-      e('h2', { className: 'text-base md:text-lg font-serif font-black text-white flex items-center gap-2.5 tracking-wider' },
+      e('h2', { className: 'text-lg font-serif font-black text-white flex items-center gap-2.5 tracking-wider' },
         e(Icon, { name: 'User', size: 20, className: 'text-[var(--primary-color)]' }),
-        ' 關於社長｜社長剪影'
+        ' ', ui.menuPresident || '關於社長'
       ),
       e('button', {
         type: 'button',
@@ -4641,145 +4586,120 @@ function PresidentModal({ onClose, ui }) {
       }, e(Icon, { name: 'X', size: 14 }), ' ', ui.aboutCloseBtn || '關閉')
     ),
 
-    // Body
-    e('div', { className: 'flex-1 overflow-y-auto p-5 md:p-8 font-sans space-y-7 text-[var(--text-dark)]' },
-      // Hero Card with Photo + Title
-      e('div', { className: 'bg-[var(--bg-light)]/90 border border-[var(--border-color)] rounded-2xl p-5 md:p-6 flex flex-col md:flex-row gap-6 items-center shadow-sm' },
-        e('div', { className: 'w-full md:w-64 shrink-0' },
-          e('div', { className: 'rounded-xl overflow-hidden border-2 border-[var(--primary-color)]/40 shadow-md bg-stone-100' },
-            e('img', {
-              src: 'assets/president_photo.webp',
-              alt: '彭正雄社長伉儷於書架前合影',
-              className: 'w-full h-auto object-cover',
-              onError: ev => { ev.currentTarget.onerror = null; ev.currentTarget.src = 'assets/president_photo.jpg'; }
-            })
-          ),
-          e('p', { className: 'text-[11px] text-center opacity-75 mt-2 font-medium tracking-wide' }, '彭正雄社長伉儷於本社書庫前留影')
+    // Body (same typography & spacing as 品牌故事)
+    e('div', { className: 'flex-1 overflow-y-auto p-6 md:p-10 font-sans' },
+      e('div', { className: 'mb-6 text-center border-b pb-5 border-[var(--border-color)] space-y-2' },
+        e('div', { className: 'text-xs font-bold tracking-[0.2em] text-[var(--primary-color)]' }, '社長剪影 ‧ 文史哲出版社有限公司'),
+        e('h1', { className: 'text-2xl md:text-3xl font-serif font-black text-[var(--dark-color)] tracking-[0.06em]' }, '台灣出版界的奇人俠士'),
+        e('p', { className: 'text-sm font-bold text-[var(--text-dark)] opacity-85' }, '──記不平凡的台灣人彭正雄　◆ 無名氏〔卜乃夫〕撰 ◆　《青年日報》')
+      ),
+
+      e('div', { className: 'space-y-5 text-[var(--text-dark)] leading-relaxed text-justify text-sm md:text-base' },
+        // Photo floated / paired cleanly in classic editorial style
+        e('div', { className: 'md:float-right md:ml-6 mb-4 md:w-64 bg-[var(--bg-light)] p-2.5 rounded-2xl border border-[var(--border-color)] shadow-sm' },
+          e('img', {
+            src: 'assets/president_photo.webp',
+            alt: '彭正雄社長伉儷合影',
+            className: 'w-full h-auto rounded-xl object-cover',
+            onError: ev => { ev.currentTarget.onerror = null; ev.currentTarget.src = 'assets/president_photo.jpg'; }
+          }),
+          e('p', { className: 'text-[11px] text-center opacity-75 mt-2 font-medium' }, '彭正雄社長伉儷留影')
         ),
-        e('div', { className: 'flex-1 text-center md:text-left space-y-3' },
-          e('span', { className: 'inline-block px-3 py-1 rounded-full text-[11px] font-bold bg-[var(--primary-color)]/15 text-[var(--primary-color)] tracking-wider' }, '社長剪影・典藏紀實'),
-          e('h1', { className: 'text-2xl md:text-3xl font-serif font-black text-[var(--dark-color)] tracking-wide' }, '台灣出版界的奇人俠士'),
-          e('p', { className: 'text-sm md:text-base font-bold text-[var(--primary-color)]' }, '── 記不平凡的台灣人 彭正雄'),
-          e('p', { className: 'text-xs opacity-75' }, '◆ 無名氏〔卜乃夫〕撰 ◆　原刊於《青年日報》'),
-          e('p', { className: 'text-xs md:text-sm leading-relaxed opacity-90 text-justify' },
-            '照說，只有政界、軍界、大企業界，才會出現奇人、俠士；台灣出版界裡，卻有這麼一位敢反叛「賠錢的書不出版」清規戒律的出版家──只要是好書，賠錢他也肯出，堪稱既「奇」又「俠」。'
-          )
-        )
-      ),
 
-      // 4 KPI Highlights
-      e('div', { className: 'grid grid-cols-2 md:grid-cols-4 gap-3' },
-        highlights.map((h, i) => e('div', {
-          key: i,
-          className: 'bg-[var(--bg-light)]/70 border border-[var(--border-color)] rounded-xl p-3.5 text-center'
-        },
-          e('div', { className: 'text-[11px] opacity-70 font-bold mb-1' }, h.label),
-          e('div', { className: 'text-sm md:text-base font-black text-[var(--primary-color)] font-serif' }, h.value),
-          e('div', { className: 'text-[11px] opacity-80 mt-1 leading-snug' }, h.desc)
-        ))
-      ),
+        e('p', { className: 'drop-cap' },
+          '照說，只有政界、軍界、大企業界，才會出現奇人、俠士。出版界只是企業界的一種文化點綴，一件小擺設，那談得上有什麼奇人、俠士，像王永慶、張忠謀雖不能稱俠士，卻稱得上企業界的奇人。台灣出版業那裡會冒出王永慶這號人物！'
+        ),
+        e('p', null,
+          '中國出版業倒真出過奇人，他就是王雲五。他經營的商務印書館，是廿世紀中國文化重要保母之一。王公幾乎未進過學校，全靠自學，卻能通讀大英百科全書。後來他入閣任財政部長、行政院副院長。中文大學校長金耀基說他應是內閣總理之才，但王雲五這棵文化巨樹，只能生長在一千一百多萬平方公裡的大陸，四萬多平方公裡的台灣，出不了這種巨樹。'
+        ),
+        e('p', null,
+          '此文論奇人、俠士，不想涉及偉人或大名人，易言之，不欲指量的奇、俠，而是專指質的奇俠。比如說，你前後喝過一桶大海水了，算嘗過「海」味，但你只喝過一小酒杯大海水，也算得上嘗過海味了，這是以質類比。'
+        ),
+        e('div', { className: 'bg-[var(--bg-light)] p-5 rounded-2xl border-l-4 border-[var(--primary-color)] text-xs md:text-sm clear-both' },
+          '出版業也是商業，是做生意。俗話說：「賠錢的生意沒人做。」在出版家，則是賠錢的書不出版。彭正雄所以可稱奇人，因為有時他竟敢反叛上述出版商的清規戒律，賠錢的書他也肯出版，只要是好書。'
+        ),
 
-      // Pull Quote
-      e('blockquote', { className: 'glass-dark text-stone-100 rounded-2xl p-5 md:p-6 border-l-4 border-[var(--primary-color)] shadow-md' },
-        e('p', { className: 'text-base md:text-lg font-serif font-bold tracking-wide leading-relaxed' }, '「每次出一本新書，捧在手裡，我真是歡喜。」'),
-        e('footer', { className: 'text-xs text-stone-300 mt-2' }, '── 癡心一片，執著一人｜彭正雄社長對出版與好書的純粹熱愛')
-      ),
-
-      // Section 1: Chivalry Cases
-      e('div', { className: 'space-y-3' },
-        e('h3', { className: 'text-lg font-serif font-black text-[var(--dark-color)] flex items-center gap-2 border-b border-[var(--border-color)] pb-2' },
+        e('h3', { className: 'font-bold text-lg text-[var(--dark-color)] pt-2 flex items-center gap-2' },
           e(Icon, { name: 'BookOpen', size: 18, className: 'text-[var(--primary-color)]' }),
-          ' 俠情出版實錄：只問好書，不計盈虧'
+          ' 俠情出版實錄'
         ),
-        e('p', { className: 'text-xs md:text-sm leading-relaxed opacity-90 text-justify' },
-          '此文論奇人、俠士，不欲指「量」的奇俠，而是專指「質」的奇俠──就像喝過一小酒杯大海水，也算嚐過海味。出版業固然是商業，但彭正雄為文化、文學與學術研究者設想，台灣恐無第二人：'
+        e('p', null,
+          '隨便舉個例子。幾年前紀弦從美國來台，帶了一本雜文集《千金之旅》，有廿幾萬字，想出版，儘管他是鼎鼎大名，卻無出版社肯接受此書。因為它無甚特色，也算不上好書，肯定銷不好。此書找到彭正雄，後者一口答應，使他喜不自勝。彭明知此書是賠錢書，但念及紀弦是當年台灣現代詩點火者，文學史少不了他，坊間卻無一本專書提供他的史料。未來史家及研究者必感困難。他印此書，多少可解決一點困難。像他這種為文化、文學研究者設想的出版家，台灣恐無第二人，可謂既奇又俠。'
         ),
-        e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-3.5' },
-          chivalryCases.map((item, idx) => e('div', {
-            key: idx,
-            className: 'bg-[var(--bg-light)]/80 border border-[var(--border-color)] rounded-2xl p-4 space-y-1.5 hover:border-[var(--primary-color)]/60 transition'
-          },
-            e('span', { className: 'inline-block text-[10px] font-bold px-2 py-0.5 rounded bg-[var(--primary-color)]/15 text-[var(--primary-color)]' }, item.tag),
-            e('h4', { className: 'font-bold text-sm md:text-base text-[var(--dark-color)]' }, item.title),
-            e('p', { className: 'text-xs leading-relaxed opacity-85 text-justify' }, item.text)
-          ))
-        )
-      ),
+        e('p', null,
+          '再正式舉幾例。前些年，某出版社想請人編台灣現代詩名家的評論專集，首先印了李瑞騰編的「詩魔的蛻變」，是許多評論名詩人洛夫的論文彙編。但書上市後銷路不佳，出版商立刻打退堂鼓，預約好編寫的另外幾本名家評論彙編，決定不再出版。大概彭正雄在出版界也有些「奇」名，他們便找彭，彭又是滿口答應，前後印了蕭蕭編的「詩儒的創造」（評亞弦），「詩癡的刻痕」（評張默），「人文風景鎸刻者」（評葉維廉）這三種書，每種全有數十萬字，出版費自是不貲。雖三位詩人買了一些書，出版社還是賠了點錢，雖然所賠有限。但更大的耗費卻是人力。印此三書，所耗一定人工，形同義工，無分文報酬。彭的看法是，這三位詩人全是現代詩名家，作品流傳青史，未來海峽兩岸現代詩讀者、教授，研究學者，必視此三書為瑰寶，因為這以前尚無人出版過這些書。他能出這種好書，自感喜悅。'
+        ),
+        e('p', null,
+          '他對現代的詩盡力最多的是印了羅門廿餘本書，多為詩集，還有研討會上評論他的一些論文，甚至他的特殊作品「燈屋」也出版。他說，羅門是他近四十年老友，他重視這份友誼，更看重羅門被選為台灣十大名詩人之一。在友誼加學術的天秤上，金錢的力量應是較輕的。說穿了，這是他對台灣新詩界的俠情流露。'
+        ),
+        e('p', null,
+          '關於賠錢出好書，例子還有不少，限於篇幅，我不再提了。早在廿九年前，各大學的博士、碩士寫好研究論文，即使自費，許多出版社也不願替他們印。彭正雄知道後，總說：「拿來，文史哲願替你出。」這時學校只肯付四千元論文助印費，彭正雄並不計較，寧願再賠些錢，予以出版，學生取走一定的書，其餘舊文史哲。直至目前為止，這廿九年中，彭正雄印了三、四百種博士、碩士論文，即使他們有些人已開始出名，經濟較寬，付費較多，他仍給予一些照顧。像龔鵬程、黃永武這些知名學者，早年博士論文悉由文史哲印。龔鵬程寫「四十自述」時，還提到此事，對彭表示謝意。'
+        ),
+        e('p', null,
+          '除了博士、碩士論文外，台灣有些學者願意自費印著作或全集，包括一些非知名學者的文人，全找彭正雄幫忙，因為總善予照顧，定費較低廉，印刷也較精美，校對更較認真，像名教授方祖燊，雖在文史哲出版過十種書以上，但他的「方祖榮全燊」，仍願自費請文史哲出版，因為他們全敬重彭的敬業，無一般商人俗氣，最難得是，他有俠氣。大約他的俠氣、奇氣已名播四方，許多學者、名人全想請他出書。他似乎已變成有求必應的彌勒佛了。'
+        ),
 
-      // Section 2: Five Secrets
-      e('div', { className: 'space-y-3' },
-        e('h3', { className: 'text-lg font-serif font-black text-[var(--dark-color)] flex items-center gap-2 border-b border-[var(--border-color)] pb-2' },
+        e('h3', { className: 'font-bold text-lg text-[var(--dark-color)] pt-2 flex items-center gap-2' },
           e(Icon, { name: 'Compass', size: 18, className: 'text-[var(--primary-color)]' }),
-          ' 奇人五問：既非財主沈萬山，憑何堅持出好書？'
+          ' 奇人五問：憑什麼堅持願意賠錢出好書？'
         ),
-        e('div', { className: 'space-y-2.5' },
-          fiveSecrets.map((s, idx) => e('div', {
-            key: idx,
-            className: 'flex items-start gap-3.5 bg-[var(--bg-light)]/75 border border-[var(--border-color)] rounded-2xl p-4'
-          },
-            e('div', { className: 'w-8 h-8 rounded-full bg-[var(--primary-color)] text-white font-serif font-black text-sm flex items-center justify-center shrink-0 shadow-sm' }, s.num),
-            e('div', { className: 'space-y-1' },
-              e('h4', { className: 'font-bold text-sm md:text-base text-[var(--dark-color)]' }, s.title),
-              e('p', { className: 'text-xs md:text-sm leading-relaxed opacity-85 text-justify' }, s.text)
-            )
-          ))
-        )
-      ),
+        e('p', null, '人們可能覺得這是一個平常人，他既不是財主沈萬山，憑什麼能堅持願意賠錢出好書，我試提出下列幾點來解釋。'),
 
-      // Section 3: Origin, Mentors & Academic Legacy
-      e('div', { className: 'space-y-3' },
-        e('h3', { className: 'text-lg font-serif font-black text-[var(--dark-color)] flex items-center gap-2 border-b border-[var(--border-color)] pb-2' },
-          e(Icon, { name: 'Globe', size: 18, className: 'text-[var(--primary-color)]' }),
-          ' 白手起家、名師薰陶與學術版圖'
-        ),
-        e('div', { className: 'bg-[var(--bg-light)]/85 border border-[var(--border-color)] rounded-2xl p-5 space-y-4 text-xs md:text-sm leading-relaxed text-justify' },
+        e('div', { className: 'glass-dark text-stone-200 p-5 md:p-6 rounded-2xl space-y-4 text-xs md:text-sm leading-relaxed' },
           e('p', null,
-            '彭社長原為新竹市人，週歲遷居台北。雖出身高級商校，卻在著名的「學生書局」歷練近十年學得一身本事，更以極誠懇、寬宏、喜助人的品格廣結善緣。創業「文史哲出版社」之初，承故宮博物院領導、友好教授及影印、印刷友人協助，白手起家出版《明版善本影印》，不僅贏得國內、美國、日本學界重視，更讓後續古籍學術專作吸引海內外固定讀者。'
+            e('span', { className: 'text-[var(--primary-color)] font-bold' }, '（一）'),
+            '常和他接觸的友人，一定會覺得，他真是個奇人。三、四年前，他居然徹底學拿破崙，每天只睡五小時，有時還不到一小時。這二、三年（今年也已六十三歲了），經我們不斷苦勸，健康第一，他才開始睡六小時。那許多年，每日他工作十六小時，一個人生龍活虎抵得上兩人，這樣業務自然做得又深又透，也省了一些成本。'
           ),
-          e('div', null,
-            e('div', { className: 'font-bold text-[var(--dark-color)] mb-2' }, '請益名師與自修治學（亦是出版家，亦是學者）：'),
-            e('div', { className: 'flex flex-wrap gap-1.5' },
-              mentors.map((m, i) => e('span', {
-                key: i,
-                className: 'px-2.5 py-1 rounded-full text-[11px] font-bold bg-[var(--primary-color)]/10 text-[var(--dark-color)] border border-[var(--primary-color)]/25'
-              }, m))
-            ),
-            e('p', { className: 'mt-2 opacity-85' }, '在諸位大師薰陶指導下通曉版本學與古籍整理，並親自主辦《文史哲雜誌》，撰有〈台灣地區古籍整理及其貢獻〉等論文。')
+          e('p', null,
+            e('span', { className: 'text-[var(--primary-color)] font-bold' }, '（二）'),
+            '卅年來，他共印了一五〇〇種書，倉庫現存的尚有一二〇〇種，每年印四十種左右，每月三種半。近十年來，每年約出書七十種左右。據我所知，大陸有些相當大的出版社，每年只出一百種書，人員卻有百人之多。（註）在台灣每年如印四十種書，人手也得七、八位，但文史哲卻只有三名幹員，彭與妻子、女兒。這樣少的人，印這麼多的書，在中國恐怕要入「金氏紀錄」了，如果中國有「金氏紀錄」。'
           ),
-          e('div', null,
-            e('div', { className: 'font-bold text-[var(--dark-color)] mb-2' }, '代表學術叢書與經典印行：'),
-            e('div', { className: 'flex flex-wrap gap-1.5' },
-              seriesList.map((sr, i) => e('span', {
-                key: i,
-                className: 'px-2.5 py-1 rounded-lg text-[11px] font-bold bg-stone-500/10 border border-[var(--border-color)]'
-              }, sr))
-            )
+          e('p', null,
+            e('span', { className: 'text-[var(--primary-color)] font-bold' }, '（三）'),
+            '像文史哲這樣大的出版社，一般總有社長、總編輯、美工、會計、校對、發行、送貨、雜工，但這許多職務，彭一個人包下，他幾乎變成魔術化身的人物。我每見他騎著摩托車，把一大包又一大包新書送往書店，不僅佩服他經營的智慧，更欣賞他的含辛茹苦的大禹精神。正因為他能身兼數職，自然又省下一些開銷。我們這些朋友見他太辛苦，都勸他多用一個人。他說，多用一個人，每月總要支付二、三萬元，一年下來，要幾十萬，有這筆錢，我又可多出一些書了。'
+          ),
+          e('p', null,
+            e('span', { className: 'text-[var(--primary-color)] font-bold' }, '（四）'),
+            '上面這段話，倒揭穿了他的靈魂秘密。為什麼他這樣愛印書、印好書？十幾年前，某大報報導他的事蹟，標題「癡心一片，執著一人。」他對書確是一片癡心，他告訴我：「每次出一本新書，捧在手裡，我真是歡喜。」也難怪，人類所以能從野獸進步為文明人、文化人，全靠書嘛，古人貼這樣小標語：「敬惜字紙！」也是這個意思。印書既是彭的幸福，也是他活潑生命力的泉源，這一門專業，他當然做得很出色了。只要想想，印書如此之多的大出版社，辦公室卻小得可憐，只有卅坪左右，又是在一個小巷子裡。他這種苦幹精神，真如孔子讚顏回，說他「居陋巷，人不堪其憂，回也不改其樂。」'
+          ),
+          e('p', null,
+            e('span', { className: 'text-[var(--primary-color)] font-bold' }, '（五）'),
+            '努力節約成本只是「節流」，還得「開源」才能賺點錢。一九七九年出版的張仁青撰「應用文」，一直暢銷到今天。此書一年的利潤就可以助彭一年印十本左右的書，有的書被學校選為教材，也銷得不錯。同樣重要的是：他出的那些文史哲古籍學術專著，由於具有一定價值，早獲得口碑，在國內外也爭取到不少固定的客戶，因而獲得一些利潤。不過，談到這些古籍，此事就須從頭說起。'
           )
+        ),
+
+        e('h3', { className: 'font-bold text-lg text-[var(--dark-color)] pt-2 flex items-center gap-2' },
+          e(Icon, { name: 'Globe', size: 18, className: 'text-[var(--primary-color)]' }),
+          ' 白手起家與名師薰陶'
+        ),
+        e('p', null,
+          '彭原是新竹市人，週歲就遷居台北。他的學歷並不高，畢業於高級商校，相當於高中水平。可是，他在著名的學生書局工作近十年，卻學得一身本事，更重要的是，因為他為人極誠懇，器度寬宏，又喜助人為樂，便在各方面建立很好的人脈關係。當初他開業辦「文史哲出版社」，由於故宮博物院領導及友好教授支持，再加影印、印刷兩方面的友人協助，他赤手空拳，白手起家，便出版了一套「明版善本影印」的書，不只贏得國內、美國、日本學術界的重視，此後繼印的古籍學術專作，也吸引他們漸成為固定客戶。'
+        ),
+        e('p', null,
+          '到現在為止，他出版的學術專著，最重要的是「文史哲學集成」多種，其次是「文史哲學術叢刊」、「台灣近百年研究叢刊」、「南洋研究史料叢刊」、「藝術叢刊」等多種。像「南洋研究史料叢刊」這種專著，其他出版社絕不會印，但他認為，南洋華僑有數百萬，他們當中總有些人要閱讀，甚至研究此書。又如他目前不斷印「中日外交論集」，日本及各國國際外交學者也要看此書。早年他陸續影印殷商篆刻等史料，中國及日本許多篆刻家（包括藝術家）也視為珍寶。有一回，我在他社裡見到古本明代「李卓吾文集」，他笑說：「這些明代影印本早賣光了，剩下這一兩本也保不住了。」可見真有價值的書，總不愁沒人讀的。'
+        ),
+        e('p', null,
+          '彭從事文史哲出版並不容易，首先他自己要懂得古籍。為此，前後他師事過台大教授吳相湘，又多次請教毛子水、鄭騫、高明大師及嚴靈峰、戴君仁、夏德儀、昌彼得、林尹等教授，這些學者全願指導，他這才能馳騁古籍，通版本學及其他基礎學問。在名師傳授、薰陶下，他自己也學識豐富，業有專長了。他主辦過「文史哲雜誌」，也寫過論文「台灣地區古籍整理及其貢獻」等數篇。他不只是出版家，也是學者。當然，最大的貢獻是他創辦台灣最重要的文史哲古籍出版機構，而且以花甲之年，仍為文化、出版理想奉獻心力。'
+        ),
+        e('div', { className: 'bg-[var(--bg-light)] p-5 rounded-2xl border-l-4 border-[var(--primary-color)] text-xs md:text-sm space-y-2' },
+          e('p', null, '今年八月一日是文史哲成立卅週年，我們一些文友特舉辦小小餐會，慶祝彭正雄先生的事業成功，並對他的道德、智慧、堅強的意志表示敬意。'),
+          e('p', null, '大家希望我寫一篇蕪文，介紹正雄先生事跡，匆匆草成，尚乞方家指正。'),
+          e('p', { className: 'text-xs opacity-75 pt-1' }, '（註）這些出版社編輯雖多，但大半是掛名，不一定做實際工作。')
         )
       ),
 
-      // Section 4: Epilogue
-      e('div', { className: 'bg-[var(--primary-color)]/10 border border-[var(--primary-color)]/30 rounded-2xl p-4 md:p-5 text-xs md:text-sm leading-relaxed space-y-2' },
-        e('p', { className: 'font-bold text-[var(--dark-color)]' }, '致敬文史哲立社紀念：'),
-        e('p', { className: 'opacity-90 text-justify' },
-          '「今年八月一日是文史哲成立卅週年，我們一些文友特舉辦小小餐會，慶祝彭正雄先生的事業成功，並對他的道德、智慧、堅強的意志表示敬意。」── 儘管以花甲之年一路走來，他仍為文化與出版理想奉獻心力。'
-        ),
-        e('p', { className: 'text-[11px] opacity-70 pt-1' }, '（原註：本文所提及他社掛名編輯多不做實際工作，更顯文史哲全社上下親力親為之可貴。）')
-      ),
-
-      // Footer Close
-      e('div', { className: 'pt-2 text-center' },
+      e('div', { className: 'mt-8 text-center' },
         e('button', {
           type: 'button',
           onClick: onClose,
-          className: 'bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-8 py-2.5 rounded-full font-bold shadow transition-colors text-sm'
+          className: 'bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-7 py-2.5 rounded-full font-bold shadow transition-colors text-sm'
         }, ui.aboutCloseBtn || '關閉')
       )
     )
   ));
 }
 
-// --- 📍 聯繫我們（聯絡本社・交通地圖・函購辦法）---
+// --- 📍 聯繫我們（聯絡本社｜保持「品牌故事」同款風格與原有文字）---
 function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
   const e = React.createElement;
   const address = ui.footerAddress || '10074 台北市羅斯福路一段七十二巷四號';
@@ -4791,17 +4711,17 @@ function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
   const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('台北市中正區羅斯福路一段72巷4號 文史哲出版社');
 
   return e('div', {
-    className: 'fixed inset-0 bg-black/65 backdrop-blur-md z-[150] flex justify-center items-center p-3 md:p-6',
+    className: 'fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8',
     onClick: onClose
   }, e('div', {
-    className: 'glass-modal w-full max-w-4xl max-h-[88vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80',
+    className: 'glass-modal w-full max-w-3xl max-h-[85vh] rounded-3xl shadow-2xl flex flex-col overflow-hidden animate-in border border-white/80',
     onClick: ev => ev.stopPropagation()
   },
-    // Header
+    // Header (same as 品牌故事)
     e('div', { className: 'glass-dark p-4 flex justify-between items-center border-b-2 border-[var(--primary-color)]' },
-      e('h2', { className: 'text-base md:text-lg font-serif font-black text-white flex items-center gap-2.5 tracking-wider' },
+      e('h2', { className: 'text-lg font-serif font-black text-white flex items-center gap-2.5 tracking-wider' },
         e(Icon, { name: 'MessageCircle', size: 20, className: 'text-[var(--primary-color)]' }),
-        ' 聯繫我們｜聯絡本社與函購指南'
+        ' ', ui.menuContact || '聯繫我們'
       ),
       e('button', {
         type: 'button',
@@ -4810,185 +4730,136 @@ function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
       }, e(Icon, { name: 'X', size: 14 }), ' ', ui.aboutCloseBtn || '關閉')
     ),
 
-    // Body
-    e('div', { className: 'flex-1 overflow-y-auto p-5 md:p-8 font-sans space-y-6 text-[var(--text-dark)]' },
-      // Brand Intro Bar
-      e('div', { className: 'text-center space-y-1.5 border-b border-[var(--border-color)] pb-4' },
-        e('h1', { className: 'text-2xl md:text-3xl font-serif font-black text-[var(--dark-color)] tracking-widest' }, '文史哲出版社有限公司'),
-        e('p', { className: 'text-xs md:text-sm opacity-80' }, '創立於 1971 年・歡迎親臨本社門市翻閱典籍、來電洽詢或郵政劃撥函購')
+    // Body (same typography & spacing as 品牌故事)
+    e('div', { className: 'flex-1 overflow-y-auto p-6 md:p-10 font-sans' },
+      e('div', { className: 'mb-6 text-center border-b pb-4 border-[var(--border-color)] space-y-1' },
+        e('div', { className: 'text-xs font-bold tracking-[0.2em] text-[var(--primary-color)]' }, '聯絡本社'),
+        e('h1', { className: 'text-2xl md:text-3xl font-sans font-black text-[var(--dark-color)] tracking-[0.08em]' }, ui.frontendName || '✨文史哲出版社')
       ),
 
-      // Contact Info Cards Grid
-      e('div', { className: 'grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3' },
-        // Address
-        e('div', { className: 'bg-[var(--bg-light)]/85 border border-[var(--border-color)] rounded-2xl p-4 flex flex-col justify-between gap-2' },
-          e('div', { className: 'flex items-center gap-2 text-xs font-bold text-[var(--primary-color)]' },
-            e(Icon, { name: 'MapPin', size: 15 }), ' 本社地址'
-          ),
-          e('div', { className: 'text-sm font-bold text-[var(--dark-color)] leading-snug' }, address),
-          e('div', { className: 'flex gap-2 pt-1' },
-            e('a', {
-              href: mapsUrl,
-              target: '_blank',
-              rel: 'noopener noreferrer',
-              className: 'text-[11px] font-bold px-2.5 py-1 rounded-full bg-[var(--primary-color)]/15 text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white transition'
-            }, 'Google 地圖導航 ↗'),
-            e('button', {
-              type: 'button',
-              onClick: () => onCopy('地址', address),
-              className: 'text-[11px] font-bold px-2.5 py-1 rounded-full border border-[var(--border-color)] hover:border-[var(--primary-color)] transition'
-            }, '複製')
-          )
-        ),
-
-        // Phone & Fax
-        e('div', { className: 'bg-[var(--bg-light)]/85 border border-[var(--border-color)] rounded-2xl p-4 flex flex-col justify-between gap-2' },
-          e('div', { className: 'flex items-center gap-2 text-xs font-bold text-[var(--primary-color)]' },
-            e(Icon, { name: 'Phone', size: 15 }), ' 電話與傳真'
-          ),
-          e('div', { className: 'space-y-1' },
-            e('a', {
-              href: 'tel:+886223511028',
-              className: 'block text-sm font-black text-[var(--dark-color)] hover:text-[var(--primary-color)] transition'
-            }, phone),
-            e('div', { className: 'text-xs opacity-80 flex items-center gap-1.5' },
-              e(Icon, { name: 'Printer', size: 13 }), ' ', fax
-            )
-          ),
-          e('div', { className: 'text-[11px] opacity-75 flex items-center gap-1.5 pt-1' },
-            e(Icon, { name: 'Clock', size: 12 }), ' ', hours
-          )
-        ),
-
-        // Email & Postal Transfer
-        e('div', { className: 'bg-[var(--primary-color)]/10 border border-[var(--primary-color)]/40 rounded-2xl p-4 flex flex-col justify-between gap-2 sm:col-span-2 lg:col-span-1' },
-          e('div', { className: 'flex items-center gap-2 text-xs font-bold text-[var(--primary-color)]' },
-            e(Icon, { name: 'CreditCard', size: 15 }), ' 信箱與郵政劃撥'
-          ),
-          e('div', { className: 'space-y-1.5' },
-            e('a', {
-              href: `mailto:${email}`,
-              className: 'inline-flex items-center gap-1.5 text-sm font-bold text-[var(--dark-color)] hover:text-[var(--primary-color)] transition break-all'
-            }, e(Icon, { name: 'Mail', size: 14 }), ' ', email),
-            e('div', { className: 'text-xs font-black text-[var(--dark-color)] bg-white/50 dark:bg-black/20 px-2.5 py-1.5 rounded-lg border border-[var(--primary-color)]/25' }, transfer)
-          ),
-          e('div', { className: 'flex gap-2 pt-1' },
-            e('button', {
-              type: 'button',
-              onClick: () => onCopy('劃撥帳號', '05128812'),
-              className: 'text-[11px] font-bold px-2.5 py-1 rounded-full bg-[var(--primary-color)] text-white hover:bg-[var(--dark-color)] transition'
-            }, '複製劃撥帳號 05128812'),
+      e('div', { className: 'space-y-6 text-[var(--text-dark)] leading-relaxed text-justify text-sm md:text-base' },
+        // 基本聯絡資訊
+        e('div', { className: 'bg-[var(--bg-light)] p-5 rounded-2xl border-l-4 border-[var(--primary-color)] space-y-2.5 text-xs md:text-sm' },
+          e('div', { className: 'flex flex-wrap items-center gap-x-3 gap-y-1' },
+            e('strong', { className: 'text-[var(--dark-color)]' }, '本公司電子信箱：'),
+            e('a', { href: `mailto:${email}`, className: 'text-[var(--primary-color)] font-bold hover:underline' }, email),
             e('button', {
               type: 'button',
               onClick: () => onCopy('電子信箱', email),
-              className: 'text-[11px] font-bold px-2.5 py-1 rounded-full border border-[var(--border-color)] hover:border-[var(--primary-color)] transition'
-            }, '複製信箱')
-          )
-        )
-      ),
-
-      // Map & Transit Section
-      e('div', { className: 'bg-[var(--bg-light)]/80 border border-[var(--border-color)] rounded-2xl p-5 space-y-4' },
-        e('h3', { className: 'text-base md:text-lg font-serif font-black text-[var(--dark-color)] flex items-center gap-2 border-b border-[var(--border-color)] pb-2' },
-          e(Icon, { name: 'MapPin', size: 18, className: 'text-[var(--primary-color)]' }),
-          ' 本社位置圖與交通指引'
-        ),
-        e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-5 items-center' },
-          // Crisp SVG Street Map (faithful to original map layout)
-          e('div', { className: 'rounded-xl overflow-hidden border border-[var(--border-color)] bg-[#f4efe4] p-2 shadow-inner' },
-            e('svg', { viewBox: '0 0 420 260', className: 'w-full h-auto', role: 'img', 'aria-label': '文史哲出版社位置簡圖' },
-              e('rect', { x: 0, y: 0, width: 420, height: 260, fill: '#f3ede0', rx: 8 }),
-              // Vertical streets: Heping W/E Rd, Fuzhou/Chaozhou St, Lane 72, Ningbo W/E St
-              e('rect', { x: 26, y: 8, width: 28, height: 244, fill: '#c8d6b9' }),
-              e('rect', { x: 96, y: 8, width: 24, height: 244, fill: '#c8d6b9' }),
-              e('rect', { x: 168, y: 8, width: 22, height: 175, fill: '#e8b667' }),
-              e('rect', { x: 356, y: 8, width: 26, height: 244, fill: '#c8d6b9' }),
-              // Horizontal street: Roosevelt Rd Sec 1
-              e('rect', { x: 8, y: 172, width: 404, height: 28, fill: '#9fbe93' }),
-              // Street Labels
-              e('text', { x: 40, y: 78, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '和平西路'),
-              e('text', { x: 40, y: 222, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '和平東路'),
-              e('text', { x: 108, y: 78, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '福州街'),
-              e('text', { x: 108, y: 222, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '潮州街'),
-              e('text', { x: 369, y: 78, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '寧波西街'),
-              e('text', { x: 369, y: 222, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '寧波東街'),
-              e('text', { x: 240, y: 190, fill: '#22331f', fontSize: 13, fontWeight: 'bold', textAnchor: 'middle', letterSpacing: 4 }, '羅斯福路一段'),
-              e('text', { x: 179, y: 126, fill: '#5b3c11', fontSize: 11, fontWeight: 'bold', textAnchor: 'middle' }, '72巷'),
-              // Publisher Marker Box
-              e('rect', { x: 204, y: 48, width: 112, height: 64, rx: 10, fill: '#fff3a8', stroke: '#b83b2b', strokeWidth: 2.5 }),
-              e('text', { x: 260, y: 77, fill: '#b83b2b', fontSize: 18, fontWeight: '900', textAnchor: 'middle' }, '本社'),
-              e('text', { x: 260, y: 98, fill: '#4a3f35', fontSize: 11, fontWeight: 'bold', textAnchor: 'middle' }, '72巷4號'),
-              e('line', { x1: 190, y1: 80, x2: 204, y2: 80, stroke: '#b83b2b', strokeWidth: 2, strokeDasharray: '3 2' }),
-              // MRT Hint
-              e('rect', { x: 204, y: 214, width: 138, height: 28, rx: 14, fill: '#2563eb' }),
-              e('text', { x: 273, y: 232, fill: '#ffffff', fontSize: 11, fontWeight: 'bold', textAnchor: 'middle' }, '捷運中正紀念堂站 2號出口')
-            )
+              className: 'text-[11px] px-2 py-0.5 rounded-full border border-[var(--border-color)] hover:border-[var(--primary-color)] transition'
+            }, '複製')
           ),
-          // Transit Text Details
-          e('div', { className: 'space-y-3 text-xs md:text-sm leading-relaxed' },
-            e('div', { className: 'p-3.5 rounded-xl bg-blue-500/10 border border-blue-500/25 space-y-1' },
-              e('div', { className: 'font-bold text-[var(--dark-color)]' }, '🚇 台北捷運'),
-              e('p', { className: 'opacity-90' }, '搭乘淡水信義線／松山新店線至「中正紀念堂站」，由 2 號（南門市場）出口出站，往前步行約 3 分鐘即達羅斯福路一段 72 巷。')
-            ),
-            e('div', { className: 'p-3.5 rounded-xl bg-amber-500/10 border border-amber-500/25 space-y-1' },
-              e('div', { className: 'font-bold text-[var(--dark-color)]' }, '🚌 聯營公車（站名：南門市場）'),
-              e('p', { className: 'opacity-90' }, '可搭乘 0東、15、18、208、236、251、252、644、648、660 等路線於「南門市場」站下車，步行約 2～3 分鐘。')
-            ),
+          e('div', { className: 'flex flex-wrap items-center gap-x-3 gap-y-1' },
+            e('strong', { className: 'text-[var(--dark-color)]' }, '地址：'),
+            e('span', null, address),
             e('a', {
               href: mapsUrl,
               target: '_blank',
               rel: 'noopener noreferrer',
-              className: 'inline-flex items-center gap-2 bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-4 py-2 rounded-full text-xs font-bold shadow transition'
-            }, e(Icon, { name: 'MapPin', size: 14 }), ' 開啟 Google 地圖實景導航')
-          )
-        )
-      ),
-
-      // Mail Order Policy Section (Preserving Original Rules)
-      e('div', { className: 'bg-[var(--bg-light)]/80 border border-[var(--border-color)] rounded-2xl p-5 space-y-4' },
-        e('h3', { className: 'text-base md:text-lg font-serif font-black text-[var(--dark-color)] flex items-center gap-2 border-b border-[var(--border-color)] pb-2' },
-          e(Icon, { name: 'FileText', size: 18, className: 'text-[var(--primary-color)]' }),
-          ' 函購辦法與訂購須知'
-        ),
-        e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 text-xs md:text-sm leading-relaxed' },
-          e('div', { className: 'space-y-2' },
-            e('h4', { className: 'font-bold text-[var(--primary-color)] flex items-center gap-1.5' },
-              e(Icon, { name: 'CheckCircle', size: 15 }), ' 國內讀者郵購辦法'
-            ),
-            e('ul', { className: 'list-disc list-inside space-y-1.5 opacity-90' },
-              e('li', null, '本目錄定價均為新臺幣售價。'),
-              e('li', null, '讀者郵購圖書，務請正楷書寫收件人姓名、地址、郵遞區號、聯絡電話及書碼、書名、作者、冊數，以免誤寄。'),
-              e('li', null, '書款請存入當地郵局郵政劃撥儲金「05128812 號 彭正雄帳戶」，或直接於本網站「書包」線上結帳下單。'),
-              e('li', null, '國內郵購未滿新台幣 600 元，請另加 60 元郵資（滿 600 元免郵資）。'),
-              e('li', null, '圖書寄出後，除缺頁或印裝不良者外，恕不退換。'),
-              e('li', null, '機關、團體、學校、同業大批訂購，另有優待折扣，歡迎來電或來信洽詢。')
-            )
+              className: 'text-[11px] font-bold text-[var(--primary-color)] hover:underline'
+            }, 'Google 地圖 ↗')
           ),
-          e('div', { className: 'space-y-2' },
-            e('h4', { className: 'font-bold text-[var(--primary-color)] flex items-center gap-1.5' },
-              e(Icon, { name: 'Globe', size: 15 }), ' 海外讀者函購與目錄說明'
+          e('div', { className: 'flex flex-wrap items-center gap-x-6 gap-y-1' },
+            e('span', null, e('strong', { className: 'text-[var(--dark-color)]' }, '電話：'),
+              e('a', { href: 'tel:+886223511028', className: 'hover:text-[var(--primary-color)] font-bold' }, phone)
             ),
-            e('ul', { className: 'list-disc list-inside space-y-1.5 opacity-90' },
-              e('li', null, '海外讀者函購，照書價另加郵費，依當時銀行掛牌匯率開寄美金或港幣支票，掛號郵寄本社；亦歡迎先行來信（lapentw@gmail.com）確認國際郵資與匯款方式。'),
-              e('li', null, '本目錄所列價格如有變動，概以變動後之書價為準。'),
-              e('li', null, '紙本目錄中「著者之後、冊次之前」的圓圈數字，代表該書出版年份。'),
-              e('li', null, '本社全書目亦可於本網站「書籍檢索」即時查詢並加入書包訂購。')
+            e('span', null, e('strong', { className: 'text-[var(--dark-color)]' }, '傳真：'), fax.replace(/^Fax:\s*/i, ''))
+          ),
+          e('div', { className: 'flex flex-wrap items-center gap-x-3 gap-y-1' },
+            e('span', null, e('strong', { className: 'text-[var(--dark-color)]' }, '營業時間：'), hours.replace(/^營業時間：\s*/, ''))
+          ),
+          e('div', { className: 'flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 border-t border-[var(--border-color)]/60' },
+            e('strong', { className: 'text-[var(--primary-color)]' }, transfer),
+            e('button', {
+              type: 'button',
+              onClick: () => onCopy('劃撥帳號', '05128812'),
+              className: 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[var(--primary-color)]/15 text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white transition'
+            }, '複製帳號 05128812')
+          )
+        ),
+
+        // 交通位置與地圖
+        e('div', null,
+          e('h3', { className: 'font-bold text-lg text-[var(--dark-color)] mb-3 flex items-center gap-2' },
+            e(Icon, { name: 'MapPin', size: 18, className: 'text-[var(--primary-color)]' }),
+            ' 交通位置與地圖指引'
+          ),
+          e('div', { className: 'grid grid-cols-1 md:grid-cols-2 gap-4 items-center' },
+            e('div', { className: 'rounded-2xl overflow-hidden border border-[var(--border-color)] bg-[#f4efe4] p-2 shadow-inner' },
+              e('svg', { viewBox: '0 0 420 260', className: 'w-full h-auto', role: 'img', 'aria-label': '文史哲出版社位置簡圖' },
+                e('rect', { x: 0, y: 0, width: 420, height: 260, fill: '#f3ede0', rx: 8 }),
+                e('rect', { x: 26, y: 8, width: 28, height: 244, fill: '#c8d6b9' }),
+                e('rect', { x: 96, y: 8, width: 24, height: 244, fill: '#c8d6b9' }),
+                e('rect', { x: 168, y: 8, width: 22, height: 175, fill: '#e8b667' }),
+                e('rect', { x: 356, y: 8, width: 26, height: 244, fill: '#c8d6b9' }),
+                e('rect', { x: 8, y: 172, width: 404, height: 28, fill: '#9fbe93' }),
+                e('text', { x: 40, y: 78, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '和平西路'),
+                e('text', { x: 40, y: 222, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '和平東路'),
+                e('text', { x: 108, y: 78, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '福州街'),
+                e('text', { x: 108, y: 222, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '潮州街'),
+                e('text', { x: 369, y: 78, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '寧波西街'),
+                e('text', { x: 369, y: 222, fill: '#3a352b', fontSize: 12, fontWeight: 'bold', textAnchor: 'middle', style: { writingMode: 'tb' } }, '寧波東街'),
+                e('text', { x: 240, y: 190, fill: '#22331f', fontSize: 13, fontWeight: 'bold', textAnchor: 'middle', letterSpacing: 4 }, '羅斯福路一段'),
+                e('text', { x: 179, y: 126, fill: '#5b3c11', fontSize: 11, fontWeight: 'bold', textAnchor: 'middle' }, '72巷'),
+                e('rect', { x: 204, y: 48, width: 112, height: 64, rx: 10, fill: '#fff3a8', stroke: '#b83b2b', strokeWidth: 2.5 }),
+                e('text', { x: 260, y: 77, fill: '#b83b2b', fontSize: 18, fontWeight: '900', textAnchor: 'middle' }, '本社'),
+                e('text', { x: 260, y: 98, fill: '#4a3f35', fontSize: 11, fontWeight: 'bold', textAnchor: 'middle' }, '72巷4號'),
+                e('line', { x1: 190, y1: 80, x2: 204, y2: 80, stroke: '#b83b2b', strokeWidth: 2, strokeDasharray: '3 2' }),
+                e('rect', { x: 204, y: 214, width: 138, height: 28, rx: 14, fill: '#2563eb' }),
+                e('text', { x: 273, y: 232, fill: '#ffffff', fontSize: 11, fontWeight: 'bold', textAnchor: 'middle' }, '捷運中正紀念堂站 2號出口')
+              )
+            ),
+            e('div', { className: 'space-y-2.5 text-xs md:text-sm leading-relaxed' },
+              e('p', null, e('strong', { className: 'text-[var(--dark-color)]' }, '站名：'), '南門市場'),
+              e('p', null, e('strong', { className: 'text-[var(--dark-color)]' }, '公車如下：'), '0東、15、18、208、236、251、252、644、648、660 等線。'),
+              e('p', null, e('strong', { className: 'text-[var(--dark-color)]' }, '捷運：'), '捷運中正紀念堂站 2 號南門市場出口，往前走約三分鐘。'),
+              e('div', { className: 'pt-1' },
+                e('a', {
+                  href: mapsUrl,
+                  target: '_blank',
+                  rel: 'noopener noreferrer',
+                  className: 'inline-flex items-center gap-1.5 text-xs font-bold text-[var(--primary-color)] hover:underline'
+                }, e(Icon, { name: 'MapPin', size: 14 }), ' 開啟 Google 地圖導航 ↗')
+              )
+            )
+          )
+        ),
+
+        // 函購辦法 (same glass-dark card style as 品牌故事的代表作家與學術著作)
+        e('div', { className: 'pt-4 border-t border-[var(--border-color)]/60' },
+          e('h3', { className: 'font-bold text-lg text-[var(--dark-color)] mb-3 flex items-center gap-2' },
+            e(Icon, { name: 'FileText', size: 18, className: 'text-[var(--primary-color)]' }),
+            ' 函購辦法'
+          ),
+          e('div', { className: 'glass-dark text-stone-200 p-5 rounded-2xl space-y-3 text-xs md:text-sm leading-relaxed' },
+            e('ul', { className: 'list-disc list-inside space-y-2' },
+              e('li', null, '本目錄定價為新臺幣售價。'),
+              e('li', null, '讀者郵購圖書，務請正楷書寫收件人姓名、地址、郵遞區號及電腦書號、書名、作者、冊數以免誤寄。書款請存入當地郵局郵政劃撥儲金 05128812 號彭正雄帳戶。'),
+              e('li', null, '圖書寄出後，除缺頁或印裝不良者外，恕不退換。'),
+              e('li', null, '國內郵購未滿六百元請另加六十元郵資。'),
+              e('li', null, '機關團體學校同業大批訂購，另有優待折扣。'),
+              e('li', null, '海外讀者函購，照書價另加郵費，依當時銀行掛牌匯率開寄美金或港幣支票，掛號郵寄本社。'),
+              e('li', null, '本目錄所列價格，如有變動，概以變動後之書價為準。'),
+              e('li', null, '著者之後，冊次之前，圓圈數字代表出版年份。')
+            ),
+            e('div', { className: 'pt-2 border-t border-white/10 text-stone-300 text-xs flex flex-wrap justify-between gap-2' },
+              e('span', null, '10074 中華民國臺北市羅斯福路一段 72 巷四號'),
+              e('span', null, 'TEL：886-2-2351-1028 ・ 886-2-2394-1775')
             )
           )
         )
       ),
 
-      // Action Buttons
-      e('div', { className: 'pt-2 flex flex-wrap justify-center gap-3' },
+      e('div', { className: 'mt-8 flex flex-wrap justify-center gap-3' },
         e('button', {
           type: 'button',
           onClick: onOpenCS,
-          className: 'bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-6 py-2.5 rounded-full font-bold shadow transition-colors text-sm flex items-center gap-2'
-        }, e(Icon, { name: 'MessageCircle', size: 16 }), ' 立即線上留言／客服洽詢'),
+          className: 'bg-[var(--primary-color)] hover:bg-[var(--dark-color)] text-white px-7 py-2.5 rounded-full font-bold shadow transition-colors text-sm flex items-center gap-2'
+        }, e(Icon, { name: 'MessageCircle', size: 16 }), ' 線上客服與建議'),
         e('button', {
           type: 'button',
           onClick: onClose,
-          className: 'border border-[var(--border-color)] hover:border-[var(--primary-color)] px-6 py-2.5 rounded-full font-bold transition-colors text-sm'
+          className: 'border border-[var(--border-color)] hover:border-[var(--primary-color)] px-7 py-2.5 rounded-full font-bold transition-colors text-sm'
         }, ui.aboutCloseBtn || '關閉')
       )
     )
