@@ -1,0 +1,26 @@
+{
+  "name": "文史哲出版社官方網站｜1971年創立・學術典籍書庫",
+  "short_name": "文史哲書庫",
+  "description": "創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學與人文社會科學之學術論著出版。全館典藏超過2,600種專業學術圖書。",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait-primary",
+  "background_color": "#FAF6F0",
+  "theme_color": "#8C5A2B",
+  "lang": "zh-Hant",
+  "icons": [
+    {
+      "src": "assets/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "assets/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}

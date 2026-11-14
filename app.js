@@ -938,6 +938,42 @@ function App() {
     }
   });
   const [isRecentOpen, setIsRecentOpen] = useState(false);
+  const [recentTab, setRecentTab] = useState('recent');
+  const [wishlist, setWishlist] = useState(() => {
+    try {
+      const saved = localStorage.getItem('lapen_wishlist');
+      return saved ? JSON.parse(saved) : [];
+    } catch(e) {
+      return [];
+    }
+  });
+  const isWishlisted = id => wishlist.some(x => String(x.id) === String(id));
+  const toggleWishlist = (book, ev) => {
+    if (ev && ev.stopPropagation) ev.stopPropagation();
+    if (!book || !book.id) return;
+    const bid = String(book.id).trim();
+    const exists = wishlist.some(x => String(x.id) === bid);
+    let next;
+    if (exists) {
+      next = wishlist.filter(x => String(x.id) !== bid);
+      showMsg(`已從「我的收藏」移除《${book.title}》`);
+    } else {
+      const coverSrc = book.localCover || book.cover || `assets/covers/${bid}.webp`;
+      const item = {
+        id: bid,
+        title: book.title,
+        author: book.author,
+        category: book.category,
+        price: book.price,
+        cover: coverSrc,
+        savedAt: Date.now()
+      };
+      next = [item, ...wishlist];
+      showMsg(`❤️ 已加入「我的收藏／待購書單」：《${book.title}》`);
+    }
+    setWishlist(next);
+    try { localStorage.setItem('lapen_wishlist', JSON.stringify(next)); } catch(e) {}
+  };
   useEffect(() => {
     if (!selectedBookDetail || !selectedBookDetail.id) return;
     setRecentBooks(prev => {
@@ -2598,7 +2634,13 @@ function App() {
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
     className: `absolute top-2.5 left-2.5 ${getCategoryBadgeClass(book.category)} text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow z-10`
-  }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
+  }, book.category), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": isWishlisted(book.id) ? "移除收藏" : "加入收藏",
+    title: isWishlisted(book.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單",
+    onClick: ev => toggleWishlist(book, ev),
+    className: `absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow transition-all ${isWishlisted(book.id) ? 'bg-rose-600 text-white' : 'bg-white/85 text-stone-600 hover:text-rose-600 hover:bg-white'}`
+  }, isWishlisted(book.id) ? "♥" : "♡"), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
     className: "p-4 flex flex-col flex-1"
@@ -3035,19 +3077,21 @@ function App() {
     }
   }, /*#__PURE__*/React.createElement("div", {
     style: {
-      padding: '16px 18px 12px',
+      padding: '14px 16px 10px',
       borderBottom: '1px solid #E8DCCE',
       display: 'flex',
-      justifyContent: 'space-between',
-      alignItems: 'flex-start'
+      flexDirection: 'column',
+      gap: '10px'
     }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start' }
   }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
-    style: { fontSize: '18px', fontWeight: 800, color: '#2B1F16', display: 'flex', alignItems: 'center', gap: '6px' }
-  }, "📖 最近閱讀"), /*#__PURE__*/React.createElement("div", {
+    style: { fontSize: '17px', fontWeight: 800, color: '#2B1F16', display: 'flex', alignItems: 'center', gap: '6px' }
+  }, recentTab === 'wishlist' ? "❤️ 我的收藏書單" : "📖 最近閱讀"), /*#__PURE__*/React.createElement("div", {
     style: { fontSize: '11.5px', color: '#7D6D5E', marginTop: '2px' }
-  }, "繼續探索更多精彩典籍 ✨")), /*#__PURE__*/React.createElement("button", {
+  }, recentTab === 'wishlist' ? "待購典籍隨時一鍵加入書包 ✨" : "繼續探索更多精彩典籍 ✨")), /*#__PURE__*/React.createElement("button", {
     type: "button",
-    "aria-label": "關閉最近閱讀",
+    "aria-label": "關閉最近閱讀與收藏",
     onClick: () => setIsRecentOpen(false),
     style: {
       width: '26px',
@@ -3063,14 +3107,44 @@ function App() {
       justifyContent: 'center'
     }
   }, "✕")), /*#__PURE__*/React.createElement("div", {
+    style: { display: 'flex', gap: '6px', background: '#EDE3D6', padding: '3px', borderRadius: '9999px' }
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setRecentTab('recent'),
+    style: {
+      flex: 1,
+      padding: '5px 8px',
+      borderRadius: '9999px',
+      border: 'none',
+      fontSize: '11.5px',
+      fontWeight: 700,
+      cursor: 'pointer',
+      background: recentTab === 'recent' ? '#8C5A2B' : 'transparent',
+      color: recentTab === 'recent' ? '#FFF' : '#5C4A3B'
+    }
+  }, `📖 最近閱讀 (${recentBooks.length})`), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => setRecentTab('wishlist'),
+    style: {
+      flex: 1,
+      padding: '5px 8px',
+      borderRadius: '9999px',
+      border: 'none',
+      fontSize: '11.5px',
+      fontWeight: 700,
+      cursor: 'pointer',
+      background: recentTab === 'wishlist' ? '#B83B26' : 'transparent',
+      color: recentTab === 'wishlist' ? '#FFF' : '#5C4A3B'
+    }
+  }, `♥ 我的收藏 (${wishlist.length})`))), /*#__PURE__*/React.createElement("div", {
     style: { padding: '10px 12px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }
-  }, recentBooks.length === 0 ? /*#__PURE__*/React.createElement("p", {
+  }, recentTab === 'recent' ? (recentBooks.length === 0 ? /*#__PURE__*/React.createElement("p", {
     style: { fontSize: '12.5px', color: '#7D6D5E', padding: '24px 8px', textAlign: 'center' }
   }, "尚未瀏覽書籍，點擊任一書目即可自動記錄。") : recentBooks.map((rb, idx) => {
     const coverUrl = rb.cover || `assets/covers/${rb.id}.webp`;
-    return /*#__PURE__*/React.createElement("button", {
+    const saved = isWishlisted(rb.id);
+    return /*#__PURE__*/React.createElement("div", {
       key: rb.id,
-      type: "button",
       onClick: () => {
         const full = books.find(x => String(x.id) === String(rb.id)) || rb;
         setSelectedBookDetail(full);
@@ -3123,23 +3197,120 @@ function App() {
       style: { fontSize: '11px', color: '#6E5D4F', marginTop: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }
     }, `${rb.author || '文史哲'} · NT$ ${rb.price || 0}`), /*#__PURE__*/React.createElement("div", {
       style: { fontSize: '10.5px', color: '#8C7B6B', marginTop: '2px' }
-    }, `🕒 ${formatRecentTime(rb.viewedAt)}`)), /*#__PURE__*/React.createElement("span", {
+    }, `🕒 ${formatRecentTime(rb.viewedAt)}`)), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      title: saved ? "移除收藏" : "加入收藏",
+      onClick: ev => {
+        const full = books.find(x => String(x.id) === String(rb.id)) || rb;
+        toggleWishlist(full, ev);
+      },
       style: {
-        width: '24px',
-        height: '24px',
+        width: '26px',
+        height: '26px',
         borderRadius: '9999px',
-        border: '1px solid #D5C8B8',
-        background: '#FFF',
-        color: '#5C4A3B',
+        border: saved ? '1px solid #E11D48' : '1px solid #D5C8B8',
+        background: saved ? '#FFE4E6' : '#FFF',
+        color: saved ? '#E11D48' : '#7D6D5E',
         fontSize: '12px',
-        fontWeight: 700,
         flexShrink: 0,
+        cursor: 'pointer',
         display: 'flex',
         alignItems: 'center',
         justifyContent: 'center'
       }
-    }, "›"));
-  })), /*#__PURE__*/React.createElement("div", {
+    }, saved ? "♥" : "♡"));
+  })) : (wishlist.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    style: { fontSize: '12.5px', color: '#7D6D5E', padding: '24px 8px', textAlign: 'center', lineHeight: 1.6 }
+  }, "尚無收藏書目。\n點擊書卡或書籍詳情的「♡ 收藏」即可加入待購書單！") : wishlist.map(wb => {
+    const coverUrl = wb.cover || `assets/covers/${wb.id}.webp`;
+    return /*#__PURE__*/React.createElement("div", {
+      key: wb.id,
+      onClick: () => {
+        const full = books.find(x => String(x.id) === String(wb.id)) || wb;
+        setSelectedBookDetail(full);
+        setIsRecentOpen(false);
+      },
+      style: {
+        width: '100%',
+        textAlign: 'left',
+        padding: '10px',
+        borderRadius: '16px',
+        background: '#FFFFFF',
+        border: '1px solid #EAE0D4',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        cursor: 'pointer',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+      }
+    }, /*#__PURE__*/React.createElement("img", {
+      src: coverUrl,
+      alt: wb.title,
+      onError: e => {
+        e.target.onerror = null;
+        e.target.src = `assets/covers/${wb.id}.jpg`;
+      },
+      style: {
+        width: '44px',
+        height: '60px',
+        borderRadius: '8px',
+        objectFit: 'cover',
+        flexShrink: 0,
+        border: '1px solid #DFD3C3',
+        background: '#F4EFEA'
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      style: { flex: 1, minWidth: 0 }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: '13px',
+        fontWeight: 700,
+        color: '#231B15',
+        lineHeight: 1.35,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical'
+      }
+    }, wb.title), /*#__PURE__*/React.createElement("div", {
+      style: { fontSize: '11px', color: '#6E5D4F', marginTop: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }
+    }, `${wb.author || '文史哲'} · NT$ ${wb.price || 0}`)), /*#__PURE__*/React.createElement("div", {
+      style: { display: 'flex', flexDirection: 'column', gap: '4px', flexShrink: 0 }
+    }, /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      title: "加入書包",
+      onClick: ev => {
+        ev.stopPropagation();
+        const full = books.find(x => String(x.id) === String(wb.id)) || wb;
+        addToCart(full, ev);
+      },
+      style: {
+        padding: '3px 7px',
+        borderRadius: '8px',
+        border: 'none',
+        background: '#8C5A2B',
+        color: '#FFF',
+        fontSize: '10.5px',
+        fontWeight: 700,
+        cursor: 'pointer'
+      }
+    }, "+書包"), /*#__PURE__*/React.createElement("button", {
+      type: "button",
+      title: "移除收藏",
+      onClick: ev => toggleWishlist(wb, ev),
+      style: {
+        padding: '2px 7px',
+        borderRadius: '8px',
+        border: '1px solid #DFD2C2',
+        background: '#FFF',
+        color: '#8B261E',
+        fontSize: '10.5px',
+        fontWeight: 700,
+        cursor: 'pointer'
+      }
+    }, "移除")));
+  }))), /*#__PURE__*/React.createElement("div", {
     style: {
       padding: '10px 16px',
       borderTop: '1px solid #E8DCCE',
@@ -3150,7 +3321,7 @@ function App() {
       fontSize: '12px',
       color: '#5C4A3B'
     }
-  }, /*#__PURE__*/React.createElement("span", {
+  }, recentTab === 'recent' ? /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
     style: { fontWeight: 600 }
   }, `📊 最近瀏覽 ${recentBooks.length} 本`), recentBooks.length > 0 && /*#__PURE__*/React.createElement("button", {
     type: "button",
@@ -3159,7 +3330,28 @@ function App() {
       try { localStorage.removeItem('lapen_recent_books'); } catch(e) {}
     },
     style: { background: 'none', border: 'none', color: '#8B261E', fontSize: '11.5px', fontWeight: 700, cursor: 'pointer' }
-  }, "清除紀錄"))), /*#__PURE__*/React.createElement(MobaoCatMascot, null), /*#__PURE__*/React.createElement("button", {
+  }, "清除紀錄")) : /*#__PURE__*/React.createElement(React.Fragment, null, /*#__PURE__*/React.createElement("span", {
+    style: { fontWeight: 600 }
+  }, `❤️ 共收藏 ${wishlist.length} 本`), wishlist.length > 0 && /*#__PURE__*/React.createElement("div", {
+    style: { display: 'flex', gap: '10px', alignItems: 'center' }
+  }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: ev => {
+      wishlist.forEach(wb => {
+        const full = books.find(x => String(x.id) === String(wb.id)) || wb;
+        addToCart(full, ev);
+      });
+      showMsg(`已將 ${wishlist.length} 本收藏書籍全部加入書包！`);
+    },
+    style: { background: '#8C5A2B', border: 'none', color: '#FFF', padding: '3px 9px', borderRadius: '9999px', fontSize: '11px', fontWeight: 700, cursor: 'pointer' }
+  }, "全加書包"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: () => {
+      setWishlist([]);
+      try { localStorage.removeItem('lapen_wishlist'); } catch(e) {}
+    },
+    style: { background: 'none', border: 'none', color: '#8B261E', fontSize: '11.5px', fontWeight: 700, cursor: 'pointer' }
+  }, "清空"))))), /*#__PURE__*/React.createElement(MobaoCatMascot, null), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": "快捷搜書 (Ctrl+K 或 /)",
     onClick: openQuickSearch,
@@ -3312,6 +3504,35 @@ function App() {
     size: 18,
     className: "text-[var(--primary-color)]"
   }), " ", ui.aboutConceptTitle), /*#__PURE__*/React.createElement("p", null, ui.aboutConceptP1)), /*#__PURE__*/React.createElement("div", {
+    className: "pt-4 border-t border-[var(--border-color)]/60"
+  }, /*#__PURE__*/React.createElement("h3", {
+    className: "font-bold text-lg text-[var(--dark-color)] mb-4 flex items-center gap-2"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Clock",
+    size: 18,
+    className: "text-[var(--primary-color)]"
+  }), " 半世紀出版大事記"), /*#__PURE__*/React.createElement("div", {
+    className: "relative pl-6 border-l-2 border-[var(--primary-color)]/50 space-y-4"
+  }, [
+    { year: '1971', title: '創立文史哲出版社', desc: '8 月 1 日由彭正雄先生白手起家創立，首推《明版善本影印》，專注大學院校研究論著與文史典籍。' },
+    { year: '1979', title: '張仁青《應用文》長銷奠基', desc: '廣受各級院校採為教材，以穩健收益持續資助學術專著、現代詩集與博碩士論文出版。' },
+    { year: '1992', title: '改組為文史哲出版社有限公司', desc: '3 月 11 日正式改組，陸續推出《文史哲學集成》、《台灣近百年研究叢刊》等重量級大型叢書。' },
+    { year: '2,500+', title: '累積出版逾二千五百種典籍', desc: '扶持海內外學者並承印三、四百種博碩士論文，現仍有約 2,100 種珍貴書目可供讀者選購。' },
+    { year: '數位時代', title: '數位官網與行動書庫上線', desc: '建置全館極速檢索、護眼閱讀模式與 PWA 行動書庫，讓深厚學術底蘊跨越時空、貼近當代讀者。' }
+  ].map((m, idx) => /*#__PURE__*/React.createElement("div", {
+    key: idx,
+    className: "relative bg-[var(--bg-light)]/90 border border-[var(--border-color)] rounded-2xl p-4 shadow-sm"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "absolute -left-[31px] top-4 w-3.5 h-3.5 rounded-full bg-[var(--primary-color)] border-2 border-white shadow"
+  }), /*#__PURE__*/React.createElement("div", {
+    className: "flex flex-wrap items-center gap-2 mb-1"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "px-2.5 py-0.5 rounded-full text-xs font-black bg-[var(--primary-color)] text-white tracking-wider"
+  }, m.year), /*#__PURE__*/React.createElement("strong", {
+    className: "text-sm md:text-base text-[var(--dark-color)]"
+  }, m.title)), /*#__PURE__*/React.createElement("p", {
+    className: "text-xs md:text-sm opacity-85 leading-relaxed"
+  }, m.desc))))), /*#__PURE__*/React.createElement("div", {
     className: "pt-4 border-t border-[var(--border-color)]/60"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-lg text-[var(--dark-color)] mb-3 flex items-center gap-2"
@@ -4039,8 +4260,13 @@ function App() {
     size: 20,
     className: "text-[var(--primary-color)]"
   }), " 圖書詳細資訊"), /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-2"
+    className: "flex items-center gap-2 flex-wrap"
   }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: ev => toggleWishlist(selectedBookDetail, ev),
+    className: `px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95 border ${isWishlisted(selectedBookDetail.id) ? 'bg-rose-600 text-white border-rose-600' : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border-rose-200'}`,
+    title: isWishlisted(selectedBookDetail.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單"
+  }, isWishlisted(selectedBookDetail.id) ? "♥ 已收藏" : "♡ 收藏"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => setIsBookDetailFullscreen(!isBookDetailFullscreen),
     className: "px-3 py-1 rounded-full bg-[var(--bg-light)] hover:bg-[var(--primary-color)] hover:text-white text-[var(--dark-color)] text-xs font-bold transition flex items-center gap-1.5 border border-[var(--border-color)] shadow-sm",
@@ -4272,8 +4498,13 @@ function App() {
     size: 14,
     className: "text-[var(--primary-color)]"
   }), " 分享此書："), /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center gap-2"
+    className: "flex items-center gap-2 flex-wrap"
   }, /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    onClick: ev => toggleWishlist(selectedBookDetail, ev),
+    className: `px-2.5 py-1 rounded-lg font-bold transition flex items-center gap-1 shadow-sm active:scale-95 border ${isWishlisted(selectedBookDetail.id) ? 'bg-rose-600 text-white border-rose-600' : 'bg-rose-50 hover:bg-rose-100 text-rose-700 border-rose-200'}`,
+    title: isWishlisted(selectedBookDetail.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單"
+  }, isWishlisted(selectedBookDetail.id) ? "♥ 已收藏" : "♡ 收藏"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
       const cleanAuthor = String(selectedBookDetail.author || '').replace(/著|編|校|註|輯/g, '').trim();
