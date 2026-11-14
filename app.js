@@ -2977,7 +2977,8 @@ function App() {
   }), /*#__PURE__*/React.createElement("span", null, ui.footerCopyright))))), /*#__PURE__*/React.createElement("div", {
     className: "fixed bottom-6 right-6 z-40 flex flex-col items-end gap-3"
   }, isContactOpen && /*#__PURE__*/React.createElement("div", {
-    className: "glass-modal w-80 shadow-2xl rounded-2xl border border-[var(--border-color)] overflow-hidden animate-in"
+    className: "glass-modal w-80 shadow-2xl rounded-2xl border border-[var(--border-color)] overflow-hidden animate-in",
+    style: { position: 'absolute', right: '60px', bottom: '0px', zIndex: 55 }
   }, /*#__PURE__*/React.createElement("div", {
     className: "glass-dark p-3.5 text-white flex justify-between items-center font-sans border-b-2 border-[var(--primary-color)]"
   }, /*#__PURE__*/React.createElement("span", {
@@ -3181,7 +3182,7 @@ function App() {
   })), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": "最近閱讀",
-    onClick: () => setIsRecentOpen(v => !v),
+    onClick: () => { setIsRecentOpen(v => !v); setIsContactOpen(false); },
     title: `📖 最近閱讀 (${recentBooks.length})`,
     style: {
       position: 'relative',
@@ -3273,7 +3274,7 @@ function App() {
   }, "TOP")), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": isContactOpen ? "關閉客服留言" : "開啟客服留言",
-    onClick: () => setIsContactOpen(!isContactOpen),
+    onClick: () => { setIsContactOpen(!isContactOpen); setIsRecentOpen(false); },
     className: "bg-[var(--primary-color)] text-white hover:bg-[var(--dark-color)] w-12 h-12 rounded-full shadow-xl flex items-center justify-center hover:scale-105 transition-all border-2 border-white"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: isContactOpen ? "X" : "MessageCircle",
