@@ -974,6 +974,14 @@ function App() {
     setWishlist(next);
     try { localStorage.setItem('lapen_wishlist', JSON.stringify(next)); } catch(e) {}
   };
+  const renderWishlistHeartBtn = (book, topPx = 10, rightPx = 10) => /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": isWishlisted(book.id) ? "移除收藏" : "加入收藏",
+    title: isWishlisted(book.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單",
+    onClick: ev => toggleWishlist(book, ev),
+    className: "z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow transition-all",
+    style: Object.assign({ position: 'absolute', top: `${topPx}px`, right: `${rightPx}px` }, isWishlisted(book.id) ? { background: '#E11D48', color: '#FFFFFF', border: '1px solid #E11D48' } : { background: 'rgba(255,255,255,0.9)', color: '#57534E', border: '1px solid #E7E5E4' })
+  }, isWishlisted(book.id) ? "♥" : "♡");
   useEffect(() => {
     if (!selectedBookDetail || !selectedBookDetail.id) return;
     setRecentBooks(prev => {
@@ -2670,14 +2678,7 @@ function App() {
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
     className: `absolute top-2.5 left-2.5 ${getCategoryBadgeClass(book.category)} text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow z-10`
-  }, book.category), /*#__PURE__*/React.createElement("button", {
-    type: "button",
-    "aria-label": isWishlisted(book.id) ? "移除收藏" : "加入收藏",
-    title: isWishlisted(book.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單",
-    onClick: ev => toggleWishlist(book, ev),
-    className: "z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow transition-all",
-    style: Object.assign({ position: 'absolute', top: '10px', right: '10px' }, isWishlisted(book.id) ? { background: '#E11D48', color: '#FFFFFF', border: '1px solid #E11D48' } : { background: 'rgba(255,255,255,0.9)', color: '#57534E', border: '1px solid #E7E5E4' })
-  }, isWishlisted(book.id) ? "♥" : "♡"), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
+  }, book.category), renderWishlistHeartBtn(book, 10, 10), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
     className: "p-4 flex flex-col flex-1"
@@ -2809,7 +2810,7 @@ function App() {
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   })), /*#__PURE__*/React.createElement("div", {
     className: `absolute top-3 left-3 ${getCategoryBadgeClass(book.category)} text-xs px-2.5 py-1 rounded-md font-sans font-bold shadow z-10`
-  }, book.category), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
+  }, book.category), renderWishlistHeartBtn(book, 12, 12), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/75 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.3em] text-xl"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
     className: "p-5 flex flex-col flex-1"
@@ -3830,7 +3831,7 @@ function App() {
     onError: e => handleImgError(e, SVG_COVER_FALLBACK)
   }), /*#__PURE__*/React.createElement("div", {
     className: `absolute top-2 left-2 ${getCategoryBadgeClass(book.category)} text-[10px] px-2 py-0.5 rounded font-bold shadow-md z-10`
-  }, book.category)), /*#__PURE__*/React.createElement("div", {
+  }, book.category), renderWishlistHeartBtn(book, 8, 8)), /*#__PURE__*/React.createElement("div", {
     className: "p-3.5 flex flex-col flex-1"
   }, /*#__PURE__*/React.createElement("h3", {
     className: "font-bold text-sm mb-1 line-clamp-2",
