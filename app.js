@@ -5037,7 +5037,7 @@ function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
               className: 'text-[11px] font-bold text-[var(--primary-color)] hover:underline'
             }, 'Google 地圖 ↗')
           ),
-          e('div', { className: 'flex flex-wrap items-center gap-x-6 gap-y-1' },
+          e('div', { className: 'flex flex-wrap items-center gap-x-6 gap-y-1', style: { gap: '8px 24px' } },
             e('span', null, e('strong', { className: 'text-[var(--dark-color)]' }, '電話：'),
               e('a', { href: 'tel:+886223511028', className: 'hover:text-[var(--primary-color)] font-bold' }, phone)
             ),
@@ -5045,14 +5045,6 @@ function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
           ),
           e('div', { className: 'flex flex-wrap items-center gap-x-3 gap-y-1' },
             e('span', null, e('strong', { className: 'text-[var(--dark-color)]' }, '營業時間：'), hours.replace(/^營業時間：\s*/, ''))
-          ),
-          e('div', { className: 'flex flex-wrap items-center gap-x-3 gap-y-1 pt-1 border-t border-[var(--border-color)]/60' },
-            e('strong', { className: 'text-[var(--primary-color)]' }, transfer),
-            e('button', {
-              type: 'button',
-              onClick: () => onCopy('劃撥帳號', '05128812'),
-              className: 'text-[11px] font-bold px-2.5 py-0.5 rounded-full bg-[var(--primary-color)]/15 text-[var(--primary-color)] hover:bg-[var(--primary-color)] hover:text-white transition'
-            }, '複製帳號 05128812')
           )
         ),
 
@@ -5112,16 +5104,14 @@ function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
           e('div', { className: 'glass-dark text-stone-200 p-5 rounded-2xl space-y-3 text-xs md:text-sm leading-relaxed' },
             e('ul', { className: 'list-disc list-inside space-y-2' },
               e('li', null, '本目錄定價為新臺幣售價。'),
-              e('li', null, '讀者郵購圖書，務請正楷書寫收件人姓名、地址、郵遞區號及電腦書號、書名、作者、冊數以免誤寄。書款請存入當地郵局郵政劃撥儲金 05128812 號彭正雄帳戶。'),
-              e('li', null, '圖書寄出後，除缺頁或印裝不良者外，恕不退換。'),
-              e('li', null, '國內郵購未滿六百元請另加六十元郵資。'),
-              e('li', null, '機關團體學校同業大批訂購，另有優待折扣。'),
-              e('li', null, '海外讀者函購，照書價另加郵費，依當時銀行掛牌匯率開寄美金或港幣支票，掛號郵寄本社。'),
               e('li', null, '本目錄所列價格，如有變動，概以變動後之書價為準。'),
-              e('li', null, '著者之後，冊次之前，圓圈數字代表出版年份。')
+              e('li', null, '讀者郵購圖書，務請正楷書寫收件人姓名、地址、郵遞區號及電腦書號、書名、作者、冊數以免誤寄。'),
+              e('li', null, '圖書寄出後，除缺頁或印裝不良者外，恕不退換。'),
+              e('li', null, '國內下單未滿3000元需加運費(運費視商品重量另計)。'),
+              e('li', null, '海外讀者函購，照書價另加郵費，依當時銀行掛牌匯率開寄美金或港幣支票，掛號郵寄本社。')
             ),
             e('div', { className: 'pt-2 border-t border-white/10 text-stone-300 text-xs flex flex-wrap justify-between gap-2' },
-              e('span', null, '10074 中華民國臺北市羅斯福路一段 72 巷四號'),
+              e('span', null, address),
               e('span', null, 'TEL：886-2-2351-1028 ・ 886-2-2394-1775')
             )
           )
