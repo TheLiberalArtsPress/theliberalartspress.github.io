@@ -936,24 +936,42 @@ function App() {
   useEffect(() => {
     if (!selectedBookDetail || !selectedBookDetail.id) return;
     setRecentBooks(prev => {
+      const bid = String(selectedBookDetail.id).trim();
+      const coverSrc = selectedBookDetail.localCover || selectedBookDetail.cover || `assets/covers/${bid}.webp`;
       const item = {
-        id: selectedBookDetail.id,
+        id: bid,
         title: selectedBookDetail.title,
         author: selectedBookDetail.author,
-        price: selectedBookDetail.price
+        category: selectedBookDetail.category,
+        price: selectedBookDetail.price,
+        cover: coverSrc,
+        viewedAt: Date.now()
       };
-      const next = [item, ...prev.filter(x => x.id !== item.id)].slice(0, 8);
+      const next = [item, ...prev.filter(x => String(x.id) !== bid)].slice(0, 8);
       try { localStorage.setItem('lapen_recent_books', JSON.stringify(next)); } catch(e) {}
       return next;
     });
   }, [selectedBookDetail]);
 
+  const formatRecentTime = ts => {
+    if (!ts) return '剛剛瀏覽';
+    const d = new Date(ts);
+    const now = new Date();
+    const hh = String(d.getHours()).padStart(2, '0');
+    const mm = String(d.getMinutes()).padStart(2, '0');
+    if (d.toDateString() === now.toDateString()) return `今天 ${hh}:${mm}`;
+    const yest = new Date(now);
+    yest.setDate(now.getDate() - 1);
+    if (d.toDateString() === yest.toDateString()) return `昨天 ${hh}:${mm}`;
+    return `${d.getMonth() + 1}/${d.getDate()} ${hh}:${mm}`;
+  };
+
   const openQuickSearch = useCallback(() => {
-    setIsSearchOpen(true);
+    setIsSearchModalOpen(true);
     setTimeout(() => {
       const inp = document.getElementById('lapen-search-title-input');
       if (inp) inp.focus();
-    }, 60);
+    }, 80);
   }, []);
 
   useEffect(() => {
@@ -3006,58 +3024,219 @@ function App() {
     size: 14,
     className: "animate-spin"
   }) : null, isSubmittingCS ? ui.csSubmittingBtn : ui.csSubmitBtn))), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col gap-2.5 items-end relative"
+    className: "flex flex-col gap-2.5 items-end",
+    style: { position: 'relative' }
   }, isRecentOpen && /*#__PURE__*/React.createElement("div", {
-    className: "absolute right-14 bottom-16 w-64 max-h-80 overflow-y-auto glass-modal rounded-2xl shadow-2xl border border-[var(--border-color)] p-3 z-50 text-left"
+    style: {
+      position: 'absolute',
+      right: '58px',
+      bottom: '54px',
+      width: '300px',
+      maxHeight: '460px',
+      display: 'flex',
+      flexDirection: 'column',
+      borderRadius: '24px',
+      background: 'linear-gradient(180deg, #FBF8F3 0%, #F3ECE2 100%)',
+      border: '1.5px solid #DECDB8',
+      boxShadow: '0 22px 55px rgba(20, 14, 10, 0.34)',
+      overflow: 'hidden',
+      zIndex: 60,
+      textAlign: 'left'
+    }
   }, /*#__PURE__*/React.createElement("div", {
-    className: "flex items-center justify-between border-b border-[var(--border-color)] pb-2 mb-2"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "text-xs font-bold text-[var(--dark-color)] flex items-center gap-1"
-  }, "🕒 最近瀏覽足跡"), /*#__PURE__*/React.createElement("button", {
+    style: {
+      padding: '16px 18px 12px',
+      borderBottom: '1px solid #E8DCCE',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'flex-start'
+    }
+  }, /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("div", {
+    style: { fontSize: '18px', fontWeight: 800, color: '#2B1F16', display: 'flex', alignItems: 'center', gap: '6px' }
+  }, "📖 最近閱讀"), /*#__PURE__*/React.createElement("div", {
+    style: { fontSize: '11.5px', color: '#7D6D5E', marginTop: '2px' }
+  }, "繼續探索更多精彩典籍 ✨")), /*#__PURE__*/React.createElement("button", {
     type: "button",
-    "aria-label": "關閉瀏覽足跡",
+    "aria-label": "關閉最近閱讀",
     onClick: () => setIsRecentOpen(false),
-    className: "text-xs text-stone-400 hover:text-[var(--primary-color)] cursor-pointer"
-  }, "✕")), recentBooks.length === 0 ? /*#__PURE__*/React.createElement("p", {
-    className: "text-xs text-stone-500 py-3 text-center"
-  }, "尚未瀏覽書籍，點擊任一書目即可自動記錄。") : /*#__PURE__*/React.createElement("div", {
-    className: "space-y-1.5"
-  }, recentBooks.map(rb => /*#__PURE__*/React.createElement("button", {
-    key: rb.id,
+    style: {
+      width: '26px',
+      height: '26px',
+      borderRadius: '9999px',
+      border: '1px solid #DFD2C2',
+      background: '#FFF',
+      color: '#6E5D4F',
+      fontSize: '13px',
+      cursor: 'pointer',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center'
+    }
+  }, "✕")), /*#__PURE__*/React.createElement("div", {
+    style: { padding: '10px 12px', overflowY: 'auto', flex: 1, display: 'flex', flexDirection: 'column', gap: '8px' }
+  }, recentBooks.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    style: { fontSize: '12.5px', color: '#7D6D5E', padding: '24px 8px', textAlign: 'center' }
+  }, "尚未瀏覽書籍，點擊任一書目即可自動記錄。") : recentBooks.map((rb, idx) => {
+    const coverUrl = rb.cover || `assets/covers/${rb.id}.webp`;
+    return /*#__PURE__*/React.createElement("button", {
+      key: rb.id,
+      type: "button",
+      onClick: () => {
+        const full = books.find(x => String(x.id) === String(rb.id)) || rb;
+        setSelectedBookDetail(full);
+        setIsRecentOpen(false);
+      },
+      style: {
+        width: '100%',
+        textAlign: 'left',
+        padding: '10px',
+        borderRadius: '16px',
+        background: idx === 0 ? '#EEF3FC' : '#FFFFFF',
+        border: idx === 0 ? '1.5px solid #C8D7F4' : '1px solid #EAE0D4',
+        display: 'flex',
+        alignItems: 'center',
+        gap: '10px',
+        cursor: 'pointer',
+        boxShadow: '0 2px 8px rgba(0,0,0,0.04)'
+      }
+    }, /*#__PURE__*/React.createElement("img", {
+      src: coverUrl,
+      alt: rb.title,
+      onError: e => {
+        e.target.onerror = null;
+        e.target.src = `assets/covers/${rb.id}.jpg`;
+      },
+      style: {
+        width: '44px',
+        height: '60px',
+        borderRadius: '8px',
+        objectFit: 'cover',
+        flexShrink: 0,
+        border: '1px solid #DFD3C3',
+        background: '#F4EFEA'
+      }
+    }), /*#__PURE__*/React.createElement("div", {
+      style: { flex: 1, minWidth: 0 }
+    }, /*#__PURE__*/React.createElement("div", {
+      style: {
+        fontSize: '13px',
+        fontWeight: 700,
+        color: '#231B15',
+        lineHeight: 1.35,
+        overflow: 'hidden',
+        textOverflow: 'ellipsis',
+        display: '-webkit-box',
+        WebkitLineClamp: 2,
+        WebkitBoxOrient: 'vertical'
+      }
+    }, rb.title), /*#__PURE__*/React.createElement("div", {
+      style: { fontSize: '11px', color: '#6E5D4F', marginTop: '3px', whiteSpace: 'nowrap', overflow: 'hidden', textOverflow: 'ellipsis' }
+    }, `${rb.author || '文史哲'} · NT$ ${rb.price || 0}`), /*#__PURE__*/React.createElement("div", {
+      style: { fontSize: '10.5px', color: '#8C7B6B', marginTop: '2px' }
+    }, `🕒 ${formatRecentTime(rb.viewedAt)}`)), /*#__PURE__*/React.createElement("span", {
+      style: {
+        width: '24px',
+        height: '24px',
+        borderRadius: '9999px',
+        border: '1px solid #D5C8B8',
+        background: '#FFF',
+        color: '#5C4A3B',
+        fontSize: '12px',
+        fontWeight: 700,
+        flexShrink: 0,
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center'
+      }
+    }, "›"));
+  })), /*#__PURE__*/React.createElement("div", {
+    style: {
+      padding: '10px 16px',
+      borderTop: '1px solid #E8DCCE',
+      background: '#EFE7DC',
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
+      fontSize: '12px',
+      color: '#5C4A3B'
+    }
+  }, /*#__PURE__*/React.createElement("span", {
+    style: { fontWeight: 600 }
+  }, `📊 最近瀏覽 ${recentBooks.length} 本`), recentBooks.length > 0 && /*#__PURE__*/React.createElement("button", {
     type: "button",
     onClick: () => {
-      const full = books.find(x => String(x.id) === String(rb.id)) || rb;
-      setSelectedBookDetail(full);
-      setIsRecentOpen(false);
+      setRecentBooks([]);
+      try { localStorage.removeItem('lapen_recent_books'); } catch(e) {}
     },
-    className: "w-full text-left p-2 rounded-xl hover:bg-[var(--primary-color)]/10 transition flex flex-col gap-0.5 border border-transparent hover:border-[var(--border-color)] cursor-pointer"
-  }, /*#__PURE__*/React.createElement("span", {
-    className: "text-xs font-bold text-[var(--dark-color)] line-clamp-1"
-  }, rb.title), /*#__PURE__*/React.createElement("span", {
-    className: "text-[11px] text-stone-500"
-  }, `${rb.author || ''} · NT$ ${rb.price || 0}`))))), /*#__PURE__*/React.createElement(MobaoCatMascot, null), /*#__PURE__*/React.createElement("button", {
+    style: { background: 'none', border: 'none', color: '#8B261E', fontSize: '11.5px', fontWeight: 700, cursor: 'pointer' }
+  }, "清除紀錄"))), /*#__PURE__*/React.createElement(MobaoCatMascot, null), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": "快捷搜書 (Ctrl+K 或 /)",
     onClick: openQuickSearch,
     title: "🔍 快捷搜書（快捷鍵：Ctrl+K 或 /）",
-    className: "bg-white/90 text-stone-700 hover:bg-[var(--primary-color)] hover:text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border border-[var(--border-color)] self-end hover:scale-110 active:scale-95 cursor-pointer"
+    style: { width: '40px', height: '40px', borderRadius: '9999px', background: 'rgba(255,255,255,0.95)', color: '#3D3127', border: '1.5px solid #D8C7B4', boxShadow: '0 4px 12px rgba(0,0,0,0.14)', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer' }
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "Search",
     size: 17
   })), /*#__PURE__*/React.createElement("button", {
     type: "button",
-    "aria-label": "最近瀏覽足跡",
+    "aria-label": "最近閱讀",
     onClick: () => setIsRecentOpen(v => !v),
-    title: `🕒 最近瀏覽書籍 (${recentBooks.length})`,
-    className: `relative w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border self-end hover:scale-110 active:scale-95 text-sm cursor-pointer ${isRecentOpen ? 'bg-[var(--primary-color)] text-white border-white' : 'bg-white/90 text-stone-700 hover:bg-stone-100 border-[var(--border-color)]'}`
-  }, "🕒", recentBooks.length > 0 && /*#__PURE__*/React.createElement("span", {
-    className: "absolute -top-1 -right-1 bg-[#B83B26] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+    title: `📖 最近閱讀 (${recentBooks.length})`,
+    style: {
+      position: 'relative',
+      width: '40px',
+      height: '40px',
+      borderRadius: '9999px',
+      background: isRecentOpen ? '#8C5A2B' : 'rgba(255,255,255,0.95)',
+      color: isRecentOpen ? '#FFFFFF' : '#3D3127',
+      border: isRecentOpen ? '2px solid #FFF' : '1.5px solid #D8C7B4',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.14)',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer'
+    }
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "BookOpen",
+    size: 17
+  }), recentBooks.length > 0 && /*#__PURE__*/React.createElement("span", {
+    style: {
+      position: 'absolute',
+      top: '-3px',
+      right: '-3px',
+      width: '17px',
+      height: '17px',
+      borderRadius: '9999px',
+      background: '#B83B26',
+      color: '#FFFFFF',
+      fontSize: '10px',
+      fontWeight: 700,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      border: '1.5px solid #FFFFFF'
+    }
   }, recentBooks.length)), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": isLargeFont ? "切換標準字體" : "放大網頁字體",
     onClick: toggleLargeFont,
     title: isLargeFont ? "Aa 目前為放大字體（點擊恢復標準）" : "Aa 放大閱讀字體（適合長輩與學者）",
-    className: `w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border self-end hover:scale-110 active:scale-95 text-xs font-black cursor-pointer ${isLargeFont ? 'bg-[#D6974B] text-[#14110E] border-[#F5C27A] ring-2 ring-[#D6974B]/50' : 'bg-white/90 text-stone-700 hover:bg-stone-100 border-[var(--border-color)]'}`
+    style: {
+      width: '40px',
+      height: '40px',
+      borderRadius: '9999px',
+      background: isLargeFont ? '#D6974B' : 'rgba(255,255,255,0.95)',
+      color: isLargeFont ? '#14110E' : '#3D3127',
+      border: isLargeFont ? '2px solid #F5C27A' : '1.5px solid #D8C7B4',
+      boxShadow: '0 4px 12px rgba(0,0,0,0.14)',
+      fontSize: '13px',
+      fontWeight: 900,
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer'
+    }
   }, isLargeFont ? "A+" : "Aa"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": isEyeCare ? "關閉護眼模式" : "開啟護眼模式",
@@ -3071,13 +3250,26 @@ function App() {
       top: 0,
       behavior: 'smooth'
     }),
-    className: "bg-[#D6974B] text-[#14110E] hover:bg-[#eab065] w-11 h-11 rounded-full shadow-xl flex flex-col items-center justify-center transition-all border-2 border-white/90 self-end animate-in hover:scale-110 active:scale-95 cursor-pointer ring-2 ring-[#D6974B]/40",
+    style: {
+      width: '40px',
+      height: '40px',
+      borderRadius: '9999px',
+      background: '#D6974B',
+      color: '#1C140D',
+      border: '2px solid #8C5A2B',
+      boxShadow: '0 6px 16px rgba(140, 90, 43, 0.42)',
+      display: 'flex',
+      flexDirection: 'column',
+      alignItems: 'center',
+      justifyContent: 'center',
+      cursor: 'pointer'
+    },
     title: "回到頁面頂端"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronUp",
-    size: 18
+    size: 16
   }), /*#__PURE__*/React.createElement("span", {
-    className: "text-[9px] font-black leading-none -mt-0.5"
+    style: { fontSize: '9px', fontWeight: 900, lineHeight: 1, marginTop: '-2px' }
   }, "TOP")), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": isContactOpen ? "關閉客服留言" : "開啟客服留言",
