@@ -138,7 +138,8 @@ h1{font-family:"Noto Serif TC","PMingLiU",Georgia,serif;font-size:24px;color:#f7
     <div class="share-bar">
       <span>🔗 分享此書：</span>
       <div class="share-btns">
-        <button type="button" class="s-btn" onclick="copyText('范月嬌。《靜齋古典詩文論叢》。台北：文史哲出版社，93年 平一。',this)">📝 論文引用</button>
+        <button type="button" class="s-btn" id="wishBtn" onclick="toggleWish(this)">♡ 收藏</button>
+        <button type="button" class="s-btn" onclick="copyText('范月嬌。《靜齋古典詩文論叢》。台北：文史哲出版社，93年 平一。',this)">🎓 論文引用</button>
         <button type="button" class="s-btn" onclick="copyText('https://theliberalartspress.github.io/books/00720.html',this)">🔗 複製連結</button>
         <a class="s-btn line" target="_blank" rel="noopener" href="https://social-plugins.line.me/lineit/share?url=https%3A//theliberalartspress.github.io/books/00720.html">💬 LINE</a>
         <a class="s-btn fb" target="_blank" rel="noopener" href="https://www.facebook.com/sharer/sharer.php?u=https%3A//theliberalartspress.github.io/books/00720.html">📘 FB</a>
@@ -155,6 +156,42 @@ h1{font-family:"Noto Serif TC","PMingLiU",Georgia,serif;font-size:24px;color:#f7
 </div>
 <script>
 function copyText(t,btn){if(navigator.clipboard){navigator.clipboard.writeText(t).then(function(){var o=btn.textContent;btn.textContent='✓ 已複製';setTimeout(function(){btn.textContent=o;},1500);});}}
+function getBookMeta(){
+  var ld={};
+  try{var s=document.querySelector('script[type="application/ld+json"]');if(s){var d=JSON.parse(s.textContent);ld=(d['@graph']&&d['@graph'][0])||d;}}catch(e){}
+  var idMatch=location.pathname.match(/\/([^\/]+)\.html$/);
+  var bid=(idMatch?idMatch[1]:'');
+  var title=ld.name||(document.querySelector('h1')&&document.querySelector('h1').textContent.trim())||'';
+  var author=(ld.author&&ld.author.name)||'';
+  var cat=ld.genre||'';
+  var price=Number((ld.offers&&ld.offers.price)||0);
+  var img=document.querySelector('.cover-frame img');
+  var cover=img?img.getAttribute('src').replace(/^\.\.\//,''):('assets/covers/'+bid+'.webp');
+  return {id:bid,title:title,author:author,category:cat,price:price,cover:cover,savedAt:Date.now()};
+}
+function updateWishBtn(){
+  var btn=document.getElementById('wishBtn');
+  if(!btn)return;
+  var meta=getBookMeta();
+  var list=[];
+  try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+  var saved=list.some(function(x){return String(x.id)===String(meta.id);});
+  btn.textContent=saved?'♥ 已收藏':'♡ 收藏';
+  btn.style.background=saved?'#E11D48':'';
+  btn.style.color=saved?'#FFFFFF':'';
+  btn.style.borderColor=saved?'#E11D48':'';
+}
+function toggleWish(btn){
+  var meta=getBookMeta();
+  if(!meta.id)return;
+  var list=[];
+  try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+  var idx=list.findIndex(function(x){return String(x.id)===String(meta.id);});
+  if(idx>=0){list.splice(idx,1);}else{list.unshift(meta);}
+  try{localStorage.setItem('lapen_wishlist',JSON.stringify(list));}catch(e){}
+  updateWishBtn();
+}
+document.addEventListener('DOMContentLoaded',updateWishBtn);
 </script>
 </body>
 </html>

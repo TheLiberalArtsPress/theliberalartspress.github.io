@@ -726,7 +726,7 @@ const defaultUI = {
   footerFax: 'Fax: 886-2-2396-5656',
   footerEmail: 'lapentw@gmail.com',
   footerHours: '營業時間：週一到週五 AM9:00~PM6:00',
-  footerTransfer: '郵政劃撥：05128812號 彭正雄帳戶',
+  footerTransfer: '國內下單滿 NT$3,000 免運（未滿另計運費）｜歡迎線上書包下單或來信洽詢',
   footerLinksTitle: '推薦好站',
   footerFacebookLinkText: '文史哲出版社臉書(FB)',
   footerFacebookUrl: 'https://www.facebook.com/people/%E6%96%87%E5%8F%B2%E5%93%B2%E5%87%BA%E7%89%88%E7%A4%BE/61590146114229/?locale=zh_TW',
@@ -1079,6 +1079,22 @@ function App() {
     return () => window.removeEventListener('keydown', onEsc);
   }, [isReviewModalOpen, submittedDetail, selectedBookDetail, isRandomBooksOpen, isCartOpen, isSearchModalOpen, isAboutOpen, isPresidentOpen, isContactPageOpen, isMirrorModalOpen, iframeModal, isRecentOpen, isContactOpen]);
 
+  useEffect(() => {
+    try {
+      const url = new URL(window.location.href);
+      if (isPresidentOpen) {
+        url.searchParams.set('page', 'president');
+        window.history.replaceState({}, '', url.toString());
+      } else if (isContactPageOpen) {
+        url.searchParams.set('page', 'contact');
+        window.history.replaceState({}, '', url.toString());
+      } else if (url.searchParams.has('page')) {
+        url.searchParams.delete('page');
+        window.history.replaceState({}, '', url.toString());
+      }
+    } catch (_) {}
+  }, [isPresidentOpen, isContactPageOpen]);
+
   // 🏮 護眼模式狀態（夜讀暖黃燭光模式）
   const [isEyeCare, setIsEyeCare] = useState(() => {
     try {
@@ -1179,6 +1195,9 @@ function App() {
       const urlParams = new URLSearchParams(window.location.search);
       const targetQuery = urlParams.get('book') || urlParams.get('id') || pendingUrlBookRef.current;
       const catParam = urlParams.get('category');
+      const pageParam = urlParams.get('page');
+      if (pageParam === 'president') setIsPresidentOpen(true);
+      else if (pageParam === 'contact') setIsContactPageOpen(true);
       if (targetQuery) {
         const pool = (books && books.length > 0) ? books : [
           ...((staticData && staticData.books) || []),
@@ -2953,7 +2972,7 @@ function App() {
     name: "CreditCard",
     size: 16,
     className: "shrink-0 text-[var(--primary-color)]"
-  }), " ", /*#__PURE__*/React.createElement("span", null, ui.footerTransfer)))), /*#__PURE__*/React.createElement("div", {
+  }), " ", /*#__PURE__*/React.createElement("span", null, (ui.footerTransfer && !ui.footerTransfer.includes('劃撥') && !ui.footerTransfer.includes('05128812')) ? ui.footerTransfer : '國內下單滿 NT$3,000 免運（未滿另計運費）｜歡迎線上書包下單或來信洽詢')))), /*#__PURE__*/React.createElement("div", {
     className: "md:col-span-3"
   }, /*#__PURE__*/React.createElement("h4", {
     className: "text-base font-bold font-serif text-white mb-4 border-b border-white/10 pb-2.5 flex items-center gap-2"
@@ -3966,14 +3985,22 @@ function App() {
   })))), cart.length > 0 && /*#__PURE__*/React.createElement("div", {
     className: `w-full md:w-[360px] bg-white/90 p-5 flex flex-col shrink-0 overflow-y-auto ${isCartDetailsOpen ? 'hidden md:flex' : 'flex'}`
   }, /*#__PURE__*/React.createElement("div", {
-    className: "glass-card p-4 rounded-xl border mb-4"
+    className: "glass-card p-4 rounded-xl border mb-4 space-y-2.5"
   }, /*#__PURE__*/React.createElement("div", {
     className: "flex items-baseline justify-between text-left"
   }, /*#__PURE__*/React.createElement("span", {
     className: "font-bold text-sm text-[var(--dark-color)]"
   }, ui.cartTotalLabel), /*#__PURE__*/React.createElement("span", {
     className: "text-2xl font-black text-[var(--primary-color)]"
-  }, "NT$ ", cartTotal.toLocaleString()))), /*#__PURE__*/React.createElement("form", {
+  }, "NT$ ", cartTotal.toLocaleString())), /*#__PURE__*/React.createElement("div", {
+    style: { background: 'rgba(140,90,43,0.1)', border: '1px solid rgba(140,90,43,0.22)', borderRadius: '10px', padding: '8px 10px' }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { fontSize: '11.5px', fontWeight: 700, color: cartTotal >= 3000 ? '#15803D' : '#7C4A2D', marginBottom: '6px' }
+  }, cartTotal >= 3000 ? '🎉 已達國內滿 NT$3,000 免運門檻！' : `🚚 距離國內滿 NT$3,000 免運還差 NT$ ${(3000 - cartTotal).toLocaleString()}（未滿需加運費，視商品重量另計）`), /*#__PURE__*/React.createElement("div", {
+    style: { width: '100%', height: '6px', borderRadius: '9999px', background: 'rgba(0,0,0,0.08)', overflow: 'hidden' }
+  }, /*#__PURE__*/React.createElement("div", {
+    style: { width: `${Math.min(100, Math.round((cartTotal / 3000) * 100))}%`, height: '100%', borderRadius: '9999px', background: cartTotal >= 3000 ? '#16A34A' : 'var(--primary-color)', transition: 'width 0.3s ease' }
+  })))), /*#__PURE__*/React.createElement("form", {
     onSubmit: handleCheckout,
     className: "space-y-3 flex-1 flex flex-col text-xs"
   }, /*#__PURE__*/React.createElement("div", {
