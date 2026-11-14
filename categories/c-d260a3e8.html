@@ -37,6 +37,16 @@ body{min-height:100vh;background:radial-gradient(circle at top,#2a2119 0%,#120e0
 .b-price{margin-top:auto;font-size:14px;font-weight:700;color:#e04f3e}
 footer{text-align:center;margin-top:26px;font-size:12px;color:#8e8072}
 footer a{color:#c7a477;text-decoration:none}
+.b-card{position:relative}
+.b-wish{position:absolute;top:16px;right:16px;z-index:5;width:30px;height:30px;border-radius:999px;border:1px solid #fecdd3;background:rgba(255,241,242,.94);color:#be123c;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s}
+.b-wish:hover{transform:scale(1.1)}
+.b-wish.saved{background:#e11d48;color:#fff;border-color:#e11d48}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#1c1713;border:1px solid #352b22;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.toolbar-left{display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1}
+.t-input,.t-select{background:#14100d;color:#efe7dc;border:1px solid #3d3127;border-radius:8px;padding:7px 11px;font-size:13px;outline:none}
+.t-input{min-width:200px;flex:1;max-width:340px}
+.t-input:focus,.t-select:focus{border-color:#e09f4c}
+.t-count{font-size:12.5px;color:#b7aa9b}
 </style>
 </head>
 <body>
@@ -56,8 +66,103 @@ footer a{color:#c7a477;text-decoration:none}
     </div>
     <a class="cta" href="../index.html?category=%E4%B8%AD%E5%9C%8B%E6%96%87%E5%8F%B2%E5%93%B2%E8%B3%87%E6%96%99%E5%8F%A2%E5%88%8A">🔍 在主站開啟此書系篩選</a>
   </section>
-  <main class="grid"><a class="b-card" href="../books/07092.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07092.webp" alt="人文與社會" onerror="this.onerror=null;this.src='../assets/covers/07092.jpg';"></div><div class="b-title">人文與社會</div><div class="b-meta">國防醫學院人文社會學科編 · 91年 平一</div><div class="b-price">NT$ 260</div></a><a class="b-card" href="../books/07901.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07901.webp" alt="傳硯齋叢書(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07901.jpg';"></div><div class="b-title">傳硯齋叢書(套書2本)</div><div class="b-meta">精．吳丙湘輯 · 72年 精二</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/07902.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07902.webp" alt="愛日堂全集(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07902.jpg';"></div><div class="b-title">愛日堂全集(套書2本)</div><div class="b-meta">精•孫宗彝著•張弓安輯 · 60年精二</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/07903.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07903.webp" alt="八家四六文注(套書3本)" onerror="this.onerror=null;this.src='../assets/covers/07903.jpg';"></div><div class="b-title">八家四六文注(套書3本)</div><div class="b-meta">清．吳山尊選．許貞幹補注 · 72年 精三</div><div class="b-price">NT$ 2100</div></a><a class="b-card" href="../books/07904.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07904.webp" alt="清朝書人輯略（清光緒33年刊本）" onerror="this.onerror=null;this.src='../assets/covers/07904.jpg';"></div><div class="b-title">清朝書人輯略（清光緒33年刊本）</div><div class="b-meta">清.震鈞輯 · 72年 平二</div><div class="b-price">NT$ 1500</div></a><a class="b-card" href="../books/07905.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07905.webp" alt="清朝書畫家筆錄（清宣統三年刊本）" onerror="this.onerror=null;this.src='../assets/covers/07905.jpg';"></div><div class="b-title">清朝書畫家筆錄（清宣統三年刊本）</div><div class="b-meta">清.竇鎮輯 · 72年 平一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/07906.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07906.webp" alt="明內閣大庫史料(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07906.jpg';"></div><div class="b-title">明內閣大庫史料(套書2本)</div><div class="b-meta">前東北圖書館編輯 · 60年 精二</div><div class="b-price">NT$ 1500</div></a><a class="b-card" href="../books/07907.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07907.webp" alt="石廬金石書志(套書3本)" onerror="this.onerror=null;this.src='../assets/covers/07907.jpg';"></div><div class="b-title">石廬金石書志(套書3本)</div><div class="b-meta">清．林 鈞輯 · 72年 精三</div><div class="b-price">NT$ 2100</div></a><a class="b-card" href="../books/07908.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07908.webp" alt="金石契（乾隆43年刊本）(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07908.jpg';"></div><div class="b-title">金石契（乾隆43年刊本）(套書2本)</div><div class="b-meta">清．張燕昌集 · 72年 精二</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/07909.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07909.webp" alt="眼福編（清光緒11年刊本）(套書4本)" onerror="this.onerror=null;this.src='../assets/covers/07909.jpg';"></div><div class="b-title">眼福編（清光緒11年刊本）(套書4本)</div><div class="b-meta">清．楊恩壽撰 · 72年 精四</div><div class="b-price">NT$ 3000</div></a><a class="b-card" href="../books/07910.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07910.webp" alt="淳化秘閣法帖考正（雍正11年刊本）" onerror="this.onerror=null;this.src='../assets/covers/07910.jpg';"></div><div class="b-title">淳化秘閣法帖考正（雍正11年刊本）</div><div class="b-meta">清．王 澍撰 · 72年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07912.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07912.webp" alt="李溫陵集（顧大韶校明萬曆間刊本）(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07912.jpg';"></div><div class="b-title">李溫陵集（顧大韶校明萬曆間刊本）(套書2本)</div><div class="b-meta">明.李贅撰 · 60年 精二</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/07913.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07913.webp" alt="北山錄 附註解隨函（景宋本）" onerror="this.onerror=null;this.src='../assets/covers/07913.jpg';"></div><div class="b-title">北山錄 附註解隨函（景宋本）</div><div class="b-meta">神清撰,宋．慧寶註 · 63年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07914.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07914.webp" alt="春秋國際公法(精裝)" onerror="this.onerror=null;this.src='../assets/covers/07914.jpg';"></div><div class="b-title">春秋國際公法(精裝)</div><div class="b-meta">洪鈞培著 · 64年 精一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/07915.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07915.webp" alt="洪稗畦先生年譜 附四嬋娟雜劇" onerror="this.onerror=null;this.src='../assets/covers/07915.jpg';"></div><div class="b-title">洪稗畦先生年譜 附四嬋娟雜劇</div><div class="b-meta">陳萬鼎著 · 65年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07916.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07916.webp" alt="康南海先生遊記彙編(精裝)" onerror="this.onerror=null;this.src='../assets/covers/07916.jpg';"></div><div class="b-title">康南海先生遊記彙編(精裝)</div><div class="b-meta">康有為著 · 68年 精一</div><div class="b-price">NT$ 800</div></a><a class="b-card" href="../books/07917.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07917.webp" alt="康南海先生未刊遺稿(精裝)" onerror="this.onerror=null;this.src='../assets/covers/07917.jpg';"></div><div class="b-title">康南海先生未刊遺稿(精裝)</div><div class="b-meta">康有為著．蔣貴麟編 · 68年 精一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/07918.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07918.webp" alt="殷虛文字類編" onerror="this.onerror=null;this.src='../assets/covers/07918.jpg';"></div><div class="b-title">殷虛文字類編</div><div class="b-meta">羅振玉釋 · 68年 精一</div><div class="b-price">NT$ 800</div></a><a class="b-card" href="../books/07920.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07920.webp" alt="吳?齋（大澂）尺牘" onerror="this.onerror=null;this.src='../assets/covers/07920.jpg';"></div><div class="b-title">吳?齋（大澂）尺牘</div><div class="b-meta">謝國楨編 · 72年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07921.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07921.webp" alt="霜紅龕集" onerror="this.onerror=null;this.src='../assets/covers/07921.jpg';"></div><div class="b-title">霜紅龕集</div><div class="b-meta">清．.傅山撰 · 75年 精二</div><div class="b-price">NT$ 1600</div></a><a class="b-card" href="../books/07922.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07922.webp" alt="春秋國際公法" onerror="this.onerror=null;this.src='../assets/covers/07922.jpg';"></div><div class="b-title">春秋國際公法</div><div class="b-meta">洪鈞培著 · 64年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/07923.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07923.webp" alt="清(國)朝書畫家筆錄" onerror="this.onerror=null;this.src='../assets/covers/07923.jpg';"></div><div class="b-title">清(國)朝書畫家筆錄</div><div class="b-meta">清•竇鎮輯 · 72年 平一</div><div class="b-price">NT$ 500</div></a></main>
+  <div class="toolbar">
+  <div class="toolbar-left">
+    <input type="search" id="topicFilter" class="t-input" placeholder="🔍 篩選本頁書名、作者或年份…">
+    <select id="topicSort" class="t-select" aria-label="排序方式">
+      <option value="default">預設排序</option>
+      <option value="price-asc">價格：低 → 高</option>
+      <option value="price-desc">價格：高 → 低</option>
+    </select>
+  </div>
+  <div id="topicCount" class="t-count"></div>
+</div>
+<main class="grid"><a class="b-card" href="../books/07092.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07092.webp" alt="人文與社會" onerror="this.onerror=null;this.src='../assets/covers/07092.jpg';"></div><div class="b-title">人文與社會</div><div class="b-meta">國防醫學院人文社會學科編 · 91年 平一</div><div class="b-price">NT$ 260</div></a><a class="b-card" href="../books/07901.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07901.webp" alt="傳硯齋叢書(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07901.jpg';"></div><div class="b-title">傳硯齋叢書(套書2本)</div><div class="b-meta">精．吳丙湘輯 · 72年 精二</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/07902.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07902.webp" alt="愛日堂全集(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07902.jpg';"></div><div class="b-title">愛日堂全集(套書2本)</div><div class="b-meta">精•孫宗彝著•張弓安輯 · 60年精二</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/07903.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07903.webp" alt="八家四六文注(套書3本)" onerror="this.onerror=null;this.src='../assets/covers/07903.jpg';"></div><div class="b-title">八家四六文注(套書3本)</div><div class="b-meta">清．吳山尊選．許貞幹補注 · 72年 精三</div><div class="b-price">NT$ 2100</div></a><a class="b-card" href="../books/07904.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07904.webp" alt="清朝書人輯略（清光緒33年刊本）" onerror="this.onerror=null;this.src='../assets/covers/07904.jpg';"></div><div class="b-title">清朝書人輯略（清光緒33年刊本）</div><div class="b-meta">清.震鈞輯 · 72年 平二</div><div class="b-price">NT$ 1500</div></a><a class="b-card" href="../books/07905.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07905.webp" alt="清朝書畫家筆錄（清宣統三年刊本）" onerror="this.onerror=null;this.src='../assets/covers/07905.jpg';"></div><div class="b-title">清朝書畫家筆錄（清宣統三年刊本）</div><div class="b-meta">清.竇鎮輯 · 72年 平一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/07906.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07906.webp" alt="明內閣大庫史料(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07906.jpg';"></div><div class="b-title">明內閣大庫史料(套書2本)</div><div class="b-meta">前東北圖書館編輯 · 60年 精二</div><div class="b-price">NT$ 1500</div></a><a class="b-card" href="../books/07907.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07907.webp" alt="石廬金石書志(套書3本)" onerror="this.onerror=null;this.src='../assets/covers/07907.jpg';"></div><div class="b-title">石廬金石書志(套書3本)</div><div class="b-meta">清．林 鈞輯 · 72年 精三</div><div class="b-price">NT$ 2100</div></a><a class="b-card" href="../books/07908.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07908.webp" alt="金石契（乾隆43年刊本）(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07908.jpg';"></div><div class="b-title">金石契（乾隆43年刊本）(套書2本)</div><div class="b-meta">清．張燕昌集 · 72年 精二</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/07909.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07909.webp" alt="眼福編（清光緒11年刊本）(套書4本)" onerror="this.onerror=null;this.src='../assets/covers/07909.jpg';"></div><div class="b-title">眼福編（清光緒11年刊本）(套書4本)</div><div class="b-meta">清．楊恩壽撰 · 72年 精四</div><div class="b-price">NT$ 3000</div></a><a class="b-card" href="../books/07910.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07910.webp" alt="淳化秘閣法帖考正（雍正11年刊本）" onerror="this.onerror=null;this.src='../assets/covers/07910.jpg';"></div><div class="b-title">淳化秘閣法帖考正（雍正11年刊本）</div><div class="b-meta">清．王 澍撰 · 72年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07912.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07912.webp" alt="李溫陵集（顧大韶校明萬曆間刊本）(套書2本)" onerror="this.onerror=null;this.src='../assets/covers/07912.jpg';"></div><div class="b-title">李溫陵集（顧大韶校明萬曆間刊本）(套書2本)</div><div class="b-meta">明.李贅撰 · 60年 精二</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/07913.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07913.webp" alt="北山錄 附註解隨函（景宋本）" onerror="this.onerror=null;this.src='../assets/covers/07913.jpg';"></div><div class="b-title">北山錄 附註解隨函（景宋本）</div><div class="b-meta">神清撰,宋．慧寶註 · 63年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07914.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07914.webp" alt="春秋國際公法(精裝)" onerror="this.onerror=null;this.src='../assets/covers/07914.jpg';"></div><div class="b-title">春秋國際公法(精裝)</div><div class="b-meta">洪鈞培著 · 64年 精一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/07915.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07915.webp" alt="洪稗畦先生年譜 附四嬋娟雜劇" onerror="this.onerror=null;this.src='../assets/covers/07915.jpg';"></div><div class="b-title">洪稗畦先生年譜 附四嬋娟雜劇</div><div class="b-meta">陳萬鼎著 · 65年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07916.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07916.webp" alt="康南海先生遊記彙編(精裝)" onerror="this.onerror=null;this.src='../assets/covers/07916.jpg';"></div><div class="b-title">康南海先生遊記彙編(精裝)</div><div class="b-meta">康有為著 · 68年 精一</div><div class="b-price">NT$ 800</div></a><a class="b-card" href="../books/07917.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07917.webp" alt="康南海先生未刊遺稿(精裝)" onerror="this.onerror=null;this.src='../assets/covers/07917.jpg';"></div><div class="b-title">康南海先生未刊遺稿(精裝)</div><div class="b-meta">康有為著．蔣貴麟編 · 68年 精一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/07918.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07918.webp" alt="殷虛文字類編" onerror="this.onerror=null;this.src='../assets/covers/07918.jpg';"></div><div class="b-title">殷虛文字類編</div><div class="b-meta">羅振玉釋 · 68年 精一</div><div class="b-price">NT$ 800</div></a><a class="b-card" href="../books/07920.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07920.webp" alt="吳?齋（大澂）尺牘" onerror="this.onerror=null;this.src='../assets/covers/07920.jpg';"></div><div class="b-title">吳?齋（大澂）尺牘</div><div class="b-meta">謝國楨編 · 72年 精一</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/07921.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07921.webp" alt="霜紅龕集" onerror="this.onerror=null;this.src='../assets/covers/07921.jpg';"></div><div class="b-title">霜紅龕集</div><div class="b-meta">清．.傅山撰 · 75年 精二</div><div class="b-price">NT$ 1600</div></a><a class="b-card" href="../books/07922.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07922.webp" alt="春秋國際公法" onerror="this.onerror=null;this.src='../assets/covers/07922.jpg';"></div><div class="b-title">春秋國際公法</div><div class="b-meta">洪鈞培著 · 64年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/07923.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/07923.webp" alt="清(國)朝書畫家筆錄" onerror="this.onerror=null;this.src='../assets/covers/07923.jpg';"></div><div class="b-title">清(國)朝書畫家筆錄</div><div class="b-meta">清•竇鎮輯 · 72年 平一</div><div class="b-price">NT$ 500</div></a></main>
   <footer>文史哲出版社有限公司 ｜ 創立於1971年 ｜ <a href="index.html">查看全部 80 個書系</a> ｜ <a href="../index.html">官方首頁</a></footer>
 </div>
+<!-- LAPEN_TOPIC_ENHANCED_V1 -->
+<script>
+(function(){
+  var grid=document.querySelector('main.grid');
+  if(!grid)return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.b-card'));
+  cards.forEach(function(card,idx){
+    card.dataset.origIdx=String(idx);
+    var href=card.getAttribute('href')||'';
+    var m=href.match(/\/([^\/]+)\.html$/);
+    var bid=m?m[1]:'';
+    var titleEl=card.querySelector('.b-title');
+    var metaEl=card.querySelector('.b-meta');
+    var priceEl=card.querySelector('.b-price');
+    var imgEl=card.querySelector('.b-thumb img');
+    var title=titleEl?titleEl.textContent.trim():'';
+    var meta=metaEl?metaEl.textContent.trim():'';
+    var pMatch=priceEl?priceEl.textContent.match(/\d+/):null;
+    var price=pMatch?Number(pMatch[0]):0;
+    card.dataset.bid=bid;
+    card.dataset.price=String(price);
+    card.dataset.search=(title+' '+meta).toLowerCase();
+    if(bid){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='b-wish';
+      btn.title='加入我的收藏／待購書單';
+      btn.textContent='♡';
+      btn.addEventListener('click',function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        var list=[];
+        try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+        var i=list.findIndex(function(x){return String(x.id)===String(bid);});
+        if(i>=0){list.splice(i,1);}else{
+          var cover=imgEl?(imgEl.getAttribute('src')||'').replace(/^\.\.\//,''):('assets/covers/'+bid+'.webp');
+          list.unshift({id:bid,title:title,author:meta,category:'',price:price,cover:cover,savedAt:Date.now()});
+        }
+        try{localStorage.setItem('lapen_wishlist',JSON.stringify(list));}catch(e){}
+        syncWishes();
+      });
+      card.appendChild(btn);
+    }
+  });
+  function syncWishes(){
+    var list=[];
+    try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+    var set={};
+    list.forEach(function(x){set[String(x.id)]=true;});
+    cards.forEach(function(c){
+      var b=c.querySelector('.b-wish');
+      if(!b)return;
+      var saved=!!set[String(c.dataset.bid)];
+      b.classList.toggle('saved',saved);
+      b.textContent=saved?'♥':'♡';
+      b.title=saved?'已收藏（點擊移除）':'加入我的收藏／待購書單';
+    });
+  }
+  var filterInput=document.getElementById('topicFilter');
+  var sortSel=document.getElementById('topicSort');
+  var countEl=document.getElementById('topicCount');
+  function applyFilterAndSort(){
+    var q=(filterInput?filterInput.value:'').trim().toLowerCase();
+    var mode=sortSel?sortSel.value:'default';
+    var sorted=cards.slice().sort(function(a,b){
+      if(mode==='price-asc')return Number(a.dataset.price)-Number(b.dataset.price);
+      if(mode==='price-desc')return Number(b.dataset.price)-Number(a.dataset.price);
+      return Number(a.dataset.origIdx)-Number(b.dataset.origIdx);
+    });
+    var visible=0;
+    sorted.forEach(function(c){
+      var show=!q||c.dataset.search.indexOf(q)!==-1;
+      c.style.display=show?'':'none';
+      if(show)visible++;
+      grid.appendChild(c);
+    });
+    if(countEl)countEl.textContent='顯示 '+visible+' / '+cards.length+' 冊';
+  }
+  if(filterInput)filterInput.addEventListener('input',applyFilterAndSort);
+  if(sortSel)sortSel.addEventListener('change',applyFilterAndSort);
+  syncWishes();
+  applyFilterAndSort();
+})();
+</script>
 </body>
 </html>

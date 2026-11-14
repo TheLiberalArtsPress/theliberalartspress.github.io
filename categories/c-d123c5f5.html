@@ -37,6 +37,16 @@ body{min-height:100vh;background:radial-gradient(circle at top,#2a2119 0%,#120e0
 .b-price{margin-top:auto;font-size:14px;font-weight:700;color:#e04f3e}
 footer{text-align:center;margin-top:26px;font-size:12px;color:#8e8072}
 footer a{color:#c7a477;text-decoration:none}
+.b-card{position:relative}
+.b-wish{position:absolute;top:16px;right:16px;z-index:5;width:30px;height:30px;border-radius:999px;border:1px solid #fecdd3;background:rgba(255,241,242,.94);color:#be123c;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s}
+.b-wish:hover{transform:scale(1.1)}
+.b-wish.saved{background:#e11d48;color:#fff;border-color:#e11d48}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#1c1713;border:1px solid #352b22;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.toolbar-left{display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1}
+.t-input,.t-select{background:#14100d;color:#efe7dc;border:1px solid #3d3127;border-radius:8px;padding:7px 11px;font-size:13px;outline:none}
+.t-input{min-width:200px;flex:1;max-width:340px}
+.t-input:focus,.t-select:focus{border-color:#e09f4c}
+.t-count{font-size:12.5px;color:#b7aa9b}
 </style>
 </head>
 <body>
@@ -56,8 +66,103 @@ footer a{color:#c7a477;text-decoration:none}
     </div>
     <a class="cta" href="../index.html?category=%E6%96%87%E5%8F%B2%E5%93%B2%E5%AD%B8%E8%A1%93%E5%8F%A2%E5%88%8A">🔍 在主站開啟此書系篩選</a>
   </section>
-  <main class="grid"><a class="b-card" href="../books/00701.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00701.webp" alt="宋代書院與宋代學術之關係" onerror="this.onerror=null;this.src='../assets/covers/00701.jpg';"></div><div class="b-title">宋代書院與宋代學術之關係</div><div class="b-meta">吳萬居著 · 80年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/00702.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00702.webp" alt="黃遵憲及其詩研究" onerror="this.onerror=null;this.src='../assets/covers/00702.jpg';"></div><div class="b-title">黃遵憲及其詩研究</div><div class="b-meta">張堂錡著 · 80年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/00703.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00703.webp" alt="「唐詩」、「宋詩」之爭研究" onerror="this.onerror=null;this.src='../assets/covers/00703.jpg';"></div><div class="b-title">「唐詩」、「宋詩」之爭研究</div><div class="b-meta">戴文和著 · 86年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/00704.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00704.webp" alt="明初大儒方孝孺研究" onerror="this.onerror=null;this.src='../assets/covers/00704.jpg';"></div><div class="b-title">明初大儒方孝孺研究</div><div class="b-meta">姬秀珠著 · 80年 平一</div><div class="b-price">NT$ 340</div></a><a class="b-card" href="../books/00705.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00705.webp" alt="敦煌寫卷書法研究" onerror="this.onerror=null;this.src='../assets/covers/00705.jpg';"></div><div class="b-title">敦煌寫卷書法研究</div><div class="b-meta">焦明晨著 · 86年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/00706.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00706.webp" alt="吳稚暉與國語運動" onerror="this.onerror=null;this.src='../assets/covers/00706.jpg';"></div><div class="b-title">吳稚暉與國語運動</div><div class="b-meta">詹 瑋著 · 81年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/00707.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00707.webp" alt="唐代音樂文化之研究" onerror="this.onerror=null;this.src='../assets/covers/00707.jpg';"></div><div class="b-title">唐代音樂文化之研究</div><div class="b-meta">楊旻瑋著 · 82年 平一</div><div class="b-price">NT$ 520</div></a><a class="b-card" href="../books/00708.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00708.webp" alt="詩話摘句批評研究" onerror="this.onerror=null;this.src='../assets/covers/00708.jpg';"></div><div class="b-title">詩話摘句批評研究</div><div class="b-meta">周慶華著 · 82年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/00710.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00710.webp" alt="清代臺灣義民研究" onerror="this.onerror=null;this.src='../assets/covers/00710.jpg';"></div><div class="b-title">清代臺灣義民研究</div><div class="b-meta">丁光玲著 · 83年 平一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/00711.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00711.webp" alt="聞一多詩學論稿" onerror="this.onerror=null;this.src='../assets/covers/00711.jpg';"></div><div class="b-title">聞一多詩學論稿</div><div class="b-meta">李子玲著 · 85年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/00712.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00712.webp" alt="想像的邊疆-論李商隱詩中的否定句" onerror="this.onerror=null;this.src='../assets/covers/00712.jpg';"></div><div class="b-title">想像的邊疆-論李商隱詩中的否定句</div><div class="b-meta">林清美著 · 86年 平一</div><div class="b-price">NT$ 280</div></a><a class="b-card" href="../books/00713.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00713.webp" alt="清代大運河鹽梟研究" onerror="this.onerror=null;this.src='../assets/covers/00713.jpg';"></div><div class="b-title">清代大運河鹽梟研究</div><div class="b-meta">徐安琨著 · 87年 平一</div><div class="b-price">NT$ 360</div></a><a class="b-card" href="../books/00714.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00714.webp" alt="魏晉南朝恩赦制度的探討" onerror="this.onerror=null;this.src='../assets/covers/00714.jpg';"></div><div class="b-title">魏晉南朝恩赦制度的探討</div><div class="b-meta">陳俊強著 · 87年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/00715.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00715.webp" alt="《兩拍》研究" onerror="this.onerror=null;this.src='../assets/covers/00715.jpg';"></div><div class="b-title">《兩拍》研究</div><div class="b-meta">黃秀愛著 · 87年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/00716.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00716.webp" alt="曹魏時期中央政務機關之研究" onerror="this.onerror=null;this.src='../assets/covers/00716.jpg';"></div><div class="b-title">曹魏時期中央政務機關之研究</div><div class="b-meta">黃熾霖著 · 91年 平一</div><div class="b-price">NT$ 540</div></a><a class="b-card" href="../books/00717.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00717.webp" alt="維風導俗" onerror="this.onerror=null;this.src='../assets/covers/00717.jpg';"></div><div class="b-title">維風導俗</div><div class="b-meta">王崇峻著 · 91年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/00718.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00718.webp" alt="論《戰爭與和平》主題思想" onerror="this.onerror=null;this.src='../assets/covers/00718.jpg';"></div><div class="b-title">論《戰爭與和平》主題思想</div><div class="b-meta">蕭素卿著 · 92年 平一</div><div class="b-price">NT$ 260</div></a><a class="b-card" href="../books/00719.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00719.webp" alt="孟郊、賈島研究" onerror="this.onerror=null;this.src='../assets/covers/00719.jpg';"></div><div class="b-title">孟郊、賈島研究</div><div class="b-meta">劉竹青著 · 92年 平一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/00720.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00720.webp" alt="靜齋古典詩文論叢" onerror="this.onerror=null;this.src='../assets/covers/00720.jpg';"></div><div class="b-title">靜齋古典詩文論叢</div><div class="b-meta">范月嬌著 · 93年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/00721.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00721.webp" alt="莊子寓言研究" onerror="this.onerror=null;this.src='../assets/covers/00721.jpg';"></div><div class="b-title">莊子寓言研究</div><div class="b-meta">葉程義著 · 93年 平一</div><div class="b-price">NT$ 440</div></a><a class="b-card" href="../books/00722.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00722.webp" alt="戲曲敘事論述集：附劇本二種" onerror="this.onerror=null;this.src='../assets/covers/00722.jpg';"></div><div class="b-title">戲曲敘事論述集：附劇本二種</div><div class="b-meta">侯雲舒著 · 102年 平一</div><div class="b-price">NT$ 300</div></a></main>
+  <div class="toolbar">
+  <div class="toolbar-left">
+    <input type="search" id="topicFilter" class="t-input" placeholder="🔍 篩選本頁書名、作者或年份…">
+    <select id="topicSort" class="t-select" aria-label="排序方式">
+      <option value="default">預設排序</option>
+      <option value="price-asc">價格：低 → 高</option>
+      <option value="price-desc">價格：高 → 低</option>
+    </select>
+  </div>
+  <div id="topicCount" class="t-count"></div>
+</div>
+<main class="grid"><a class="b-card" href="../books/00701.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00701.webp" alt="宋代書院與宋代學術之關係" onerror="this.onerror=null;this.src='../assets/covers/00701.jpg';"></div><div class="b-title">宋代書院與宋代學術之關係</div><div class="b-meta">吳萬居著 · 80年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/00702.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00702.webp" alt="黃遵憲及其詩研究" onerror="this.onerror=null;this.src='../assets/covers/00702.jpg';"></div><div class="b-title">黃遵憲及其詩研究</div><div class="b-meta">張堂錡著 · 80年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/00703.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00703.webp" alt="「唐詩」、「宋詩」之爭研究" onerror="this.onerror=null;this.src='../assets/covers/00703.jpg';"></div><div class="b-title">「唐詩」、「宋詩」之爭研究</div><div class="b-meta">戴文和著 · 86年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/00704.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00704.webp" alt="明初大儒方孝孺研究" onerror="this.onerror=null;this.src='../assets/covers/00704.jpg';"></div><div class="b-title">明初大儒方孝孺研究</div><div class="b-meta">姬秀珠著 · 80年 平一</div><div class="b-price">NT$ 340</div></a><a class="b-card" href="../books/00705.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00705.webp" alt="敦煌寫卷書法研究" onerror="this.onerror=null;this.src='../assets/covers/00705.jpg';"></div><div class="b-title">敦煌寫卷書法研究</div><div class="b-meta">焦明晨著 · 86年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/00706.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00706.webp" alt="吳稚暉與國語運動" onerror="this.onerror=null;this.src='../assets/covers/00706.jpg';"></div><div class="b-title">吳稚暉與國語運動</div><div class="b-meta">詹 瑋著 · 81年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/00707.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00707.webp" alt="唐代音樂文化之研究" onerror="this.onerror=null;this.src='../assets/covers/00707.jpg';"></div><div class="b-title">唐代音樂文化之研究</div><div class="b-meta">楊旻瑋著 · 82年 平一</div><div class="b-price">NT$ 520</div></a><a class="b-card" href="../books/00708.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00708.webp" alt="詩話摘句批評研究" onerror="this.onerror=null;this.src='../assets/covers/00708.jpg';"></div><div class="b-title">詩話摘句批評研究</div><div class="b-meta">周慶華著 · 82年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/00710.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00710.webp" alt="清代臺灣義民研究" onerror="this.onerror=null;this.src='../assets/covers/00710.jpg';"></div><div class="b-title">清代臺灣義民研究</div><div class="b-meta">丁光玲著 · 83年 平一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/00711.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00711.webp" alt="聞一多詩學論稿" onerror="this.onerror=null;this.src='../assets/covers/00711.jpg';"></div><div class="b-title">聞一多詩學論稿</div><div class="b-meta">李子玲著 · 85年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/00712.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00712.webp" alt="想像的邊疆-論李商隱詩中的否定句" onerror="this.onerror=null;this.src='../assets/covers/00712.jpg';"></div><div class="b-title">想像的邊疆-論李商隱詩中的否定句</div><div class="b-meta">林清美著 · 86年 平一</div><div class="b-price">NT$ 280</div></a><a class="b-card" href="../books/00713.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00713.webp" alt="清代大運河鹽梟研究" onerror="this.onerror=null;this.src='../assets/covers/00713.jpg';"></div><div class="b-title">清代大運河鹽梟研究</div><div class="b-meta">徐安琨著 · 87年 平一</div><div class="b-price">NT$ 360</div></a><a class="b-card" href="../books/00714.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00714.webp" alt="魏晉南朝恩赦制度的探討" onerror="this.onerror=null;this.src='../assets/covers/00714.jpg';"></div><div class="b-title">魏晉南朝恩赦制度的探討</div><div class="b-meta">陳俊強著 · 87年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/00715.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00715.webp" alt="《兩拍》研究" onerror="this.onerror=null;this.src='../assets/covers/00715.jpg';"></div><div class="b-title">《兩拍》研究</div><div class="b-meta">黃秀愛著 · 87年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/00716.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00716.webp" alt="曹魏時期中央政務機關之研究" onerror="this.onerror=null;this.src='../assets/covers/00716.jpg';"></div><div class="b-title">曹魏時期中央政務機關之研究</div><div class="b-meta">黃熾霖著 · 91年 平一</div><div class="b-price">NT$ 540</div></a><a class="b-card" href="../books/00717.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00717.webp" alt="維風導俗" onerror="this.onerror=null;this.src='../assets/covers/00717.jpg';"></div><div class="b-title">維風導俗</div><div class="b-meta">王崇峻著 · 91年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/00718.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00718.webp" alt="論《戰爭與和平》主題思想" onerror="this.onerror=null;this.src='../assets/covers/00718.jpg';"></div><div class="b-title">論《戰爭與和平》主題思想</div><div class="b-meta">蕭素卿著 · 92年 平一</div><div class="b-price">NT$ 260</div></a><a class="b-card" href="../books/00719.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00719.webp" alt="孟郊、賈島研究" onerror="this.onerror=null;this.src='../assets/covers/00719.jpg';"></div><div class="b-title">孟郊、賈島研究</div><div class="b-meta">劉竹青著 · 92年 平一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/00720.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00720.webp" alt="靜齋古典詩文論叢" onerror="this.onerror=null;this.src='../assets/covers/00720.jpg';"></div><div class="b-title">靜齋古典詩文論叢</div><div class="b-meta">范月嬌著 · 93年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/00721.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00721.webp" alt="莊子寓言研究" onerror="this.onerror=null;this.src='../assets/covers/00721.jpg';"></div><div class="b-title">莊子寓言研究</div><div class="b-meta">葉程義著 · 93年 平一</div><div class="b-price">NT$ 440</div></a><a class="b-card" href="../books/00722.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/00722.webp" alt="戲曲敘事論述集：附劇本二種" onerror="this.onerror=null;this.src='../assets/covers/00722.jpg';"></div><div class="b-title">戲曲敘事論述集：附劇本二種</div><div class="b-meta">侯雲舒著 · 102年 平一</div><div class="b-price">NT$ 300</div></a></main>
   <footer>文史哲出版社有限公司 ｜ 創立於1971年 ｜ <a href="index.html">查看全部 80 個書系</a> ｜ <a href="../index.html">官方首頁</a></footer>
 </div>
+<!-- LAPEN_TOPIC_ENHANCED_V1 -->
+<script>
+(function(){
+  var grid=document.querySelector('main.grid');
+  if(!grid)return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.b-card'));
+  cards.forEach(function(card,idx){
+    card.dataset.origIdx=String(idx);
+    var href=card.getAttribute('href')||'';
+    var m=href.match(/\/([^\/]+)\.html$/);
+    var bid=m?m[1]:'';
+    var titleEl=card.querySelector('.b-title');
+    var metaEl=card.querySelector('.b-meta');
+    var priceEl=card.querySelector('.b-price');
+    var imgEl=card.querySelector('.b-thumb img');
+    var title=titleEl?titleEl.textContent.trim():'';
+    var meta=metaEl?metaEl.textContent.trim():'';
+    var pMatch=priceEl?priceEl.textContent.match(/\d+/):null;
+    var price=pMatch?Number(pMatch[0]):0;
+    card.dataset.bid=bid;
+    card.dataset.price=String(price);
+    card.dataset.search=(title+' '+meta).toLowerCase();
+    if(bid){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='b-wish';
+      btn.title='加入我的收藏／待購書單';
+      btn.textContent='♡';
+      btn.addEventListener('click',function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        var list=[];
+        try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+        var i=list.findIndex(function(x){return String(x.id)===String(bid);});
+        if(i>=0){list.splice(i,1);}else{
+          var cover=imgEl?(imgEl.getAttribute('src')||'').replace(/^\.\.\//,''):('assets/covers/'+bid+'.webp');
+          list.unshift({id:bid,title:title,author:meta,category:'',price:price,cover:cover,savedAt:Date.now()});
+        }
+        try{localStorage.setItem('lapen_wishlist',JSON.stringify(list));}catch(e){}
+        syncWishes();
+      });
+      card.appendChild(btn);
+    }
+  });
+  function syncWishes(){
+    var list=[];
+    try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+    var set={};
+    list.forEach(function(x){set[String(x.id)]=true;});
+    cards.forEach(function(c){
+      var b=c.querySelector('.b-wish');
+      if(!b)return;
+      var saved=!!set[String(c.dataset.bid)];
+      b.classList.toggle('saved',saved);
+      b.textContent=saved?'♥':'♡';
+      b.title=saved?'已收藏（點擊移除）':'加入我的收藏／待購書單';
+    });
+  }
+  var filterInput=document.getElementById('topicFilter');
+  var sortSel=document.getElementById('topicSort');
+  var countEl=document.getElementById('topicCount');
+  function applyFilterAndSort(){
+    var q=(filterInput?filterInput.value:'').trim().toLowerCase();
+    var mode=sortSel?sortSel.value:'default';
+    var sorted=cards.slice().sort(function(a,b){
+      if(mode==='price-asc')return Number(a.dataset.price)-Number(b.dataset.price);
+      if(mode==='price-desc')return Number(b.dataset.price)-Number(a.dataset.price);
+      return Number(a.dataset.origIdx)-Number(b.dataset.origIdx);
+    });
+    var visible=0;
+    sorted.forEach(function(c){
+      var show=!q||c.dataset.search.indexOf(q)!==-1;
+      c.style.display=show?'':'none';
+      if(show)visible++;
+      grid.appendChild(c);
+    });
+    if(countEl)countEl.textContent='顯示 '+visible+' / '+cards.length+' 冊';
+  }
+  if(filterInput)filterInput.addEventListener('input',applyFilterAndSort);
+  if(sortSel)sortSel.addEventListener('change',applyFilterAndSort);
+  syncWishes();
+  applyFilterAndSort();
+})();
+</script>
 </body>
 </html>

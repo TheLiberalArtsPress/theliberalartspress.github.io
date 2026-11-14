@@ -37,6 +37,16 @@ body{min-height:100vh;background:radial-gradient(circle at top,#2a2119 0%,#120e0
 .b-price{margin-top:auto;font-size:14px;font-weight:700;color:#e04f3e}
 footer{text-align:center;margin-top:26px;font-size:12px;color:#8e8072}
 footer a{color:#c7a477;text-decoration:none}
+.b-card{position:relative}
+.b-wish{position:absolute;top:16px;right:16px;z-index:5;width:30px;height:30px;border-radius:999px;border:1px solid #fecdd3;background:rgba(255,241,242,.94);color:#be123c;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s}
+.b-wish:hover{transform:scale(1.1)}
+.b-wish.saved{background:#e11d48;color:#fff;border-color:#e11d48}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#1c1713;border:1px solid #352b22;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.toolbar-left{display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1}
+.t-input,.t-select{background:#14100d;color:#efe7dc;border:1px solid #3d3127;border-radius:8px;padding:7px 11px;font-size:13px;outline:none}
+.t-input{min-width:200px;flex:1;max-width:340px}
+.t-input:focus,.t-select:focus{border-color:#e09f4c}
+.t-count{font-size:12.5px;color:#b7aa9b}
 </style>
 </head>
 <body>
@@ -56,8 +66,103 @@ footer a{color:#c7a477;text-decoration:none}
     </div>
     <a class="cta" href="../index.html?category=%E5%8F%A2%E6%9B%B8">🔍 在主站開啟此書系篩選</a>
   </section>
-  <main class="grid"><a class="b-card" href="../books/08901.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08901.webp" alt="雲在山房類稿（全三冊）" onerror="this.onerror=null;this.src='../assets/covers/08901.jpg';"></div><div class="b-title">雲在山房類稿（全三冊）</div><div class="b-meta">楊壽丹著 · 84年 精三</div><div class="b-price">NT$ 1800</div></a><a class="b-card" href="../books/08902.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08902.webp" alt="方祖燊全集（一∼四冊）" onerror="this.onerror=null;this.src='../assets/covers/08902.jpg';"></div><div class="b-title">方祖燊全集（一∼四冊）</div><div class="b-meta">方祖燊著 · 85年 平四</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/08903.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08903.webp" alt="方祖燊全集（一∼十三冊）" onerror="this.onerror=null;this.src='../assets/covers/08903.jpg';"></div><div class="b-title">方祖燊全集（一∼十三冊）</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 4380</div></a><a class="b-card" href="../books/08905.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08905.webp" alt="方祖燊全集（五）：中短篇小說選集" onerror="this.onerror=null;this.src='../assets/covers/08905.jpg';"></div><div class="b-title">方祖燊全集（五）：中短篇小說選集</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 380</div></a><a class="b-card" href="../books/08906.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08906.webp" alt="方祖燊全集（六）：散文雜文兒童文學" onerror="this.onerror=null;this.src='../assets/covers/08906.jpg';"></div><div class="b-title">方祖燊全集（六）：散文雜文兒童文學</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/08907.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08907.webp" alt="方祖燊全集（七）：漢詩建安詩魏晉詩" onerror="this.onerror=null;this.src='../assets/covers/08907.jpg';"></div><div class="b-title">方祖燊全集（七）：漢詩建安詩魏晉詩</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/08908.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08908.webp" alt="方祖燊全集（八）：文學批評上編" onerror="this.onerror=null;this.src='../assets/covers/08908.jpg';"></div><div class="b-title">方祖燊全集（八）：文學批評上編</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/08909.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08909.webp" alt="方祖燊全集（九）：文學批評下編" onerror="this.onerror=null;this.src='../assets/covers/08909.jpg';"></div><div class="b-title">方祖燊全集（九）：文學批評下編</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/08910.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08910.webp" alt="方祖燊全集（十）：散文理論叢集" onerror="this.onerror=null;this.src='../assets/covers/08910.jpg';"></div><div class="b-title">方祖燊全集（十）：散文理論叢集</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/08911.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08911.webp" alt="方祖燊全集（十一）：宋教仁傳" onerror="this.onerror=null;this.src='../assets/covers/08911.jpg';"></div><div class="b-title">方祖燊全集（十一）：宋教仁傳</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/08912.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08912.webp" alt="方祖燊全集（十二）：飛鴻雪泥集" onerror="this.onerror=null;this.src='../assets/covers/08912.jpg';"></div><div class="b-title">方祖燊全集（十二）：飛鴻雪泥集</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/08913.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08913.webp" alt="方祖燊全集（十三）：方祖燊自傳" onerror="this.onerror=null;this.src='../assets/covers/08913.jpg';"></div><div class="b-title">方祖燊全集（十三）：方祖燊自傳</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 200</div></a><a class="b-card" href="../books/08914.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08914.webp" alt="方祖燊全集（十四）：荒譚集" onerror="this.onerror=null;this.src='../assets/covers/08914.jpg';"></div><div class="b-title">方祖燊全集（十四）：荒譚集</div><div class="b-meta">方祖燊著 · 99年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/08930.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08930.webp" alt="墨人博士作品全集(共60本)" onerror="this.onerror=null;this.src='../assets/covers/08930.jpg';"></div><div class="b-title">墨人博士作品全集(共60本)</div><div class="b-meta">墨 人著 · 101年 平60</div><div class="b-price">NT$ 36800</div></a><a class="b-card" href="../books/08981.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08981.webp" alt="陳福成著作全編" onerror="this.onerror=null;this.src='../assets/covers/08981.jpg';"></div><div class="b-title">陳福成著作全編</div><div class="b-meta">陳福成著 · 104年 平一</div><div class="b-price">NT$ 36800</div></a><a class="b-card" href="../books/08982.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08982.webp" alt="趙尺子先生全集(套書10本)" onerror="this.onerror=null;this.src='../assets/covers/08982.jpg';"></div><div class="b-title">趙尺子先生全集(套書10本)</div><div class="b-meta">趙尺子著? · 108年 平十</div><div class="b-price">NT$ 3000</div></a><a class="b-card" href="../books/08991.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08991.webp" alt="王更生先生全集 第一輯(共18本)" onerror="this.onerror=null;this.src='../assets/covers/08991.jpg';"></div><div class="b-title">王更生先生全集 第一輯(共18本)</div><div class="b-meta">王更生著 · 99年 平18</div><div class="b-price">NT$ 6000</div></a><a class="b-card" href="../books/08992.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08992.webp" alt="痛悼王師更生辭世：門生哀悼追思紀念文集錄（BOD）" onerror="this.onerror=null;this.src='../assets/covers/08992.jpg';"></div><div class="b-title">痛悼王師更生辭世：門生哀悼追思紀念文集錄（BOD）</div><div class="b-meta">編輯小組 · 99年 平一</div><div class="b-price">NT$ 180</div></a></main>
+  <div class="toolbar">
+  <div class="toolbar-left">
+    <input type="search" id="topicFilter" class="t-input" placeholder="🔍 篩選本頁書名、作者或年份…">
+    <select id="topicSort" class="t-select" aria-label="排序方式">
+      <option value="default">預設排序</option>
+      <option value="price-asc">價格：低 → 高</option>
+      <option value="price-desc">價格：高 → 低</option>
+    </select>
+  </div>
+  <div id="topicCount" class="t-count"></div>
+</div>
+<main class="grid"><a class="b-card" href="../books/08901.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08901.webp" alt="雲在山房類稿（全三冊）" onerror="this.onerror=null;this.src='../assets/covers/08901.jpg';"></div><div class="b-title">雲在山房類稿（全三冊）</div><div class="b-meta">楊壽丹著 · 84年 精三</div><div class="b-price">NT$ 1800</div></a><a class="b-card" href="../books/08902.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08902.webp" alt="方祖燊全集（一∼四冊）" onerror="this.onerror=null;this.src='../assets/covers/08902.jpg';"></div><div class="b-title">方祖燊全集（一∼四冊）</div><div class="b-meta">方祖燊著 · 85年 平四</div><div class="b-price">NT$ 1200</div></a><a class="b-card" href="../books/08903.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08903.webp" alt="方祖燊全集（一∼十三冊）" onerror="this.onerror=null;this.src='../assets/covers/08903.jpg';"></div><div class="b-title">方祖燊全集（一∼十三冊）</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 4380</div></a><a class="b-card" href="../books/08905.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08905.webp" alt="方祖燊全集（五）：中短篇小說選集" onerror="this.onerror=null;this.src='../assets/covers/08905.jpg';"></div><div class="b-title">方祖燊全集（五）：中短篇小說選集</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 380</div></a><a class="b-card" href="../books/08906.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08906.webp" alt="方祖燊全集（六）：散文雜文兒童文學" onerror="this.onerror=null;this.src='../assets/covers/08906.jpg';"></div><div class="b-title">方祖燊全集（六）：散文雜文兒童文學</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/08907.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08907.webp" alt="方祖燊全集（七）：漢詩建安詩魏晉詩" onerror="this.onerror=null;this.src='../assets/covers/08907.jpg';"></div><div class="b-title">方祖燊全集（七）：漢詩建安詩魏晉詩</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/08908.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08908.webp" alt="方祖燊全集（八）：文學批評上編" onerror="this.onerror=null;this.src='../assets/covers/08908.jpg';"></div><div class="b-title">方祖燊全集（八）：文學批評上編</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/08909.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08909.webp" alt="方祖燊全集（九）：文學批評下編" onerror="this.onerror=null;this.src='../assets/covers/08909.jpg';"></div><div class="b-title">方祖燊全集（九）：文學批評下編</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/08910.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08910.webp" alt="方祖燊全集（十）：散文理論叢集" onerror="this.onerror=null;this.src='../assets/covers/08910.jpg';"></div><div class="b-title">方祖燊全集（十）：散文理論叢集</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/08911.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08911.webp" alt="方祖燊全集（十一）：宋教仁傳" onerror="this.onerror=null;this.src='../assets/covers/08911.jpg';"></div><div class="b-title">方祖燊全集（十一）：宋教仁傳</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/08912.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08912.webp" alt="方祖燊全集（十二）：飛鴻雪泥集" onerror="this.onerror=null;this.src='../assets/covers/08912.jpg';"></div><div class="b-title">方祖燊全集（十二）：飛鴻雪泥集</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/08913.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08913.webp" alt="方祖燊全集（十三）：方祖燊自傳" onerror="this.onerror=null;this.src='../assets/covers/08913.jpg';"></div><div class="b-title">方祖燊全集（十三）：方祖燊自傳</div><div class="b-meta">方祖燊著 · 88年 平一</div><div class="b-price">NT$ 200</div></a><a class="b-card" href="../books/08914.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08914.webp" alt="方祖燊全集（十四）：荒譚集" onerror="this.onerror=null;this.src='../assets/covers/08914.jpg';"></div><div class="b-title">方祖燊全集（十四）：荒譚集</div><div class="b-meta">方祖燊著 · 99年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/08930.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08930.webp" alt="墨人博士作品全集(共60本)" onerror="this.onerror=null;this.src='../assets/covers/08930.jpg';"></div><div class="b-title">墨人博士作品全集(共60本)</div><div class="b-meta">墨 人著 · 101年 平60</div><div class="b-price">NT$ 36800</div></a><a class="b-card" href="../books/08981.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08981.webp" alt="陳福成著作全編" onerror="this.onerror=null;this.src='../assets/covers/08981.jpg';"></div><div class="b-title">陳福成著作全編</div><div class="b-meta">陳福成著 · 104年 平一</div><div class="b-price">NT$ 36800</div></a><a class="b-card" href="../books/08982.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08982.webp" alt="趙尺子先生全集(套書10本)" onerror="this.onerror=null;this.src='../assets/covers/08982.jpg';"></div><div class="b-title">趙尺子先生全集(套書10本)</div><div class="b-meta">趙尺子著? · 108年 平十</div><div class="b-price">NT$ 3000</div></a><a class="b-card" href="../books/08991.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08991.webp" alt="王更生先生全集 第一輯(共18本)" onerror="this.onerror=null;this.src='../assets/covers/08991.jpg';"></div><div class="b-title">王更生先生全集 第一輯(共18本)</div><div class="b-meta">王更生著 · 99年 平18</div><div class="b-price">NT$ 6000</div></a><a class="b-card" href="../books/08992.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/08992.webp" alt="痛悼王師更生辭世：門生哀悼追思紀念文集錄（BOD）" onerror="this.onerror=null;this.src='../assets/covers/08992.jpg';"></div><div class="b-title">痛悼王師更生辭世：門生哀悼追思紀念文集錄（BOD）</div><div class="b-meta">編輯小組 · 99年 平一</div><div class="b-price">NT$ 180</div></a></main>
   <footer>文史哲出版社有限公司 ｜ 創立於1971年 ｜ <a href="index.html">查看全部 80 個書系</a> ｜ <a href="../index.html">官方首頁</a></footer>
 </div>
+<!-- LAPEN_TOPIC_ENHANCED_V1 -->
+<script>
+(function(){
+  var grid=document.querySelector('main.grid');
+  if(!grid)return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.b-card'));
+  cards.forEach(function(card,idx){
+    card.dataset.origIdx=String(idx);
+    var href=card.getAttribute('href')||'';
+    var m=href.match(/\/([^\/]+)\.html$/);
+    var bid=m?m[1]:'';
+    var titleEl=card.querySelector('.b-title');
+    var metaEl=card.querySelector('.b-meta');
+    var priceEl=card.querySelector('.b-price');
+    var imgEl=card.querySelector('.b-thumb img');
+    var title=titleEl?titleEl.textContent.trim():'';
+    var meta=metaEl?metaEl.textContent.trim():'';
+    var pMatch=priceEl?priceEl.textContent.match(/\d+/):null;
+    var price=pMatch?Number(pMatch[0]):0;
+    card.dataset.bid=bid;
+    card.dataset.price=String(price);
+    card.dataset.search=(title+' '+meta).toLowerCase();
+    if(bid){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='b-wish';
+      btn.title='加入我的收藏／待購書單';
+      btn.textContent='♡';
+      btn.addEventListener('click',function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        var list=[];
+        try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+        var i=list.findIndex(function(x){return String(x.id)===String(bid);});
+        if(i>=0){list.splice(i,1);}else{
+          var cover=imgEl?(imgEl.getAttribute('src')||'').replace(/^\.\.\//,''):('assets/covers/'+bid+'.webp');
+          list.unshift({id:bid,title:title,author:meta,category:'',price:price,cover:cover,savedAt:Date.now()});
+        }
+        try{localStorage.setItem('lapen_wishlist',JSON.stringify(list));}catch(e){}
+        syncWishes();
+      });
+      card.appendChild(btn);
+    }
+  });
+  function syncWishes(){
+    var list=[];
+    try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+    var set={};
+    list.forEach(function(x){set[String(x.id)]=true;});
+    cards.forEach(function(c){
+      var b=c.querySelector('.b-wish');
+      if(!b)return;
+      var saved=!!set[String(c.dataset.bid)];
+      b.classList.toggle('saved',saved);
+      b.textContent=saved?'♥':'♡';
+      b.title=saved?'已收藏（點擊移除）':'加入我的收藏／待購書單';
+    });
+  }
+  var filterInput=document.getElementById('topicFilter');
+  var sortSel=document.getElementById('topicSort');
+  var countEl=document.getElementById('topicCount');
+  function applyFilterAndSort(){
+    var q=(filterInput?filterInput.value:'').trim().toLowerCase();
+    var mode=sortSel?sortSel.value:'default';
+    var sorted=cards.slice().sort(function(a,b){
+      if(mode==='price-asc')return Number(a.dataset.price)-Number(b.dataset.price);
+      if(mode==='price-desc')return Number(b.dataset.price)-Number(a.dataset.price);
+      return Number(a.dataset.origIdx)-Number(b.dataset.origIdx);
+    });
+    var visible=0;
+    sorted.forEach(function(c){
+      var show=!q||c.dataset.search.indexOf(q)!==-1;
+      c.style.display=show?'':'none';
+      if(show)visible++;
+      grid.appendChild(c);
+    });
+    if(countEl)countEl.textContent='顯示 '+visible+' / '+cards.length+' 冊';
+  }
+  if(filterInput)filterInput.addEventListener('input',applyFilterAndSort);
+  if(sortSel)sortSel.addEventListener('change',applyFilterAndSort);
+  syncWishes();
+  applyFilterAndSort();
+})();
+</script>
 </body>
 </html>

@@ -37,6 +37,16 @@ body{min-height:100vh;background:radial-gradient(circle at top,#2a2119 0%,#120e0
 .b-price{margin-top:auto;font-size:14px;font-weight:700;color:#e04f3e}
 footer{text-align:center;margin-top:26px;font-size:12px;color:#8e8072}
 footer a{color:#c7a477;text-decoration:none}
+.b-card{position:relative}
+.b-wish{position:absolute;top:16px;right:16px;z-index:5;width:30px;height:30px;border-radius:999px;border:1px solid #fecdd3;background:rgba(255,241,242,.94);color:#be123c;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s}
+.b-wish:hover{transform:scale(1.1)}
+.b-wish.saved{background:#e11d48;color:#fff;border-color:#e11d48}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#1c1713;border:1px solid #352b22;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.toolbar-left{display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1}
+.t-input,.t-select{background:#14100d;color:#efe7dc;border:1px solid #3d3127;border-radius:8px;padding:7px 11px;font-size:13px;outline:none}
+.t-input{min-width:200px;flex:1;max-width:340px}
+.t-input:focus,.t-select:focus{border-color:#e09f4c}
+.t-count{font-size:12.5px;color:#b7aa9b}
 </style>
 </head>
 <body>
@@ -56,8 +66,103 @@ footer a{color:#c7a477;text-decoration:none}
     </div>
     <a class="cta" href="../index.html?category=%E4%B8%AD%E5%9C%8B%E6%AD%B7%E5%8F%B2">🔍 在主站開啟此書系篩選</a>
   </section>
-  <main class="grid"><a class="b-card" href="../books/60201.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60201.webp" alt="中華紀元年表" onerror="this.onerror=null;this.src='../assets/covers/60201.jpg';"></div><div class="b-title">中華紀元年表</div><div class="b-meta">彭建方編著 · 95年 平一</div><div class="b-price">NT$ 960</div></a><a class="b-card" href="../books/60202.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60202.webp" alt="宋東京考" onerror="this.onerror=null;this.src='../assets/covers/60202.jpg';"></div><div class="b-title">宋東京考</div><div class="b-meta">清．周城著 · 79年 平一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/60203.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60203.webp" alt="中華民族紀元年表" onerror="this.onerror=null;this.src='../assets/covers/60203.jpg';"></div><div class="b-title">中華民族紀元年表</div><div class="b-meta">彭建方編著 · 102年 平一</div><div class="b-price">NT$ 1960</div></a><a class="b-card" href="../books/60204.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60204.webp" alt="千秋人物" onerror="this.onerror=null;this.src='../assets/covers/60204.jpg';"></div><div class="b-title">千秋人物</div><div class="b-meta">彭建方編撰 · 103年 平一</div><div class="b-price">NT$ 2200</div></a><a class="b-card" href="../books/61001.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61001.webp" alt="陳書異文考證" onerror="this.onerror=null;this.src='../assets/covers/61001.jpg';"></div><div class="b-title">陳書異文考證</div><div class="b-meta">林礽乾著 · 68年 平一</div><div class="b-price">NT$ 460</div></a><a class="b-card" href="../books/61002.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61002.webp" alt="中國姓氏研究及黃姓探源（BOD）" onerror="this.onerror=null;this.src='../assets/covers/61002.jpg';"></div><div class="b-title">中國姓氏研究及黃姓探源（BOD）</div><div class="b-meta">黃文新著 · 97年 平一</div><div class="b-price">NT$ 340</div></a><a class="b-card" href="../books/61003.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61003.webp" alt="中國近代史" onerror="this.onerror=null;this.src='../assets/covers/61003.jpg';"></div><div class="b-title">中國近代史</div><div class="b-meta">黃大受編著 · 76年 精三</div><div class="b-price">NT$ 2500</div></a><a class="b-card" href="../books/61004.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61004.webp" alt="清代州縣四種" onerror="this.onerror=null;this.src='../assets/covers/61004.jpg';"></div><div class="b-title">清代州縣四種</div><div class="b-meta">蔡申之等著 · 64年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/61005.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61005.webp" alt="史諱舉例（重版）" onerror="this.onerror=null;this.src='../assets/covers/61005.jpg';"></div><div class="b-title">史諱舉例（重版）</div><div class="b-meta">陳新會著 · 86年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/61006.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61006.webp" alt="史記方法試論" onerror="this.onerror=null;this.src='../assets/covers/61006.jpg';"></div><div class="b-title">史記方法試論</div><div class="b-meta">游信利著 · 77年 平一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/61007.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61007.webp" alt="中國上古史研究講義" onerror="this.onerror=null;this.src='../assets/covers/61007.jpg';"></div><div class="b-title">中國上古史研究講義</div><div class="b-meta">顧頡剛著 · 78年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/61008.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61008.webp" alt="史記會注考證（再版）" onerror="this.onerror=null;this.src='../assets/covers/61008.jpg';"></div><div class="b-title">史記會注考證（再版）</div><div class="b-meta">瀧川龜太郎著 · 82年 精一</div><div class="b-price">NT$ 800</div></a><a class="b-card" href="../books/61011.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61011.webp" alt="尋求歷史的謎底（一）" onerror="this.onerror=null;this.src='../assets/covers/61011.jpg';"></div><div class="b-title">尋求歷史的謎底（一）</div><div class="b-meta">楊天石著 · 83年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/61012.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61012.webp" alt="尋求歷史的謎底（二）" onerror="this.onerror=null;this.src='../assets/covers/61012.jpg';"></div><div class="b-title">尋求歷史的謎底（二）</div><div class="b-meta">楊天石著 · 83年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/61013.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61013.webp" alt="結構與歷史：略談中國古經文的組成問題（中英文本）" onerror="this.onerror=null;this.src='../assets/covers/61013.jpg';"></div><div class="b-title">結構與歷史：略談中國古經文的組成問題（中英文本）</div><div class="b-meta">戴思克著 · 84年 平一</div><div class="b-price">NT$ 160</div></a><a class="b-card" href="../books/61014.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61014.webp" alt="萬古盧溝橋－歷史上的一百二十五位證人" onerror="this.onerror=null;this.src='../assets/covers/61014.jpg';"></div><div class="b-title">萬古盧溝橋－歷史上的一百二十五位證人</div><div class="b-meta">黃文範著 · 86年 精一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/61015.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61015.webp" alt="趣味的新思維歷史故事" onerror="this.onerror=null;this.src='../assets/covers/61015.jpg';"></div><div class="b-title">趣味的新思維歷史故事</div><div class="b-meta">馮　馮著 · 95年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/61016.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61016.webp" alt="二十五史人物志-本紀與列傳精要" onerror="this.onerror=null;this.src='../assets/covers/61016.jpg';"></div><div class="b-title">二十五史人物志-本紀與列傳精要</div><div class="b-meta">廖忠俊著 · 115年 平一</div><div class="b-price">NT$ 280</div></a><a class="b-card" href="../books/61017.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61017.webp" alt="蔣介石軍事思想與研究" onerror="this.onerror=null;this.src='../assets/covers/61017.jpg';"></div><div class="b-title">蔣介石軍事思想與研究</div><div class="b-meta">劉興岳 著 · 115年 平一</div><div class="b-price">NT$ 460</div></a></main>
+  <div class="toolbar">
+  <div class="toolbar-left">
+    <input type="search" id="topicFilter" class="t-input" placeholder="🔍 篩選本頁書名、作者或年份…">
+    <select id="topicSort" class="t-select" aria-label="排序方式">
+      <option value="default">預設排序</option>
+      <option value="price-asc">價格：低 → 高</option>
+      <option value="price-desc">價格：高 → 低</option>
+    </select>
+  </div>
+  <div id="topicCount" class="t-count"></div>
+</div>
+<main class="grid"><a class="b-card" href="../books/60201.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60201.webp" alt="中華紀元年表" onerror="this.onerror=null;this.src='../assets/covers/60201.jpg';"></div><div class="b-title">中華紀元年表</div><div class="b-meta">彭建方編著 · 95年 平一</div><div class="b-price">NT$ 960</div></a><a class="b-card" href="../books/60202.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60202.webp" alt="宋東京考" onerror="this.onerror=null;this.src='../assets/covers/60202.jpg';"></div><div class="b-title">宋東京考</div><div class="b-meta">清．周城著 · 79年 平一</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/60203.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60203.webp" alt="中華民族紀元年表" onerror="this.onerror=null;this.src='../assets/covers/60203.jpg';"></div><div class="b-title">中華民族紀元年表</div><div class="b-meta">彭建方編著 · 102年 平一</div><div class="b-price">NT$ 1960</div></a><a class="b-card" href="../books/60204.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/60204.webp" alt="千秋人物" onerror="this.onerror=null;this.src='../assets/covers/60204.jpg';"></div><div class="b-title">千秋人物</div><div class="b-meta">彭建方編撰 · 103年 平一</div><div class="b-price">NT$ 2200</div></a><a class="b-card" href="../books/61001.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61001.webp" alt="陳書異文考證" onerror="this.onerror=null;this.src='../assets/covers/61001.jpg';"></div><div class="b-title">陳書異文考證</div><div class="b-meta">林礽乾著 · 68年 平一</div><div class="b-price">NT$ 460</div></a><a class="b-card" href="../books/61002.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61002.webp" alt="中國姓氏研究及黃姓探源（BOD）" onerror="this.onerror=null;this.src='../assets/covers/61002.jpg';"></div><div class="b-title">中國姓氏研究及黃姓探源（BOD）</div><div class="b-meta">黃文新著 · 97年 平一</div><div class="b-price">NT$ 340</div></a><a class="b-card" href="../books/61003.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61003.webp" alt="中國近代史" onerror="this.onerror=null;this.src='../assets/covers/61003.jpg';"></div><div class="b-title">中國近代史</div><div class="b-meta">黃大受編著 · 76年 精三</div><div class="b-price">NT$ 2500</div></a><a class="b-card" href="../books/61004.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61004.webp" alt="清代州縣四種" onerror="this.onerror=null;this.src='../assets/covers/61004.jpg';"></div><div class="b-title">清代州縣四種</div><div class="b-meta">蔡申之等著 · 64年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/61005.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61005.webp" alt="史諱舉例（重版）" onerror="this.onerror=null;this.src='../assets/covers/61005.jpg';"></div><div class="b-title">史諱舉例（重版）</div><div class="b-meta">陳新會著 · 86年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/61006.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61006.webp" alt="史記方法試論" onerror="this.onerror=null;this.src='../assets/covers/61006.jpg';"></div><div class="b-title">史記方法試論</div><div class="b-meta">游信利著 · 77年 平一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/61007.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61007.webp" alt="中國上古史研究講義" onerror="this.onerror=null;this.src='../assets/covers/61007.jpg';"></div><div class="b-title">中國上古史研究講義</div><div class="b-meta">顧頡剛著 · 78年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/61008.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61008.webp" alt="史記會注考證（再版）" onerror="this.onerror=null;this.src='../assets/covers/61008.jpg';"></div><div class="b-title">史記會注考證（再版）</div><div class="b-meta">瀧川龜太郎著 · 82年 精一</div><div class="b-price">NT$ 800</div></a><a class="b-card" href="../books/61011.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61011.webp" alt="尋求歷史的謎底（一）" onerror="this.onerror=null;this.src='../assets/covers/61011.jpg';"></div><div class="b-title">尋求歷史的謎底（一）</div><div class="b-meta">楊天石著 · 83年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/61012.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61012.webp" alt="尋求歷史的謎底（二）" onerror="this.onerror=null;this.src='../assets/covers/61012.jpg';"></div><div class="b-title">尋求歷史的謎底（二）</div><div class="b-meta">楊天石著 · 83年 平一</div><div class="b-price">NT$ 420</div></a><a class="b-card" href="../books/61013.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61013.webp" alt="結構與歷史：略談中國古經文的組成問題（中英文本）" onerror="this.onerror=null;this.src='../assets/covers/61013.jpg';"></div><div class="b-title">結構與歷史：略談中國古經文的組成問題（中英文本）</div><div class="b-meta">戴思克著 · 84年 平一</div><div class="b-price">NT$ 160</div></a><a class="b-card" href="../books/61014.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61014.webp" alt="萬古盧溝橋－歷史上的一百二十五位證人" onerror="this.onerror=null;this.src='../assets/covers/61014.jpg';"></div><div class="b-title">萬古盧溝橋－歷史上的一百二十五位證人</div><div class="b-meta">黃文範著 · 86年 精一</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/61015.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61015.webp" alt="趣味的新思維歷史故事" onerror="this.onerror=null;this.src='../assets/covers/61015.jpg';"></div><div class="b-title">趣味的新思維歷史故事</div><div class="b-meta">馮　馮著 · 95年 平一</div><div class="b-price">NT$ 320</div></a><a class="b-card" href="../books/61016.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61016.webp" alt="二十五史人物志-本紀與列傳精要" onerror="this.onerror=null;this.src='../assets/covers/61016.jpg';"></div><div class="b-title">二十五史人物志-本紀與列傳精要</div><div class="b-meta">廖忠俊著 · 115年 平一</div><div class="b-price">NT$ 280</div></a><a class="b-card" href="../books/61017.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/61017.webp" alt="蔣介石軍事思想與研究" onerror="this.onerror=null;this.src='../assets/covers/61017.jpg';"></div><div class="b-title">蔣介石軍事思想與研究</div><div class="b-meta">劉興岳 著 · 115年 平一</div><div class="b-price">NT$ 460</div></a></main>
   <footer>文史哲出版社有限公司 ｜ 創立於1971年 ｜ <a href="index.html">查看全部 80 個書系</a> ｜ <a href="../index.html">官方首頁</a></footer>
 </div>
+<!-- LAPEN_TOPIC_ENHANCED_V1 -->
+<script>
+(function(){
+  var grid=document.querySelector('main.grid');
+  if(!grid)return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.b-card'));
+  cards.forEach(function(card,idx){
+    card.dataset.origIdx=String(idx);
+    var href=card.getAttribute('href')||'';
+    var m=href.match(/\/([^\/]+)\.html$/);
+    var bid=m?m[1]:'';
+    var titleEl=card.querySelector('.b-title');
+    var metaEl=card.querySelector('.b-meta');
+    var priceEl=card.querySelector('.b-price');
+    var imgEl=card.querySelector('.b-thumb img');
+    var title=titleEl?titleEl.textContent.trim():'';
+    var meta=metaEl?metaEl.textContent.trim():'';
+    var pMatch=priceEl?priceEl.textContent.match(/\d+/):null;
+    var price=pMatch?Number(pMatch[0]):0;
+    card.dataset.bid=bid;
+    card.dataset.price=String(price);
+    card.dataset.search=(title+' '+meta).toLowerCase();
+    if(bid){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='b-wish';
+      btn.title='加入我的收藏／待購書單';
+      btn.textContent='♡';
+      btn.addEventListener('click',function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        var list=[];
+        try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+        var i=list.findIndex(function(x){return String(x.id)===String(bid);});
+        if(i>=0){list.splice(i,1);}else{
+          var cover=imgEl?(imgEl.getAttribute('src')||'').replace(/^\.\.\//,''):('assets/covers/'+bid+'.webp');
+          list.unshift({id:bid,title:title,author:meta,category:'',price:price,cover:cover,savedAt:Date.now()});
+        }
+        try{localStorage.setItem('lapen_wishlist',JSON.stringify(list));}catch(e){}
+        syncWishes();
+      });
+      card.appendChild(btn);
+    }
+  });
+  function syncWishes(){
+    var list=[];
+    try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+    var set={};
+    list.forEach(function(x){set[String(x.id)]=true;});
+    cards.forEach(function(c){
+      var b=c.querySelector('.b-wish');
+      if(!b)return;
+      var saved=!!set[String(c.dataset.bid)];
+      b.classList.toggle('saved',saved);
+      b.textContent=saved?'♥':'♡';
+      b.title=saved?'已收藏（點擊移除）':'加入我的收藏／待購書單';
+    });
+  }
+  var filterInput=document.getElementById('topicFilter');
+  var sortSel=document.getElementById('topicSort');
+  var countEl=document.getElementById('topicCount');
+  function applyFilterAndSort(){
+    var q=(filterInput?filterInput.value:'').trim().toLowerCase();
+    var mode=sortSel?sortSel.value:'default';
+    var sorted=cards.slice().sort(function(a,b){
+      if(mode==='price-asc')return Number(a.dataset.price)-Number(b.dataset.price);
+      if(mode==='price-desc')return Number(b.dataset.price)-Number(a.dataset.price);
+      return Number(a.dataset.origIdx)-Number(b.dataset.origIdx);
+    });
+    var visible=0;
+    sorted.forEach(function(c){
+      var show=!q||c.dataset.search.indexOf(q)!==-1;
+      c.style.display=show?'':'none';
+      if(show)visible++;
+      grid.appendChild(c);
+    });
+    if(countEl)countEl.textContent='顯示 '+visible+' / '+cards.length+' 冊';
+  }
+  if(filterInput)filterInput.addEventListener('input',applyFilterAndSort);
+  if(sortSel)sortSel.addEventListener('change',applyFilterAndSort);
+  syncWishes();
+  applyFilterAndSort();
+})();
+</script>
 </body>
 </html>

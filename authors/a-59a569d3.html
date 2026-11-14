@@ -37,6 +37,16 @@ body{min-height:100vh;background:radial-gradient(circle at top,#2a2119 0%,#120e0
 .b-price{margin-top:auto;font-size:14px;font-weight:700;color:#e04f3e}
 footer{text-align:center;margin-top:26px;font-size:12px;color:#8e8072}
 footer a{color:#c7a477;text-decoration:none}
+.b-card{position:relative}
+.b-wish{position:absolute;top:16px;right:16px;z-index:5;width:30px;height:30px;border-radius:999px;border:1px solid #fecdd3;background:rgba(255,241,242,.94);color:#be123c;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s}
+.b-wish:hover{transform:scale(1.1)}
+.b-wish.saved{background:#e11d48;color:#fff;border-color:#e11d48}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#1c1713;border:1px solid #352b22;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.toolbar-left{display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1}
+.t-input,.t-select{background:#14100d;color:#efe7dc;border:1px solid #3d3127;border-radius:8px;padding:7px 11px;font-size:13px;outline:none}
+.t-input{min-width:200px;flex:1;max-width:340px}
+.t-input:focus,.t-select:focus{border-color:#e09f4c}
+.t-count{font-size:12.5px;color:#b7aa9b}
 </style>
 </head>
 <body>
@@ -54,10 +64,105 @@ footer a{color:#c7a477;text-decoration:none}
       <h1>羅雅純</h1>
       <p>文史哲出版社全館收錄該學者著作共 <strong style="color:#e09f4c">2</strong> 冊</p>
     </div>
-    <a class="cta" href="../index.html?search=%E7%BE%85%E9%9B%85%E7%B4%94">🔍 在主站檢索該學者著作</a>
+    <a class="cta" href="../index.html?author=%E7%BE%85%E9%9B%85%E7%B4%94">🔍 在主站檢索該學者著作</a>
   </section>
-  <main class="grid"><a class="b-card" href="../books/01711.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/01711.webp" alt="戴震道德情理倫理新詮" onerror="this.onerror=null;this.src='../assets/covers/01711.jpg';"></div><div class="b-title">戴震道德情理倫理新詮</div><div class="b-meta">文史哲學集成 · 107年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/01759.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/01759.webp" alt="知識與道德的兩重性: 戴震哲學當代闡釋與重構" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='100%25' height='100%25' fill='%23241d18'/%3E%3Crect x='20' y='20' width='360' height='560' fill='none' stroke='%234a3c30' stroke-width='2' stroke-dasharray='6 6'/%3E%3Ctext x='50%25' y='48%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='20' font-weight='bold' fill='%23e09f4c'%3E典籍書目封面%3C/text%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%239b8b7a'%3E文史哲出版社%3C/text%3E%3C/svg%3E';"></div><div class="b-title">知識與道德的兩重性: 戴震哲學當代闡釋與重構</div><div class="b-meta">文史哲學集成 · 114年 平一</div><div class="b-price">NT$ 500</div></a></main>
+  <div class="toolbar">
+  <div class="toolbar-left">
+    <input type="search" id="topicFilter" class="t-input" placeholder="🔍 篩選本頁書名、作者或年份…">
+    <select id="topicSort" class="t-select" aria-label="排序方式">
+      <option value="default">預設排序</option>
+      <option value="price-asc">價格：低 → 高</option>
+      <option value="price-desc">價格：高 → 低</option>
+    </select>
+  </div>
+  <div id="topicCount" class="t-count"></div>
+</div>
+<main class="grid"><a class="b-card" href="../books/01711.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/01711.webp" alt="戴震道德情理倫理新詮" onerror="this.onerror=null;this.src='../assets/covers/01711.jpg';"></div><div class="b-title">戴震道德情理倫理新詮</div><div class="b-meta">文史哲學集成 · 107年 平一</div><div class="b-price">NT$ 480</div></a><a class="b-card" href="../books/01759.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/01759.webp" alt="知識與道德的兩重性: 戴震哲學當代闡釋與重構" onerror="this.onerror=null;this.src='data:image/svg+xml;charset=UTF-8,%3Csvg xmlns='http://www.w3.org/2000/svg' width='400' height='600' viewBox='0 0 400 600'%3E%3Crect width='100%25' height='100%25' fill='%23241d18'/%3E%3Crect x='20' y='20' width='360' height='560' fill='none' stroke='%234a3c30' stroke-width='2' stroke-dasharray='6 6'/%3E%3Ctext x='50%25' y='48%25' dominant-baseline='middle' text-anchor='middle' font-family='serif' font-size='20' font-weight='bold' fill='%23e09f4c'%3E典籍書目封面%3C/text%3E%3Ctext x='50%25' y='54%25' dominant-baseline='middle' text-anchor='middle' font-family='sans-serif' font-size='12' fill='%239b8b7a'%3E文史哲出版社%3C/text%3E%3C/svg%3E';"></div><div class="b-title">知識與道德的兩重性: 戴震哲學當代闡釋與重構</div><div class="b-meta">文史哲學集成 · 114年 平一</div><div class="b-price">NT$ 500</div></a></main>
   <footer>文史哲出版社有限公司 ｜ 創立於1971年 ｜ <a href="index.html">查看全部 388 位學者專頁</a> ｜ <a href="../index.html">官方首頁</a></footer>
 </div>
+<!-- LAPEN_TOPIC_ENHANCED_V1 -->
+<script>
+(function(){
+  var grid=document.querySelector('main.grid');
+  if(!grid)return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.b-card'));
+  cards.forEach(function(card,idx){
+    card.dataset.origIdx=String(idx);
+    var href=card.getAttribute('href')||'';
+    var m=href.match(/\/([^\/]+)\.html$/);
+    var bid=m?m[1]:'';
+    var titleEl=card.querySelector('.b-title');
+    var metaEl=card.querySelector('.b-meta');
+    var priceEl=card.querySelector('.b-price');
+    var imgEl=card.querySelector('.b-thumb img');
+    var title=titleEl?titleEl.textContent.trim():'';
+    var meta=metaEl?metaEl.textContent.trim():'';
+    var pMatch=priceEl?priceEl.textContent.match(/\d+/):null;
+    var price=pMatch?Number(pMatch[0]):0;
+    card.dataset.bid=bid;
+    card.dataset.price=String(price);
+    card.dataset.search=(title+' '+meta).toLowerCase();
+    if(bid){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='b-wish';
+      btn.title='加入我的收藏／待購書單';
+      btn.textContent='♡';
+      btn.addEventListener('click',function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        var list=[];
+        try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+        var i=list.findIndex(function(x){return String(x.id)===String(bid);});
+        if(i>=0){list.splice(i,1);}else{
+          var cover=imgEl?(imgEl.getAttribute('src')||'').replace(/^\.\.\//,''):('assets/covers/'+bid+'.webp');
+          list.unshift({id:bid,title:title,author:meta,category:'',price:price,cover:cover,savedAt:Date.now()});
+        }
+        try{localStorage.setItem('lapen_wishlist',JSON.stringify(list));}catch(e){}
+        syncWishes();
+      });
+      card.appendChild(btn);
+    }
+  });
+  function syncWishes(){
+    var list=[];
+    try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+    var set={};
+    list.forEach(function(x){set[String(x.id)]=true;});
+    cards.forEach(function(c){
+      var b=c.querySelector('.b-wish');
+      if(!b)return;
+      var saved=!!set[String(c.dataset.bid)];
+      b.classList.toggle('saved',saved);
+      b.textContent=saved?'♥':'♡';
+      b.title=saved?'已收藏（點擊移除）':'加入我的收藏／待購書單';
+    });
+  }
+  var filterInput=document.getElementById('topicFilter');
+  var sortSel=document.getElementById('topicSort');
+  var countEl=document.getElementById('topicCount');
+  function applyFilterAndSort(){
+    var q=(filterInput?filterInput.value:'').trim().toLowerCase();
+    var mode=sortSel?sortSel.value:'default';
+    var sorted=cards.slice().sort(function(a,b){
+      if(mode==='price-asc')return Number(a.dataset.price)-Number(b.dataset.price);
+      if(mode==='price-desc')return Number(b.dataset.price)-Number(a.dataset.price);
+      return Number(a.dataset.origIdx)-Number(b.dataset.origIdx);
+    });
+    var visible=0;
+    sorted.forEach(function(c){
+      var show=!q||c.dataset.search.indexOf(q)!==-1;
+      c.style.display=show?'':'none';
+      if(show)visible++;
+      grid.appendChild(c);
+    });
+    if(countEl)countEl.textContent='顯示 '+visible+' / '+cards.length+' 冊';
+  }
+  if(filterInput)filterInput.addEventListener('input',applyFilterAndSort);
+  if(sortSel)sortSel.addEventListener('change',applyFilterAndSort);
+  syncWishes();
+  applyFilterAndSort();
+})();
+</script>
 </body>
 </html>

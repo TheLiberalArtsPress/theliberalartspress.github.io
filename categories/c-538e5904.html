@@ -37,6 +37,16 @@ body{min-height:100vh;background:radial-gradient(circle at top,#2a2119 0%,#120e0
 .b-price{margin-top:auto;font-size:14px;font-weight:700;color:#e04f3e}
 footer{text-align:center;margin-top:26px;font-size:12px;color:#8e8072}
 footer a{color:#c7a477;text-decoration:none}
+.b-card{position:relative}
+.b-wish{position:absolute;top:16px;right:16px;z-index:5;width:30px;height:30px;border-radius:999px;border:1px solid #fecdd3;background:rgba(255,241,242,.94);color:#be123c;font-size:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:0 2px 6px rgba(0,0,0,.25);transition:transform .15s}
+.b-wish:hover{transform:scale(1.1)}
+.b-wish.saved{background:#e11d48;color:#fff;border-color:#e11d48}
+.toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between;background:#1c1713;border:1px solid #352b22;border-radius:12px;padding:10px 14px;margin-bottom:16px}
+.toolbar-left{display:flex;flex-wrap:wrap;gap:10px;align-items:center;flex:1}
+.t-input,.t-select{background:#14100d;color:#efe7dc;border:1px solid #3d3127;border-radius:8px;padding:7px 11px;font-size:13px;outline:none}
+.t-input{min-width:200px;flex:1;max-width:340px}
+.t-input:focus,.t-select:focus{border-color:#e09f4c}
+.t-count{font-size:12.5px;color:#b7aa9b}
 </style>
 </head>
 <body>
@@ -56,8 +66,103 @@ footer a{color:#c7a477;text-decoration:none}
     </div>
     <a class="cta" href="../index.html?category=%E7%B6%93%E9%8A%B7%E5%9C%96%E6%9B%B8">🔍 在主站開啟此書系篩選</a>
   </section>
-  <main class="grid"><a class="b-card" href="../books/T9303.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9303.webp" alt="章實齋學記" onerror="this.onerror=null;this.src='../assets/covers/T9303.jpg';"></div><div class="b-title">章實齋學記</div><div class="b-meta">董金裕著 · 平一冊</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/T9304.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9304.webp" alt="王夢樓研究" onerror="this.onerror=null;this.src='../assets/covers/T9304.jpg';"></div><div class="b-title">王夢樓研究</div><div class="b-meta">王翠慧著 · 平一冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9306.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9306.webp" alt="天道溯源" onerror="this.onerror=null;this.src='../assets/covers/T9306.jpg';"></div><div class="b-title">天道溯源</div><div class="b-meta">丁題良撰 · 精一冊</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/T9307.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9307.webp" alt="清詩話" onerror="this.onerror=null;this.src='../assets/covers/T9307.jpg';"></div><div class="b-title">清詩話</div><div class="b-meta">丁福保編 · 精一冊</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/T9308.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9308.webp" alt="洙泗考信錄" onerror="this.onerror=null;this.src='../assets/covers/T9308.jpg';"></div><div class="b-title">洙泗考信錄</div><div class="b-meta">清崔述撰 · 平一冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9309.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9309.webp" alt="洙泗考信錄" onerror="this.onerror=null;this.src='../assets/covers/T9309.jpg';"></div><div class="b-title">洙泗考信錄</div><div class="b-meta">清崔述撰 · 精一冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9310.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9310.webp" alt="香艷叢書" onerror="this.onerror=null;this.src='../assets/covers/T9310.jpg';"></div><div class="b-title">香艷叢書</div><div class="b-meta">清．蟲天子輯 · 精十冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9312.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9312.webp" alt="Chinese Painting" onerror="this.onerror=null;this.src='../assets/covers/T9312.jpg';"></div><div class="b-title">Chinese Painting</div><div class="b-meta">Osvald Siren · 精七冊</div><div class="b-price">NT$ 8000</div></a><a class="b-card" href="../books/T9314.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9314.webp" alt="羅振玉年譜" onerror="this.onerror=null;this.src='../assets/covers/T9314.jpg';"></div><div class="b-title">羅振玉年譜</div><div class="b-meta">羅繼祖輯述，羅昌霖校補 · 75年平一冊</div><div class="b-price">NT$ 260</div></a><a class="b-card" href="../books/T9318.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9318.webp" alt="白話秦漢史" onerror="this.onerror=null;this.src='../assets/covers/T9318.jpg';"></div><div class="b-title">白話秦漢史</div><div class="b-meta">黃耀能譯 · 平一冊</div><div class="b-price">NT$ 350</div></a><a class="b-card" href="../books/T9319.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9319.webp" alt="日本國立國會圖書館研究" onerror="this.onerror=null;this.src='../assets/covers/T9319.jpg';"></div><div class="b-title">日本國立國會圖書館研究</div><div class="b-meta">王雪芳著 · 78年 平一</div><div class="b-price">NT$ 240</div></a><a class="b-card" href="../books/T9320.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9320.webp" alt="中國名勝古蹟楹聯集錦（上、下）" onerror="this.onerror=null;this.src='../assets/covers/T9320.jpg';"></div><div class="b-title">中國名勝古蹟楹聯集錦（上、下）</div><div class="b-meta">劉安義輯編 · 平二冊</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/T9321.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9321.webp" alt="臺灣沉淪記事詩--1990至2004年失政．亂象實錄" onerror="this.onerror=null;this.src='../assets/covers/T9321.jpg';"></div><div class="b-title">臺灣沉淪記事詩--1990至2004年失政．亂象實錄</div><div class="b-meta">許之遠著 · 94年 平一</div><div class="b-price">NT$ 200</div></a><a class="b-card" href="../books/T9322.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9322.webp" alt="明治維新的濫殤" onerror="this.onerror=null;this.src='../assets/covers/T9322.jpg';"></div><div class="b-title">明治維新的濫殤</div><div class="b-meta">陳成福著 · 93年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/T9323.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9323.webp" alt="中華民族抗日戰爭史略" onerror="this.onerror=null;this.src='../assets/covers/T9323.jpg';"></div><div class="b-title">中華民族抗日戰爭史略</div><div class="b-meta">胡楚生著 · 94年 平一</div><div class="b-price">NT$ 200</div></a></main>
+  <div class="toolbar">
+  <div class="toolbar-left">
+    <input type="search" id="topicFilter" class="t-input" placeholder="🔍 篩選本頁書名、作者或年份…">
+    <select id="topicSort" class="t-select" aria-label="排序方式">
+      <option value="default">預設排序</option>
+      <option value="price-asc">價格：低 → 高</option>
+      <option value="price-desc">價格：高 → 低</option>
+    </select>
+  </div>
+  <div id="topicCount" class="t-count"></div>
+</div>
+<main class="grid"><a class="b-card" href="../books/T9303.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9303.webp" alt="章實齋學記" onerror="this.onerror=null;this.src='../assets/covers/T9303.jpg';"></div><div class="b-title">章實齋學記</div><div class="b-meta">董金裕著 · 平一冊</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/T9304.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9304.webp" alt="王夢樓研究" onerror="this.onerror=null;this.src='../assets/covers/T9304.jpg';"></div><div class="b-title">王夢樓研究</div><div class="b-meta">王翠慧著 · 平一冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9306.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9306.webp" alt="天道溯源" onerror="this.onerror=null;this.src='../assets/covers/T9306.jpg';"></div><div class="b-title">天道溯源</div><div class="b-meta">丁題良撰 · 精一冊</div><div class="b-price">NT$ 400</div></a><a class="b-card" href="../books/T9307.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9307.webp" alt="清詩話" onerror="this.onerror=null;this.src='../assets/covers/T9307.jpg';"></div><div class="b-title">清詩話</div><div class="b-meta">丁福保編 · 精一冊</div><div class="b-price">NT$ 600</div></a><a class="b-card" href="../books/T9308.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9308.webp" alt="洙泗考信錄" onerror="this.onerror=null;this.src='../assets/covers/T9308.jpg';"></div><div class="b-title">洙泗考信錄</div><div class="b-meta">清崔述撰 · 平一冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9309.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9309.webp" alt="洙泗考信錄" onerror="this.onerror=null;this.src='../assets/covers/T9309.jpg';"></div><div class="b-title">洙泗考信錄</div><div class="b-meta">清崔述撰 · 精一冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9310.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9310.webp" alt="香艷叢書" onerror="this.onerror=null;this.src='../assets/covers/T9310.jpg';"></div><div class="b-title">香艷叢書</div><div class="b-meta">清．蟲天子輯 · 精十冊</div><div class="b-price">NT$ 0</div></a><a class="b-card" href="../books/T9312.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9312.webp" alt="Chinese Painting" onerror="this.onerror=null;this.src='../assets/covers/T9312.jpg';"></div><div class="b-title">Chinese Painting</div><div class="b-meta">Osvald Siren · 精七冊</div><div class="b-price">NT$ 8000</div></a><a class="b-card" href="../books/T9314.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9314.webp" alt="羅振玉年譜" onerror="this.onerror=null;this.src='../assets/covers/T9314.jpg';"></div><div class="b-title">羅振玉年譜</div><div class="b-meta">羅繼祖輯述，羅昌霖校補 · 75年平一冊</div><div class="b-price">NT$ 260</div></a><a class="b-card" href="../books/T9318.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9318.webp" alt="白話秦漢史" onerror="this.onerror=null;this.src='../assets/covers/T9318.jpg';"></div><div class="b-title">白話秦漢史</div><div class="b-meta">黃耀能譯 · 平一冊</div><div class="b-price">NT$ 350</div></a><a class="b-card" href="../books/T9319.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9319.webp" alt="日本國立國會圖書館研究" onerror="this.onerror=null;this.src='../assets/covers/T9319.jpg';"></div><div class="b-title">日本國立國會圖書館研究</div><div class="b-meta">王雪芳著 · 78年 平一</div><div class="b-price">NT$ 240</div></a><a class="b-card" href="../books/T9320.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9320.webp" alt="中國名勝古蹟楹聯集錦（上、下）" onerror="this.onerror=null;this.src='../assets/covers/T9320.jpg';"></div><div class="b-title">中國名勝古蹟楹聯集錦（上、下）</div><div class="b-meta">劉安義輯編 · 平二冊</div><div class="b-price">NT$ 500</div></a><a class="b-card" href="../books/T9321.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9321.webp" alt="臺灣沉淪記事詩--1990至2004年失政．亂象實錄" onerror="this.onerror=null;this.src='../assets/covers/T9321.jpg';"></div><div class="b-title">臺灣沉淪記事詩--1990至2004年失政．亂象實錄</div><div class="b-meta">許之遠著 · 94年 平一</div><div class="b-price">NT$ 200</div></a><a class="b-card" href="../books/T9322.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9322.webp" alt="明治維新的濫殤" onerror="this.onerror=null;this.src='../assets/covers/T9322.jpg';"></div><div class="b-title">明治維新的濫殤</div><div class="b-meta">陳成福著 · 93年 平一</div><div class="b-price">NT$ 300</div></a><a class="b-card" href="../books/T9323.html"><div class="b-thumb"><img loading="lazy" src="../assets/covers/T9323.webp" alt="中華民族抗日戰爭史略" onerror="this.onerror=null;this.src='../assets/covers/T9323.jpg';"></div><div class="b-title">中華民族抗日戰爭史略</div><div class="b-meta">胡楚生著 · 94年 平一</div><div class="b-price">NT$ 200</div></a></main>
   <footer>文史哲出版社有限公司 ｜ 創立於1971年 ｜ <a href="index.html">查看全部 80 個書系</a> ｜ <a href="../index.html">官方首頁</a></footer>
 </div>
+<!-- LAPEN_TOPIC_ENHANCED_V1 -->
+<script>
+(function(){
+  var grid=document.querySelector('main.grid');
+  if(!grid)return;
+  var cards=Array.prototype.slice.call(grid.querySelectorAll('.b-card'));
+  cards.forEach(function(card,idx){
+    card.dataset.origIdx=String(idx);
+    var href=card.getAttribute('href')||'';
+    var m=href.match(/\/([^\/]+)\.html$/);
+    var bid=m?m[1]:'';
+    var titleEl=card.querySelector('.b-title');
+    var metaEl=card.querySelector('.b-meta');
+    var priceEl=card.querySelector('.b-price');
+    var imgEl=card.querySelector('.b-thumb img');
+    var title=titleEl?titleEl.textContent.trim():'';
+    var meta=metaEl?metaEl.textContent.trim():'';
+    var pMatch=priceEl?priceEl.textContent.match(/\d+/):null;
+    var price=pMatch?Number(pMatch[0]):0;
+    card.dataset.bid=bid;
+    card.dataset.price=String(price);
+    card.dataset.search=(title+' '+meta).toLowerCase();
+    if(bid){
+      var btn=document.createElement('button');
+      btn.type='button';
+      btn.className='b-wish';
+      btn.title='加入我的收藏／待購書單';
+      btn.textContent='♡';
+      btn.addEventListener('click',function(ev){
+        ev.preventDefault();
+        ev.stopPropagation();
+        var list=[];
+        try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+        var i=list.findIndex(function(x){return String(x.id)===String(bid);});
+        if(i>=0){list.splice(i,1);}else{
+          var cover=imgEl?(imgEl.getAttribute('src')||'').replace(/^\.\.\//,''):('assets/covers/'+bid+'.webp');
+          list.unshift({id:bid,title:title,author:meta,category:'',price:price,cover:cover,savedAt:Date.now()});
+        }
+        try{localStorage.setItem('lapen_wishlist',JSON.stringify(list));}catch(e){}
+        syncWishes();
+      });
+      card.appendChild(btn);
+    }
+  });
+  function syncWishes(){
+    var list=[];
+    try{list=JSON.parse(localStorage.getItem('lapen_wishlist')||'[]');}catch(e){}
+    var set={};
+    list.forEach(function(x){set[String(x.id)]=true;});
+    cards.forEach(function(c){
+      var b=c.querySelector('.b-wish');
+      if(!b)return;
+      var saved=!!set[String(c.dataset.bid)];
+      b.classList.toggle('saved',saved);
+      b.textContent=saved?'♥':'♡';
+      b.title=saved?'已收藏（點擊移除）':'加入我的收藏／待購書單';
+    });
+  }
+  var filterInput=document.getElementById('topicFilter');
+  var sortSel=document.getElementById('topicSort');
+  var countEl=document.getElementById('topicCount');
+  function applyFilterAndSort(){
+    var q=(filterInput?filterInput.value:'').trim().toLowerCase();
+    var mode=sortSel?sortSel.value:'default';
+    var sorted=cards.slice().sort(function(a,b){
+      if(mode==='price-asc')return Number(a.dataset.price)-Number(b.dataset.price);
+      if(mode==='price-desc')return Number(b.dataset.price)-Number(a.dataset.price);
+      return Number(a.dataset.origIdx)-Number(b.dataset.origIdx);
+    });
+    var visible=0;
+    sorted.forEach(function(c){
+      var show=!q||c.dataset.search.indexOf(q)!==-1;
+      c.style.display=show?'':'none';
+      if(show)visible++;
+      grid.appendChild(c);
+    });
+    if(countEl)countEl.textContent='顯示 '+visible+' / '+cards.length+' 冊';
+  }
+  if(filterInput)filterInput.addEventListener('input',applyFilterAndSort);
+  if(sortSel)sortSel.addEventListener('change',applyFilterAndSort);
+  syncWishes();
+  applyFilterAndSort();
+})();
+</script>
 </body>
 </html>
