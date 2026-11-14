@@ -2675,8 +2675,8 @@ function App() {
     "aria-label": isWishlisted(book.id) ? "移除收藏" : "加入收藏",
     title: isWishlisted(book.id) ? "已收藏（點擊移除）" : "加入我的收藏／待購書單",
     onClick: ev => toggleWishlist(book, ev),
-    className: "absolute top-2.5 right-2.5 z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow transition-all",
-    style: isWishlisted(book.id) ? { background: '#E11D48', color: '#FFFFFF', border: '1px solid #E11D48' } : { background: 'rgba(255,255,255,0.9)', color: '#57534E', border: '1px solid #E7E5E4' }
+    className: "z-10 w-7 h-7 rounded-full flex items-center justify-center text-xs shadow transition-all",
+    style: Object.assign({ position: 'absolute', top: '10px', right: '10px' }, isWishlisted(book.id) ? { background: '#E11D48', color: '#FFFFFF', border: '1px solid #E11D48' } : { background: 'rgba(255,255,255,0.9)', color: '#57534E', border: '1px solid #E7E5E4' })
   }, isWishlisted(book.id) ? "♥" : "♡"), book.stock <= 0 && /*#__PURE__*/React.createElement("div", {
     className: "absolute inset-0 bg-[var(--dark-color)]/80 backdrop-blur-[2px] flex items-center justify-center text-white font-black tracking-[0.2em] text-sm"
   }, ui.msgOutOfStock)), /*#__PURE__*/React.createElement("div", {
