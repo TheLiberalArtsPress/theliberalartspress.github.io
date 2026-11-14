@@ -892,6 +892,85 @@ function App() {
       return null;
     }
   })());
+  const pendingUrlAddRef = useRef((() => {
+    try {
+      if (typeof window === 'undefined') return false;
+      const params = new URLSearchParams(window.location.search);
+      return params.get('add') === '1';
+    } catch(e) {
+      return false;
+    }
+  })());
+  const [isLargeFont, setIsLargeFont] = useState(() => {
+    try {
+      return typeof window !== 'undefined' && localStorage.getItem('lapen_font_large') === 'true';
+    } catch(e) {
+      return false;
+    }
+  });
+  const toggleLargeFont = useCallback(() => {
+    setIsLargeFont(prev => {
+      const next = !prev;
+      try {
+        localStorage.setItem('lapen_font_large', String(next));
+        document.documentElement.style.fontSize = next ? '18px' : '';
+      } catch(e) {}
+      return next;
+    });
+  }, []);
+  useEffect(() => {
+    try {
+      document.documentElement.style.fontSize = isLargeFont ? '18px' : '';
+    } catch(e) {}
+  }, [isLargeFont]);
+
+  const [recentBooks, setRecentBooks] = useState(() => {
+    try {
+      const saved = localStorage.getItem('lapen_recent_books');
+      return saved ? JSON.parse(saved) : [];
+    } catch(e) {
+      return [];
+    }
+  });
+  const [isRecentOpen, setIsRecentOpen] = useState(false);
+  useEffect(() => {
+    if (!selectedBookDetail || !selectedBookDetail.id) return;
+    setRecentBooks(prev => {
+      const item = {
+        id: selectedBookDetail.id,
+        title: selectedBookDetail.title,
+        author: selectedBookDetail.author,
+        price: selectedBookDetail.price
+      };
+      const next = [item, ...prev.filter(x => x.id !== item.id)].slice(0, 8);
+      try { localStorage.setItem('lapen_recent_books', JSON.stringify(next)); } catch(e) {}
+      return next;
+    });
+  }, [selectedBookDetail]);
+
+  const openQuickSearch = useCallback(() => {
+    setIsSearchOpen(true);
+    setTimeout(() => {
+      const inp = document.getElementById('lapen-search-title-input');
+      if (inp) inp.focus();
+    }, 60);
+  }, []);
+
+  useEffect(() => {
+    const onKeyDown = e => {
+      const tag = (e.target && e.target.tagName) ? e.target.tagName.toLowerCase() : '';
+      const isEditing = tag === 'input' || tag === 'textarea' || tag === 'select' || (e.target && e.target.isContentEditable);
+      if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+        e.preventDefault();
+        openQuickSearch();
+      } else if (!isEditing && e.key === '/' && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        e.preventDefault();
+        openQuickSearch();
+      }
+    };
+    window.addEventListener('keydown', onKeyDown);
+    return () => window.removeEventListener('keydown', onKeyDown);
+  }, [openQuickSearch]);
   const [isBookDetailFullscreen, setIsBookDetailFullscreen] = useState(false);
   const [isRelatedBooksOpen, setIsRelatedBooksOpen] = useState(false);
 
@@ -1035,6 +1114,10 @@ function App() {
         if (found) {
           setSelectedBookDetail(found);
           pendingUrlBookRef.current = null;
+          if (pendingUrlAddRef.current) {
+            pendingUrlAddRef.current = false;
+            addToCart(found);
+          }
         }
       }
       if (catParam) {
@@ -1663,16 +1746,53 @@ function App() {
     setAppliedSearch(searchForm);
     setSearchVisibleCount(8);
   };
+  const normalizeSearchText = useCallback(str => {
+    if (!str) return '';
+    const map = {
+      '台':'臺','裡':'裏','為':'為','爲':'為','著':'著','着':'著',
+      '书':'書','国':'國','学':'學','诗':'詩','词':'詞','经':'經','传':'傳','论':'論',
+      '汉':'漢','语':'語','义':'義','礼':'禮','记':'記','说':'說','丛':'叢','图':'圖',
+      '馆':'館','华':'華','东':'東','亚':'亞','欧':'歐','专':'專','题':'題','据':'據',
+      '订':'訂','评':'評','注':'註','译':'譯','编':'編','选':'選','录':'錄','档':'檔',
+      '满':'滿','庄':'莊','韩':'韓','龙':'龍','凤':'鳳','风':'風','云':'雲','飞':'飛',
+      '电':'電','网':'網','车':'車','马':'馬','门':'門','开':'開','关':'關','问':'問',
+      '间':'間','时':'時','现':'現','当':'當','历':'歷','长':'長','张':'張','陈':'陳',
+      '黄':'黃','刘':'劉','赵':'趙','吴':'吳','郑':'鄭','罗':'羅','冯':'馮','叶':'葉',
+      '许':'許','谢':'謝','钟':'鍾','苏':'蘇','卢':'盧','严':'嚴','杨':'楊','邓':'鄧',
+      '萧':'蕭','蒋':'蔣','吕':'呂','孙':'孫','龚':'龔','纪':'紀','简':'簡','赖':'賴',
+      '温':'溫','万':'萬','钱':'錢','汤':'湯','齐':'齊','范':'範','谭':'譚','陆':'陸',
+      '顾':'顧','乔':'喬','庞':'龐','兰':'蘭','颜':'顏','鲁':'魯','韦':'韋','毕':'畢',
+      '聂':'聶','边':'邊','宝':'寶','铁':'鐵','银':'銀','铜':'銅','镜':'鏡','响':'響',
+      '韵':'韻','声':'聲','话':'話','读':'讀','写':'寫','画':'畫','艺':'藝','术':'術',
+      '医':'醫','药':'藥','农':'農','军':'軍','战':'戰','际':'際','体':'體','统':'統',
+      '构':'構','结':'結','组':'組','织':'織','机':'機','变':'變','迁':'遷','发':'發',
+      '进':'進','兴':'興','荣':'榮','岛':'島','湾':'灣','县':'縣','镇':'鎮','乡':'鄉',
+      '宫':'宮','后':'後','员':'員','证':'證','释':'釋','辑':'輯','汇':'彙','总':'總',
+      '阴':'陰','阳':'陽','晋':'晉','旧':'舊','远':'遠','内':'內','广':'廣','细':'細',
+      '观':'觀','视':'視','与':'與','实':'實','虚':'虛','无':'無','将':'將','会':'會',
+      '应':'應','该':'該','须':'須','游':'遊','戏':'戲','赋':'賦','骚':'騷','乐':'樂',
+      '颂':'頌','绝':'絕','联':'聯','对':'對','谜':'謎','谚':'諺','谣':'謠','杂':'雜',
+      '剧':'劇','册':'冊','讨':'討','伦':'倫','禅':'禪','净':'淨','识':'識','养':'養',
+      '数':'數','针':'針','脉':'脈','剂':'劑','济':'濟','类':'類','瑶':'瑤','礼':'禮',
+      '历':'歷','宝':'寶','台湾':'臺灣','中国':'中國'
+    };
+    return String(str).toLowerCase().replace(/[\u4e00-\u9fa5]/g, ch => map[ch] || ch);
+  }, []);
+
   const indexSearchBooks = useMemo(() => {
+    const qCode = (appliedSearch.code || '').trim();
+    const qTitle = normalizeSearchText(appliedSearch.title);
+    const qAuthor = normalizeSearchText(appliedSearch.author);
+    const qYear = (appliedSearch.year || '').trim();
     return books.filter(b => {
-      const matchCode = !appliedSearch.code || (b.id && b.id.toString().includes(appliedSearch.code)) || (b.isbn && b.isbn.replace(/-/g, '').includes(appliedSearch.code.replace(/-/g, '')));
-      const matchTitle = !appliedSearch.title || b.title && b.title.includes(appliedSearch.title);
-      const matchAuthor = !appliedSearch.author || b.author && b.author.includes(appliedSearch.author);
-      const matchPage = !appliedSearch.year || b.year && b.year.toString().includes(appliedSearch.year);
+      const matchCode = !qCode || (b.id && b.id.toString().includes(qCode)) || (b.isbn && b.isbn.replace(/-/g, '').includes(qCode.replace(/-/g, '')));
+      const matchTitle = !qTitle || (b.title && normalizeSearchText(b.title).includes(qTitle));
+      const matchAuthor = !qAuthor || (b.author && normalizeSearchText(b.author).includes(qAuthor));
+      const matchPage = !qYear || (b.year && b.year.toString().includes(qYear));
       const matchCat = !appliedSearch.category || appliedSearch.category === '全部' || b.category === appliedSearch.category;
       return matchCode && matchTitle && matchAuthor && matchPage && matchCat;
     });
-  }, [books, appliedSearch]);
+  }, [books, appliedSearch, normalizeSearchText]);
   const visibleSearchBooks = useMemo(() => {
     return indexSearchBooks.slice(0, searchVisibleCount);
   }, [indexSearchBooks, searchVisibleCount]);
@@ -2886,8 +3006,59 @@ function App() {
     size: 14,
     className: "animate-spin"
   }) : null, isSubmittingCS ? ui.csSubmittingBtn : ui.csSubmitBtn))), /*#__PURE__*/React.createElement("div", {
-    className: "flex flex-col gap-2.5 items-end"
-  }, /*#__PURE__*/React.createElement(MobaoCatMascot, null), /*#__PURE__*/React.createElement("button", {
+    className: "flex flex-col gap-2.5 items-end relative"
+  }, isRecentOpen && /*#__PURE__*/React.createElement("div", {
+    className: "absolute right-14 bottom-16 w-64 max-h-80 overflow-y-auto glass-modal rounded-2xl shadow-2xl border border-[var(--border-color)] p-3 z-50 text-left"
+  }, /*#__PURE__*/React.createElement("div", {
+    className: "flex items-center justify-between border-b border-[var(--border-color)] pb-2 mb-2"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-bold text-[var(--dark-color)] flex items-center gap-1"
+  }, "🕒 最近瀏覽足跡"), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": "關閉瀏覽足跡",
+    onClick: () => setIsRecentOpen(false),
+    className: "text-xs text-stone-400 hover:text-[var(--primary-color)] cursor-pointer"
+  }, "✕")), recentBooks.length === 0 ? /*#__PURE__*/React.createElement("p", {
+    className: "text-xs text-stone-500 py-3 text-center"
+  }, "尚未瀏覽書籍，點擊任一書目即可自動記錄。") : /*#__PURE__*/React.createElement("div", {
+    className: "space-y-1.5"
+  }, recentBooks.map(rb => /*#__PURE__*/React.createElement("button", {
+    key: rb.id,
+    type: "button",
+    onClick: () => {
+      const full = books.find(x => String(x.id) === String(rb.id)) || rb;
+      setSelectedBookDetail(full);
+      setIsRecentOpen(false);
+    },
+    className: "w-full text-left p-2 rounded-xl hover:bg-[var(--primary-color)]/10 transition flex flex-col gap-0.5 border border-transparent hover:border-[var(--border-color)] cursor-pointer"
+  }, /*#__PURE__*/React.createElement("span", {
+    className: "text-xs font-bold text-[var(--dark-color)] line-clamp-1"
+  }, rb.title), /*#__PURE__*/React.createElement("span", {
+    className: "text-[11px] text-stone-500"
+  }, `${rb.author || ''} · NT$ ${rb.price || 0}`))))), /*#__PURE__*/React.createElement(MobaoCatMascot, null), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": "快捷搜書 (Ctrl+K 或 /)",
+    onClick: openQuickSearch,
+    title: "🔍 快捷搜書（快捷鍵：Ctrl+K 或 /）",
+    className: "bg-white/90 text-stone-700 hover:bg-[var(--primary-color)] hover:text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border border-[var(--border-color)] self-end hover:scale-110 active:scale-95 cursor-pointer"
+  }, /*#__PURE__*/React.createElement(Icon, {
+    name: "Search",
+    size: 17
+  })), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": "最近瀏覽足跡",
+    onClick: () => setIsRecentOpen(v => !v),
+    title: `🕒 最近瀏覽書籍 (${recentBooks.length})`,
+    className: `relative w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border self-end hover:scale-110 active:scale-95 text-sm cursor-pointer ${isRecentOpen ? 'bg-[var(--primary-color)] text-white border-white' : 'bg-white/90 text-stone-700 hover:bg-stone-100 border-[var(--border-color)]'}`
+  }, "🕒", recentBooks.length > 0 && /*#__PURE__*/React.createElement("span", {
+    className: "absolute -top-1 -right-1 bg-[#B83B26] text-white text-[10px] font-bold w-4 h-4 rounded-full flex items-center justify-center"
+  }, recentBooks.length)), /*#__PURE__*/React.createElement("button", {
+    type: "button",
+    "aria-label": isLargeFont ? "切換標準字體" : "放大網頁字體",
+    onClick: toggleLargeFont,
+    title: isLargeFont ? "Aa 目前為放大字體（點擊恢復標準）" : "Aa 放大閱讀字體（適合長輩與學者）",
+    className: `w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border self-end hover:scale-110 active:scale-95 text-xs font-black cursor-pointer ${isLargeFont ? 'bg-[#D6974B] text-[#14110E] border-[#F5C27A] ring-2 ring-[#D6974B]/50' : 'bg-white/90 text-stone-700 hover:bg-stone-100 border-[var(--border-color)]'}`
+  }, isLargeFont ? "A+" : "Aa"), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": isEyeCare ? "關閉護眼模式" : "開啟護眼模式",
     onClick: toggleEyeCare,
@@ -2900,12 +3071,14 @@ function App() {
       top: 0,
       behavior: 'smooth'
     }),
-    className: "bg-[var(--bg-light)] text-[var(--dark-color)] hover:bg-[var(--primary-color)] hover:text-white w-10 h-10 rounded-full shadow-lg flex items-center justify-center transition-all border border-[var(--border-color)] self-end animate-in cursor-pointer",
+    className: "bg-[#D6974B] text-[#14110E] hover:bg-[#eab065] w-11 h-11 rounded-full shadow-xl flex flex-col items-center justify-center transition-all border-2 border-white/90 self-end animate-in hover:scale-110 active:scale-95 cursor-pointer ring-2 ring-[#D6974B]/40",
     title: "回到頁面頂端"
   }, /*#__PURE__*/React.createElement(Icon, {
     name: "ChevronUp",
-    size: 20
-  })), /*#__PURE__*/React.createElement("button", {
+    size: 18
+  }), /*#__PURE__*/React.createElement("span", {
+    className: "text-[9px] font-black leading-none -mt-0.5"
+  }, "TOP")), /*#__PURE__*/React.createElement("button", {
     type: "button",
     "aria-label": isContactOpen ? "關閉客服留言" : "開啟客服留言",
     onClick: () => setIsContactOpen(!isContactOpen),
@@ -3038,7 +3211,9 @@ function App() {
   })), /*#__PURE__*/React.createElement("div", null, /*#__PURE__*/React.createElement("label", {
     className: "block text-xs font-bold text-[var(--text-dark)] mb-1"
   }, ui.searchLabelTitle), /*#__PURE__*/React.createElement("input", {
+    id: "lapen-search-title-input",
     type: "text",
+    placeholder: "支援繁簡體與異體字搜尋...",
     value: searchForm.title,
     onChange: e => setSearchForm({
       ...searchForm,

@@ -17,3 +17,5 @@ check.js
 find_tabs.js
 tab_depth.js
 *.py
+
+scripts/audit_report.csv
