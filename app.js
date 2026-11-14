@@ -4940,10 +4940,10 @@ function PresidentModal({ onClose, ui }) {
         // Photo floated / paired cleanly in classic editorial style
         e('div', { className: 'md:float-right md:ml-6 mb-4 md:w-64 bg-[var(--bg-light)] p-2.5 rounded-2xl border border-[var(--border-color)] shadow-sm' },
           e('img', {
-            src: 'assets/president_photo.webp',
+            src: 'assets/president_photo.webp?v=20261114_17',
             alt: '彭正雄社長伉儷合影',
             className: 'w-full h-auto rounded-xl object-cover',
-            onError: ev => { ev.currentTarget.onerror = null; ev.currentTarget.src = 'assets/president_photo.jpg'; }
+            onError: ev => { ev.currentTarget.onerror = null; ev.currentTarget.src = 'assets/president_photo.jpg?v=20261114_17'; }
           }),
           e('p', { className: 'text-[11px] text-center opacity-75 mt-2 font-medium' }, '彭正雄社長伉儷留影')
         ),
