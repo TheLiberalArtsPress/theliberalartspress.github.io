@@ -1666,7 +1666,7 @@
       var canonicalTag = document.getElementById('canonical-url');
       if (canonicalTag) {
         if (bookId) {
-          canonicalTag.href = window.location.origin + window.location.pathname + '?book=' + encodeURIComponent(bookId);
+          canonicalTag.href = 'https://theliberalartspress.github.io/books/' + encodeURIComponent(bookId) + '.html';
           // 若有指定書籍，動態即時置換社群預覽卡片，提升 LINE / Facebook 點擊率
           var coverUrl = 'https://theliberalartspress.github.io/assets/covers/' + encodeURIComponent(bookId) + '.webp';
           var ogImg = document.querySelector('meta[property="og:image"]');
@@ -1674,7 +1674,7 @@
           var twImg = document.querySelector('meta[name="twitter:image"]');
           if (twImg) twImg.setAttribute('content', coverUrl);
         } else if (cat) {
-          canonicalTag.href = window.location.origin + window.location.pathname + '?category=' + encodeURIComponent(cat);
+          canonicalTag.href = 'https://theliberalartspress.github.io/?category=' + encodeURIComponent(cat);
         }
       }
     } catch(e) {}

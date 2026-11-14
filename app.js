@@ -1208,7 +1208,7 @@ function App() {
       if (selectedAuthor) {
         const authorTitle = `《${selectedAuthor}》學者全館出版專題・典藏著作 - 文史哲出版社官方網站`;
         document.title = authorTitle;
-        const currentAuthorUrl = `${window.location.origin}${window.location.pathname}?author=${encodeURIComponent(selectedAuthor)}`;
+        const currentAuthorUrl = `https://theliberalartspress.github.io/?author=${encodeURIComponent(selectedAuthor)}`;
         if (canonical) {
           canonical.href = currentAuthorUrl;
         }
@@ -1242,7 +1242,7 @@ function App() {
       } else if (selectedCategory && selectedCategory !== '全部') {
         const catTitle = `《${selectedCategory}》專題學術典籍・推薦書目 - 文史哲出版社官方網站`;
         document.title = catTitle;
-        const currentCatUrl = `${window.location.origin}${window.location.pathname}?category=${encodeURIComponent(selectedCategory)}`;
+        const currentCatUrl = `https://theliberalartspress.github.io/?category=${encodeURIComponent(selectedCategory)}`;
         if (canonical) {
           canonical.href = currentCatUrl;
         }
@@ -1276,7 +1276,7 @@ function App() {
       } else {
         document.title = '文史哲出版社官方網站｜1971年創立・文學歷史哲學專業學術出版';
         if (canonical) {
-          canonical.href = `${window.location.origin}${window.location.pathname}`;
+          canonical.href = 'https://theliberalartspress.github.io/';
         }
         if (metaDesc) {
           metaDesc.setAttribute('content', '文史哲出版社有限公司創立於1971年，專注文學、歷史、哲學、藝術史、語言文字學、宗教及人文社會科學學術論著出版。全館典藏超過2,500種專業圖書，傳承文化，創新閱讀。');
