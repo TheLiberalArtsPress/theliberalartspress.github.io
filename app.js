@@ -1267,9 +1267,9 @@ function App() {
           const bId = String(b.id || '').trim().toLowerCase();
           if (bId && (bId === q || bId.padStart(5, '0') === q.padStart(5, '0') || bId.replace(/^0+/, '') === q.replace(/^0+/, ''))) return true;
           if (b.isbn) {
-            const bIsbn = String(b.isbn).replace(/[^0-9a-zA-Z]/g, '');
-            const qIsbn = q.replace(/[^0-9a-zA-Z]/g, '');
-            if (bIsbn && qIsbn && bIsbn === qIsbn) return true;
+            const bIsbn = String(b.isbn).replace(/[^0-9xX]/g, '').toLowerCase();
+            const qIsbn = q.replace(/[^0-9xX]/g, '').toLowerCase();
+            if (bIsbn && qIsbn && (bIsbn === qIsbn || (qIsbn.length >= 4 && bIsbn.endsWith(qIsbn)))) return true;
           }
           const bTitle = String(b.title || '').trim().toLowerCase();
           if (bTitle && (bTitle === q || (qClean && bTitle.replace(/[^0-9a-zA-Z\u4e00-\u9fa5]/g, '') === qClean))) return true;
@@ -1949,22 +1949,24 @@ function App() {
   }, []);
 
   const indexSearchBooks = useMemo(() => {
+    const stripIsbn = s => String(s || '').replace(/[^0-9xX]/g, '').toLowerCase();
     const qCode = (appliedSearch.code || '').trim();
+    const qCodeClean = stripIsbn(qCode);
     const qTitle = normalizeSearchText(appliedSearch.title);
     const qAuthor = normalizeSearchText(appliedSearch.author);
     const qYear = (appliedSearch.year || '').trim();
     if (appliedSearch._any && qTitle) {
       const rawQ = (appliedSearch.title || '').trim();
-      const rawNoDash = rawQ.replace(/-/g, '');
+      const rawClean = stripIsbn(rawQ);
       return books.filter(b =>
         (b.title && normalizeSearchText(b.title).includes(qTitle)) ||
         (b.author && normalizeSearchText(b.author).includes(qTitle)) ||
-        (b.id && b.id.toString().includes(rawQ)) ||
-        (b.isbn && b.isbn.replace(/-/g, '').includes(rawNoDash))
+        (b.id && b.id.toString().toLowerCase().includes(rawQ.toLowerCase())) ||
+        (b.isbn && rawClean && stripIsbn(b.isbn).includes(rawClean))
       );
     }
     return books.filter(b => {
-      const matchCode = !qCode || (b.id && b.id.toString().includes(qCode)) || (b.isbn && b.isbn.replace(/-/g, '').includes(qCode.replace(/-/g, '')));
+      const matchCode = !qCode || (b.id && b.id.toString().toLowerCase().includes(qCode.toLowerCase())) || (b.isbn && qCodeClean && stripIsbn(b.isbn).includes(qCodeClean));
       const matchTitle = !qTitle || (b.title && normalizeSearchText(b.title).includes(qTitle));
       const matchAuthor = !qAuthor || (b.author && normalizeSearchText(b.author).includes(qAuthor));
       const matchPage = !qYear || (b.year && b.year.toString().includes(qYear));
@@ -3743,6 +3745,7 @@ function App() {
     className: "block text-xs font-bold text-[var(--text-dark)] mb-1"
   }, ui.searchLabelCode), /*#__PURE__*/React.createElement("input", {
     type: "text",
+    placeholder: "書碼或 ISBN（免連字號／後四碼亦可）",
     value: searchForm.code,
     onChange: e => setSearchForm({
       ...searchForm,

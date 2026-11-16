@@ -26506,13 +26506,15 @@ const S2T_MAP = {
 function filterBooks() {
   let query = document.getElementById('filterInput').value.toLowerCase().trim();
   let queryTrad = query.split('').map(c => S2T_MAP[c] || c).join('').replace(/台/g, '臺');
+  let queryNoSep = query.replace(/[-\s]/g, '');
   const sections = document.querySelectorAll('.category-section');
   sections.forEach(sec => {
     const rows = sec.querySelectorAll('.book-row');
     let visible = 0;
     rows.forEach(r => {
       const text = r.textContent.toLowerCase().replace(/台/g, '臺');
-      const ok = !query || text.includes(query) || text.includes(queryTrad);
+      const textNoSep = text.replace(/[-\s]/g, '');
+      const ok = !query || text.includes(query) || text.includes(queryTrad) || (queryNoSep.length >= 2 && textNoSep.includes(queryNoSep));
       r.style.display = ok ? '' : 'none';
       if (ok) visible++;
     });
