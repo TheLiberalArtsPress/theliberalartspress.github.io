@@ -1540,7 +1540,7 @@ function App() {
   const syncWithGAS = useCallback(async (action, payloadData = null) => {
     try {
       const currentOrigin = window.location.origin;
-      const safeOrigin = currentOrigin.includes("usercontent.goog") ? "https://candylovema.github.io" : currentOrigin;
+      const safeOrigin = currentOrigin.includes("usercontent.goog") ? "https://theliberalartspress.github.io" : currentOrigin;
       const payloadObj = {
         action,
         payload: payloadData,
@@ -4197,7 +4197,13 @@ function App() {
     className: "w-full h-full border-0 min-h-[550px]"
   })))), isPresidentOpen && /*#__PURE__*/React.createElement(PresidentModal, {
     onClose: () => setIsPresidentOpen(false),
-    ui: ui
+    ui: ui,
+    onCopy: (label, val) => {
+      try {
+        if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(val);
+        showMsg(`已複製${label}！`);
+      } catch (e) {}
+    }
   }), isContactPageOpen && /*#__PURE__*/React.createElement(ContactModal, {
     onClose: () => setIsContactPageOpen(false),
     ui: ui,
@@ -4924,7 +4930,7 @@ function InkRippleEffect() {
 }
 
 // --- 📜 關於社長（社長剪影｜保持「品牌故事」同款風格與完整原文）---
-function PresidentModal({ onClose, ui }) {
+function PresidentModal({ onClose, ui, onCopy }) {
   const e = React.createElement;
   return e('div', {
     className: 'fixed inset-0 bg-black/60 backdrop-blur-md z-[150] flex justify-center items-center p-4 md:p-8',
@@ -5048,7 +5054,15 @@ function PresidentModal({ onClose, ui }) {
         )
       ),
 
-      e('div', { className: 'mt-8 text-center' },
+      e('div', { className: 'mt-8 flex flex-wrap justify-center gap-3' },
+        e('button', {
+          type: 'button',
+          onClick: () => {
+            const url = `${window.location.origin}${window.location.pathname}?page=president`;
+            if (onCopy) onCopy('關於社長連結', url);
+          },
+          className: 'border border-[var(--border-color)] hover:border-[var(--primary-color)] px-6 py-2.5 rounded-full font-bold transition-colors text-sm'
+        }, '🔗 複製本頁連結'),
         e('button', {
           type: 'button',
           onClick: onClose,
@@ -5067,7 +5081,7 @@ function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
   const fax = ui.footerFax || 'Fax: 886-2-2396-5656';
   const email = ui.footerEmail || 'lapentw@gmail.com';
   const hours = ui.footerHours || '營業時間：週一到週五 AM9:00~PM6:00';
-  const transfer = ui.footerTransfer || '郵政劃撥：05128812號 彭正雄帳戶';
+  const transfer = (ui.footerTransfer && !ui.footerTransfer.includes('劃撥') && !ui.footerTransfer.includes('05128812')) ? ui.footerTransfer : '國內下單滿 NT$3,000 免運（未滿另計運費）｜歡迎線上書包下單或來信洽詢';
   const mapsUrl = 'https://www.google.com/maps/search/?api=1&query=' + encodeURIComponent('台北市中正區羅斯福路一段72巷4號 文史哲出版社');
 
   return e('div', {
@@ -5201,6 +5215,14 @@ function ContactModal({ onClose, ui, onCopy, onOpenCS }) {
       ),
 
       e('div', { className: 'mt-8 flex flex-wrap justify-center gap-3' },
+        e('button', {
+          type: 'button',
+          onClick: () => {
+            const url = `${window.location.origin}${window.location.pathname}?page=contact`;
+            if (onCopy) onCopy('聯繫我們連結', url);
+          },
+          className: 'border border-[var(--border-color)] hover:border-[var(--primary-color)] px-6 py-2.5 rounded-full font-bold transition-colors text-sm'
+        }, '🔗 複製本頁連結'),
         e('button', {
           type: 'button',
           onClick: onOpenCS,
