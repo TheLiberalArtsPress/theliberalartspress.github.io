@@ -1243,9 +1243,17 @@ function App() {
       const urlParams = new URLSearchParams(window.location.search);
       const targetQuery = urlParams.get('book') || urlParams.get('id') || pendingUrlBookRef.current;
       const catParam = urlParams.get('category');
+      const searchParam = urlParams.get('search');
       const pageParam = urlParams.get('page');
       if (pageParam === 'president') setIsPresidentOpen(true);
       else if (pageParam === 'contact') setIsContactPageOpen(true);
+      if (searchParam && searchParam.trim()) {
+        const sq = searchParam.trim();
+        setSearchForm({ code: '', title: sq, author: '', year: '', category: '' });
+        setAppliedSearch({ code: '', title: sq, author: '', year: '', category: '', _any: true });
+        setSearchVisibleCount(12);
+        setIsSearchModalOpen(true);
+      }
       if (targetQuery) {
         const pool = (books && books.length > 0) ? books : [
           ...((staticData && staticData.books) || []),
@@ -1945,6 +1953,16 @@ function App() {
     const qTitle = normalizeSearchText(appliedSearch.title);
     const qAuthor = normalizeSearchText(appliedSearch.author);
     const qYear = (appliedSearch.year || '').trim();
+    if (appliedSearch._any && qTitle) {
+      const rawQ = (appliedSearch.title || '').trim();
+      const rawNoDash = rawQ.replace(/-/g, '');
+      return books.filter(b =>
+        (b.title && normalizeSearchText(b.title).includes(qTitle)) ||
+        (b.author && normalizeSearchText(b.author).includes(qTitle)) ||
+        (b.id && b.id.toString().includes(rawQ)) ||
+        (b.isbn && b.isbn.replace(/-/g, '').includes(rawNoDash))
+      );
+    }
     return books.filter(b => {
       const matchCode = !qCode || (b.id && b.id.toString().includes(qCode)) || (b.isbn && b.isbn.replace(/-/g, '').includes(qCode.replace(/-/g, '')));
       const matchTitle = !qTitle || (b.title && normalizeSearchText(b.title).includes(qTitle));
