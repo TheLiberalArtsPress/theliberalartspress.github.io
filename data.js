@@ -862,6 +862,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1794907004366-ds63",
+      "timestamp": "2026/11/17 17:16:44",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794906981082-i3vp",
+      "timestamp": "2026/11/17 17:16:21",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《玄學與魏晉士人心態》(書碼: 00268) 定價 NT$ 560、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794906259233-ctiz",
+      "timestamp": "2026/11/17 17:04:19",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794906249319-at8e",
       "timestamp": "2026/11/17 17:04:09",
       "category": "書籍庫存",
@@ -11557,16 +11584,16 @@ window.STATIC_DATA = {
       "title": "玄學與魏晉士人心態",
       "author": "羅宗強著",
       "year": "82年 平一",
-      "price": 480,
+      "price": 560,
       "isbn": "978-957-547-181-1",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00268.jpg",
+      "localCover": "assets/covers/00268.jpg",
       "intro": "本書《玄學與魏晉士人心態》深入探討中國斷代歷史演變、政治制度變革與社會經濟結構。全書廣泛蒐羅傳世官修正史、起居注、檔案奏摺、文集筆記及民間碑刻，針對政務運作機制、階層流動、邊疆經營及重大歷史事件展開多視角實證考辨，力求還原歷史決策之深層背景與制度實態。",
-      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。",
-      "localCover": "assets/covers/00268.jpg"
+      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。"
     },
     {
       "id": "00269",
