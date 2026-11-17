@@ -862,6 +862,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1794905851599-5wh5",
+      "timestamp": "2026/11/17 16:57:31",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794905836313-fhmb",
+      "timestamp": "2026/11/17 16:57:16",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《簡明古代漢語教程》(書碼: 80284) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794902778483-a99y",
+      "timestamp": "2026/11/17 16:06:18",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794902763854-a0va",
       "timestamp": "2026/11/17 16:06:03",
       "category": "書籍庫存",
@@ -42590,16 +42617,16 @@ window.STATIC_DATA = {
       "title": "簡明古代漢語教程",
       "author": "曹 煒著",
       "year": "100年 平一",
-      "price": 280,
+      "price": 320,
       "isbn": "978-986-314-002-3",
-      "stock": "20",
+      "stock": 20,
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80284.jpg",
+      "localCover": "assets/covers/80284.jpg",
       "intro": "本書《簡明古代漢語教程》由學者曹 煒所撰著，深入研析《簡明古代漢語教程》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《簡明古代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/80284.jpg"
+      "心得": "【學術導讀】《簡明古代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "80301",
