@@ -862,6 +862,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1794911473319-lpb1",
+      "timestamp": "2026/11/17 18:31:13",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794911459861-7vj4",
+      "timestamp": "2026/11/17 18:30:59",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《漫談周易》(書碼: 00247) 定價 NT$ 300、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794907036158-zq25",
+      "timestamp": "2026/11/17 17:17:16",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794907004366-ds63",
       "timestamp": "2026/11/17 17:16:44",
       "category": "書籍庫存",
@@ -11248,16 +11275,16 @@ window.STATIC_DATA = {
       "title": "漫談周易",
       "author": "王居恭著",
       "year": "81年 平一",
-      "price": 280,
+      "price": 300,
       "isbn": "978-957-547-018-0",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00247.jpg",
+      "localCover": "assets/covers/00247.jpg",
       "intro": "本書《漫談周易》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
-      "localCover": "assets/covers/00247.jpg"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
     },
     {
       "id": "00248",
