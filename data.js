@@ -862,8 +862,80 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795053892566-n3fk",
+      "timestamp": "2026/11/19 10:04:52",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795053875149-7v5l",
+      "timestamp": "2026/11/19 10:04:35",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 粗體字四種 廿四開本》(書碼: 94209) 定價 NT$ 800、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795053864053-ar1a",
+      "timestamp": "2026/11/19 10:04:24",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 行書（一寸字） 廿四開本》(書碼: 94202) 定價 NT$ 800、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795053847878-owq2",
+      "timestamp": "2026/11/19 10:04:07",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 分書（一寸字） 廿四開本》(書碼: 94203) 定價 NT$ 800、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795053808754-8g90",
+      "timestamp": "2026/11/19 10:03:28",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 行書（一寸字） 廿四開本》(書碼: 94202) 定價 NT$ 702、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795053804696-ylmu",
+      "timestamp": "2026/11/19 10:03:24",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 行書（一寸字） 廿四開本》(書碼: 94202) 定價 NT$ 701、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795053130525-fc1r",
+      "timestamp": "2026/11/19 09:52:10",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 65 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794911484261-pind",
+      "timestamp": "Tue Nov 17 2026 18:31:24 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794911473319-lpb1",
-      "timestamp": "2026/11/17 18:31:13",
+      "timestamp": "Tue Nov 17 2026 18:31:13 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -872,7 +944,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794911459861-7vj4",
-      "timestamp": "2026/11/17 18:30:59",
+      "timestamp": "Tue Nov 17 2026 18:30:59 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《漫談周易》(書碼: 00247) 定價 NT$ 300、庫存 20",
@@ -881,7 +953,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794907036158-zq25",
-      "timestamp": "2026/11/17 17:17:16",
+      "timestamp": "Tue Nov 17 2026 17:17:16 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -890,7 +962,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794907004366-ds63",
-      "timestamp": "2026/11/17 17:16:44",
+      "timestamp": "Tue Nov 17 2026 17:16:44 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -899,7 +971,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794906981082-i3vp",
-      "timestamp": "2026/11/17 17:16:21",
+      "timestamp": "Tue Nov 17 2026 17:16:21 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《玄學與魏晉士人心態》(書碼: 00268) 定價 NT$ 560、庫存 20",
@@ -908,7 +980,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794906259233-ctiz",
-      "timestamp": "2026/11/17 17:04:19",
+      "timestamp": "Tue Nov 17 2026 17:04:19 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -917,7 +989,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794906249319-at8e",
-      "timestamp": "2026/11/17 17:04:09",
+      "timestamp": "Tue Nov 17 2026 17:04:09 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -926,7 +998,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1794906237686-73rq",
-      "timestamp": "2026/11/17 17:03:57",
+      "timestamp": "Tue Nov 17 2026 17:03:57 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《魏晉南朝恩赦制度的探討》(書碼: 00714) 定價 NT$ 340、庫存 20",
@@ -934,8 +1006,80 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1794906165015-inkz",
+      "timestamp": "Tue Nov 17 2026 17:02:45 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794905851599-5wh5",
+      "timestamp": "Tue Nov 17 2026 16:57:31 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794905836313-fhmb",
+      "timestamp": "Tue Nov 17 2026 16:57:16 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《簡明古代漢語教程》(書碼: 80284) 定價 NT$ 320、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794902778483-a99y",
+      "timestamp": "Tue Nov 17 2026 16:06:18 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794902763854-a0va",
+      "timestamp": "Tue Nov 17 2026 16:06:03 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794902749172-i4wp",
+      "timestamp": "Tue Nov 17 2026 16:05:49 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《清代中央司法審判制度》(書碼: 00252) 定價 NT$ 580、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794902718130-z6rg",
+      "timestamp": "Tue Nov 17 2026 16:05:18 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1794902703413-bba7",
+      "timestamp": "Tue Nov 17 2026 16:05:03 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《陳騤《文則》新論》(書碼: 00278) 定價 NT$ 800、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1794902691256-127u",
-      "timestamp": "2026/11/17 16:04:51",
+      "timestamp": "Tue Nov 17 2026 16:04:51 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 62 本、庫存 1 本、新增 12 本",
@@ -11277,14 +11421,14 @@ window.STATIC_DATA = {
       "year": "81年 平一",
       "price": 300,
       "isbn": "978-957-547-018-0",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00247.jpg",
-      "localCover": "assets/covers/00247.jpg",
       "intro": "本書《漫談周易》為中國哲學思想史與古典義理體系之重要專著。全書緊扣原典章句與概念範疇，深入探討天道、心性、名教、知行及本體論之根本命題。著者兼採義理推演、文獻考據與哲學思辨，打破傳統門戶之見，條分縷析概念生成與思想演變之內在邏輯，揭示先哲體系之精神精髓與當代轉化價值。",
-      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。"
+      "心得": "【哲學導讀】研讀本書，最能體會著者精準之概念辨析與嚴密之論證架構。全書於字裡行間貫穿對宇宙秩序與人生終極價值之深邃省思，持論精闢、發人深省，為研習中國哲學與思想史必備之案頭佳構。",
+      "localCover": "assets/covers/00247.jpg"
     },
     {
       "id": "00248",
@@ -11613,14 +11757,14 @@ window.STATIC_DATA = {
       "year": "82年 平一",
       "price": 560,
       "isbn": "978-957-547-181-1",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00268.jpg",
-      "localCover": "assets/covers/00268.jpg",
       "intro": "本書《玄學與魏晉士人心態》深入探討中國斷代歷史演變、政治制度變革與社會經濟結構。全書廣泛蒐羅傳世官修正史、起居注、檔案奏摺、文集筆記及民間碑刻，針對政務運作機制、階層流動、邊疆經營及重大歷史事件展開多視角實證考辨，力求還原歷史決策之深層背景與制度實態。",
-      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。"
+      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。",
+      "localCover": "assets/covers/00268.jpg"
     },
     {
       "id": "00269",
@@ -18365,14 +18509,14 @@ window.STATIC_DATA = {
       "year": "87年 平一",
       "price": 340,
       "isbn": "978-957-549-120-8",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學術叢刊",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00714.jpg",
-      "localCover": "assets/covers/00714.jpg",
       "intro": "本書《魏晉南朝恩赦制度的探討》深入探討中國斷代歷史演變、政治制度變革與社會經濟結構。全書廣泛蒐羅傳世官修正史、起居注、檔案奏摺、文集筆記及民間碑刻，針對政務運作機制、階層流動、邊疆經營及重大歷史事件展開多視角實證考辨，力求還原歷史決策之深層背景與制度實態。",
-      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。"
+      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。",
+      "localCover": "assets/covers/00714.jpg"
     },
     {
       "id": "00715",
@@ -47691,9 +47835,9 @@ window.STATIC_DATA = {
       "title": "商用字彙 行書（一寸字） 廿四開本",
       "author": "劉元祥寫作",
       "year": "平一",
-      "price": 700,
+      "price": 800,
       "isbn": "978-957-547-050-0",
-      "stock": "20",
+      "stock": 20,
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
@@ -47707,9 +47851,9 @@ window.STATIC_DATA = {
       "title": "商用字彙 分書（一寸字） 廿四開本",
       "author": "劉元祥寫作",
       "year": "平一",
-      "price": 700,
+      "price": 800,
       "isbn": "978-957-547-040-1",
-      "stock": "20",
+      "stock": 20,
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
@@ -47803,16 +47947,16 @@ window.STATIC_DATA = {
       "title": "商用字彙 粗體字四種 廿四開本",
       "author": "本社編",
       "year": "平一",
-      "price": 700,
+      "price": 800,
       "isbn": "978-957-547-782-0",
-      "stock": "20",
+      "stock": 20,
       "category": "法帖拓本",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/94209.jpg",
+      "localCover": "assets/covers/94209.jpg",
       "intro": "本書《商用字彙 粗體字四種 廿四開本》由學者本社所撰著，深入研析《商用字彙 粗體字四種 廿四開本》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《商用字彙 粗體字四種 廿四開本》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/94209.jpg"
+      "心得": "【學術導讀】《商用字彙 粗體字四種 廿四開本》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "94211",
