@@ -862,8 +862,71 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795055115957-ixrd",
+      "timestamp": "2026/11/19 10:25:15",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 粗體字四種 廿四開本》(書碼: 94209) 定價 NT$ 900、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795055108744-k64a",
+      "timestamp": "2026/11/19 10:25:08",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 分書（一寸字） 廿四開本》(書碼: 94203) 定價 NT$ 900、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795055103626-6mr1",
+      "timestamp": "2026/11/19 10:25:03",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《商用字彙 行書（一寸字） 廿四開本》(書碼: 94202) 定價 NT$ 900、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795055092156-s1t8",
+      "timestamp": "2026/11/19 10:24:52",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 68 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795055092219-4owm",
+      "timestamp": "Thu Nov 19 2026 10:24:52 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 68 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795055090395-j2o6",
+      "timestamp": "Thu Nov 19 2026 10:24:50 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 68 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795053903247-hpo4",
+      "timestamp": "Thu Nov 19 2026 10:05:03 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795053892566-n3fk",
-      "timestamp": "2026/11/19 10:04:52",
+      "timestamp": "Thu Nov 19 2026 10:04:52 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -872,7 +935,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795053875149-7v5l",
-      "timestamp": "2026/11/19 10:04:35",
+      "timestamp": "Thu Nov 19 2026 10:04:35 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 粗體字四種 廿四開本》(書碼: 94209) 定價 NT$ 800、庫存 20",
@@ -881,7 +944,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795053864053-ar1a",
-      "timestamp": "2026/11/19 10:04:24",
+      "timestamp": "Thu Nov 19 2026 10:04:24 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 行書（一寸字） 廿四開本》(書碼: 94202) 定價 NT$ 800、庫存 20",
@@ -890,7 +953,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795053847878-owq2",
-      "timestamp": "2026/11/19 10:04:07",
+      "timestamp": "Thu Nov 19 2026 10:04:07 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 分書（一寸字） 廿四開本》(書碼: 94203) 定價 NT$ 800、庫存 20",
@@ -899,7 +962,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795053808754-8g90",
-      "timestamp": "2026/11/19 10:03:28",
+      "timestamp": "Thu Nov 19 2026 10:03:28 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 行書（一寸字） 廿四開本》(書碼: 94202) 定價 NT$ 702、庫存 20",
@@ -908,7 +971,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795053804696-ylmu",
-      "timestamp": "2026/11/19 10:03:24",
+      "timestamp": "Thu Nov 19 2026 10:03:24 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《商用字彙 行書（一寸字） 廿四開本》(書碼: 94202) 定價 NT$ 701、庫存 20",
@@ -917,7 +980,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795053130525-fc1r",
-      "timestamp": "2026/11/19 09:52:10",
+      "timestamp": "Thu Nov 19 2026 09:52:10 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 65 本、庫存 1 本、新增 12 本",
@@ -47835,7 +47898,7 @@ window.STATIC_DATA = {
       "title": "商用字彙 行書（一寸字） 廿四開本",
       "author": "劉元祥寫作",
       "year": "平一",
-      "price": 800,
+      "price": 900,
       "isbn": "978-957-547-050-0",
       "stock": 20,
       "category": "法帖拓本",
@@ -47851,7 +47914,7 @@ window.STATIC_DATA = {
       "title": "商用字彙 分書（一寸字） 廿四開本",
       "author": "劉元祥寫作",
       "year": "平一",
-      "price": 800,
+      "price": 900,
       "isbn": "978-957-547-040-1",
       "stock": 20,
       "category": "法帖拓本",
@@ -47947,7 +48010,7 @@ window.STATIC_DATA = {
       "title": "商用字彙 粗體字四種 廿四開本",
       "author": "本社編",
       "year": "平一",
-      "price": 800,
+      "price": 900,
       "isbn": "978-957-547-782-0",
       "stock": 20,
       "category": "法帖拓本",
