@@ -862,6 +862,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795162891244-cuof",
+      "timestamp": "2026/11/20 16:21:31",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795162878288-n82d",
+      "timestamp": "2026/11/20 16:21:18",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《文心雕龍管窺》(書碼: 00528) 定價 NT$ 460、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795160359574-b688",
+      "timestamp": "2026/11/20 15:39:19",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795159826518-dzp8",
       "timestamp": "2026/11/20 15:30:26",
       "category": "雲端同步",
@@ -15871,16 +15898,16 @@ window.STATIC_DATA = {
       "title": "文心雕龍管窺",
       "author": "王更生著",
       "year": "96年 平一",
-      "price": 450,
+      "price": 460,
       "isbn": "978-957-549-721-7",
-      "stock": "20",
+      "stock": 20,
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00528.jpg",
+      "localCover": "assets/covers/00528.jpg",
       "intro": "本書《文心雕龍管窺》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《文心雕龍管窺》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《文心雕龍管窺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
-      "localCover": "assets/covers/00528.jpg"
+      "心得": "【詩學品讀】研讀《文心雕龍管窺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
     },
     {
       "id": "00529",
