@@ -862,6 +862,51 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795167173239-z52r",
+      "timestamp": "2026/11/20 17:32:53",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795167157170-tv1g",
+      "timestamp": "2026/11/20 17:32:37",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《圖書與圖書館1∼3輯》(書碼: 05004) 定價 NT$ 840、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795166680635-kysf",
+      "timestamp": "2026/11/20 17:24:40",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795166667342-qgmj",
+      "timestamp": "2026/11/20 17:24:27",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《道德經異述》(書碼: 12132) 定價 NT$ 380、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795163514769-kesq",
+      "timestamp": "2026/11/20 16:31:54",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795163503601-yjmf",
       "timestamp": "2026/11/20 16:31:43",
       "category": "書籍庫存",
@@ -21341,17 +21386,17 @@ window.STATIC_DATA = {
       "id": "05004",
       "title": "圖書與圖書館1∼3輯",
       "author": "未知作者",
-      "year": "66年 每輯",
-      "price": 200,
+      "year": "66年 平三",
+      "price": 840,
       "isbn": "978-957-547-560-4",
-      "stock": "20",
+      "stock": 20,
       "category": "期刊",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/05004.jpg",
+      "localCover": "assets/covers/05004.jpg",
       "intro": "本書《圖書與圖書館1∼3輯》由學者未知作者所撰著，深入研析《圖書與圖書館1∼3輯》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《圖書與圖書館1∼3輯》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/05004.jpg"
+      "心得": "【學術導讀】《圖書與圖書館1∼3輯》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "05101",
@@ -36430,16 +36475,16 @@ window.STATIC_DATA = {
       "title": "道德經異述",
       "author": "潘英俊著",
       "year": "99年 平一",
-      "price": 360,
+      "price": 380,
       "isbn": "978-957-549-899-3",
-      "stock": "20",
+      "stock": 20,
       "category": "哲學類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/12132.jpg",
+      "localCover": "assets/covers/12132.jpg",
       "intro": "本書《道德經異述》由學者潘英俊所撰著，深入研析《道德經異述》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《道德經異述》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/12132.jpg"
+      "心得": "【學術導讀】《道德經異述》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "12133",
