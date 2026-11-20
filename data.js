@@ -862,6 +862,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795163503601-yjmf",
+      "timestamp": "2026/11/20 16:31:43",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795163492867-qt0a",
+      "timestamp": "2026/11/20 16:31:32",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《文心雕龍管窺》(書碼: 00528) 定價 NT$ 480、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795162995290-fy96",
+      "timestamp": "2026/11/20 16:23:15",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795162904566-dy2c",
       "timestamp": "2026/11/20 16:21:44",
       "category": "雲端同步",
@@ -15907,7 +15934,7 @@ window.STATIC_DATA = {
       "title": "文心雕龍管窺",
       "author": "王更生著",
       "year": "96年 平一",
-      "price": 460,
+      "price": 480,
       "isbn": "978-957-549-721-7",
       "stock": 20,
       "category": "文史哲學集成",
