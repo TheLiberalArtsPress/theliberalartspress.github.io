@@ -862,8 +862,44 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795168670005-darg",
+      "timestamp": "2026/11/20 17:57:50",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 86 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795167388243-qjbb",
+      "timestamp": "Fri Nov 20 2026 17:36:28 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795167376378-y2yr",
+      "timestamp": "Fri Nov 20 2026 17:36:16 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《六十年來之聲韻學》(書碼: 81203) 定價 NT$ 200、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795167198616-obf0",
+      "timestamp": "Fri Nov 20 2026 17:33:18 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795167173239-z52r",
-      "timestamp": "2026/11/20 17:32:53",
+      "timestamp": "Fri Nov 20 2026 17:32:53 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -872,7 +908,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795167157170-tv1g",
-      "timestamp": "2026/11/20 17:32:37",
+      "timestamp": "Fri Nov 20 2026 17:32:37 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《圖書與圖書館1∼3輯》(書碼: 05004) 定價 NT$ 840、庫存 20",
@@ -881,7 +917,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795166680635-kysf",
-      "timestamp": "2026/11/20 17:24:40",
+      "timestamp": "Fri Nov 20 2026 17:24:40 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -890,7 +926,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795166667342-qgmj",
-      "timestamp": "2026/11/20 17:24:27",
+      "timestamp": "Fri Nov 20 2026 17:24:27 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《道德經異述》(書碼: 12132) 定價 NT$ 380、庫存 20",
@@ -898,8 +934,44 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1795165015112-sre8",
+      "timestamp": "Fri Nov 20 2026 16:56:55 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795165003967-ywiy",
+      "timestamp": "Fri Nov 20 2026 16:56:43 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《周金文選（BOD）》(書碼: 81102) 定價 NT$ 280、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795164996582-it9c",
+      "timestamp": "Fri Nov 20 2026 16:56:36 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795164988084-eqlp",
+      "timestamp": "Fri Nov 20 2026 16:56:28 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《十五－十六世紀的回回文與中國伊斯蘭教文化研究（BOD）》(書碼: 00548) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795163514769-kesq",
-      "timestamp": "2026/11/20 16:31:54",
+      "timestamp": "Fri Nov 20 2026 16:31:54 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -908,7 +980,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795163503601-yjmf",
-      "timestamp": "2026/11/20 16:31:43",
+      "timestamp": "Fri Nov 20 2026 16:31:43 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -917,7 +989,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795163492867-qt0a",
-      "timestamp": "2026/11/20 16:31:32",
+      "timestamp": "Fri Nov 20 2026 16:31:32 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《文心雕龍管窺》(書碼: 00528) 定價 NT$ 480、庫存 20",
@@ -925,8 +997,17 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1795162999713-s7lr",
+      "timestamp": "Fri Nov 20 2026 16:23:19 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 83 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795162995290-fy96",
-      "timestamp": "2026/11/20 16:23:15",
+      "timestamp": "Fri Nov 20 2026 16:23:15 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -935,7 +1016,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795162904566-dy2c",
-      "timestamp": "2026/11/20 16:21:44",
+      "timestamp": "Fri Nov 20 2026 16:21:44 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -944,7 +1025,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795162891244-cuof",
-      "timestamp": "2026/11/20 16:21:31",
+      "timestamp": "Fri Nov 20 2026 16:21:31 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -953,7 +1034,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795162878288-n82d",
-      "timestamp": "2026/11/20 16:21:18",
+      "timestamp": "Fri Nov 20 2026 16:21:18 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《文心雕龍管窺》(書碼: 00528) 定價 NT$ 460、庫存 20",
@@ -962,7 +1043,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795160359574-b688",
-      "timestamp": "2026/11/20 15:39:19",
+      "timestamp": "Fri Nov 20 2026 15:39:19 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -971,7 +1052,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159826518-dzp8",
-      "timestamp": "2026/11/20 15:30:26",
+      "timestamp": "Fri Nov 20 2026 15:30:26 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -980,7 +1061,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159797930-7ehw",
-      "timestamp": "2026/11/20 15:29:57",
+      "timestamp": "Fri Nov 20 2026 15:29:57 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -989,7 +1070,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159722816-h40d",
-      "timestamp": "2026/11/20 15:28:42",
+      "timestamp": "Fri Nov 20 2026 15:28:42 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -998,7 +1079,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159712156-inzx",
-      "timestamp": "2026/11/20 15:28:32",
+      "timestamp": "Fri Nov 20 2026 15:28:32 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《陳伯元先生六秩壽慶論文集》(書碼: 07025) 定價 NT$ 1000、庫存 20",
@@ -1007,7 +1088,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159172579-cjhq",
-      "timestamp": "2026/11/20 15:19:32",
+      "timestamp": "Fri Nov 20 2026 15:19:32 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -1016,7 +1097,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159159689-t9u5",
-      "timestamp": "2026/11/20 15:19:19",
+      "timestamp": "Fri Nov 20 2026 15:19:19 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《簡明修辭學教程》(書碼: 80283) 定價 NT$ 320、庫存 20",
@@ -1025,7 +1106,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159137965-s3n2",
-      "timestamp": "2026/11/20 15:18:57",
+      "timestamp": "Fri Nov 20 2026 15:18:57 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《簡明現代漢語教程》(書碼: 80282) 定價 NT$ 320、庫存 20",
@@ -1034,7 +1115,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159111183-ihcu",
-      "timestamp": "2026/11/20 15:18:31",
+      "timestamp": "Fri Nov 20 2026 15:18:31 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -1043,7 +1124,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795159093955-ki28",
-      "timestamp": "2026/11/20 15:18:13",
+      "timestamp": "Fri Nov 20 2026 15:18:13 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《簡明古代漢語教程》(書碼: 80284) 定價 NT$ 320、庫存 20",
@@ -1052,7 +1133,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795142302752-1zbc",
-      "timestamp": "2026/11/20 10:38:22",
+      "timestamp": "Fri Nov 20 2026 10:38:22 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -1061,7 +1142,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795142291809-rd7u",
-      "timestamp": "2026/11/20 10:38:11",
+      "timestamp": "Fri Nov 20 2026 10:38:11 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -1070,7 +1151,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795142280913-0mw0",
-      "timestamp": "2026/11/20 10:38:00",
+      "timestamp": "Fri Nov 20 2026 10:38:00 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《文心雕龍與現代修辭學》(書碼: 00240) 定價 NT$ 600、庫存 20",
@@ -1079,7 +1160,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795142267341-lkff",
-      "timestamp": "2026/11/20 10:37:47",
+      "timestamp": "Fri Nov 20 2026 10:37:47 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《唐代戰爭詩研究》(書碼: 00179) 定價 NT$ 560、庫存 20",
@@ -1088,7 +1169,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795142251480-noej",
-      "timestamp": "2026/11/20 10:37:31",
+      "timestamp": "Fri Nov 20 2026 10:37:31 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《北宋十大詞家研究》(書碼: 00338) 定價 NT$ 560、庫存 20",
@@ -1097,7 +1178,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795141296295-7go8",
-      "timestamp": "2026/11/20 10:21:36",
+      "timestamp": "Fri Nov 20 2026 10:21:36 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 75 本、庫存 1 本、新增 12 本",
@@ -10797,14 +10878,14 @@ window.STATIC_DATA = {
       "year": "76年 平一",
       "price": 560,
       "isbn": "978-957-547-384-6",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00179.jpg",
-      "localCover": "assets/covers/00179.jpg",
       "intro": "本書《唐代戰爭詩研究》深入探討中國斷代歷史演變、政治制度變革與社會經濟結構。全書廣泛蒐羅傳世官修正史、起居注、檔案奏摺、文集筆記及民間碑刻，針對政務運作機制、階層流動、邊疆經營及重大歷史事件展開多視角實證考辨，力求還原歷史決策之深層背景與制度實態。",
-      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。"
+      "心得": "【史學評析】本書史料挖掘繁富、考辨精細，既具宏觀制度史之格局，亦具微觀事件考證之深度。著者於紛繁史料中抽絲剝繭，論斷客觀審慎，為深入了解該歷史時期發展軌跡之重要學術著作。",
+      "localCover": "assets/covers/00179.jpg"
     },
     {
       "id": "00180",
@@ -11757,14 +11838,14 @@ window.STATIC_DATA = {
       "year": "80年 平一",
       "price": 600,
       "isbn": "978-957-547-126-2",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00240.jpg",
-      "localCover": "assets/covers/00240.jpg",
       "intro": "本書《文心雕龍與現代修辭學》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《文心雕龍與現代修辭學》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《文心雕龍與現代修辭學》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
+      "心得": "【詩學品讀】研讀《文心雕龍與現代修辭學》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
+      "localCover": "assets/covers/00240.jpg"
     },
     {
       "id": "00241",
@@ -13261,14 +13342,14 @@ window.STATIC_DATA = {
       "year": "85年 平一",
       "price": 560,
       "isbn": "978-957-547-927-5",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00338.jpg",
-      "localCover": "assets/covers/00338.jpg",
       "intro": "本書《北宋十大詞家研究》由學者黃文吉所撰著，深入研析《北宋十大詞家研究》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《北宋十大詞家研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《北宋十大詞家研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00338.jpg"
     },
     {
       "id": "00339",
@@ -15979,16 +16060,16 @@ window.STATIC_DATA = {
       "title": "文心雕龍管窺",
       "author": "王更生著",
       "year": "96年 平一",
-      "price": 480,
+      "price": 460,
       "isbn": "978-957-549-721-7",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00528.jpg",
-      "localCover": "assets/covers/00528.jpg",
       "intro": "本書《文心雕龍管窺》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《文心雕龍管窺》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《文心雕龍管窺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
+      "心得": "【詩學品讀】研讀《文心雕龍管窺》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
+      "localCover": "assets/covers/00528.jpg"
     },
     {
       "id": "00529",
@@ -16299,7 +16380,7 @@ window.STATIC_DATA = {
       "title": "十五－十六世紀的回回文與中國伊斯蘭教文化研究（BOD）",
       "author": "駱愛麗著",
       "year": "97年 平一",
-      "price": 380,
+      "price": 420,
       "isbn": "978-957-549-790-3",
       "stock": "20",
       "category": "文史哲學集成",
@@ -21386,17 +21467,17 @@ window.STATIC_DATA = {
       "id": "05004",
       "title": "圖書與圖書館1∼3輯",
       "author": "未知作者",
-      "year": "66年 平三",
-      "price": 840,
+      "year": "66年 每輯",
+      "price": 200,
       "isbn": "978-957-547-560-4",
-      "stock": 20,
+      "stock": "20",
       "category": "期刊",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/05004.jpg",
-      "localCover": "assets/covers/05004.jpg",
       "intro": "本書《圖書與圖書館1∼3輯》由學者未知作者所撰著，深入研析《圖書與圖書館1∼3輯》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《圖書與圖書館1∼3輯》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《圖書與圖書館1∼3輯》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/05004.jpg"
     },
     {
       "id": "05101",
@@ -21773,14 +21854,14 @@ window.STATIC_DATA = {
       "year": "83年 精一",
       "price": 1000,
       "isbn": "978-957-547-856-8",
-      "stock": 20,
+      "stock": "20",
       "category": "論叢",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/07025.jpg",
-      "localCover": "assets/covers/07025.jpg",
       "intro": "本書《陳伯元先生六秩壽慶論文集》由學者祝壽編委會所撰著，深入研析《陳伯元先生六秩壽慶論文集》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《陳伯元先生六秩壽慶論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《陳伯元先生六秩壽慶論文集》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/07025.jpg"
     },
     {
       "id": "07026",
@@ -36475,16 +36556,16 @@ window.STATIC_DATA = {
       "title": "道德經異述",
       "author": "潘英俊著",
       "year": "99年 平一",
-      "price": 380,
+      "price": 360,
       "isbn": "978-957-549-899-3",
-      "stock": 20,
+      "stock": "20",
       "category": "哲學類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/12132.jpg",
-      "localCover": "assets/covers/12132.jpg",
       "intro": "本書《道德經異述》由學者潘英俊所撰著，深入研析《道德經異述》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《道德經異述》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《道德經異述》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/12132.jpg"
     },
     {
       "id": "12133",
@@ -43181,14 +43262,14 @@ window.STATIC_DATA = {
       "year": "100年 平一",
       "price": 320,
       "isbn": "978-957-549-986-0",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80282.jpg",
-      "localCover": "assets/covers/80282.jpg",
       "intro": "本書《簡明現代漢語教程》由學者曹 煒所撰著，深入研析《簡明現代漢語教程》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《簡明現代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《簡明現代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80282.jpg"
     },
     {
       "id": "80283",
@@ -43197,14 +43278,14 @@ window.STATIC_DATA = {
       "year": "100年 平一",
       "price": 320,
       "isbn": "978-957-549-995-2",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80283.jpg",
-      "localCover": "assets/covers/80283.jpg",
       "intro": "本書《簡明修辭學教程》由學者曹 煒所撰著，深入研析《簡明修辭學教程》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《簡明修辭學教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《簡明修辭學教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80283.jpg"
     },
     {
       "id": "80284",
@@ -43213,14 +43294,14 @@ window.STATIC_DATA = {
       "year": "100年 平一",
       "price": 320,
       "isbn": "978-986-314-002-3",
-      "stock": 20,
+      "stock": "20",
       "category": "語言文法",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/80284.jpg",
-      "localCover": "assets/covers/80284.jpg",
       "intro": "本書《簡明古代漢語教程》由學者曹 煒所撰著，深入研析《簡明古代漢語教程》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《簡明古代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《簡明古代漢語教程》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/80284.jpg"
     },
     {
       "id": "80301",
@@ -43355,7 +43436,7 @@ window.STATIC_DATA = {
       "title": "周金文選（BOD）",
       "author": "胡自逢編寫",
       "year": "72年 平一",
-      "price": 220,
+      "price": 280,
       "isbn": "978-957-547-659-5",
       "stock": "20",
       "category": "文字、聲韻、訓詁",
@@ -43595,7 +43676,7 @@ window.STATIC_DATA = {
       "title": "六十年來之聲韻學",
       "author": "陳新雄著",
       "year": "62年 平一",
-      "price": 140,
+      "price": 200,
       "isbn": "978-957-547-673-1",
       "stock": "20",
       "category": "文字、聲韻、訓詁",
