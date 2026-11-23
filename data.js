@@ -862,8 +862,35 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795430115145-f9q2",
+      "timestamp": "Mon Nov 23 2026 18:35:15 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 90 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795430115292-bmza",
+      "timestamp": "2026/11/23 18:35:15",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 90 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795428807356-jwts",
+      "timestamp": "Mon Nov 23 2026 18:13:27 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795427190438-6wyo",
-      "timestamp": "2026/11/23 17:46:30",
+      "timestamp": "Mon Nov 23 2026 17:46:30 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -872,7 +899,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795427178907-e731",
-      "timestamp": "2026/11/23 17:46:18",
+      "timestamp": "Mon Nov 23 2026 17:46:18 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -881,7 +908,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795427167171-oslo",
-      "timestamp": "2026/11/23 17:46:07",
+      "timestamp": "Mon Nov 23 2026 17:46:07 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《孔子之喜怒哀樂》(書碼: 00155) 定價 NT$ 440、庫存 20",
@@ -890,7 +917,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795423581684-dc34",
-      "timestamp": "2026/11/23 16:46:21",
+      "timestamp": "Mon Nov 23 2026 16:46:21 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -899,7 +926,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795423570536-78a3",
-      "timestamp": "2026/11/23 16:46:10",
+      "timestamp": "Mon Nov 23 2026 16:46:10 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -908,7 +935,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795423558322-dtno",
-      "timestamp": "2026/11/23 16:45:58",
+      "timestamp": "Mon Nov 23 2026 16:45:58 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《多音字分讀研究》(書碼: 00166) 定價 NT$ 760、庫存 20",
@@ -917,7 +944,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795422782750-pv2w",
-      "timestamp": "2026/11/23 16:33:02",
+      "timestamp": "Mon Nov 23 2026 16:33:02 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -926,7 +953,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795422133307-zrs6",
-      "timestamp": "2026/11/23 16:22:13",
+      "timestamp": "Mon Nov 23 2026 16:22:13 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -935,7 +962,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795422118447-2k81",
-      "timestamp": "2026/11/23 16:21:58",
+      "timestamp": "Mon Nov 23 2026 16:21:58 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《杜甫傳記唐宋資料考辨》(書碼: 00175) 定價 NT$ 460、庫存 20",
@@ -944,7 +971,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795420938225-s4vl",
-      "timestamp": "2026/11/23 16:02:18",
+      "timestamp": "Mon Nov 23 2026 16:02:18 GMT+0800 (台北標準時間)",
       "category": "雲端同步",
       "action": "雲端同步",
       "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
@@ -953,7 +980,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795420891963-1zs9",
-      "timestamp": "2026/11/23 16:01:31",
+      "timestamp": "Mon Nov 23 2026 16:01:31 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -962,7 +989,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795420883233-l42r",
-      "timestamp": "2026/11/23 16:01:23",
+      "timestamp": "Mon Nov 23 2026 16:01:23 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《續齊諧記研究》(書碼: 00177) 定價 NT$ 200、庫存 20",
@@ -971,7 +998,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795420789087-itag",
-      "timestamp": "2026/11/23 15:59:49",
+      "timestamp": "Mon Nov 23 2026 15:59:49 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 86 本、庫存 1 本、新增 12 本",
@@ -10620,14 +10647,14 @@ window.STATIC_DATA = {
       "year": "76年 平一",
       "price": 440,
       "isbn": "978-957-547-361-7",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00155.jpg",
-      "localCover": "assets/covers/00155.jpg",
       "intro": "本書《孔子之喜怒哀樂》由學者黃紹祖所撰著，深入研析《孔子之喜怒哀樂》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《孔子之喜怒哀樂》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《孔子之喜怒哀樂》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00155.jpg"
     },
     {
       "id": "00156",
@@ -10796,14 +10823,14 @@ window.STATIC_DATA = {
       "year": "76年 平一",
       "price": 760,
       "isbn": "978-957-547-372-3",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00166.jpg",
-      "localCover": "assets/covers/00166.jpg",
       "intro": "本書《多音字分讀研究》由學者王志成所撰著，深入研析《多音字分讀研究》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《多音字分讀研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《多音字分讀研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00166.jpg"
     },
     {
       "id": "00167",
@@ -10940,14 +10967,14 @@ window.STATIC_DATA = {
       "year": "76年 平一",
       "price": 460,
       "isbn": "978-957-547-380-8",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00175.jpg",
-      "localCover": "assets/covers/00175.jpg",
       "intro": "本書《杜甫傳記唐宋資料考辨》為古典詩詞與文體美學領域之精研專著。全書立足於歷代箋註與詩學批評傳統，從音律格調、意象結構、篇章章法及創作心態出發，對《杜甫傳記唐宋資料考辨》的藝術造詣與思想境界進行全面剖析。著者深入考索作品產生之時代文化語境，辨析其在古典詩歌流變史中的轉折與承拓，論述兼具文獻考訂之扎實與審美闡發之敏銳。",
-      "心得": "【詩學品讀】研讀《杜甫傳記唐宋資料考辨》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。"
+      "心得": "【詩學品讀】研讀《杜甫傳記唐宋資料考辨》，令人深感著者對古典詩歌意境與格律之精微把握。書中不尚空談，緊扣字句聲調與典故源流，使古典詩詞的音律美與情感張力躍然紙上，對提升古典文學素養及詩詞創作鑑賞能力深具助益。",
+      "localCover": "assets/covers/00175.jpg"
     },
     {
       "id": "00176",
@@ -10972,14 +10999,14 @@ window.STATIC_DATA = {
       "year": "76年 平一",
       "price": 200,
       "isbn": "978-957-547-382-2",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學集成",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00177.jpg",
-      "localCover": "assets/covers/00177.jpg",
       "intro": "本書《續齊諧記研究》由學者王國良所撰著，深入研析《續齊諧記研究》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《續齊諧記研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《續齊諧記研究》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/00177.jpg"
     },
     {
       "id": "00178",
