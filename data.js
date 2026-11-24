@@ -862,8 +862,44 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795506768368-wg08",
+      "timestamp": "Tue Nov 24 2026 15:52:48 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 94 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795506768253-l19k",
+      "timestamp": "2026/11/24 15:52:48",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 94 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795488401059-2sat",
+      "timestamp": "Tue Nov 24 2026 10:46:41 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 94 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795486400000-qfg7",
+      "timestamp": "Tue Nov 24 2026 10:13:20 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795486387389-zkmb",
-      "timestamp": "2026/11/24 10:13:07",
+      "timestamp": "Tue Nov 24 2026 10:13:07 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -872,7 +908,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795486364509-iuy5",
-      "timestamp": "2026/11/24 10:12:44",
+      "timestamp": "Tue Nov 24 2026 10:12:44 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《趣味的部首（下）》(書碼: 81307) 定價 NT$ 240、庫存 20",
@@ -881,7 +917,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795486353281-mkco",
-      "timestamp": "2026/11/24 10:12:33",
+      "timestamp": "Tue Nov 24 2026 10:12:33 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《圖書與圖書館1∼3輯》(書碼: 05004) 定價 NT$ 840、庫存 20",
@@ -890,7 +926,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795486306849-sxmw",
-      "timestamp": "2026/11/24 10:11:46",
+      "timestamp": "Tue Nov 24 2026 10:11:46 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《敦煌寫卷書法研究》(書碼: 00705) 定價 NT$ 480、庫存 20",
@@ -899,10 +935,37 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795486291549-csyo",
-      "timestamp": "2026/11/24 10:11:31",
+      "timestamp": "Tue Nov 24 2026 10:11:31 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《道德經異述》(書碼: 12132) 定價 NT$ 380、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795485975573-m7h5",
+      "timestamp": "Tue Nov 24 2026 10:06:15 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 90 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795485973228-b8kt",
+      "timestamp": "Tue Nov 24 2026 10:06:13 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 90 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795485973957-m04g",
+      "timestamp": "Tue Nov 24 2026 10:06:13 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 90 本、庫存 1 本、新增 12 本",
       "operator": "管理員 (Admin)",
       "syncStatus": "已保存"
     },
@@ -917,7 +980,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795485969865-d5ud",
-      "timestamp": "2026/11/24 10:06:09",
+      "timestamp": "Tue Nov 24 2026 10:06:09 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 90 本、庫存 1 本、新增 12 本",
@@ -19119,14 +19182,14 @@ window.STATIC_DATA = {
       "year": "86年 平一",
       "price": 480,
       "isbn": "978-957-549-076-8",
-      "stock": 20,
+      "stock": "20",
       "category": "文史哲學術叢刊",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/00705.jpg",
-      "localCover": "assets/covers/00705.jpg",
       "intro": "敦煌所出文物，涵蓋至廣，寫卷書法藝術即期一域，多為墨寶真蹟，足世人珍鑑。書法，乃中國特有線條藝術，於點畫轉折間，綻放筆家之修持與豪情，意境超逸。本書上起三國、下止唐初，揀選要書四十三篇，依時間先後，逐篇析論，中間分以朝代，魏晉南北朝、隋朝、唐初三個時期，評論寫卷書法藝術。",
-      "心得": "【藝術史評】本書論述精審、眼光獨到，將文人藝術之筆墨神韻與金石考訂之嚴謹學風融為一體。讀之不僅能明辨作品之時代風貌與真偽流傳，更能體悟中華傳統文人雅緻之美學精神。"
+      "心得": "【藝術史評】本書論述精審、眼光獨到，將文人藝術之筆墨神韻與金石考訂之嚴謹學風融為一體。讀之不僅能明辨作品之時代風貌與真偽流傳，更能體悟中華傳統文人雅緻之美學精神。",
+      "localCover": "assets/covers/00705.jpg"
     },
     {
       "id": "00706",
@@ -21695,14 +21758,14 @@ window.STATIC_DATA = {
       "year": "66年 平三",
       "price": 840,
       "isbn": "978-957-547-560-4",
-      "stock": 20,
+      "stock": "20",
       "category": "期刊",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/05004.jpg",
-      "localCover": "assets/covers/05004.jpg",
       "intro": "本書《圖書與圖書館1∼3輯》由學者未知作者所撰著，深入研析《圖書與圖書館1∼3輯》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《圖書與圖書館1∼3輯》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《圖書與圖書館1∼3輯》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/05004.jpg"
     },
     {
       "id": "05101",
@@ -36783,14 +36846,14 @@ window.STATIC_DATA = {
       "year": "99年 平一",
       "price": 380,
       "isbn": "978-957-549-899-3",
-      "stock": 20,
+      "stock": "20",
       "category": "哲學類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/12132.jpg",
-      "localCover": "assets/covers/12132.jpg",
       "intro": "本書《道德經異述》由學者潘英俊所撰著，深入研析《道德經異述》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《道德經異述》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《道德經異述》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/12132.jpg"
     },
     {
       "id": "12133",
@@ -44399,14 +44462,14 @@ window.STATIC_DATA = {
       "year": "90年 平一",
       "price": 240,
       "isbn": "978-957-549-380-6",
-      "stock": 20,
+      "stock": "20",
       "category": "文字、聲韻、訓詁",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/81307.jpg",
-      "localCover": "assets/covers/81307.jpg",
       "intro": "本書《趣味的部首（下）》由學者王志成所撰著，深入研析《趣味的部首》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《趣味的部首（下）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《趣味的部首（下）》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/81307.jpg"
     },
     {
       "id": "81309",
