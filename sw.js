@@ -1,4 +1,4 @@
-const CACHE_NAME = 'lapen-cache-20261114_15';
+const CACHE_NAME = 'lapen-cache-20261124_01';
 const PRECACHE_URLS = [
   './',
   './manifest.json',
@@ -29,6 +29,22 @@ self.addEventListener('fetch', (event) => {
   if (event.request.method !== 'GET') return;
   const url = new URL(event.request.url);
   if (url.origin !== self.location.origin) return;
+
+  // Always fetch latest data.js from network so price/stock updates appear immediately
+  if (url.pathname.endsWith('/data.js') || url.pathname === '/data.js') {
+    event.respondWith(
+      fetch(event.request, { cache: 'no-store' })
+        .then((res) => {
+          if (res && res.status === 200) {
+            const resClone = res.clone();
+            caches.open(CACHE_NAME).then((cache) => cache.put('./data.js', resClone));
+          }
+          return res;
+        })
+        .catch(() => caches.match('./data.js'))
+    );
+    return;
+  }
 
   const isCacheable =
     url.pathname.endsWith('.js') ||

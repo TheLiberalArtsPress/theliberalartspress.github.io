@@ -2599,7 +2599,7 @@
     var hasBookQuery = window.location.search && (window.location.search.indexOf('book=') !== -1 || window.location.search.indexOf('id=') !== -1);
     function loadDataJs() {
       var s = document.createElement('script');
-      s.src = 'data.js?v=20261116_01';
+      s.src = 'data.js?t=' + Date.now();
       s.async = true;
       s.onload = function() {
         if (window.STATIC_DATA) {
@@ -2621,7 +2621,7 @@
 <script>
   if ('serviceWorker' in navigator) {
     window.addEventListener('load', function() {
-      navigator.serviceWorker.register('sw.js?v=20261114_17').catch(function() {});
+      navigator.serviceWorker.register('sw.js?v=20261124_01').catch(function() {});
     });
   }
 </script>
