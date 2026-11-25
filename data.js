@@ -862,8 +862,44 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795599623120-qt7g",
+      "timestamp": "2026/11/25 17:40:23",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795599614093-r1x4",
+      "timestamp": "2026/11/25 17:40:14",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《唐五代人物傳記資料綜合索引》(書碼: 01202) 定價 NT$ 1500、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795597592294-akf9",
+      "timestamp": "2026/11/25 17:06:32",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 102 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795575962802-3bc8",
+      "timestamp": "Wed Nov 25 2026 11:06:02 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795575951596-k76f",
-      "timestamp": "2026/11/25 11:05:51",
+      "timestamp": "Wed Nov 25 2026 11:05:51 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -872,7 +908,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795575937560-7jn7",
-      "timestamp": "2026/11/25 11:05:37",
+      "timestamp": "Wed Nov 25 2026 11:05:37 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《帛書校王弼本諟正道德經本誼徽音》(書碼: 12015) 定價 NT$ 360、庫存 20",
@@ -880,8 +916,17 @@ window.STATIC_DATA = {
       "syncStatus": "已保存"
     },
     {
+      "id": "LOG-1795575928810-04yn",
+      "timestamp": "Wed Nov 25 2026 11:05:28 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 101 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795575926035-uxxw",
-      "timestamp": "2026/11/25 11:05:26",
+      "timestamp": "Wed Nov 25 2026 11:05:26 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 101 本、庫存 1 本、新增 12 本",
@@ -19882,16 +19927,16 @@ window.STATIC_DATA = {
       "title": "唐五代人物傳記資料綜合索引",
       "author": "傅璇琮編",
       "year": "80年 精一",
-      "price": 1000,
+      "price": 1500,
       "isbn": "978-957-547-830-8",
-      "stock": "20",
+      "stock": 20,
       "category": "書目索引",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/01202.jpg",
+      "localCover": "assets/covers/01202.jpg",
       "intro": "本書《唐五代人物傳記資料綜合索引》由學者傅璇琮所撰著，深入研析《唐五代人物傳記資料綜合索引》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《唐五代人物傳記資料綜合索引》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
-      "localCover": "assets/covers/01202.jpg"
+      "心得": "【學術導讀】《唐五代人物傳記資料綜合索引》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
     },
     {
       "id": "01203",
@@ -36876,14 +36921,14 @@ window.STATIC_DATA = {
       "year": "83年 平一",
       "price": 360,
       "isbn": "978-957-547-870-4",
-      "stock": 20,
+      "stock": "20",
       "category": "哲學類",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/12015.jpg",
-      "localCover": "assets/covers/12015.jpg",
       "intro": "本書《帛書校王弼本諟正道德經本誼徽音》由學者鍾克昌所撰著，深入研析《帛書校王弼本諟正道德經本誼徽音》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《帛書校王弼本諟正道德經本誼徽音》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《帛書校王弼本諟正道德經本誼徽音》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/12015.jpg"
     },
     {
       "id": "12016",
