@@ -12,17 +12,18 @@ require('./data.js');
 const books = window.STATIC_DATA.books || [];
 console.log('Total books available:', books.length);
 
-// 組裝 URL 列表 (首頁 + catalog + 重點書籍與各書目)
+// 組裝 URL 列表 (首頁 + 總目錄 + 分類/作者索引 + 全館靜態書頁)
 const urlList = [
     `https://${HOST}/`,
     `https://${HOST}/catalog.html`,
-    `https://${HOST}/?category=%E6%96%87%E5%8F%B2%E5%93%B2%E5%AD%B8%E9%9B%86%E6%88%90`,
-    `https://${HOST}/?category=%E6%96%87%E5%8F%B2%E5%93%B2%E5%AD%B8%E8%A1%93%E5%8F%A2%E5%88%8A`
+    `https://${HOST}/categories/index.html`,
+    `https://${HOST}/authors/index.html`
 ];
 
-for (const b of books.slice(0, 100)) { // 優先推送前 100 筆精華典籍
+for (const b of books) {
     if (b.id) {
-        urlList.push(`https://${HOST}/?book=${encodeURIComponent(b.id)}`);
+        const safeId = String(b.id).trim().replace(/[\\/:*?"<>|]/g, '_');
+        urlList.push(`https://${HOST}/books/${encodeURIComponent(safeId)}.html`);
     }
 }
 
