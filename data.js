@@ -862,8 +862,71 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795684542424-5m3l",
+      "timestamp": "2026/11/26 17:15:42",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2634 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795684514706-f0o5",
+      "timestamp": "2026/11/26 17:15:14",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2634 本，變更價格 103 本、庫存 1 本、新增 13 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795684384402-6x7j",
+      "timestamp": "Thu Nov 26 2026 17:13:04 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《三藏問答：《西遊記》滿文譯本選讀導讀》(書碼: 65180)，定價 NT$ 480",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795684328145-8mve",
+      "timestamp": "Thu Nov 26 2026 17:12:08 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 103 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795684327809-fznq",
+      "timestamp": "Thu Nov 26 2026 17:12:07 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 103 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795678333296-yf6x",
+      "timestamp": "Thu Nov 26 2026 15:32:13 GMT+0800 (台北標準時間)",
+      "category": "書籍庫存",
+      "action": "資料同步",
+      "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 103 本、庫存 1 本、新增 12 本",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795599740977-e7p7",
+      "timestamp": "Wed Nov 25 2026 17:42:20 GMT+0800 (台北標準時間)",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795599623120-qt7g",
-      "timestamp": "2026/11/25 17:40:23",
+      "timestamp": "Wed Nov 25 2026 17:40:23 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "回同步試算表",
       "details": "成功將 2633 本書籍最新簡介與心得回推寫入 Google 試算表",
@@ -872,7 +935,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795599614093-r1x4",
-      "timestamp": "2026/11/25 17:40:14",
+      "timestamp": "Wed Nov 25 2026 17:40:14 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "編輯",
       "details": "修改書籍《唐五代人物傳記資料綜合索引》(書碼: 01202) 定價 NT$ 1500、庫存 20",
@@ -881,7 +944,7 @@ window.STATIC_DATA = {
     },
     {
       "id": "LOG-1795597592294-akf9",
-      "timestamp": "2026/11/25 17:06:32",
+      "timestamp": "Wed Nov 25 2026 17:06:32 GMT+0800 (台北標準時間)",
       "category": "書籍庫存",
       "action": "資料同步",
       "details": "從 Google 試算表 Book_ALL 同步完成：共比對 2633 本，變更價格 102 本、庫存 1 本、新增 12 本",
@@ -19929,14 +19992,14 @@ window.STATIC_DATA = {
       "year": "80年 精一",
       "price": 1500,
       "isbn": "978-957-547-830-8",
-      "stock": 20,
+      "stock": "20",
       "category": "書目索引",
       "isNew": false,
       "isLast": false,
       "cover": "assets/covers/01202.jpg",
-      "localCover": "assets/covers/01202.jpg",
       "intro": "本書《唐五代人物傳記資料綜合索引》由學者傅璇琮所撰著，深入研析《唐五代人物傳記資料綜合索引》之歷史文化背景、文獻版本與核心論旨。全書本諸實事求是之考據精神，博採經史典籍與近代學術成果，論證條理分明、分析深刻透徹，展現了嚴謹之治學功力與學術創見，為研讀該領域專題不可多得之參考著作。",
-      "心得": "【學術導讀】《唐五代人物傳記資料綜合索引》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。"
+      "心得": "【學術導讀】《唐五代人物傳記資料綜合索引》體例完備、考訂精詳。著者緊扣文獻實據，持論中肯平實，對相關歷史背景與學術爭議之解析尤具啟發性，極具研習與典藏價值。",
+      "localCover": "assets/covers/01202.jpg"
     },
     {
       "id": "01203",
@@ -50852,6 +50915,21 @@ window.STATIC_DATA = {
       "isLast": false,
       "cover": "https://drive.google.com/file/d/1Z2ol52QRhsK_zciLcDkCOjLE7QEvRoaB/view?usp=sharing",
       "intro": "【天天生活在台北，你真的了解腳下踩的這片土地嗎？】\n你可能知道信義區的繁華、西門町的熱鬧，但你可曾想過—幾千幾萬年前，這座盆地曾歷經怎樣驚天動地的改變？  \n而我們所熟悉的士林、新莊、板橋平原，又是如何隨三大水系流轉而生？   \n「在台北住了一輩子，對自己住的地方，總想有更深刻的認識。這過程就像『挖礦』，越挖，越發現底下的寶藏多得驚人。」——作者 陳福成   \n本書不是一本生硬枯燥的歷史大拜拜，而是一位在地耆老搬出板凳，用最接地氣的「講古」口吻，細細道來先民如何在這片土地披荊斬棘、滄海桑田的故事。  \n 無論為土生土長的台北人、離鄉背井打拚的北漂族，或是喜愛文史的老靈魂，翻開這本書，帶你穿越時空，重新愛上這座城市的底蘊！",
+      "心得": ""
+    },
+    {
+      "id": "65180",
+      "title": "三藏問答：《西遊記》滿文譯本選讀導讀",
+      "author": "莊吉發譯注",
+      "year": "114年 平一",
+      "price": 480,
+      "isbn": "978-986-314-734-3",
+      "stock": "20",
+      "category": "史料",
+      "isNew": true,
+      "isLast": false,
+      "cover": "",
+      "intro": "史料",
       "心得": ""
     }
   ]
