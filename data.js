@@ -180,6 +180,22 @@ window.STATIC_DATA = {
   ],
   "choices": [
     {
+      "id": "12205",
+      "title": "兵家管理思想",
+      "author": "張廣福著",
+      "year": "115年 平一",
+      "price": 420,
+      "isbn": "978-986-314-777-0",
+      "stock": 20,
+      "category": "中國古代管理叢書",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1F9cEJd1ruTtgXyKZIWp_e5CgE1dkcg3T/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
       "id": "9171",
       "title": "欲與君",
       "author": "呂建春著",
@@ -861,6 +877,33 @@ window.STATIC_DATA = {
     }
   ],
   "logs": [
+    {
+      "id": "LOG-1795765773996-3gdv",
+      "timestamp": "2026/11/27 15:49:33",
+      "category": "推薦書單",
+      "action": "雲端同步",
+      "details": "手動推送推薦書單至 Google 試算表（精選 26 本、暢銷 17 本）",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795765727520-i0sx",
+      "timestamp": "2026/11/27 15:48:47",
+      "category": "推薦書單",
+      "action": "新增",
+      "details": "將《兵家管理思想》加入精選書單",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795765720417-652y",
+      "timestamp": "2026/11/27 15:48:40",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
     {
       "id": "LOG-1795765709638-ygd5",
       "timestamp": "2026/11/27 15:48:29",
