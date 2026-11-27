@@ -878,6 +878,33 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795766582587-3y1r",
+      "timestamp": "2026/11/27 16:03:02",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《詩經的管理思想》(書碼: 12204)，定價 NT$ 420",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795766541097-9fix",
+      "timestamp": "2026/11/27 16:02:21",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《先秦儒家管理思想》(書碼: 12203)，定價 NT$ 240",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795765786693-sqxa",
+      "timestamp": "2026/11/27 15:49:46",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795765773996-3gdv",
       "timestamp": "2026/11/27 15:49:33",
       "category": "推薦書單",
@@ -8997,6 +9024,38 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
+    {
+      "id": "12204",
+      "title": "詩經的管理思想",
+      "author": "張廣福著",
+      "year": "115年 平一",
+      "price": 420,
+      "isbn": "978-986-314-727-5",
+      "stock": 20,
+      "category": "中國古代管理叢書",
+      "isNew": true,
+      "isLast": false,
+      "cover": "",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
+    {
+      "id": "12203",
+      "title": "先秦儒家管理思想",
+      "author": "張廣福著",
+      "year": "115年 平一",
+      "price": 240,
+      "isbn": "978-986-314-668-1",
+      "stock": 20,
+      "category": "中國古代管理叢書",
+      "isNew": true,
+      "isLast": false,
+      "cover": "",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
     {
       "id": "12205",
       "title": "兵家管理思想",
