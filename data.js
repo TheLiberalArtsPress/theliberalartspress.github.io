@@ -862,6 +862,60 @@ window.STATIC_DATA = {
   ],
   "logs": [
     {
+      "id": "LOG-1795765709638-ygd5",
+      "timestamp": "2026/11/27 15:48:29",
+      "category": "書籍庫存",
+      "action": "回同步試算表",
+      "details": "成功將 2635 本書籍最新簡介與心得回推寫入 Google 試算表",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795765694510-lbig",
+      "timestamp": "2026/11/27 15:48:14",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《兵家管理思想》(書碼: 12205) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795765612493-911s",
+      "timestamp": "2026/11/27 15:46:52",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《兵家管理思想》(書碼: 12205) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795765604665-19l6",
+      "timestamp": "2026/11/27 15:46:44",
+      "category": "書籍庫存",
+      "action": "編輯",
+      "details": "修改書籍《兵家管理思想》(書碼: 12205) 定價 NT$ 420、庫存 20",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795765593783-0ibn",
+      "timestamp": "2026/11/27 15:46:33",
+      "category": "書籍庫存",
+      "action": "新增",
+      "details": "新增書籍《兵家管理思想》(書碼: 12205)，定價 NT$ 420",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
+      "id": "LOG-1795753561910-0paj",
+      "timestamp": "2026/11/27 12:26:01",
+      "category": "雲端同步",
+      "action": "雲端同步",
+      "details": "一鍵直推成功同步更新至 GitHub (TheLiberalArtsPress/theliberalartspress.github.io/main)",
+      "operator": "管理員 (Admin)",
+      "syncStatus": "已保存"
+    },
+    {
       "id": "LOG-1795753551647-pdzy",
       "timestamp": "2026/11/27 12:25:51",
       "category": "書籍庫存",
@@ -8900,6 +8954,22 @@ window.STATIC_DATA = {
     }
   ],
   "books": [
+    {
+      "id": "12205",
+      "title": "兵家管理思想",
+      "author": "張廣福著",
+      "year": "115年 平一",
+      "price": 420,
+      "isbn": "978-986-314-777-0",
+      "stock": 20,
+      "category": "中國古代管理叢書",
+      "isNew": true,
+      "isLast": false,
+      "cover": "https://drive.google.com/file/d/1F9cEJd1ruTtgXyKZIWp_e5CgE1dkcg3T/view?usp=sharing",
+      "localCover": "",
+      "intro": "",
+      "心得": ""
+    },
     {
       "id": "00001",
       "title": "中國圖書史略",
